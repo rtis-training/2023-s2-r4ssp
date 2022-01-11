@@ -1,11 +1,9 @@
 ---
-title: "My Website"
+title: "R for Successful Student Projects"
 ---
 
-Hello, Website!
+Semester 1 2022 R for Successful Student Projects (R4SSP) will be commencing ~3rd week of semester (to be confirmed)
 
-For more information about simple R Markdown websites, please read the documentation at https://bookdown.org/yihui/rmarkdown/rmarkdown-site.html.
 
-Please also note that simple R Markdown sites are _not_ based on **blogdown**. They are probably good for websites with only a few Rmd documents. For larger-scale and more sophisticated websites (such as blogs), you may want to use **blogdown** instead: https://github.com/rstudio/blogdown.
+For more information please email rtis.training@otago.ac.nz
 
-some extra content

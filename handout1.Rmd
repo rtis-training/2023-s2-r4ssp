@@ -2,12 +2,29 @@
 title: "Get Started with R"
 author: "Patricia Haden & Murray Cadzow"
 date: "Semester 1, 2022"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 3
+    code_download: true
+    code_folding: show
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
 library(knitr)
+
+knitr::opts_chunk$set(
+  comment = "#>",
+  fig.path = "figures", # use only for single Rmd files
+  collapse = TRUE,
+  echo = TRUE
+)
+
+
 ```
+
+\
 
 # Introduction
 
@@ -21,11 +38,15 @@ We will begin by explaining the different software tools you need, and how to ge
 
 This handout is designed to be read in conjunction with Chapter 1: Introduction of [R for Data Science](https://r4ds.had.co.nz).
 
+\
+
+\
+
 ## The Tools
 
 We think of computers as storing rich meaningful data (mostly cat videos). Actually, what computers really contain are millions of tiny little storage units, each of which either holds an electrical charge (usually called a 1) or holds nothing (usually called a 0). Really. That's it. That's all there is.
 
-```{r, fig.align='center', out.width="3in", fig.cap="What's inside the computer", echo=FALSE}
+```{r, fig.align='center', fig.cap="What's inside the computer", echo=FALSE, out.width="50%"}
 include_graphics("images/computer.png" )
 ```
 
@@ -33,7 +54,7 @@ All of the amazing things that computers do happen through extremely complicated
 
 To communicate with your computer using a program language, you need a special computer program (previously written in a programming language, of course) that knows how to translate from the human-friendly programming language into actions on the computer. These are called **Development Environments**, because this is where people develop software.
 
-```{r, out.width = "6in", fig.cap = "All The Parts", echo=FALSE, fig.align='center'}
+```{r, fig.cap = "All The Parts", echo=FALSE, fig.align='center', out.width="100%"}
 include_graphics("images/language_ide_machine.png")
 ```
 
@@ -45,17 +66,25 @@ You can also install the R language and the RStudio program on your own personal
 
 First, install R from <https://cran.r-project.org/bin/windows/base/> (for Windows machines) or <https://cran.r-project.org/bin/macosx/> (for Mac OS machines). Then install RStudio from <https://rstudio.com/products/rstudio/download/>. Modern scientists need to be comfortable installing software on their own computers. This is a good opportunity for you to practice this important skill, and we encourage you to try it. If you need any help, ask us.
 
+\
+
+\
+
 ## How to Talk to a Computer
 
 When programming a computer you must always remember one very important fact: Computers Are Stupid.
 
 Really. The computer "understands" only a very small and *strictly limited* set of commands (the grammar and vocabulary of a programming language). If you deviate from this set of commands *in any way*, the computer cannot figure out what you mean. It is best to think of your computer as a well-meaning, well-trained, but not particularly bright dog. It wants to do as it is told, but if you use a command it doesn't know, it can't figure out what you intend. Be nice to your computer -- don't confuse it.
 
-```{r, out.width = "2.5in", fig.align='center', fig.cap = "Confused Dog", echo = FALSE}
+```{r, fig.align='center', fig.cap = "Confused Dog", echo = FALSE}
 include_graphics("images/dog.jpg")
 ```
 
 <!-- Image: https://imgflip.com/memetemplate/116235568/confused-dog -->
+
+\
+
+\
 
 # Using RStudio
 
@@ -63,21 +92,31 @@ RStudio is a program that can accept R statements and convey them to the machine
 
 In the first instance, just to make sure R and RStudio are working correctly, we will type a few R commands directly into RStudio and execute them in real time (see below). Later, we will see how to store a set of R commands in a file so that we can run them repeatedly without having to retype.
 
+\
+
 ## Parts of RStudio
 
-The RStudio interface is divided into separate **panes**. As you become more comfortable with RStudio, you may wish to reorganise the locations of the different panes. In its default configuration when it first opens, RStudio will have three panes, each of which has multiple tabs. On the left is the Console pane. This is where we will enter our first R commands. At the upper right is the Environment pane. This is where we will see information about the state of our program. At the lower right is the Files pane. Here we can navigate among files on our computer. But more usefully, the Files pane contains a tab labeled Plots. We will switch to this tab to see graphs that we draw with R.
+The RStudio interface is divided into separate **panes**. As you become more comfortable with RStudio, you may wish to reorganise the locations of the different panes. In its default configuration when it first opens, RStudio will have three panes, each of which has multiple tabs. On the left is the Console pane. This is where we will enter our first R commands. At the upper right is the Environment pane. This is where we will see information about the state of our program. At the lower right is the Files pane. Here we can navigate among files on our computer. But more usefully, the Files pane contains a tab labelled Plots. We will switch to this tab to see graphs that we draw with R.
 
-```{r, out.width = "6in", fig.align='center', fig.cap = "RStudio", echo = FALSE, fig.pos = "H"}
+```{r, fig.align='center', fig.cap = "RStudio", echo = FALSE, fig.pos = "H", out.width="100%"}
 include_graphics("images/RStudio.png")
 ```
+
+\
+
+\
 
 # Parts of the R Programming Language
 
 Programming languages have been designed to mimic human languages. Therefore most of them have **things** (like nouns) and **actions** (like verbs). Programming is just explaining to the computer in ways it can understand, what *actions* to perform on specific *things*. R understands many kinds of things and many, many kinds of actions. We are going to start with the very simplest case, just to practice interacting with RStudio (i.e., giving it R commands to convey to the computer for us).
 
+\
+
 ## Numbers and mathematical operators
 
 R understands numbers (things like 8 and 3.14159) and mathematical operators (actions like + and -). We will type some numbers and mathematical operators into RStudio and see how the computer responds.
+
+\
 
 ### Code-along Exercise
 
@@ -85,7 +124,7 @@ R understands numbers (things like 8 and 3.14159) and mathematical operators (ac
 
 2.  The Console pane on the left will contain some explanatory text. At the bottom of the text is a right angle bracket **\>**. That is where you will begin typing. There will be a small, flashing, vertical line beside the angle bracket. (If you don't have the flashing vertical line, click your mouse beside and slightly to the right of the angle bracket.)
 
-3.  Type the following characters into the Console pane, followed by the Enter key.
+3.  Type the following characters into the Console pane, followed by the <kbd>Enter</kbd> key.
 
 [^1]: If running For instructions to launch the Student Desktop follow <https://blogs.otago.ac.nz/studentit/student-desktop/student-desktop-own-device/>
 
@@ -93,8 +132,8 @@ R understands numbers (things like 8 and 3.14159) and mathematical operators (ac
 
 If everything is working as it should, your screen should look like this (the contents of the Files pane may be different):
 
-```{r, fig.align='center', out.width= "6.5in", fig.pos="H", fig.cap = "First R Command", echo = FALSE}
-include_graphics("images/first_command.PNG")
+```{r, fig.align='center', out.width= "100%", fig.pos="H", fig.cap = "First R Command", echo = FALSE}
+include_graphics("images/first_command.png")
 ```
 
 You have given R two **things**: the number 4 and the number 5. You have asked R to perform an **action** on those things: addition. R has done so, and RStudio has displayed the result (in this case, the value 9). It has also printed [1] on the console screen. This is RStudio trying to help you. As your R commands become more complicated, you will end up with many results rather than just one. RStudio prints these numbers at the start of output lines to help you count your results. It's not really necessary when you only have one result, but that's just how RStudio behaves (we refer you again to the picture of the well-meaning doggo above).
@@ -108,13 +147,14 @@ For the remainder of this document, we will not show you pictures of the whole s
 4.  Explore more of R's mathematical operators. For division use / and for multiplication use \*. Enter each of these R commands into the console and confirm that you receive the expected output.
 
 ```{r more maths}
-
 10 / 8
 
 8 * 12
 
 6 - 12 + (3 * 7.4)
 ```
+
+\
 
 ## More actions: Function calls in R
 
@@ -131,6 +171,8 @@ sqrt(200)
 
 ```
 
+\
+
 ## More things: Words
 
 Lots of computing involves words rather than numbers. For example, searching text and enrolling students by name both operate on words. R understands words -- the concept of **things composed of letters**. However, when working with words, we must mark them with special characters to prevent R from becoming confused (we see what this confusion looks like in a moment).
@@ -146,6 +188,8 @@ There are functions that operate on strings, exactly equivalent to ones like `sq
 ```{r strings02}
 nchar("plato")
 ```
+
+\
 
 ### Code-along Exercise
 
@@ -168,6 +212,8 @@ NCHAR("plato")
 
 We know that R understands the function `nchar` -- we saw it working just a few moments ago. But now it says it could not find that function? This is because, to R, `nchar` and `NCHAR` are not the same thing. R is a **case-sensitive** language. Upper-case and lower-case letters are completely different entities in R. When giving R commands you must always exactly match its expectations about upper and lower case (woof).
 
+\
+
 ## Storing Results
 
 Imagine that you have two large numbers and, for some sound scientific reason, you wish to take their ratio and then take the square root of that value. Like this:
@@ -186,6 +232,8 @@ It would be more convenient, and safer, to take the result R gave you from the f
 
 In R, this "storing" is performed with the **\<- operator** (called the "assignment" operator). The assignment operator is formed by typing a left angle bracket and a hyphen. In the following code example, we demonstrate the assignment operator. We also demonstrate **comments**. In R, any text that is prefaced with \# is ignored rather than being treated as a command. It is just text that the programmer adds for their own benefit.
 
+\
+
 ### Code-along Exercise
 
 Make sure you can duplicate this code, with the same results, in RStudio (you don't need to type the comments).
@@ -203,13 +251,15 @@ ratio
 sqrt(ratio)  
 ```
 
+\
+
 ## Variable Names and Values
 
 Look **very carefully** at the variable name on the left hand side of the assignment operator \<-. It is a string of characters, but **it is not surrounded by quote marks**. This is how, in R, we distinguish strings (a word thing -- remember, like "plato") from variable names.
 
 Inside our computer, variables are implemented (conceptually) as shown below. A location in memory is "named". When you refer to the name, the computer supplies whatever value is stored at that location.
 
-```{r, fig.align='center', out.width="3in", fig.cap="How Variables Work", echo = FALSE}
+```{r, fig.align='center', out.width="50%", fig.cap="How Variables Work", echo = FALSE}
 include_graphics("images/computer_with_variable.png")
 ```
 
@@ -232,11 +282,15 @@ ratio
 
 ```
 
+\
+
 ## Complex Things
 
 One of the great strengths of R for data analysis is that "things" in R aren't restricted to single numbers or single strings. Things in R can be **collections** -- ordered sets of multiple things.
 
 To get a collection, we must create it, using the built-in function `c()`. The c stands for **combine**. This function combines multiple arguments into a single collection thing. In R this kind of collection thing is called a **vector**.
+
+\
 
 ### Code-along Exercise
 
@@ -271,6 +325,8 @@ Look very carefully at the third vector variable, mixture. Note that, when it di
 
 The operators and functions we have used so far on single numbers and strings (e.g. `sqrt`, `nchar`) will also work on vectors. When you use this kind of function or operator with a vector, R applies it to each element in turn, and returns all the results.
 
+\
+
 ### Code-along Exercise
 
 Enter these statements into RStudio.
@@ -283,6 +339,8 @@ primes * 2
 sqrt(primes)
 ```
 
+\
+
 ### Write Your Own Code
 
 Enter a new command to divide all the values in vector **primes** by 2. Make sure you get these results:
@@ -293,9 +351,13 @@ primes/2
 
 Note that vector operations work regardless of the number of elements in the vector. You can have 1,000,000 data values in your vector and it still requires only one command to process them all.
 
+\
+
 ## Whole-Vector Operations
 
 There are also functions which summarise the contents of a vector. For example, R has a function `mean` that computes the mathematical average of the elements in a vector, and a function `sd` that computes the standard deviation of the elements in a vector. There are hundreds of such functions available, and we will explore many of them throughout this mini-course.
+
+\
 
 ### Code-along Exercise
 
@@ -309,31 +371,41 @@ mean(exam_scores_vector)  # Compute the mathematical mean of the exam scores
 sd(exam_scores_vector) # Compute the standard deviation of the exam scores
 ```
 
+\
+
 ### Write your own code
 
 The R functions `min` and `max` return the minimum and maximum values of a vector. Write commands to use these functions on **exam_scores_vector** from the previous exercise.
 
 Not all R functions have such obvious names. Use Google or your favourite R textbook to find out what function to call to get *the number of elements in a vector*. Test this function on **exam_scores_vector**.
 
+\
+
+\
+
 # Even More Complex Things
 
 We have seen that R understands single numbers or strings, and collections of numbers or strings (vectors). R also understands complete tables of data (in rows and columns, like spreadsheets are arranged). In fact, most real data analysis in R operates on tables of data. Some R functions require you to first extract a row or column from your data table; other functions will take an entire table and operate on it at once (for example, many of the functions that perform inferential statistical analyses operate on whole tables). In later modules, we will use some of these functions. But before we do that, there is one more **very important** mechanical feature of RStudio...
+
+\
 
 ## Saving Your Code
 
 We have typed a lot of R commands into the console. When we close RStudio, **all that code will be gone forever**. If we want to do any of this again, we have to start over from the beginning and type everything in again. This is unacceptable. So, RStudio lets us type our code into a file, save the file, and retrieve the code whenever we want, so that we can modify it or simply run it again.
 
+\
+
 ## Using a Script File
 
 1\. From the menu at the top of the RStudio screen select File-\>New File then click on R Script. (Alternatively, you can type shift+ctrl+N (Windows) or shift+cmd+N (Mac).)
 
-```{r, fig.align='center', out.width="3.5in", fig.cap = "Making an R File", echo = FALSE}
+```{r, fig.align='center', out.width="50%", fig.cap = "Making an R File", echo = FALSE}
 include_graphics("images/make_script.png")
 ```
 
-2.This opens a new untitled file in an editing pane in the upper left of the RStudio screen. The console pane will be pushed down to the bottom half of the screen. You can click and drag the dividers between the four panes to change their sizes as you prefer.
+2\. This opens a new untitled file in an editing pane in the upper left of the RStudio screen. The console pane will be pushed down to the bottom half of the screen. You can click and drag the dividers between the four panes to change their sizes as you prefer.
 
-```{r, fig.align='center', out.width = "6in", fig.cap = "New Script", fig.pos = 'H', echo = FALSE}
+```{r, fig.align='center', out.width = "100%", fig.cap = "New Script", fig.pos = 'H', echo = FALSE}
 include_graphics("images/new_script.png")
 ```
 
@@ -353,37 +425,43 @@ include_graphics("images/new_script.png")
 
 10\. The file will open in RStudio and you can run all your code again (see items 5 and 6 above) without having to retype anything.
 
+\
+
 ## An Even Better Script File
 
 A basic script file (of type .R) will store and preserve your code. RStudio also provides **R Markdown** files (of type .Rmd) that can do much more. R Markdown is an extended script format that allows you to embed R commands in formatted text. RStudio processes R Markdown files, producing HTML, Word or pdf formats. During processing (which is called *knitting*) RStudio runs any embedded R commands and **inserts the results into the output document**. You don't need to process your data in RStudio and then copy/paste the results into a separate Word document. You can insert the code directly into your text in an R Markdown file, and it will be executed when RStudio knits. Let's give it a try:
 
 1\. In RStudio, click on the File menu, select New File and, from the submenu that opens, click on R Markdown.
 
-```{r, fig.align='center', out.width="4in", fig.cap = "Create an R Markdown File", fig.pos = "H", echo = FALSE}
+```{r, fig.align='center', out.width="50%", fig.cap = "Create an R Markdown File", fig.pos = "H", echo = FALSE}
 include_graphics("images/make_rmd.png")
 ```
 
 2\. A dialogue box will open, where you have a chance to enter a title for your document and the name of the author. These will appear at the top of the knit document. You can select the output format. Leave it as HTML for this exercise.
 
-```{r, fig.align='center', out.width = "4in", fig.pos = "H", fig.cap = "R Markdown Dialogue", echo = FALSE}
+```{r, fig.align='center', out.width = "75%", fig.pos = "H", fig.cap = "R Markdown Dialogue", echo = FALSE}
 include_graphics("images/markdown_dialogue.png")
 ```
 
 3\. RStudio will create a new file and open it in a new tab. The file is untitled, so save it and give it a sensible name.
 
-```{r, fig.align='center', fig.cap = "A New R Markdown File", out.width = "5in", echo = FALSE, fig.pos = "H"}
+```{r, fig.align='center', fig.cap = "A New R Markdown File", out.width = "100%", echo = FALSE, fig.pos = "H"}
 include_graphics("images/markdown_template.png")
 ```
 
 The file already contains some text. This is some sample contents to give you an idea of what an R Markdown file looks like. You will note that the file has areas with a white background and areas with a shaded background. The white areas are plain text, the shaded areas are R commands. When the file is knit, that code will be run, and its output inserted into the text. To see this in action, click the **Knit** icon at the top the RStudio tab.
 
-```{r, fig.align='center', fig.cap = "The Knit Button", out.width = "3in", echo = FALSE, fig.pos = "H"}
+```{r, fig.align='center', fig.cap = "The Knit Button", out.width = "50%", echo = FALSE, fig.pos = "H"}
 include_graphics("images/markdown_knit_button.png")
 ```
 
 RStudio will produce a beautiful HTML document and open it in a local browser window. See if you can match the R code segments in the R Markdown document to the output that appears in the HTML page.
 
 R Markdown is a powerful tool for generating research reports when analysing data with R. As we proceed through this mini-course we will explore additional features of R Markdown, and you may wish to consider using it for your own course assignments. Check with your lecturers to see if this is suitable.
+
+\
+
+\
 
 # Conclusion
 
@@ -395,6 +473,10 @@ Fill in the module feedback form <https://tinyurl.com/r4ssp-module-fb>.
 
 In our next module, we will learn how to read real data files into R and make plots and figures that you can use in a research report. We will start with simple plots you can create using only base R. Then we will learn to use a powerful graphics library called **ggplot** (part of the **tidyverse** family of R extensions). With ggplot you can make publication-quality graphs with only a few lines of R code.
 
+\
+
+\
+
 # Appendix
 
 ## Getting Help
@@ -402,6 +484,8 @@ In our next module, we will learn how to read real data files into R and make pl
 Often you'll need help for a specific function, such as `mean()`, you can search the help documentation using `?` in front of the function name to do this (e.g. `?mean`) and this will bring up the manual page. It provides information about what does, what the arguments are, and even provides some examples that can be copy-pasted and run to give an example of what it does.
 
 The `?` is not the only way to find out how to run a function -- for more examples of how to find help refer to <https://datacarpentry.org/R-ecology-lesson/00-before-we-start.html#Seeking_help>
+
+\
 
 ## Using Projects in RStudio
 
