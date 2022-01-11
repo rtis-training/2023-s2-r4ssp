@@ -127,7 +127,7 @@ It is always informative to begin data analysis by inspecting your dependent var
 
 To select a single column from a data frame, we apply the **$** operator to the data frame, and specify the column name. The output is a **vector** containing the values in the named column.
 
-```{r select a column}
+```{r selectColumn}
 
 # Select a single column with $ and the column name
 puppy_donations_data$Amount
@@ -135,7 +135,7 @@ puppy_donations_data$Amount
 
 To simplify our later typing, we can use the assignment operator to save the output into a named variable.
 
-```{r save a column}
+```{r saveColumn}
 # Save a single column into a variable
 amount_only <- puppy_donations_data$Amount
 
@@ -150,7 +150,7 @@ We can now apply R's many, many statistical functions to our variable.
 ### Simple plots - the histogram
 First, let's plot a histogram of the amounts collected, (ignoring the Puppy/Alone condition), to get a quick sense of how much people are donating. We generate this graph with function `hist`. The graph will be displayed in the Plots tab of RStudio's lower-right pane.
 
-```{r hist}
+```{r handout2_hist}
 hist(amount_only)
 ```
 Our data appear to be bimodal (i.e. they have two peaks). This pattern can indicate the presence of distinct groups in a data set, an informative result in this study. 
@@ -158,7 +158,7 @@ Our data appear to be bimodal (i.e. they have two peaks). This pattern can indic
 
 ### Simple numeric descriptive statistics
 We can also generate some useful numeric summaries:
-```{r some stats}
+```{r someStats}
 # Compute the mathematical mean with function mean()
 mean(amount_only)
 
@@ -177,20 +177,20 @@ We often wish to summarise our dependent variable for all the members of an expe
 
 To take a subset of rows from a data frame, use function `subset`. This function takes two arguments: first, the name of the data frame from from which you are separating out rows; second, the criterion you wish to use to select your subset. In this example we wish to select out all the rows for which the Condition column value is "Puppy". In R we describe this criterion with `Condition == "Puppy"`. Note the double equal sign **==**. This is very important. A single equal sign here means something else, and will not work at all.  The complete code to select all the collectors who had puppies is:
 
-```{r select group}
+```{r selectGroup}
 subset(puppy_donations_data, Condition == "Puppy")
 ```
 
 As always, it will make our code tidier to save the output in a named variable for later use. 
 
-```{r save group}
+```{r saveGroup}
 puppies_only <- subset(puppy_donations_data, Condition == "Puppy")
 puppies_only
 ```
 
 We can select columns from our new partial data frame and compute summary statistics for a column of interest just as we did above:
 
-```{r subset summary}
+```{r subsetSummary}
 mean(puppies_only$Amount)
 sd(puppies_only$Amount)
 ```
@@ -238,7 +238,7 @@ The first argument is the **formula**. This is a complex, yet very common, argum
 
 The second argument to boxplot is the data frame.
 
-```{r boxplot 01}
+```{r handout2_boxplot01}
 boxplot(Amount ~ Condition, puppy_donations_data)
 ```
 
@@ -247,7 +247,7 @@ Boxplots efficiently illustrate both the central tendency and the variability of
 
 The `boxplot` function actually has many optional arguments for things like adding legends and formatting plot axes, and calls to this function can get quite elaborate. Because of this, it is common to see the function called with its arguments named (as with stringsAsFactors, above). For example:
 
-```{r boxplot 02}
+```{r handout2_boxplot02}
 boxplot(formula = Amount ~ Condition, data = puppy_donations_data)
 ```
 
