@@ -11,8 +11,14 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
 library(knitr)
+
+knitr::opts_chunk$set(
+  comment = "#>",
+  fig.path = "figures/", # use only for single Rmd files
+  collapse = TRUE,
+  echo = TRUE
+)
 ```
 
  
