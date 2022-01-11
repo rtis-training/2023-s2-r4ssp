@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Patricia Haden &amp; Murray Cadzow" />
+
+
+<title>Exercises 03 - Tabular Basics and ggplot</title>
+
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">R4SSP Semester 1 2022</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Handouts
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="handout1.html">Handout 1</a>
+    </li>
+    <li>
+      <a href="handout2.html">Handout 2</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Worksheets
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="worksheet1.html">Worksheet 1</a>
+    </li>
+    <li>
+      <a href="worksheet3.html">Worksheet 3</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+<li role="separator" class="divider"></li>
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Exercises 03 - Tabular Basics and ggplot</h1>
+<h4 class="author">Patricia Haden &amp; Murray Cadzow</h4>
+<h4 class="date">Semester 1, 2021</h4>
+
+</div>
+
+
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<p>To practice what we have learned in module 3, we will use “Palmer’s Penguins”, a real data set from the Palmer Station Long Term Ecological Research program (<a href="https://allisonhorst.github.io/palmerpenguins/articles/intro.html" class="uri">https://allisonhorst.github.io/palmerpenguins/articles/intro.html</a>). These data are size measurements for three penguin species – Chinstrap, Gentoo and Adelie – on three islands in Antarctica.</p>
+<p>You will need to install the package that contains the data frame (code shown below). Then work through each of the exercises. If you have any questions, email us, or drop in to the practical session Monday 10.00 to 12.00 in the Science Library Seminar Room.</p>
+</div>
+<div id="get-the-penguin-data" class="section level2">
+<h2>Get the Penguin Data</h2>
+<pre class="r"><code># Install the package (do once on any computer)
+install.packages(&quot;palmerpenguins&quot;)</code></pre>
+<pre class="r"><code># Load the library (do at the start of every RStudio session)
+library(palmerpenguins)
+
+# Check the data - the data frame name is penguins
+str(penguins)</code></pre>
+<pre><code>## tibble [344 × 8] (S3: tbl_df/tbl/data.frame)
+##  $ species          : Factor w/ 3 levels &quot;Adelie&quot;,&quot;Chinstrap&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ island           : Factor w/ 3 levels &quot;Biscoe&quot;,&quot;Dream&quot;,..: 3 3 3 3 3 3 3 3 3 3 ...
+##  $ bill_length_mm   : num [1:344] 39.1 39.5 40.3 NA 36.7 39.3 38.9 39.2 34.1 42 ...
+##  $ bill_depth_mm    : num [1:344] 18.7 17.4 18 NA 19.3 20.6 17.8 19.6 18.1 20.2 ...
+##  $ flipper_length_mm: int [1:344] 181 186 195 NA 193 190 181 195 193 190 ...
+##  $ body_mass_g      : int [1:344] 3750 3800 3250 NA 3450 3650 3625 4675 3475 4250 ...
+##  $ sex              : Factor w/ 2 levels &quot;female&quot;,&quot;male&quot;: 2 1 1 NA 1 2 1 2 NA NA ...
+##  $ year             : int [1:344] 2007 2007 2007 2007 2007 2007 2007 2007 2007 2007 ...</code></pre>
+<p>The output from <code>str(penguins</code>) indicates that three of the columns in the data frame are <strong>Factors</strong>. In R, a factor is a categorical variable, usually corresponding to an experimental factor. Although factors look like strings, a factor is restricted to a specific set of legal values, which R infers when the data are loaded. The legal values are called <strong>levels</strong>, and correspond to the different groups or conditions represented by the factor. For example, column <code>penguins$sex</code> is a factor with levels “female” and “male”.</p>
+</div>
+<div id="exercises" class="section level2">
+<h2>Exercises</h2>
+<ol style="list-style-type: decimal">
+<li><p>When our data sets have factors, we often use functions <code>levels</code> and <code>table</code>. Use Google or your favourite text book to explore these functions. Use them to solve the next two exercises.</p></li>
+<li><p>What are the three different levels of the <strong>species</strong> factor? What are the three different levels of the <strong>island</strong> factor?</p></li>
+<li><p>How many observations are there in the data frame for each of the three species? How many observations are there in the data frame for each of the three islands?</p></li>
+<li><p>This code computes the mean and standard deviation of bill length collapsed across islands, species, and sex? (To collapse across factors means to ignore the fact that there are different levels; just bung all the data together.) We add the argument <code>na.rm = TRUE</code> to tell R to ignore any NA (missing) values.</p></li>
+</ol>
+<pre class="r"><code>mean(penguins$bill_length_mm, na.rm = TRUE)
+sd(penguins$bill_length_mm, na.rm = TRUE)</code></pre>
+<p>What are the mean and standard deviation of flipper length, collapsed across islands, species, and sex?</p>
+<ol start="5" style="list-style-type: decimal">
+<li><p>On average, who has longer flippers, male penguins or female penguins?</p></li>
+<li><p>Using base R, generate a histogram showing the distribution of body mass, collapsed across island, species and sex. How would you describe the distribution?</p></li>
+<li><p>Using ggplot, generate a scatterplot illustrating the relationship between bill length and body mass, collapsed across species, island and sex. Remember to load the library with <code>library(ggplot2)</code> before first use.How would you describe the pattern?</p></li>
+<li><p>Modify your plot from Exercise 7 so that penguins from the different islands are drawn in different colours. Which island seems to have the heaviest penguins? Without looking any further at the data, formulate at least two possible explanations for the pattern.</p></li>
+<li><p>Using facet_wrap, generate a figure that shows the bill length by body mass scatterplot separately for each species.</p></li>
+<li><p>Using geom_smooth, illustrate the bill length by body mass relationship as a smoothed curve.</p></li>
+<li><p>Using ggplot, generate a boxplot comparing body mass for the three different species of penguin, and having each of the three boxes drawn in a different colour. What information is missing from this figure that was provided Exercise 8? What information is easier to see in this figure than in Exercise 8?</p></li>
+<li><p>Using ggplot, duplicate this figure:</p></li>
+</ol>
+<p><img src="worksheet3_files/figure-html/barplot%20with%20fill%20and%20dodge-1.png" width="672" /></p>
+</div>
+
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiRXhlcmNpc2VzIDAzIC0gVGFidWxhciBCYXNpY3MgYW5kIGdncGxvdCIKYXV0aG9yOiAiUGF0cmljaWEgSGFkZW4gJiBNdXJyYXkgQ2Fkem93IgpkYXRlOiAiU2VtZXN0ZXIgMSwgMjAyMSIKb3V0cHV0OgogIGh0bWxfZG9jdW1lbnQ6CiAgICB0b2M6IHRydWUKICAgIHRvY19mbG9hdDogdHJ1ZQogICAgdG9jX2RlcHRoOiAzCiAgICBjb2RlX2Rvd25sb2FkOiB0cnVlCiAgICBjb2RlX2ZvbGRpbmc6IHNob3cKLS0tCgpgYGB7ciBzZXR1cCwgaW5jbHVkZT1GQUxTRX0Ka25pdHI6Om9wdHNfY2h1bmskc2V0KGVjaG8gPSBUUlVFKQpgYGAKCiMjIEludHJvZHVjdGlvbgpUbyBwcmFjdGljZSB3aGF0IHdlIGhhdmUgbGVhcm5lZCBpbiBtb2R1bGUgMywgd2Ugd2lsbCB1c2UgIlBhbG1lcidzIFBlbmd1aW5zIiwgYSByZWFsIGRhdGEgc2V0IGZyb20gdGhlIFBhbG1lciBTdGF0aW9uIExvbmcgVGVybSBFY29sb2dpY2FsIFJlc2VhcmNoIHByb2dyYW0gKGh0dHBzOi8vYWxsaXNvbmhvcnN0LmdpdGh1Yi5pby9wYWxtZXJwZW5ndWlucy9hcnRpY2xlcy9pbnRyby5odG1sKS4gVGhlc2UgZGF0YSBhcmUgc2l6ZSBtZWFzdXJlbWVudHMgZm9yIHRocmVlIHBlbmd1aW4gc3BlY2llcyAtLSBDaGluc3RyYXAsIEdlbnRvbyBhbmQgQWRlbGllIC0tIG9uIHRocmVlIGlzbGFuZHMgaW4gQW50YXJjdGljYS4KCllvdSB3aWxsIG5lZWQgdG8gaW5zdGFsbCB0aGUgcGFja2FnZSB0aGF0IGNvbnRhaW5zIHRoZSBkYXRhIGZyYW1lIChjb2RlIHNob3duIGJlbG93KS4gVGhlbiB3b3JrIHRocm91Z2ggZWFjaCBvZiB0aGUgZXhlcmNpc2VzLiBJZiB5b3UgaGF2ZSBhbnkgcXVlc3Rpb25zLCBlbWFpbCB1cywgb3IgZHJvcCBpbiB0byB0aGUgcHJhY3RpY2FsIHNlc3Npb24gTW9uZGF5IDEwLjAwIHRvIDEyLjAwIGluIHRoZSBTY2llbmNlIExpYnJhcnkgU2VtaW5hciBSb29tLgoKIyMgR2V0IHRoZSBQZW5ndWluIERhdGEKCmBgYHtyIGluc3RhbGwsIGV2YWw9RkFMU0V9CgojIEluc3RhbGwgdGhlIHBhY2thZ2UgKGRvIG9uY2Ugb24gYW55IGNvbXB1dGVyKQppbnN0YWxsLnBhY2thZ2VzKCJwYWxtZXJwZW5ndWlucyIpCmBgYAoKYGBge3IgbG9hZH0KIyBMb2FkIHRoZSBsaWJyYXJ5IChkbyBhdCB0aGUgc3RhcnQgb2YgZXZlcnkgUlN0dWRpbyBzZXNzaW9uKQpsaWJyYXJ5KHBhbG1lcnBlbmd1aW5zKQoKIyBDaGVjayB0aGUgZGF0YSAtIHRoZSBkYXRhIGZyYW1lIG5hbWUgaXMgcGVuZ3VpbnMKc3RyKHBlbmd1aW5zKQpgYGAKClRoZSBvdXRwdXQgZnJvbSBgc3RyKHBlbmd1aW5zYCkgaW5kaWNhdGVzIHRoYXQgdGhyZWUgb2YgdGhlIGNvbHVtbnMgaW4gdGhlIGRhdGEgZnJhbWUgYXJlICoqRmFjdG9ycyoqLiBJbiBSLCBhIGZhY3RvciBpcyBhIGNhdGVnb3JpY2FsIHZhcmlhYmxlLCB1c3VhbGx5IGNvcnJlc3BvbmRpbmcgdG8gYW4gZXhwZXJpbWVudGFsIGZhY3Rvci4gQWx0aG91Z2ggZmFjdG9ycyBsb29rIGxpa2Ugc3RyaW5ncywgYSBmYWN0b3IgaXMgcmVzdHJpY3RlZCB0byBhIHNwZWNpZmljIHNldCBvZiBsZWdhbCB2YWx1ZXMsIHdoaWNoIFIgaW5mZXJzIHdoZW4gdGhlIGRhdGEgYXJlIGxvYWRlZC4gVGhlIGxlZ2FsIHZhbHVlcyBhcmUgY2FsbGVkICoqbGV2ZWxzKiosIGFuZCBjb3JyZXNwb25kIHRvIHRoZSBkaWZmZXJlbnQgZ3JvdXBzIG9yIGNvbmRpdGlvbnMgcmVwcmVzZW50ZWQgYnkgdGhlIGZhY3Rvci4gRm9yIGV4YW1wbGUsIGNvbHVtbiBgcGVuZ3VpbnMkc2V4YCBpcyBhIGZhY3RvciB3aXRoIGxldmVscyAiZmVtYWxlIiBhbmQgIm1hbGUiLgoKIyMgRXhlcmNpc2VzCjEuIFdoZW4gb3VyIGRhdGEgc2V0cyBoYXZlIGZhY3RvcnMsIHdlIG9mdGVuIHVzZSBmdW5jdGlvbnMgYGxldmVsc2AgYW5kIGB0YWJsZWAuIFVzZSBHb29nbGUgb3IgeW91ciBmYXZvdXJpdGUgdGV4dCBib29rIHRvIGV4cGxvcmUgdGhlc2UgZnVuY3Rpb25zLiBVc2UgdGhlbSB0byBzb2x2ZSB0aGUgbmV4dCB0d28gZXhlcmNpc2VzLgoKMi4gV2hhdCBhcmUgdGhlIHRocmVlIGRpZmZlcmVudCBsZXZlbHMgb2YgdGhlICoqc3BlY2llcyoqIGZhY3Rvcj8gV2hhdCBhcmUgdGhlIHRocmVlIGRpZmZlcmVudCBsZXZlbHMgb2YgdGhlICoqaXNsYW5kKiogZmFjdG9yPwoKYGBge3IgbGV2ZWxzLCBlY2hvPUZBTFNFLCBldmFsPUZBTFNFfQpsZXZlbHMocGVuZ3VpbnMkc3BlY2llcykKbGV2ZWxzKHBlbmd1aW5zJGlzbGFuZCkKYGBgCgoKMy4gSG93IG1hbnkgb2JzZXJ2YXRpb25zIGFyZSB0aGVyZSBpbiB0aGUgZGF0YSBmcmFtZSBmb3IgZWFjaCBvZiB0aGUgdGhyZWUgc3BlY2llcz8gSG93IG1hbnkgb2JzZXJ2YXRpb25zIGFyZSB0aGVyZSBpbiB0aGUgZGF0YSBmcmFtZSBmb3IgZWFjaCBvZiB0aGUgdGhyZWUgaXNsYW5kcz8KCmBgYHtyIHRhYmxlLCBlY2hvPUZBTFNFLCBldmFsPUZBTFNFfQp0YWJsZShwZW5ndWlucyRzcGVjaWVzKQp0YWJsZShwZW5ndWlucyRpc2xhbmQpCmBgYAoKNC4gVGhpcyBjb2RlIGNvbXB1dGVzIHRoZSBtZWFuIGFuZCBzdGFuZGFyZCBkZXZpYXRpb24gb2YgYmlsbCBsZW5ndGggY29sbGFwc2VkIGFjcm9zcyBpc2xhbmRzLCBzcGVjaWVzLCBhbmQgc2V4PyAoVG8gY29sbGFwc2UgYWNyb3NzIGZhY3RvcnMgbWVhbnMgdG8gaWdub3JlIHRoZSBmYWN0IHRoYXQgdGhlcmUgYXJlIGRpZmZlcmVudCBsZXZlbHM7IGp1c3QgYnVuZyBhbGwgdGhlIGRhdGEgdG9nZXRoZXIuKSBXZSBhZGQgdGhlIGFyZ3VtZW50IGBuYS5ybSA9IFRSVUVgIHRvIHRlbGwgUiB0byBpZ25vcmUgYW55IE5BIChtaXNzaW5nKSB2YWx1ZXMuCgpgYGB7ciBtZWFuIGFuZCBzZCBkZW1vLCBldmFsID0gRkFMU0V9Cm1lYW4ocGVuZ3VpbnMkYmlsbF9sZW5ndGhfbW0sIG5hLnJtID0gVFJVRSkKc2QocGVuZ3VpbnMkYmlsbF9sZW5ndGhfbW0sIG5hLnJtID0gVFJVRSkKYGBgCgpXaGF0IGFyZSB0aGUgbWVhbiBhbmQgc3RhbmRhcmQgZGV2aWF0aW9uIG9mIGZsaXBwZXIgbGVuZ3RoLCBjb2xsYXBzZWQgYWNyb3NzIGlzbGFuZHMsIHNwZWNpZXMsIGFuZCBzZXg/IAoKYGBge3IgbWVhbiBhbmQgc2QsIGVjaG89RkFMU0UsIGV2YWw9RkFMU0V9Cm1lYW4ocGVuZ3VpbnMkZmxpcHBlcl9sZW5ndGhfbW0sIG5hLnJtID0gVFJVRSkKc2QocGVuZ3VpbnMkZmxpcHBlcl9sZW5ndGhfbW0sIG5hLnJtID0gVFJVRSkKYGBgCgo1LiBPbiBhdmVyYWdlLCB3aG8gaGFzIGxvbmdlciBmbGlwcGVycywgbWFsZSBwZW5ndWlucyBvciBmZW1hbGUgcGVuZ3VpbnM/CmBgYHtyIG1ha2UgdnMuIGZlbWFsZSwgZWNobz1GQUxTRSwgZXZhbD1GQUxTRX0KbWFsZXMgPC0gc3Vic2V0KHBlbmd1aW5zLCBzZXggPT0gIm1hbGUiKQpmZW1hbGVzIDwtIHN1YnNldChwZW5ndWlucywgc2V4ID09ICJmZW1hbGUiKQptZWFuKG1hbGVzJGZsaXBwZXJfbGVuZ3RoX21tKQptZWFuKGZlbWFsZXMkZmxpcHBlcl9sZW5ndGhfbW0pCmBgYAoKCjYuIFVzaW5nIGJhc2UgUiwgZ2VuZXJhdGUgYSBoaXN0b2dyYW0gc2hvd2luZyB0aGUgZGlzdHJpYnV0aW9uIG9mIGJvZHkgbWFzcywgY29sbGFwc2VkIGFjcm9zcyBpc2xhbmQsIHNwZWNpZXMgYW5kIHNleC4gSG93IHdvdWxkIHlvdSBkZXNjcmliZSB0aGUgZGlzdHJpYnV0aW9uPwoKYGBge3IgaGlzdCwgZWNobz1GQUxTRSwgZXZhbD1GQUxTRX0KaGlzdChwZW5ndWlucyRib2R5X21hc3NfZykKYGBgCgo3LiBVc2luZyBnZ3Bsb3QsIGdlbmVyYXRlIGEgc2NhdHRlcnBsb3QgaWxsdXN0cmF0aW5nIHRoZSByZWxhdGlvbnNoaXAgYmV0d2VlbiBiaWxsIGxlbmd0aCBhbmQgYm9keSBtYXNzLCBjb2xsYXBzZWQgYWNyb3NzIHNwZWNpZXMsIGlzbGFuZCBhbmQgc2V4LiBSZW1lbWJlciB0byBsb2FkIHRoZSBsaWJyYXJ5IHdpdGggYGxpYnJhcnkoZ2dwbG90MilgIGJlZm9yZSBmaXJzdCB1c2UuSG93IHdvdWxkIHlvdSBkZXNjcmliZSB0aGUgcGF0dGVybj8KCmBgYHtyIHNjYXR0ZXJwbG90LCBlY2hvPUZBTFNFLCBpbmNsdWRlPUZBTFNFfQoKbGlicmFyeShnZ3Bsb3QyKQoKZ2dwbG90KGRhdGEgPSBwZW5ndWlucykgKwogIGdlb21fcG9pbnQobWFwcGluZyA9IGFlcyh4ID0gYmlsbF9sZW5ndGhfbW0sIHkgPSBib2R5X21hc3NfZykpCgpgYGAKCgo4LiBNb2RpZnkgeW91ciBwbG90IGZyb20gRXhlcmNpc2UgNyBzbyB0aGF0IHBlbmd1aW5zIGZyb20gdGhlIGRpZmZlcmVudCBpc2xhbmRzIGFyZSBkcmF3biBpbiBkaWZmZXJlbnQgY29sb3Vycy4gV2hpY2ggaXNsYW5kIHNlZW1zIHRvIGhhdmUgdGhlIGhlYXZpZXN0IHBlbmd1aW5zPyBXaXRob3V0IGxvb2tpbmcgYW55IGZ1cnRoZXIgYXQgdGhlIGRhdGEsIGZvcm11bGF0ZSBhdCBsZWFzdCB0d28gcG9zc2libGUgZXhwbGFuYXRpb25zIGZvciB0aGUgcGF0dGVybi4KCmBgYHtyIGNvbG9yLCBlY2hvPUZBTFNFLCBldmFsPUZBTFNFfQpnZ3Bsb3QoZGF0YSA9IHBlbmd1aW5zKSArCiAgZ2VvbV9wb2ludChtYXBwaW5nID0gYWVzKHggPSBiaWxsX2xlbmd0aF9tbSwgeSA9IGJvZHlfbWFzc19nLCBjb2xvciA9IGlzbGFuZCkpCgojIFBvc3NpYmxlIGV4cGxhbmF0aW9uczogMSkgTW9yZSBmb29kIG9uIHRoYXQgaXNsYW5kIDIpIEJpZ2dlciBzcGVjaWVzIG9mIHBlbmd1aW4gb24gdGhhdCBpc2xhbmQKCmBgYAoKOS4gVXNpbmcgZmFjZXRfd3JhcCwgZ2VuZXJhdGUgYSBmaWd1cmUgdGhhdCBzaG93cyB0aGUgYmlsbCBsZW5ndGggYnkgYm9keSBtYXNzIHNjYXR0ZXJwbG90IHNlcGFyYXRlbHkgZm9yIGVhY2ggc3BlY2llcy4KCmBgYHtyIGZhY2V0IHdyYXAsIGVjaG89RkFMU0UsIGV2YWw9RkFMU0V9CmdncGxvdChkYXRhID0gcGVuZ3VpbnMpICsKICBnZW9tX3BvaW50KG1hcHBpbmcgPSBhZXMoeCA9IGJpbGxfbGVuZ3RoX21tLCB5ID0gYm9keV9tYXNzX2cpKSArCiAgZmFjZXRfd3JhcCh+IHNwZWNpZXMsIG5yb3cgPSAyKQpgYGAKCjEwLiBVc2luZyBnZW9tX3Ntb290aCwgaWxsdXN0cmF0ZSB0aGUgYmlsbCBsZW5ndGggYnkgYm9keSBtYXNzIHJlbGF0aW9uc2hpcCBhcyBhIHNtb290aGVkIGN1cnZlLgoKYGBge3IgZ2VvbV9zbW9vdGgsIGVjaG89RkFMU0UsIGV2YWw9RkFMU0V9CmdncGxvdChkYXRhID0gcGVuZ3VpbnMpICsKICBnZW9tX3Ntb290aChtYXBwaW5nID0gYWVzKHggPSBiaWxsX2xlbmd0aF9tbSwgeSA9IGJvZHlfbWFzc19nKSkKYGBgCgoxMS4gVXNpbmcgZ2dwbG90LCBnZW5lcmF0ZSBhIGJveHBsb3QgY29tcGFyaW5nIGJvZHkgbWFzcyBmb3IgdGhlIHRocmVlIGRpZmZlcmVudCBzcGVjaWVzIG9mIHBlbmd1aW4sIGFuZCBoYXZpbmcgZWFjaCBvZiB0aGUgdGhyZWUgYm94ZXMgZHJhd24gaW4gYSBkaWZmZXJlbnQgY29sb3VyLiBXaGF0IGluZm9ybWF0aW9uIGlzIG1pc3NpbmcgZnJvbSB0aGlzIGZpZ3VyZSB0aGF0IHdhcyBwcm92aWRlZCBFeGVyY2lzZSA4PyBXaGF0IGluZm9ybWF0aW9uIGlzIGVhc2llciB0byBzZWUgaW4gdGhpcyBmaWd1cmUgdGhhbiBpbiBFeGVyY2lzZSA4PwoKYGBge3IgZ2dwbG90IGJveHBsb3QsIGVjaG89RkFMU0UsIGV2YWw9RkFMU0V9CmdncGxvdChkYXRhID0gcGVuZ3VpbnMpICsKICBnZW9tX2JveHBsb3QobWFwcGluZyA9IGFlcyh4ID0gaXNsYW5kICwgeSA9IGJvZHlfbWFzc19nLCBjb2xvciA9IGlzbGFuZCkpCgpgYGAKCjEyLiBVc2luZyBnZ3Bsb3QsIGR1cGxpY2F0ZSB0aGlzIGZpZ3VyZToKCmBgYHtyIGJhcnBsb3Qgd2l0aCBmaWxsIGFuZCBkb2RnZSwgZWNobz1GQUxTRX0KZ2dwbG90KGRhdGEgPSBwZW5ndWlucykgKwogIGdlb21fYmFyKG1hcHBpbmcgPSBhZXMoeCA9IGlzbGFuZCwgZmlsbD1zcGVjaWVzKSwgcG9zaXRpb249ImRvZGdlIikKYGBgCgo=</div>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("worksheet3.Rmd");
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

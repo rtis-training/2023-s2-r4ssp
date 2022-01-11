@@ -1,0 +1,139 @@
+---
+title: "Exercises 03 - Tabular Basics and ggplot"
+author: "Patricia Haden & Murray Cadzow"
+date: "Semester 1, 2021"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 3
+    code_download: true
+    code_folding: show
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+To practice what we have learned in module 3, we will use "Palmer's Penguins", a real data set from the Palmer Station Long Term Ecological Research program (https://allisonhorst.github.io/palmerpenguins/articles/intro.html). These data are size measurements for three penguin species -- Chinstrap, Gentoo and Adelie -- on three islands in Antarctica.
+
+You will need to install the package that contains the data frame (code shown below). Then work through each of the exercises. If you have any questions, email us, or drop in to the practical session Monday 10.00 to 12.00 in the Science Library Seminar Room.
+
+## Get the Penguin Data
+
+```{r install, eval=FALSE}
+
+# Install the package (do once on any computer)
+install.packages("palmerpenguins")
+```
+
+```{r load}
+# Load the library (do at the start of every RStudio session)
+library(palmerpenguins)
+
+# Check the data - the data frame name is penguins
+str(penguins)
+```
+
+The output from `str(penguins`) indicates that three of the columns in the data frame are **Factors**. In R, a factor is a categorical variable, usually corresponding to an experimental factor. Although factors look like strings, a factor is restricted to a specific set of legal values, which R infers when the data are loaded. The legal values are called **levels**, and correspond to the different groups or conditions represented by the factor. For example, column `penguins$sex` is a factor with levels "female" and "male".
+
+## Exercises
+1. When our data sets have factors, we often use functions `levels` and `table`. Use Google or your favourite text book to explore these functions. Use them to solve the next two exercises.
+
+2. What are the three different levels of the **species** factor? What are the three different levels of the **island** factor?
+
+```{r levels, echo=FALSE, eval=FALSE}
+levels(penguins$species)
+levels(penguins$island)
+```
+
+
+3. How many observations are there in the data frame for each of the three species? How many observations are there in the data frame for each of the three islands?
+
+```{r table, echo=FALSE, eval=FALSE}
+table(penguins$species)
+table(penguins$island)
+```
+
+4. This code computes the mean and standard deviation of bill length collapsed across islands, species, and sex? (To collapse across factors means to ignore the fact that there are different levels; just bung all the data together.) We add the argument `na.rm = TRUE` to tell R to ignore any NA (missing) values.
+
+```{r mean and sd demo, eval = FALSE}
+mean(penguins$bill_length_mm, na.rm = TRUE)
+sd(penguins$bill_length_mm, na.rm = TRUE)
+```
+
+What are the mean and standard deviation of flipper length, collapsed across islands, species, and sex? 
+
+```{r mean and sd, echo=FALSE, eval=FALSE}
+mean(penguins$flipper_length_mm, na.rm = TRUE)
+sd(penguins$flipper_length_mm, na.rm = TRUE)
+```
+
+5. On average, who has longer flippers, male penguins or female penguins?
+```{r make vs. female, echo=FALSE, eval=FALSE}
+males <- subset(penguins, sex == "male")
+females <- subset(penguins, sex == "female")
+mean(males$flipper_length_mm)
+mean(females$flipper_length_mm)
+```
+
+
+6. Using base R, generate a histogram showing the distribution of body mass, collapsed across island, species and sex. How would you describe the distribution?
+
+```{r hist, echo=FALSE, eval=FALSE}
+hist(penguins$body_mass_g)
+```
+
+7. Using ggplot, generate a scatterplot illustrating the relationship between bill length and body mass, collapsed across species, island and sex. Remember to load the library with `library(ggplot2)` before first use.How would you describe the pattern?
+
+```{r scatterplot, echo=FALSE, include=FALSE}
+
+library(ggplot2)
+
+ggplot(data = penguins) +
+  geom_point(mapping = aes(x = bill_length_mm, y = body_mass_g))
+
+```
+
+
+8. Modify your plot from Exercise 7 so that penguins from the different islands are drawn in different colours. Which island seems to have the heaviest penguins? Without looking any further at the data, formulate at least two possible explanations for the pattern.
+
+```{r color, echo=FALSE, eval=FALSE}
+ggplot(data = penguins) +
+  geom_point(mapping = aes(x = bill_length_mm, y = body_mass_g, color = island))
+
+# Possible explanations: 1) More food on that island 2) Bigger species of penguin on that island
+
+```
+
+9. Using facet_wrap, generate a figure that shows the bill length by body mass scatterplot separately for each species.
+
+```{r facet wrap, echo=FALSE, eval=FALSE}
+ggplot(data = penguins) +
+  geom_point(mapping = aes(x = bill_length_mm, y = body_mass_g)) +
+  facet_wrap(~ species, nrow = 2)
+```
+
+10. Using geom_smooth, illustrate the bill length by body mass relationship as a smoothed curve.
+
+```{r geom_smooth, echo=FALSE, eval=FALSE}
+ggplot(data = penguins) +
+  geom_smooth(mapping = aes(x = bill_length_mm, y = body_mass_g))
+```
+
+11. Using ggplot, generate a boxplot comparing body mass for the three different species of penguin, and having each of the three boxes drawn in a different colour. What information is missing from this figure that was provided Exercise 8? What information is easier to see in this figure than in Exercise 8?
+
+```{r ggplot boxplot, echo=FALSE, eval=FALSE}
+ggplot(data = penguins) +
+  geom_boxplot(mapping = aes(x = island , y = body_mass_g, color = island))
+
+```
+
+12. Using ggplot, duplicate this figure:
+
+```{r barplot with fill and dodge, echo=FALSE}
+ggplot(data = penguins) +
+  geom_bar(mapping = aes(x = island, fill=species), position="dodge")
+```
+

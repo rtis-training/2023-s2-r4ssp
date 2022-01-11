@@ -9,10 +9,14 @@ navbar:
       menu:
         - text: "Handout 1"
           href: handout1.html
+        - text: "Handout 2"
+          href: handout2.html
     - text: "Worksheets"
       menu:
         - text: "Worksheet 1"
           href: worksheet1.html
+        - text: "Worksheet 3"
+          href: worksheet3.html
     - text: "About"
       href: about.html
   inverse: true
