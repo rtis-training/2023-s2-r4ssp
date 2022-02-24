@@ -1,0 +1,34 @@
+---
+title: "Transforming"
+output:
+  html_document:
+    toc: yes
+    toc_float: yes
+---
+
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  comment = "#>",
+  #fig.path = "figs" # use only for single Rmd files
+  collapse = TRUE
+)
+```
+
+[Link to the Handout](handout4.html)
+
+
+Base R
+
+- $
+- rbind
+- cbind
+- merge
+
+Dplyr
+- mutate
+- transmute
+- across
+- join
+- bind_rows
+- bind_cols

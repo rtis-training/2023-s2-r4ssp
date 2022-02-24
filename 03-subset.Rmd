@@ -1,0 +1,56 @@
+---
+title: "Subsetting"
+output:
+  html_document:
+    toc: yes
+    toc_float: yes
+---
+
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  comment = "#>",
+  #fig.path = "figs" # use only for single Rmd files
+  collapse = TRUE
+)
+```
+
+[Link to the Handout](handout3.html)
+
+## Vector subsetting
+
+## Dataframe subsetting {.tabset}
+
+### Base R
+
+- `$`
+- `[,]`
+  - names
+  - index
+  - conditional
+
+
+### dplyr
+
+pipes %>% 
+
+- select
+  - starts_with
+  - ends_with
+  - contains
+  - anyof
+
+
+- filter
+- slice
+
+
+
+
+
+## Plotting
+
+base R and ggplot2
+
+- 
+- line plot
