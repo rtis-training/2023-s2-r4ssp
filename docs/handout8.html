@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>R for Successful Student Projects 08 - Modularity and Flow of Control 2</title>
+
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">R4SSP Semester 1 2022</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Modules
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Intro</li>
+    <li>
+      <a href="01-intro.html">Intro to R and RStudio</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Data Focus</li>
+    <li>
+      <a href="02-visualise.html">Part 1: Data Loading and Looking</a>
+    </li>
+    <li>
+      <a href="03-subset.html">Part 2: Subsetting</a>
+    </li>
+    <li>
+      <a href="04-transform.html">Part 3: Transforming</a>
+    </li>
+    <li>
+      <a href="05-summarise.html">Part 4: Summarising</a>
+    </li>
+    <li>
+      <a href="06-communicate.html">Part 5: Communicating</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Programming focus</li>
+    <li>
+      <a href="07-functions.html">Functions and logic branching</a>
+    </li>
+    <li>
+      <a href="08-iterate.html">Loops and iterators</a>
+    </li>
+    <li>
+      <a href="09-workflows.html">Workflows</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Handouts
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="handout1.html">Handout 1</a>
+    </li>
+    <li>
+      <a href="handout2.html">Handout 2</a>
+    </li>
+    <li>
+      <a href="handout3.html">Handout 3</a>
+    </li>
+    <li>
+      <a href="handout4.html">Handout 4</a>
+    </li>
+    <li>
+      <a href="handout5.html">Handout 5</a>
+    </li>
+    <li>
+      <a href="handout6.html">Handout 6</a>
+    </li>
+    <li>
+      <a href="handout7.html">Handout 7</a>
+    </li>
+    <li>
+      <a href="handout8.html">Handout 8</a>
+    </li>
+    <li>
+      <a href="handout9.html">Handout 9</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Worksheets
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="worksheet1.html">Worksheet 1</a>
+    </li>
+    <li>
+      <a href="worksheet3.html">Worksheet 3</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+<li role="separator" class="divider"></li>
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">R for Successful Student Projects 08 - Modularity and Flow of Control 2</h1>
+<h4 class="date">Semester 1, 2022</h4>
+
+</div>
+
+
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>In the previous module we looked at starting to make our code modular so that we could begin to reuse it. In this final module, we’re going to look at how we can repeat ourselves in an efficient manner. Make sure to read <a href="https://r4ds.had.co.nz/iteration.html">R4DS chapter 21</a> as it explains iteration very well.</p>
+<p>What is the point of learning about iteration? Similar to the reasons to create functions, iteration provides us a tool to be able to do repetitive tasks without having to copy and paste a lot of code. Take for instance the following example code that would read in csv files for a given country and then calculate the mean GDP for each:</p>
+<pre class="r"><code>
+data_nzl &lt;- read_csv(&quot;gapminder_countries/nzl.csv&quot;)
+data_aus &lt;- read_csv(&quot;gapminder_countries/aus.csv&quot;)
+data_usa &lt;- read_csv(&quot;gapminder_countries/usa.csv&quot;)
+
+# calculate the mean gdp from each country
+mean(data_nzl$gdp)
+mean(data_aus$gdp)
+mean(data_usa$gsp)</code></pre>
+<p>Notice that there is a lot of code duplication (<code>read_csv</code>, and <code>mean</code> are duplicated for each country). In this example there is also the inclusion of a typo which is a very common mistake to make when changing inputs after copy and pasting - did you spot it? What happens if we need include another 20 or 100 countries? What happens if we also needed to calculate the median GDP for each? It quickly becomes quite laborious to scale. This is where iteration is useful, as it is all about providing a mechanism to specify how to repeat things.</p>
+<p>In an abstract form, the above example could be captured like this:</p>
+<pre><code>1. make a list of all the csv files
+2. for each csv file in the list:
+    - calculate the mean of the gdp column</code></pre>
+<p>This abstraction of the problem now gives us the steps to follow and deals with the heart of the problem rather than having to worry about a specific implementation.</p>
+</div>
+<div id="loops" class="section level1">
+<h1>Loops</h1>
+<p>Loops in programming languages give us the mechanism to run the same code across a set of inputs. Often this involves using an index to keep track of what item in our set we are currently using.</p>
+<p>Usually a variable will be defined above the loop to store the result of each iteration from the body in.</p>
+<p>One thing about loops in R is that the displaying of results needs to become explicit. This means that for output to be shown in the console or plots (doesn’t apply to base plot functions such as <code>plot()</code>, <code>hist()</code> or <code>boxplot()</code>) to be shown, you need to wrap the code you want outputted in either <code>print()</code> or <code>plot()</code> to force this behaviour. If you are using ggplot2 for plotting this can be done by assigning the plot to a variable then calling <code>plot</code> on that variable e.g.</p>
+<pre class="r"><code>p &lt;- ggplot(data = nzl, aes(x = year, y = gdp)) + geom_line()
+plot(p)</code></pre>
+<div id="the-for-loop" class="section level2">
+<h2>The <code>for</code> Loop</h2>
+<p><code>for</code> loops usually contain the following parts:</p>
+<ol style="list-style-type: decimal">
+<li>an <strong>output</strong> - somewhere to store the results from the loop</li>
+<li>an <strong>input</strong> set of items to do something to (a vector)</li>
+<li>loop <strong>body</strong> - code that will do something for a single value of the set.</li>
+</ol>
+<p>The most common loop is the <strong>for</strong> loop. The template is as follows:</p>
+<pre class="r"><code>for (variable in vector) {
+  # loop body i.e. what to do each time
+}</code></pre>
+<p><strong>NB:</strong> You can get the <code>for</code> loop code snippet in RStudio by typing <code>for</code> then hitting <code>&lt;tab&gt;</code> and selecting “for {snippet}” from the drop down.</p>
+<p>When you see a <code>for</code> loop you can read it like a sentence: for each thing in my collection of things; I will do something to first thing; and then choose the next thing, do something, and repeat, until I have done something to each of my things in my collection.</p>
+<p>We’ll compare this snippet to the following example which will print out the numbers 1 to 3 to explain what is going on.</p>
+<pre class="r"><code>for( num in 1:3 ){
+  print( num )
+}
+#&gt; [1] 1
+#&gt; [1] 2
+#&gt; [1] 3</code></pre>
+<p>In this example, we wanted to <code>print</code> out each item from our set. Our set was a vector of numbers 1 to 3 in this case (in R a vector with a range of numbers can be made using the <code>:</code> operator in the format <code>start:end</code>). The task that we will do repetitively is <code>print</code> – our loop body. <code>num</code> is going to store the value of the current item. Our vector or collection is the numbers 1 to 3.</p>
+<p>The loop gets run as such:</p>
+<ol style="list-style-type: decimal">
+<li><code>num</code> takes on the first value from our set (<code>1</code>)</li>
+<li>the loop body runs (prints the value of <code>num</code> which is <code>1</code>)</li>
+<li>there is nothing more to be done in the body so it moves onto the next item</li>
+<li><code>num</code> takes on the second value from the set (<code>2</code>)</li>
+<li>the loop body runs (prints the value of <code>num</code> which is <code>2</code>)</li>
+<li>there is nothing more to be done in the body so it moves to the next item</li>
+<li><code>num</code> takes on the third value from out set (<code>3</code>)</li>
+<li>the loop body runs (prints the value of <code>num</code> which is <code>3</code>)</li>
+<li>there is nothing more to be done in the body so it moves to the next item</li>
+<li>there is not a next item so the loop exits.</li>
+</ol>
+<p>This is how we could have achieved this task without a loop:</p>
+<pre class="r"><code>print(1)
+#&gt; [1] 1
+print(2)
+#&gt; [1] 2
+print(3)
+#&gt; [1] 3</code></pre>
+<p>The duplication is apparent but not particularly laborious in this case. However, think about how this would scale. What if suddenly you needed to print the numbers 1 to 100, or 1000, or 10000? Using the copy-paste <code>print()</code> and manually filling in numbers is going to be pretty laborious and highly risky of typos. Using the <code>for</code> loop however, scales extremely easily and would be a matter of only changing what our collection of items going in was, everything else remains the same:</p>
+<pre class="r"><code>for( num in 1:100 ){
+  print( num )
+}</code></pre>
+<div id="for-loop-with-indices" class="section level3">
+<h3><code>for</code> loop with indices</h3>
+<p>One version of the <code>for</code> loop that you might encounter (especially in other languages) is a version that uses indices to determine the current item from the set. In this case rather than the loop variable using the values of the items themselves, it uses the index of the item in the collection. Traditionally the loop variable is called <code>i</code> in this situation. While you could specify the indices manually through a vector e.g. <code>1:5</code>, or <code>1:length(myvector)</code>, this can lead to some issues and the safer way is for R to generate the indices using <code>seq_along()</code> which returns a vector with all the indexes of your object.</p>
+<pre class="r"><code>myNumbers &lt;- c(11,13,15,17,19)
+
+# show example of what seq_along() is providing
+seq_along(myNumbers)
+#&gt; [1] 1 2 3 4 5
+
+# print each number and the index used from the collection by using the index to subset
+for( i in seq_along(myNumbers) ){
+  print(paste(&quot;number =&quot;, myNumbers[i], &quot;index (i) =&quot;, i))
+}
+#&gt; [1] &quot;number = 11 index (i) = 1&quot;
+#&gt; [1] &quot;number = 13 index (i) = 2&quot;
+#&gt; [1] &quot;number = 15 index (i) = 3&quot;
+#&gt; [1] &quot;number = 17 index (i) = 4&quot;
+#&gt; [1] &quot;number = 19 index (i) = 5&quot;</code></pre>
+</div>
+<div id="nesting-of-loops" class="section level3">
+<h3>Nesting of loops</h3>
+<p>It’s generally recommended to avoid the nesting of loops within other loops. Let’s say the outer loop has a total of <code>n</code> iterations to get through and an inner loop has <code>m</code>. Every time we add one extra iteration of the outer loop we end up adding an extra <code>m</code> iterations of the inner loop, so the total number of iterations is <code>n * m</code>. Depending on how big <code>m</code> is, this could be adding thousands or millions of extra iterations, causing your code to take longer to run. Some times however, nesting is unavoidable but it’s a good idea to keep an eye out for nesting if your code is taking a while to run as this is usually the first place things can be sped up.</p>
+</div>
+</div>
+<div id="while-loop" class="section level2">
+<h2>While loop</h2>
+<p>The while loop is a useful loop to use when the length of the input vector is unknown. The situation where this arises often would be in simulations where you want to find out how many times something happened until you got a certain result – an exit condition.</p>
+<p>The skeleton for a <code>while</code> loop is as follows:</p>
+<pre class="r"><code>while (condition) {
+  # loop body
+}</code></pre>
+<p>Here is an example of a <code>while</code> loop where we want to find out how many iterations it takes to obtain 3 heads in a row:</p>
+<pre class="r"><code>## Example from R for Data Science - 21.3.4 ##
+
+# Function to simulate head or tail as the result of a coin flip
+flip &lt;- function(){
+  sample(c(&quot;T&quot;, &quot;H&quot;), 1)
+}
+
+# variables to keep track of key results
+flips &lt;- 0
+nheads &lt;- 0
+
+# flip a coin until there are three heads and count how many flips were performed.
+while (nheads &lt; 3) {
+  if (flip() == &quot;H&quot;) {
+    nheads &lt;- nheads + 1
+  } else {
+    nheads &lt;- 0
+  }
+  flips &lt;- flips + 1
+}
+flips
+#&gt; [1] 36</code></pre>
+<p>It’s very important to <strong>always make sure your condition will eventually be FALSE before running!</strong> Otherwise you’ll be stuck in an ‘infinite loop’ where your code keeps running and never stopping. If you find yourself in this situation in RStudio, in the top right of the console window you can click the ‘stop’ sign, or under the <code>Session</code> menu click “Interrupt R” to make it stop.</p>
+</div>
+</div>
+<div id="map" class="section level1">
+<h1>Map</h1>
+<p>From the package <code>purrr</code> (part of the tidyverse), there are a collection of <code>map</code> functions which are a method of iterating over a collection of things applying a function. This is known as <em>functional programming</em>, and allows us to extract the code that is in common for a loop, into a function, so rather than being concerned about the set-up of the loop, we can focus on the contents of the loop. This idea of mapping a function onto data is extremely similar to the concept underlying the <code>for</code> loop.</p>
+<div id="map-and-friends" class="section level2">
+<h2>Map and friends</h2>
+<p>The package <code>purrr</code> within the tidyverse provides the <code>map</code> functions that take a vector or list as the first argument, and the second argument is the function to be run on each item in the vector or list. The object that is returned back with the results depends on the exact version of <code>map</code> that is called, the default <code>map()</code> returns the results as items in a list, but there are suffix versions of <code>map</code> that will return the results back in a specified data type.</p>
+<ul>
+<li><code>map()</code> makes a list.</li>
+<li><code>map_lgl()</code> makes a logical vector.</li>
+<li><code>map_int()</code> makes an integer vector.</li>
+<li><code>map_dbl()</code> makes a double vector.</li>
+<li><code>map_chr()</code> makes a character vector.</li>
+</ul>
+<p>These suffix versions will give an error if the data type of the results doesn’t match. This is useful for being able to program with, as it means that you can be sure that you have a particular data type for future code. Some of the base R functions that you will meet in the next section don’t provide this guarantee. The arguments to the <code>map</code> functions are <code>.x</code> which is the vector or list input, and <code>.f</code> which is the name of the function. if the supplied function takes multiple arguments these can be passed in as extra arguments to <code>map</code>.</p>
+<p>We could use the example of converting some temperatures to demonstrate</p>
+<pre class="r"><code>library(purrr)
+
+farenheit_to_celcius &lt;- function(temp_f){
+  temp_c &lt;- (temp_f -32) * 5/9
+  return(temp_c)
+}
+
+my_temps_f &lt;- c(90, 78, 88, 89, 77)
+
+# gives back a list
+my_temps_c_list &lt;- map(.x = my_temps_f, .f = farenheit_to_celcius)
+my_temps_c_list
+#&gt; [[1]]
+#&gt; [1] 32.22222
+#&gt; 
+#&gt; [[2]]
+#&gt; [1] 25.55556
+#&gt; 
+#&gt; [[3]]
+#&gt; [1] 31.11111
+#&gt; 
+#&gt; [[4]]
+#&gt; [1] 31.66667
+#&gt; 
+#&gt; [[5]]
+#&gt; [1] 25
+
+# gives back a vector of type numeric/double
+my_temps_c_dbl &lt;- map_dbl(.x = my_temps_f, .f = farenheit_to_celcius)
+my_temps_c_dbl
+#&gt; [1] 32.22222 25.55556 31.11111 31.66667 25.00000</code></pre>
+<p>When using <code>map</code> and variants, don’t include the <code>()</code>’s on the function name, if you do you’ll get this error:</p>
+<pre class="r"><code>map(.x = my_temps_f, .f = farenheit_to_celcius())
+#&gt; Error in farenheit_to_celcius(): argument &quot;temp_f&quot; is missing, with no default</code></pre>
+</div>
+</div>
+<div id="apply" class="section level1">
+<h1>Apply</h1>
+<p>Base R has built in functions for applying a function to a vector, list or data frame. There is <code>apply</code> which will apply a function to either columns or rows of a data frame, <code>lapply</code> for applying to a list or vector - it’s analogous to <code>map()</code>, and <code>vapply</code> which can takes the return data type as one of the arguments so can be thought of as analogous to the suffix versions of <code>map</code>. The <code>apply()</code> function is very similar to <code>map()</code></p>
+<p>The equivalent example of what we did above with <code>map()</code> <code>and map_dbl()</code> is as follows:</p>
+<pre class="r"><code>farenheit_to_celcius &lt;- function(temp_f){
+  temp_c &lt;- (temp_f -32) * 5/9
+  return(temp_c)
+}
+
+my_temps_f &lt;- c(90, 78, 88, 89, 77)
+
+# lapply example
+lapply_my_temps_c &lt;- lapply(X = my_temps_f, FUN = farenheit_to_celcius)
+lapply_my_temps_c
+#&gt; [[1]]
+#&gt; [1] 32.22222
+#&gt; 
+#&gt; [[2]]
+#&gt; [1] 25.55556
+#&gt; 
+#&gt; [[3]]
+#&gt; [1] 31.11111
+#&gt; 
+#&gt; [[4]]
+#&gt; [1] 31.66667
+#&gt; 
+#&gt; [[5]]
+#&gt; [1] 25
+
+# vapply example. FUN.VALUE defines the type and length size of each of the returned results. 
+vapply_my_temps_c &lt;- vapply(X = my_temps_f, FUN = farenheit_to_celcius, FUN.VALUE = numeric(1))
+vapply_my_temps_c
+#&gt; [1] 32.22222 25.55556 31.11111 31.66667 25.00000</code></pre>
+<p>We can see that there is a difference in the results that R returns between <code>lapply</code> and <code>vapply</code> by using <code>str</code> to look at the structure.</p>
+<pre class="r"><code>str(lapply_my_temps_c)
+#&gt; List of 5
+#&gt;  $ : num 32.2
+#&gt;  $ : num 25.6
+#&gt;  $ : num 31.1
+#&gt;  $ : num 31.7
+#&gt;  $ : num 25
+str(vapply_my_temps_c)
+#&gt;  num [1:5] 32.2 25.6 31.1 31.7 25</code></pre>
+<p><code>lapply_my_temps_c</code> is a <em>list</em> with each item being a numeric vector, whereas <code>sapply_my_temps_c</code> is single a <em>numeric</em> vector of (the data type that we specified). When we specified the data type for <code>vapply</code> we used <code>numeric(1)</code> as an argument. What this meant was that each time our function specified for <code>FUN =</code> is run, it was expected to return a vector of length 1 of type numeric. If this wasn’t the case, an error would occur. One thing to be aware of is that <code>vapply</code> doesn’t always return a vector, the data structure that it returns depends on the data going in. This can make it challenging to know beforehand what the output is going to look like - unlike the suffix versions of <code>map</code> from <code>purrr</code>.</p>
+</div>
+<div id="conclusion" class="section level1">
+<h1>Conclusion</h1>
+<p>In this module we covered how repeat tasks efficiently. Combining iteration with part 1 - functions and flow and control - you now have the knowledge to be able to create code that is modular and reusable, and maintainable. This will enable you to be more efficient going forward with your programming and analysis.</p>
+<div id="whats-next" class="section level2">
+<h2>What’s Next</h2>
+<p>Congratulations on finishing the course! This doesn’t have to be the end of your learning journey with R though. There are many free online resources to delve further in. If you haven’t already, a good place to start is the chapters of <a href="https://r4ds.had.co.nz">R for Data Science</a> that weren’t covered in the course. And if you want to get more in-depth with the R language the online book <a href="https://adv-r.hadley.nz">Advanced R</a> covers more of the R language and programming.</p>
+<p>Please fill in the module feedback form <a href="https://tinyurl.com/r4ssp-module-fb">https://tinyurl.com/r4ssp-module-fb</a>.</p>
+</div>
+</div>
+
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiUiBmb3IgU3VjY2Vzc2Z1bCBTdHVkZW50IFByb2plY3RzIDA4IC0gTW9kdWxhcml0eSBhbmQgRmxvdyBvZiBDb250cm9sIDIiCmRhdGU6ICJTZW1lc3RlciAxLCAyMDIyIgpvdXRwdXQ6CiAgaHRtbF9kb2N1bWVudDoKICAgIHRvYzogdHJ1ZQogICAgdG9jX2Zsb2F0OiB0cnVlCiAgICB0b2NfZGVwdGg6IDMKICAgIGNvZGVfZG93bmxvYWQ6IHRydWUKICAgIGNvZGVfZm9sZGluZzogc2hvdwotLS0KCmBgYHtyIHNldHVwLCBpbmNsdWRlPUZBTFNFfQpsaWJyYXJ5KGtuaXRyKQoKa25pdHI6Om9wdHNfY2h1bmskc2V0KAogIGNvbW1lbnQgPSAiIz4iLAogIGZpZy5wYXRoID0gImZpZ3VyZXMvIiwgIyB1c2Ugb25seSBmb3Igc2luZ2xlIFJtZCBmaWxlcwogIGNvbGxhcHNlID0gVFJVRSwKICBlY2hvID0gVFJVRQopCmBgYAoKIyBJbnRyb2R1Y3Rpb24KCkluIHRoZSBwcmV2aW91cyBtb2R1bGUgd2UgbG9va2VkIGF0IHN0YXJ0aW5nIHRvIG1ha2Ugb3VyIGNvZGUgbW9kdWxhciBzbyB0aGF0IHdlIGNvdWxkIGJlZ2luIHRvIHJldXNlIGl0LiBJbiB0aGlzIGZpbmFsIG1vZHVsZSwgd2UncmUgZ29pbmcgdG8gbG9vayBhdCBob3cgd2UgY2FuIHJlcGVhdCBvdXJzZWx2ZXMgaW4gYW4gZWZmaWNpZW50IG1hbm5lci4gTWFrZSBzdXJlIHRvIHJlYWQgW1I0RFMgY2hhcHRlciAyMV0oaHR0cHM6Ly9yNGRzLmhhZC5jby5uei9pdGVyYXRpb24uaHRtbCkgYXMgaXQgZXhwbGFpbnMgaXRlcmF0aW9uIHZlcnkgd2VsbC4gCgoKV2hhdCBpcyB0aGUgcG9pbnQgb2YgbGVhcm5pbmcgYWJvdXQgaXRlcmF0aW9uPyBTaW1pbGFyIHRvIHRoZSByZWFzb25zIHRvIGNyZWF0ZSBmdW5jdGlvbnMsIGl0ZXJhdGlvbiBwcm92aWRlcyB1cyBhIHRvb2wgdG8gYmUgYWJsZSB0byBkbyByZXBldGl0aXZlIHRhc2tzIHdpdGhvdXQgaGF2aW5nIHRvIGNvcHkgYW5kIHBhc3RlIGEgbG90IG9mIGNvZGUuIFRha2UgZm9yIGluc3RhbmNlIHRoZSBmb2xsb3dpbmcgZXhhbXBsZSBjb2RlIHRoYXQgd291bGQgcmVhZCBpbiBjc3YgZmlsZXMgZm9yIGEgZ2l2ZW4gY291bnRyeSBhbmQgdGhlbiBjYWxjdWxhdGUgdGhlIG1lYW4gR0RQIGZvciBlYWNoOgoKYGBge3IsIGV2YWwgPSBGQUxTRX0KCmRhdGFfbnpsIDwtIHJlYWRfY3N2KCJnYXBtaW5kZXJfY291bnRyaWVzL256bC5jc3YiKQpkYXRhX2F1cyA8LSByZWFkX2NzdigiZ2FwbWluZGVyX2NvdW50cmllcy9hdXMuY3N2IikKZGF0YV91c2EgPC0gcmVhZF9jc3YoImdhcG1pbmRlcl9jb3VudHJpZXMvdXNhLmNzdiIpCgojIGNhbGN1bGF0ZSB0aGUgbWVhbiBnZHAgZnJvbSBlYWNoIGNvdW50cnkKbWVhbihkYXRhX256bCRnZHApCm1lYW4oZGF0YV9hdXMkZ2RwKQptZWFuKGRhdGFfdXNhJGdzcCkKYGBgCgpOb3RpY2UgdGhhdCB0aGVyZSBpcyBhIGxvdCBvZiBjb2RlIGR1cGxpY2F0aW9uIChgcmVhZF9jc3ZgLCBhbmQgYG1lYW5gIGFyZSBkdXBsaWNhdGVkIGZvciBlYWNoIGNvdW50cnkpLiAgSW4gdGhpcyBleGFtcGxlIHRoZXJlIGlzIGFsc28gdGhlIGluY2x1c2lvbiBvZiBhIHR5cG8gd2hpY2ggaXMgYSB2ZXJ5IGNvbW1vbiBtaXN0YWtlIHRvIG1ha2Ugd2hlbiBjaGFuZ2luZyBpbnB1dHMgYWZ0ZXIgY29weSBhbmQgcGFzdGluZyAtIGRpZCB5b3Ugc3BvdCBpdD8gV2hhdCBoYXBwZW5zIGlmIHdlIG5lZWQgaW5jbHVkZSBhbm90aGVyIDIwIG9yIDEwMCBjb3VudHJpZXM/IFdoYXQgaGFwcGVucyBpZiB3ZSBhbHNvIG5lZWRlZCB0byBjYWxjdWxhdGUgdGhlIG1lZGlhbiBHRFAgZm9yIGVhY2g/IEl0IHF1aWNrbHkgYmVjb21lcyBxdWl0ZSBsYWJvcmlvdXMgdG8gc2NhbGUuIFRoaXMgaXMgd2hlcmUgaXRlcmF0aW9uIGlzIHVzZWZ1bCwgYXMgaXQgaXMgYWxsIGFib3V0IHByb3ZpZGluZyBhIG1lY2hhbmlzbSB0byBzcGVjaWZ5IGhvdyB0byByZXBlYXQgdGhpbmdzLgoKSW4gYW4gYWJzdHJhY3QgZm9ybSwgdGhlIGFib3ZlIGV4YW1wbGUgY291bGQgYmUgY2FwdHVyZWQgbGlrZSB0aGlzOgoKYGBgCjEuIG1ha2UgYSBsaXN0IG9mIGFsbCB0aGUgY3N2IGZpbGVzCjIuIGZvciBlYWNoIGNzdiBmaWxlIGluIHRoZSBsaXN0OgogICAgLSBjYWxjdWxhdGUgdGhlIG1lYW4gb2YgdGhlIGdkcCBjb2x1bW4KYGBgCgpUaGlzIGFic3RyYWN0aW9uIG9mIHRoZSBwcm9ibGVtIG5vdyBnaXZlcyB1cyB0aGUgc3RlcHMgdG8gZm9sbG93IGFuZCBkZWFscyB3aXRoIHRoZSBoZWFydCBvZiB0aGUgcHJvYmxlbSByYXRoZXIgdGhhbiBoYXZpbmcgdG8gd29ycnkgYWJvdXQgYSBzcGVjaWZpYyBpbXBsZW1lbnRhdGlvbi4KCiMgTG9vcHMKCkxvb3BzIGluIHByb2dyYW1taW5nIGxhbmd1YWdlcyBnaXZlIHVzIHRoZSBtZWNoYW5pc20gdG8gcnVuIHRoZSBzYW1lIGNvZGUgYWNyb3NzIGEgc2V0IG9mIGlucHV0cy4gT2Z0ZW4gdGhpcyBpbnZvbHZlcyB1c2luZyBhbiBpbmRleCB0byBrZWVwIHRyYWNrIG9mIHdoYXQgaXRlbSBpbiBvdXIgc2V0IHdlIGFyZSBjdXJyZW50bHkgdXNpbmcuCgpVc3VhbGx5IGEgdmFyaWFibGUgd2lsbCBiZSBkZWZpbmVkIGFib3ZlIHRoZSBsb29wIHRvIHN0b3JlIHRoZSByZXN1bHQgb2YgZWFjaCBpdGVyYXRpb24gZnJvbSB0aGUgYm9keSBpbi4KCk9uZSB0aGluZyBhYm91dCBsb29wcyBpbiBSIGlzIHRoYXQgdGhlIGRpc3BsYXlpbmcgb2YgcmVzdWx0cyBuZWVkcyB0byBiZWNvbWUgZXhwbGljaXQuIFRoaXMgbWVhbnMgdGhhdCBmb3Igb3V0cHV0IHRvIGJlIHNob3duIGluIHRoZSBjb25zb2xlIG9yIHBsb3RzIChkb2Vzbid0IGFwcGx5IHRvIGJhc2UgcGxvdCBmdW5jdGlvbnMgc3VjaCBhcyBgcGxvdCgpYCwgYGhpc3QoKWAgb3IgYGJveHBsb3QoKWApIHRvIGJlIHNob3duLCB5b3UgbmVlZCB0byB3cmFwIHRoZSBjb2RlIHlvdSB3YW50IG91dHB1dHRlZCBpbiBlaXRoZXIgYHByaW50KClgIG9yIGBwbG90KClgIHRvIGZvcmNlIHRoaXMgYmVoYXZpb3VyLiBJZiB5b3UgYXJlIHVzaW5nIGdncGxvdDIgZm9yIHBsb3R0aW5nIHRoaXMgY2FuIGJlIGRvbmUgYnkgYXNzaWduaW5nIHRoZSBwbG90IHRvIGEgdmFyaWFibGUgdGhlbiBjYWxsaW5nIGBwbG90YCBvbiB0aGF0IHZhcmlhYmxlIGUuZy4KCmBgYHtyLCBldmFsID0gRkFMU0V9CnAgPC0gZ2dwbG90KGRhdGEgPSBuemwsIGFlcyh4ID0geWVhciwgeSA9IGdkcCkpICsgZ2VvbV9saW5lKCkKcGxvdChwKQpgYGAKCgojIyBUaGUgYGZvcmAgTG9vcAoKCmBmb3JgIGxvb3BzIHVzdWFsbHkgY29udGFpbiB0aGUgZm9sbG93aW5nIHBhcnRzOgoKMS4gYW4gKipvdXRwdXQqKiAtIHNvbWV3aGVyZSB0byBzdG9yZSB0aGUgcmVzdWx0cyBmcm9tIHRoZSBsb29wCjIuIGFuICoqaW5wdXQqKiBzZXQgb2YgaXRlbXMgdG8gZG8gc29tZXRoaW5nIHRvIChhIHZlY3RvcikKMy4gbG9vcCAqKmJvZHkqKiAtIGNvZGUgdGhhdCB3aWxsIGRvIHNvbWV0aGluZyBmb3IgYSBzaW5nbGUgdmFsdWUgb2YgdGhlIHNldC4KCgpUaGUgbW9zdCBjb21tb24gbG9vcCBpcyB0aGUgKipmb3IqKiBsb29wLiBUaGUgdGVtcGxhdGUgaXMgYXMgZm9sbG93czoKCmBgYHtyLCBldmFsID0gRkFMU0V9CmZvciAodmFyaWFibGUgaW4gdmVjdG9yKSB7CiAgIyBsb29wIGJvZHkgaS5lLiB3aGF0IHRvIGRvIGVhY2ggdGltZQp9CmBgYAoKKipOQjoqKiBZb3UgY2FuIGdldCB0aGUgYGZvcmAgbG9vcCBjb2RlIHNuaXBwZXQgaW4gUlN0dWRpbyBieSB0eXBpbmcgYGZvcmAgdGhlbiBoaXR0aW5nIGA8dGFiPmAgYW5kIHNlbGVjdGluZyAiZm9yIHtzbmlwcGV0fSIgZnJvbSB0aGUgZHJvcCBkb3duLgoKV2hlbiB5b3Ugc2VlIGEgYGZvcmAgbG9vcCB5b3UgY2FuIHJlYWQgaXQgbGlrZSBhIHNlbnRlbmNlOiBmb3IgZWFjaCB0aGluZyBpbiBteSBjb2xsZWN0aW9uIG9mIHRoaW5nczsgSSB3aWxsIGRvIHNvbWV0aGluZyB0byBmaXJzdCB0aGluZzsgYW5kIHRoZW4gY2hvb3NlIHRoZSBuZXh0IHRoaW5nLCBkbyBzb21ldGhpbmcsIGFuZCByZXBlYXQsIHVudGlsIEkgaGF2ZSBkb25lIHNvbWV0aGluZyB0byBlYWNoIG9mIG15IHRoaW5ncyBpbiBteSBjb2xsZWN0aW9uLiAKCldlJ2xsIGNvbXBhcmUgdGhpcyBzbmlwcGV0IHRvIHRoZSBmb2xsb3dpbmcgZXhhbXBsZSB3aGljaCB3aWxsIHByaW50IG91dCB0aGUgbnVtYmVycyAxIHRvIDMgdG8gZXhwbGFpbiB3aGF0IGlzIGdvaW5nIG9uLgogCgpgYGB7ciwgZXZhbCA9IFRSVUUsIGVjaG8gPSBUUlVFfQpmb3IoIG51bSBpbiAxOjMgKXsKICBwcmludCggbnVtICkKfQpgYGAKCkluIHRoaXMgZXhhbXBsZSwgd2Ugd2FudGVkIHRvIGBwcmludGAgb3V0IGVhY2ggaXRlbSBmcm9tIG91ciBzZXQuIE91ciBzZXQgd2FzIGEgdmVjdG9yIG9mIG51bWJlcnMgMSB0byAzIGluIHRoaXMgY2FzZSAoaW4gUiBhIHZlY3RvciB3aXRoIGEgcmFuZ2Ugb2YgbnVtYmVycyBjYW4gYmUgbWFkZSB1c2luZyB0aGUgYDpgIG9wZXJhdG9yIGluIHRoZSBmb3JtYXQgYHN0YXJ0OmVuZGApLiBUaGUgdGFzayB0aGF0IHdlIHdpbGwgZG8gcmVwZXRpdGl2ZWx5IGlzIGBwcmludGAgLS0gb3VyIGxvb3AgYm9keS4gYG51bWAgaXMgZ29pbmcgdG8gc3RvcmUgdGhlIHZhbHVlIG9mIHRoZSBjdXJyZW50IGl0ZW0uIE91ciB2ZWN0b3Igb3IgY29sbGVjdGlvbiBpcyB0aGUgbnVtYmVycyAxIHRvIDMuCgpUaGUgbG9vcCBnZXRzIHJ1biBhcyBzdWNoOgoKMS4gYG51bWAgdGFrZXMgb24gdGhlIGZpcnN0IHZhbHVlIGZyb20gb3VyIHNldCAoYDFgKQoyLiB0aGUgbG9vcCBib2R5IHJ1bnMgKHByaW50cyB0aGUgdmFsdWUgb2YgYG51bWAgd2hpY2ggaXMgYDFgKQozLiB0aGVyZSBpcyBub3RoaW5nIG1vcmUgdG8gYmUgZG9uZSBpbiB0aGUgYm9keSBzbyBpdCBtb3ZlcyBvbnRvIHRoZSBuZXh0IGl0ZW0KNC4gYG51bWAgdGFrZXMgb24gdGhlIHNlY29uZCB2YWx1ZSBmcm9tIHRoZSBzZXQgKGAyYCkKNS4gdGhlIGxvb3AgYm9keSBydW5zIChwcmludHMgdGhlIHZhbHVlIG9mIGBudW1gIHdoaWNoIGlzIGAyYCkKNi4gdGhlcmUgaXMgbm90aGluZyBtb3JlIHRvIGJlIGRvbmUgaW4gdGhlIGJvZHkgc28gaXQgbW92ZXMgdG8gdGhlIG5leHQgaXRlbQo3LiBgbnVtYCB0YWtlcyBvbiB0aGUgdGhpcmQgdmFsdWUgZnJvbSBvdXQgc2V0IChgM2ApCjguIHRoZSBsb29wIGJvZHkgcnVucyAocHJpbnRzIHRoZSB2YWx1ZSBvZiBgbnVtYCB3aGljaCBpcyBgM2ApCjkuIHRoZXJlIGlzIG5vdGhpbmcgbW9yZSB0byBiZSBkb25lIGluIHRoZSBib2R5IHNvIGl0IG1vdmVzIHRvIHRoZSBuZXh0IGl0ZW0KMTAuIHRoZXJlIGlzIG5vdCBhIG5leHQgaXRlbSBzbyB0aGUgbG9vcCBleGl0cy4KClRoaXMgaXMgaG93IHdlIGNvdWxkIGhhdmUgYWNoaWV2ZWQgdGhpcyB0YXNrIHdpdGhvdXQgYSBsb29wOgoKYGBge3J9CnByaW50KDEpCnByaW50KDIpCnByaW50KDMpCmBgYAoKVGhlIGR1cGxpY2F0aW9uIGlzIGFwcGFyZW50IGJ1dCBub3QgcGFydGljdWxhcmx5IGxhYm9yaW91cyBpbiB0aGlzIGNhc2UuIEhvd2V2ZXIsIHRoaW5rIGFib3V0IGhvdyB0aGlzIHdvdWxkIHNjYWxlLiBXaGF0IGlmIHN1ZGRlbmx5IHlvdSBuZWVkZWQgdG8gcHJpbnQgdGhlIG51bWJlcnMgMSB0byAxMDAsIG9yIDEwMDAsIG9yIDEwMDAwPyBVc2luZyB0aGUgY29weS1wYXN0ZSBgcHJpbnQoKWAgYW5kIG1hbnVhbGx5IGZpbGxpbmcgaW4gbnVtYmVycyBpcyBnb2luZyB0byBiZSBwcmV0dHkgbGFib3Jpb3VzIGFuZCBoaWdobHkgcmlza3kgb2YgdHlwb3MuIFVzaW5nIHRoZSBgZm9yYCBsb29wIGhvd2V2ZXIsIHNjYWxlcyBleHRyZW1lbHkgZWFzaWx5IGFuZCB3b3VsZCBiZSBhIG1hdHRlciBvZiBvbmx5IGNoYW5naW5nIHdoYXQgb3VyIGNvbGxlY3Rpb24gb2YgaXRlbXMgZ29pbmcgaW4gd2FzLCBldmVyeXRoaW5nIGVsc2UgcmVtYWlucyB0aGUgc2FtZToKCmBgYHtyLCBldmFsID0gRkFMU0V9CmZvciggbnVtIGluIDE6MTAwICl7CiAgcHJpbnQoIG51bSApCn0KYGBgCgoKIyMjIGBmb3JgIGxvb3Agd2l0aCBpbmRpY2VzCgpPbmUgdmVyc2lvbiBvZiB0aGUgYGZvcmAgbG9vcCB0aGF0IHlvdSBtaWdodCBlbmNvdW50ZXIgKGVzcGVjaWFsbHkgaW4gb3RoZXIgbGFuZ3VhZ2VzKSBpcyBhIHZlcnNpb24gdGhhdCB1c2VzIGluZGljZXMgdG8gZGV0ZXJtaW5lIHRoZSBjdXJyZW50IGl0ZW0gZnJvbSB0aGUgc2V0LiBJbiB0aGlzIGNhc2UgcmF0aGVyIHRoYW4gdGhlIGxvb3AgdmFyaWFibGUgdXNpbmcgdGhlIHZhbHVlcyBvZiB0aGUgaXRlbXMgdGhlbXNlbHZlcywgaXQgdXNlcyB0aGUgaW5kZXggb2YgdGhlIGl0ZW0gaW4gdGhlIGNvbGxlY3Rpb24uIFRyYWRpdGlvbmFsbHkgdGhlIGxvb3AgdmFyaWFibGUgaXMgY2FsbGVkIGBpYCBpbiB0aGlzIHNpdHVhdGlvbi4gV2hpbGUgeW91IGNvdWxkIHNwZWNpZnkgdGhlIGluZGljZXMgbWFudWFsbHkgdGhyb3VnaCBhIHZlY3RvciBlLmcuIGAxOjVgLCBvciBgMTpsZW5ndGgobXl2ZWN0b3IpYCwgdGhpcyBjYW4gbGVhZCB0byBzb21lIGlzc3VlcyBhbmQgdGhlIHNhZmVyIHdheSBpcyBmb3IgUiB0byBnZW5lcmF0ZSB0aGUgaW5kaWNlcyB1c2luZyBgc2VxX2Fsb25nKClgIHdoaWNoIHJldHVybnMgYSB2ZWN0b3Igd2l0aCBhbGwgdGhlIGluZGV4ZXMgb2YgeW91ciBvYmplY3QuCgpgYGB7ciwgZWNobyA9IFRSVUUsIGV2YWwgPSBUUlVFfQpteU51bWJlcnMgPC0gYygxMSwxMywxNSwxNywxOSkKCiMgc2hvdyBleGFtcGxlIG9mIHdoYXQgc2VxX2Fsb25nKCkgaXMgcHJvdmlkaW5nCnNlcV9hbG9uZyhteU51bWJlcnMpCgojIHByaW50IGVhY2ggbnVtYmVyIGFuZCB0aGUgaW5kZXggdXNlZCBmcm9tIHRoZSBjb2xsZWN0aW9uIGJ5IHVzaW5nIHRoZSBpbmRleCB0byBzdWJzZXQKZm9yKCBpIGluIHNlcV9hbG9uZyhteU51bWJlcnMpICl7CiAgcHJpbnQocGFzdGUoIm51bWJlciA9IiwgbXlOdW1iZXJzW2ldLCAiaW5kZXggKGkpID0iLCBpKSkKfQpgYGAKCiMjIyBOZXN0aW5nIG9mIGxvb3BzCgpJdCdzIGdlbmVyYWxseSByZWNvbW1lbmRlZCB0byBhdm9pZCB0aGUgbmVzdGluZyBvZiBsb29wcyB3aXRoaW4gb3RoZXIgbG9vcHMuIExldCdzIHNheSB0aGUgb3V0ZXIgbG9vcCBoYXMgYSB0b3RhbCBvZiBgbmAgaXRlcmF0aW9ucyB0byBnZXQgdGhyb3VnaCBhbmQgYW4gaW5uZXIgbG9vcCBoYXMgYG1gLiBFdmVyeSB0aW1lIHdlIGFkZCBvbmUgZXh0cmEgaXRlcmF0aW9uIG9mIHRoZSBvdXRlciBsb29wIHdlIGVuZCB1cCBhZGRpbmcgYW4gZXh0cmEgYG1gIGl0ZXJhdGlvbnMgb2YgdGhlIGlubmVyIGxvb3AsIHNvIHRoZSB0b3RhbCBudW1iZXIgb2YgaXRlcmF0aW9ucyBpcyBgbiAqIG1gLiBEZXBlbmRpbmcgb24gaG93IGJpZyBgbWAgaXMsIHRoaXMgY291bGQgYmUgYWRkaW5nIHRob3VzYW5kcyBvciBtaWxsaW9ucyBvZiBleHRyYSBpdGVyYXRpb25zLCBjYXVzaW5nIHlvdXIgY29kZSB0byB0YWtlIGxvbmdlciB0byBydW4uIFNvbWUgdGltZXMgaG93ZXZlciwgbmVzdGluZyBpcyB1bmF2b2lkYWJsZSBidXQgaXQncyBhIGdvb2QgaWRlYSB0byBrZWVwIGFuIGV5ZSBvdXQgZm9yIG5lc3RpbmcgaWYgeW91ciBjb2RlIGlzIHRha2luZyBhIHdoaWxlIHRvIHJ1biBhcyB0aGlzIGlzIHVzdWFsbHkgdGhlIGZpcnN0IHBsYWNlIHRoaW5ncyBjYW4gYmUgc3BlZCB1cC4KCiMjIFdoaWxlIGxvb3AKClRoZSB3aGlsZSBsb29wIGlzIGEgdXNlZnVsIGxvb3AgdG8gdXNlIHdoZW4gdGhlIGxlbmd0aCBvZiB0aGUgaW5wdXQgdmVjdG9yIGlzIHVua25vd24uIFRoZSBzaXR1YXRpb24gd2hlcmUgdGhpcyBhcmlzZXMgb2Z0ZW4gd291bGQgYmUgaW4gc2ltdWxhdGlvbnMgd2hlcmUgeW91IHdhbnQgdG8gZmluZCBvdXQgaG93IG1hbnkgdGltZXMgc29tZXRoaW5nIGhhcHBlbmVkIHVudGlsIHlvdSBnb3QgYSBjZXJ0YWluIHJlc3VsdCAtLSBhbiBleGl0IGNvbmRpdGlvbi4KClRoZSBza2VsZXRvbiBmb3IgYSBgd2hpbGVgIGxvb3AgaXMgYXMgZm9sbG93czoKCmBgYHtyLCBldmFsID0gRkFMU0V9CndoaWxlIChjb25kaXRpb24pIHsKICAjIGxvb3AgYm9keQp9CmBgYAoKSGVyZSBpcyBhbiBleGFtcGxlIG9mIGEgYHdoaWxlYCBsb29wIHdoZXJlIHdlIHdhbnQgdG8gZmluZCBvdXQgaG93IG1hbnkgaXRlcmF0aW9ucyBpdCB0YWtlcyB0byBvYnRhaW4gMyBoZWFkcyBpbiBhIHJvdzoKCmBgYHtyLCBlY2hvID0gVFJVRSwgZXZhbCA9IFRSVUV9CiMjIEV4YW1wbGUgZnJvbSBSIGZvciBEYXRhIFNjaWVuY2UgLSAyMS4zLjQgIyMKCiMgRnVuY3Rpb24gdG8gc2ltdWxhdGUgaGVhZCBvciB0YWlsIGFzIHRoZSByZXN1bHQgb2YgYSBjb2luIGZsaXAKZmxpcCA8LSBmdW5jdGlvbigpewogIHNhbXBsZShjKCJUIiwgIkgiKSwgMSkKfQoKIyB2YXJpYWJsZXMgdG8ga2VlcCB0cmFjayBvZiBrZXkgcmVzdWx0cwpmbGlwcyA8LSAwCm5oZWFkcyA8LSAwCgojIGZsaXAgYSBjb2luIHVudGlsIHRoZXJlIGFyZSB0aHJlZSBoZWFkcyBhbmQgY291bnQgaG93IG1hbnkgZmxpcHMgd2VyZSBwZXJmb3JtZWQuCndoaWxlIChuaGVhZHMgPCAzKSB7CiAgaWYgKGZsaXAoKSA9PSAiSCIpIHsKICAgIG5oZWFkcyA8LSBuaGVhZHMgKyAxCiAgfSBlbHNlIHsKICAgIG5oZWFkcyA8LSAwCiAgfQogIGZsaXBzIDwtIGZsaXBzICsgMQp9CmZsaXBzCgpgYGAKCkl0J3MgdmVyeSBpbXBvcnRhbnQgdG8gKiphbHdheXMgbWFrZSBzdXJlIHlvdXIgY29uZGl0aW9uIHdpbGwgZXZlbnR1YWxseSBiZSBGQUxTRSBiZWZvcmUgcnVubmluZyEqKiBPdGhlcndpc2UgeW91J2xsIGJlIHN0dWNrIGluIGFuICdpbmZpbml0ZSBsb29wJyB3aGVyZSB5b3VyIGNvZGUga2VlcHMgcnVubmluZyBhbmQgbmV2ZXIgc3RvcHBpbmcuIElmIHlvdSBmaW5kIHlvdXJzZWxmIGluIHRoaXMgc2l0dWF0aW9uIGluIFJTdHVkaW8sIGluIHRoZSB0b3AgcmlnaHQgb2YgdGhlIGNvbnNvbGUgd2luZG93IHlvdSBjYW4gY2xpY2sgdGhlICdzdG9wJyBzaWduLCBvciB1bmRlciB0aGUgYFNlc3Npb25gIG1lbnUgY2xpY2sgIkludGVycnVwdCBSIiB0byBtYWtlIGl0IHN0b3AuCgoKCiMgTWFwCgpGcm9tIHRoZSBwYWNrYWdlIGBwdXJycmAgKHBhcnQgb2YgdGhlIHRpZHl2ZXJzZSksIHRoZXJlIGFyZSBhIGNvbGxlY3Rpb24gb2YgYG1hcGAgZnVuY3Rpb25zIHdoaWNoIGFyZSBhIG1ldGhvZCBvZiBpdGVyYXRpbmcgb3ZlciBhIGNvbGxlY3Rpb24gb2YgdGhpbmdzIGFwcGx5aW5nIGEgZnVuY3Rpb24uIFRoaXMgaXMga25vd24gYXMgX2Z1bmN0aW9uYWwgcHJvZ3JhbW1pbmdfLCBhbmQgYWxsb3dzIHVzIHRvIGV4dHJhY3QgdGhlIGNvZGUgdGhhdCBpcyBpbiBjb21tb24gZm9yIGEgbG9vcCwgaW50byBhIGZ1bmN0aW9uLCBzbyByYXRoZXIgdGhhbiBiZWluZyBjb25jZXJuZWQgYWJvdXQgdGhlIHNldC11cCBvZiB0aGUgbG9vcCwgd2UgY2FuIGZvY3VzIG9uIHRoZSBjb250ZW50cyBvZiB0aGUgbG9vcC4gVGhpcyBpZGVhIG9mIG1hcHBpbmcgYSBmdW5jdGlvbiBvbnRvIGRhdGEgaXMgZXh0cmVtZWx5IHNpbWlsYXIgdG8gdGhlIGNvbmNlcHQgdW5kZXJseWluZyB0aGUgYGZvcmAgbG9vcC4KCiMjIE1hcCBhbmQgZnJpZW5kcwoKVGhlIHBhY2thZ2UgYHB1cnJyYCB3aXRoaW4gdGhlIHRpZHl2ZXJzZSBwcm92aWRlcyB0aGUgYG1hcGAgZnVuY3Rpb25zIHRoYXQgdGFrZSBhIHZlY3RvciBvciBsaXN0IGFzIHRoZSBmaXJzdCBhcmd1bWVudCwgYW5kIHRoZSBzZWNvbmQgYXJndW1lbnQgaXMgdGhlIGZ1bmN0aW9uIHRvIGJlIHJ1biBvbiBlYWNoIGl0ZW0gaW4gdGhlIHZlY3RvciBvciBsaXN0LiBUaGUgb2JqZWN0IHRoYXQgaXMgcmV0dXJuZWQgYmFjayB3aXRoIHRoZSByZXN1bHRzIGRlcGVuZHMgb24gdGhlIGV4YWN0IHZlcnNpb24gb2YgYG1hcGAgdGhhdCBpcyBjYWxsZWQsIHRoZSBkZWZhdWx0IGBtYXAoKWAgcmV0dXJucyB0aGUgcmVzdWx0cyBhcyBpdGVtcyBpbiBhIGxpc3QsIGJ1dCB0aGVyZSBhcmUgc3VmZml4IHZlcnNpb25zIG9mIGBtYXBgIHRoYXQgd2lsbCByZXR1cm4gdGhlIHJlc3VsdHMgYmFjayBpbiBhIHNwZWNpZmllZCBkYXRhIHR5cGUuCgotIGBtYXAoKWAgbWFrZXMgYSBsaXN0LgotIGBtYXBfbGdsKClgIG1ha2VzIGEgbG9naWNhbCB2ZWN0b3IuCi0gYG1hcF9pbnQoKWAgbWFrZXMgYW4gaW50ZWdlciB2ZWN0b3IuCi0gYG1hcF9kYmwoKWAgbWFrZXMgYSBkb3VibGUgdmVjdG9yLgotIGBtYXBfY2hyKClgIG1ha2VzIGEgY2hhcmFjdGVyIHZlY3Rvci4KClRoZXNlIHN1ZmZpeCB2ZXJzaW9ucyB3aWxsIGdpdmUgYW4gZXJyb3IgaWYgdGhlIGRhdGEgdHlwZSBvZiB0aGUgcmVzdWx0cyBkb2Vzbid0IG1hdGNoLiBUaGlzIGlzIHVzZWZ1bCBmb3IgYmVpbmcgYWJsZSB0byBwcm9ncmFtIHdpdGgsIGFzIGl0IG1lYW5zIHRoYXQgeW91IGNhbiBiZSBzdXJlIHRoYXQgeW91IGhhdmUgYSBwYXJ0aWN1bGFyIGRhdGEgdHlwZSBmb3IgZnV0dXJlIGNvZGUuIFNvbWUgb2YgdGhlIGJhc2UgUiBmdW5jdGlvbnMgdGhhdCB5b3Ugd2lsbCBtZWV0IGluIHRoZSBuZXh0IHNlY3Rpb24gZG9uJ3QgcHJvdmlkZSB0aGlzIGd1YXJhbnRlZS4gVGhlIGFyZ3VtZW50cyB0byB0aGUgYG1hcGAgZnVuY3Rpb25zIGFyZSBgLnhgIHdoaWNoIGlzIHRoZSB2ZWN0b3Igb3IgbGlzdCBpbnB1dCwgYW5kIGAuZmAgd2hpY2ggaXMgdGhlIG5hbWUgb2YgdGhlIGZ1bmN0aW9uLiBpZiB0aGUgc3VwcGxpZWQgZnVuY3Rpb24gdGFrZXMgbXVsdGlwbGUgYXJndW1lbnRzIHRoZXNlIGNhbiBiZSBwYXNzZWQgaW4gYXMgZXh0cmEgYXJndW1lbnRzIHRvIGBtYXBgLgoKV2UgY291bGQgdXNlIHRoZSBleGFtcGxlIG9mIGNvbnZlcnRpbmcgc29tZSB0ZW1wZXJhdHVyZXMgdG8gZGVtb25zdHJhdGUKYGBge3J9CmxpYnJhcnkocHVycnIpCgpmYXJlbmhlaXRfdG9fY2VsY2l1cyA8LSBmdW5jdGlvbih0ZW1wX2YpewogIHRlbXBfYyA8LSAodGVtcF9mIC0zMikgKiA1LzkKICByZXR1cm4odGVtcF9jKQp9CgpteV90ZW1wc19mIDwtIGMoOTAsIDc4LCA4OCwgODksIDc3KQoKIyBnaXZlcyBiYWNrIGEgbGlzdApteV90ZW1wc19jX2xpc3QgPC0gbWFwKC54ID0gbXlfdGVtcHNfZiwgLmYgPSBmYXJlbmhlaXRfdG9fY2VsY2l1cykKbXlfdGVtcHNfY19saXN0CgojIGdpdmVzIGJhY2sgYSB2ZWN0b3Igb2YgdHlwZSBudW1lcmljL2RvdWJsZQpteV90ZW1wc19jX2RibCA8LSBtYXBfZGJsKC54ID0gbXlfdGVtcHNfZiwgLmYgPSBmYXJlbmhlaXRfdG9fY2VsY2l1cykKbXlfdGVtcHNfY19kYmwKYGBgCgpXaGVuIHVzaW5nIGBtYXBgIGFuZCB2YXJpYW50cywgZG9uJ3QgaW5jbHVkZSB0aGUgYCgpYCdzIG9uIHRoZSBmdW5jdGlvbiBuYW1lLCBpZiB5b3UgZG8geW91J2xsIGdldCB0aGlzIGVycm9yOgpgYGB7ciwgZXJyb3IgPSBUUlVFfQptYXAoLnggPSBteV90ZW1wc19mLCAuZiA9IGZhcmVuaGVpdF90b19jZWxjaXVzKCkpCmBgYAoKCiMgQXBwbHkKCkJhc2UgUiBoYXMgYnVpbHQgaW4gZnVuY3Rpb25zIGZvciBhcHBseWluZyBhIGZ1bmN0aW9uIHRvIGEgdmVjdG9yLCBsaXN0IG9yIGRhdGEgZnJhbWUuIFRoZXJlIGlzIGBhcHBseWAgd2hpY2ggd2lsbCBhcHBseSBhIGZ1bmN0aW9uIHRvIGVpdGhlciBjb2x1bW5zIG9yIHJvd3Mgb2YgYSBkYXRhIGZyYW1lLCBgbGFwcGx5YCBmb3IgYXBwbHlpbmcgdG8gYSBsaXN0IG9yIHZlY3RvciAtIGl0J3MgYW5hbG9nb3VzIHRvIGBtYXAoKWAsIGFuZCBgdmFwcGx5YCB3aGljaCBjYW4gdGFrZXMgdGhlIHJldHVybiBkYXRhIHR5cGUgYXMgb25lIG9mIHRoZSBhcmd1bWVudHMgc28gY2FuIGJlIHRob3VnaHQgb2YgYXMgYW5hbG9nb3VzIHRvIHRoZSBzdWZmaXggdmVyc2lvbnMgb2YgYG1hcGAuIFRoZSBgYXBwbHkoKWAgZnVuY3Rpb24gaXMgdmVyeSBzaW1pbGFyIHRvIGBtYXAoKWAKCgpUaGUgZXF1aXZhbGVudCBleGFtcGxlIG9mIHdoYXQgd2UgZGlkIGFib3ZlIHdpdGggYG1hcCgpYCBgYW5kIG1hcF9kYmwoKWAgaXMgYXMgZm9sbG93czoKCmBgYHtyfQpmYXJlbmhlaXRfdG9fY2VsY2l1cyA8LSBmdW5jdGlvbih0ZW1wX2YpewogIHRlbXBfYyA8LSAodGVtcF9mIC0zMikgKiA1LzkKICByZXR1cm4odGVtcF9jKQp9CgpteV90ZW1wc19mIDwtIGMoOTAsIDc4LCA4OCwgODksIDc3KQoKIyBsYXBwbHkgZXhhbXBsZQpsYXBwbHlfbXlfdGVtcHNfYyA8LSBsYXBwbHkoWCA9IG15X3RlbXBzX2YsIEZVTiA9IGZhcmVuaGVpdF90b19jZWxjaXVzKQpsYXBwbHlfbXlfdGVtcHNfYwoKIyB2YXBwbHkgZXhhbXBsZS4gRlVOLlZBTFVFIGRlZmluZXMgdGhlIHR5cGUgYW5kIGxlbmd0aCBzaXplIG9mIGVhY2ggb2YgdGhlIHJldHVybmVkIHJlc3VsdHMuIAp2YXBwbHlfbXlfdGVtcHNfYyA8LSB2YXBwbHkoWCA9IG15X3RlbXBzX2YsIEZVTiA9IGZhcmVuaGVpdF90b19jZWxjaXVzLCBGVU4uVkFMVUUgPSBudW1lcmljKDEpKQp2YXBwbHlfbXlfdGVtcHNfYwpgYGAKCldlIGNhbiBzZWUgdGhhdCB0aGVyZSBpcyBhIGRpZmZlcmVuY2UgaW4gdGhlIHJlc3VsdHMgdGhhdCBSIHJldHVybnMgYmV0d2VlbiBgbGFwcGx5YCBhbmQgYHZhcHBseWAgYnkgdXNpbmcgYHN0cmAgdG8gbG9vayBhdCB0aGUgc3RydWN0dXJlLgoKYGBge3J9CnN0cihsYXBwbHlfbXlfdGVtcHNfYykKc3RyKHZhcHBseV9teV90ZW1wc19jKQpgYGAKCmBsYXBwbHlfbXlfdGVtcHNfY2AgaXMgYSBfbGlzdF8gd2l0aCBlYWNoIGl0ZW0gYmVpbmcgYSBudW1lcmljIHZlY3Rvciwgd2hlcmVhcyBgc2FwcGx5X215X3RlbXBzX2NgIGlzIHNpbmdsZSBhIF9udW1lcmljXyB2ZWN0b3Igb2YgKHRoZSBkYXRhIHR5cGUgdGhhdCB3ZSBzcGVjaWZpZWQpLiBXaGVuIHdlIHNwZWNpZmllZCB0aGUgZGF0YSB0eXBlIGZvciBgdmFwcGx5YCB3ZSB1c2VkIGBudW1lcmljKDEpYCBhcyBhbiBhcmd1bWVudC4gV2hhdCB0aGlzIG1lYW50IHdhcyB0aGF0IGVhY2ggdGltZSBvdXIgZnVuY3Rpb24gc3BlY2lmaWVkIGZvciBgRlVOID0gYCBpcyBydW4sIGl0IHdhcyBleHBlY3RlZCB0byByZXR1cm4gYSB2ZWN0b3Igb2YgbGVuZ3RoIDEgb2YgdHlwZSBudW1lcmljLiBJZiB0aGlzIHdhc24ndCB0aGUgY2FzZSwgYW4gZXJyb3Igd291bGQgb2NjdXIuIE9uZSB0aGluZyB0byBiZSBhd2FyZSBvZiBpcyB0aGF0IGB2YXBwbHlgIGRvZXNuJ3QgYWx3YXlzIHJldHVybiBhIHZlY3RvciwgdGhlIGRhdGEgc3RydWN0dXJlIHRoYXQgaXQgcmV0dXJucyBkZXBlbmRzIG9uIHRoZSBkYXRhIGdvaW5nIGluLiBUaGlzIGNhbiBtYWtlIGl0IGNoYWxsZW5naW5nIHRvIGtub3cgYmVmb3JlaGFuZCB3aGF0IHRoZSBvdXRwdXQgaXMgZ29pbmcgdG8gbG9vayBsaWtlIC0gdW5saWtlIHRoZSBzdWZmaXggdmVyc2lvbnMgb2YgYG1hcGAgZnJvbSBgcHVycnJgLgoKCgojIENvbmNsdXNpb24KCkluIHRoaXMgbW9kdWxlIHdlIGNvdmVyZWQgaG93IHJlcGVhdCB0YXNrcyBlZmZpY2llbnRseS4gQ29tYmluaW5nIGl0ZXJhdGlvbiB3aXRoIHBhcnQgMSAtIGZ1bmN0aW9ucyBhbmQgZmxvdyBhbmQgY29udHJvbCAtIHlvdSBub3cgaGF2ZSB0aGUga25vd2xlZGdlIHRvIGJlIGFibGUgdG8gY3JlYXRlIGNvZGUgdGhhdCBpcyBtb2R1bGFyIGFuZCByZXVzYWJsZSwgYW5kIG1haW50YWluYWJsZS4gVGhpcyB3aWxsIGVuYWJsZSB5b3UgdG8gYmUgbW9yZSBlZmZpY2llbnQgZ29pbmcgZm9yd2FyZCB3aXRoIHlvdXIgcHJvZ3JhbW1pbmcgYW5kIGFuYWx5c2lzLgoKCiMjIFdoYXQncyBOZXh0CgpDb25ncmF0dWxhdGlvbnMgb24gZmluaXNoaW5nIHRoZSBjb3Vyc2UhIFRoaXMgZG9lc24ndCBoYXZlIHRvIGJlIHRoZSBlbmQgb2YgeW91ciBsZWFybmluZyBqb3VybmV5IHdpdGggUiB0aG91Z2guIFRoZXJlIGFyZSBtYW55IGZyZWUgb25saW5lIHJlc291cmNlcyB0byBkZWx2ZSBmdXJ0aGVyIGluLiBJZiB5b3UgaGF2ZW4ndCBhbHJlYWR5LCBhIGdvb2QgcGxhY2UgdG8gc3RhcnQgaXMgdGhlIGNoYXB0ZXJzIG9mIFtSIGZvciBEYXRhIFNjaWVuY2VdKGh0dHBzOi8vcjRkcy5oYWQuY28ubnopIHRoYXQgd2VyZW4ndCBjb3ZlcmVkIGluIHRoZSBjb3Vyc2UuIEFuZCBpZiB5b3Ugd2FudCB0byBnZXQgbW9yZSBpbi1kZXB0aCB3aXRoIHRoZSBSIGxhbmd1YWdlIHRoZSBvbmxpbmUgYm9vayBbQWR2YW5jZWQgUl0oaHR0cHM6Ly9hZHYtci5oYWRsZXkubnopIGNvdmVycyBtb3JlIG9mIHRoZSBSIGxhbmd1YWdlIGFuZCBwcm9ncmFtbWluZy4KClBsZWFzZSBmaWxsIGluIHRoZSBtb2R1bGUgZmVlZGJhY2sgZm9ybSBbaHR0cHM6Ly90aW55dXJsLmNvbS9yNHNzcC1tb2R1bGUtZmJdKGh0dHBzOi8vdGlueXVybC5jb20vcjRzc3AtbW9kdWxlLWZiKS4KCiAK</div>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("handout8.Rmd");
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

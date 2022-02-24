@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>R for Successful Student Projects 07 - Modularity and Flow of Control 1</title>
+
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">R4SSP Semester 1 2022</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Modules
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Intro</li>
+    <li>
+      <a href="01-intro.html">Intro to R and RStudio</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Data Focus</li>
+    <li>
+      <a href="02-visualise.html">Part 1: Data Loading and Looking</a>
+    </li>
+    <li>
+      <a href="03-subset.html">Part 2: Subsetting</a>
+    </li>
+    <li>
+      <a href="04-transform.html">Part 3: Transforming</a>
+    </li>
+    <li>
+      <a href="05-summarise.html">Part 4: Summarising</a>
+    </li>
+    <li>
+      <a href="06-communicate.html">Part 5: Communicating</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Programming focus</li>
+    <li>
+      <a href="07-functions.html">Functions and logic branching</a>
+    </li>
+    <li>
+      <a href="08-iterate.html">Loops and iterators</a>
+    </li>
+    <li>
+      <a href="09-workflows.html">Workflows</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Handouts
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="handout1.html">Handout 1</a>
+    </li>
+    <li>
+      <a href="handout2.html">Handout 2</a>
+    </li>
+    <li>
+      <a href="handout3.html">Handout 3</a>
+    </li>
+    <li>
+      <a href="handout4.html">Handout 4</a>
+    </li>
+    <li>
+      <a href="handout5.html">Handout 5</a>
+    </li>
+    <li>
+      <a href="handout6.html">Handout 6</a>
+    </li>
+    <li>
+      <a href="handout7.html">Handout 7</a>
+    </li>
+    <li>
+      <a href="handout8.html">Handout 8</a>
+    </li>
+    <li>
+      <a href="handout9.html">Handout 9</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Worksheets
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="worksheet1.html">Worksheet 1</a>
+    </li>
+    <li>
+      <a href="worksheet3.html">Worksheet 3</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+<li role="separator" class="divider"></li>
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">R for Successful Student Projects 07 - Modularity and Flow of Control 1</h1>
+<h4 class="date">Semester 1, 2022</h4>
+
+</div>
+
+
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>These next two modules are going to introduce the idea of modularity of code. What does this actually mean in practice though? What this means is that we’re going to be looking out for where we are copy and pasting the same code, and looking to turn this into a reusable function instead – giving ourselves a single place to make updates/changes, rather than having to track down all duplications and making the changes to them. There is an upfront ‘cost’ to doing this because we have to put more effort in initially but this pays off in the long run as we benefit from less maintenance burden, and we gain more trust that our code is behaving how we want it.</p>
+<p>Largely up until this point all the functions in R for what you want to do have been provided through either “Base R” or packages that have needed to be installed such as the tidyverse. In this module and the next, we’re going to learn how to create our own functions within R so that we can do exactly what we want to do. The content for this module is covered well by <a href="https://r4ds.had.co.nz/functions.html">R4DS chapter 19 (https://r4ds.had.co.nz/functions.html)</a>, so make sure to have a read of that chapter. Part of making functions requires us to make our code be able to make choices, this module will also cover this or as it is also know “flow of control”.</p>
+<!-- [Previous course of Murray](https://github.com/murraycadzow/R_functions_and_iterators/blob/master/Code/functions.Rmd) -->
+<p><strong>Learning Objectives</strong></p>
+<ul>
+<li>Be able to create custom functions
+<ul>
+<li>Define arguments</li>
+<li>Input check</li>
+<li>Return results</li>
+</ul></li>
+<li>Use control statements to perform input checking on functions</li>
+</ul>
+</div>
+<div id="functions" class="section level1">
+<h1>Functions</h1>
+<p>Firstly, you might be wondering “Why would I want to create my own functions when I can find a package that already does what I want?” It’s great if someone else has made something that does what you want, but sometimes it doesn’t fit your exact purpose. Another reason to learn about functions is for modularity and maintainability of your own code/analysis. From <a href="https://r4ds.had.co.nz/functions.html">R for Data Science</a>:</p>
+<blockquote>
+<p>One of the best ways to improve your reach as a data scientist is to write functions. Functions allow you to automate common tasks in a more powerful and general way than copy-and-pasting. Writing a function has three big advantages over using copy-and-paste:</p>
+<ol style="list-style-type: decimal">
+<li>You can give a function an evocative name that makes your code easier to understand.</li>
+<li>As requirements change, you only need to update code in one place, instead of many.</li>
+<li>You eliminate the chance of making incidental mistakes when you copy and paste (i.e. updating a variable name in one place, but not in another).</li>
+</ol>
+<p>You should consider writing a function whenever you’ve copied and pasted a block of code more than twice (i.e. you now have three copies of the same code).</p>
+</blockquote>
+<div id="composition-of-a-function" class="section level2">
+<h2>Composition of a function</h2>
+<p>A function in R is comprised of four parts:</p>
+<ol style="list-style-type: decimal">
+<li>a name</li>
+<li>inputs (arguments/variables)</li>
+<li>the body (the code that does something)</li>
+<li>output (what gets returned after the body has run)</li>
+</ol>
+<p>As you have been using R you will have noticed that many tasks have a particular function already available for you to use, such as <code>mean</code> or <code>sd</code>. In this section we are going to learn how to make our own functions. We can define our own functions using the <code>function()</code> function.</p>
+<p>Inside the parenthesis we define what variables are going to be passed to our function and curly braces contain the body of the function. If we want to return a value from our function R will automatically return the result of the last line of the function body or we end can do so explicitly with <code>return()</code>.</p>
+<p>We can assign this new function to a variable so that we call on it later, it is possible to have an <em>anonymous</em> function but these are usually found as part of <code>map</code> or the apply family (introduced in Module 8) but we won’t be covering anonymous functions in this course.</p>
+<p>To call our new function we now use the variable name and pass any required arguments.</p>
+<p>Here is an example of how to create a function:</p>
+<pre class="r"><code># an example function skeleton
+name &lt;- function(variables) {
+  # body
+}</code></pre>
+<p><strong>NB:</strong> in RStudio you can get a code snippet/template by typing “fun” and hitting <code>&lt;tab&gt;</code></p>
+<p>Here is an example function that will double the value of the provided number:</p>
+<pre class="r"><code># Doubles the provided number
+double &lt;- function( num ){
+  num * 2
+}
+
+double(2)
+#&gt; [1] 4</code></pre>
+<p><strong>Important: Functions don’t auto-update when you modify the code that creates them, you must re-run the entire function code block.</strong></p>
+<p>We can also have multiple arguments for our functions:</p>
+<pre class="r"><code># Calculates BMI on a supplied height (m) and weight (kg)
+calcBMI &lt;- function(height, weight){
+  weight / height ^ 2
+}
+
+
+calcBMI(height = 1.68, weight = 73)
+#&gt; [1] 25.86451</code></pre>
+<p><strong>NB:</strong> Variables declared only inside a function don’t exist outside of the function – see the <em>Scope</em> section.</p>
+<p>We’ll now go into some more explanation about the each part of the function composition.</p>
+<div id="naming" class="section level3">
+<h3>Naming</h3>
+<p>Naming things is really hard. A helpful tip for naming of functions is the name should give the user an idea of what the function <em>does</em>, so should contain a verb. Try not to choose a name of a variable or function that already exists, as this will prevent you from being able to call upon the other version by using it’s short name that you’ll be used to e.g. <code>filter()</code>, <code>mean()</code> and instead you’ll have to access the other versions with their full name which looks like this <em>package::function_name()</em> e.g. <code>dplyr::filter()</code> or <code>base::mean()</code>. This full name method is also how you can refer exact functions from particular packages if packages have functions of the same name and you have loaded them with <code>library</code>.</p>
+</div>
+<div id="defining-arguments" class="section level3">
+<h3>Defining arguments</h3>
+<p>Usually there are two categories of variables for a function. The first category are <em>data</em> and is often called <code>x</code>. A nice practice is to define your arguments for your input data first. The second category is <em>behaviour modifiers</em>, i.e. they control the details of the computation. A common behaviour modifier is what to do with <code>NA</code>’s e.g. <code>na.rm</code>.</p>
+<p>At the time of declaring your arguments, you can also assign defaults. It is a good idea to set the defaults of your behaviour modifying arguments to something sensible. When the function is called by the user if they don’t supply a value for the argument the value provided by the default is used.</p>
+<p>Here is an example function that could be used if you wanted to duplicate your data:</p>
+<pre class="r"><code># duplicates a vector n times
+duplicate &lt;- function(x, n = 2) {
+ rep(x, n)
+}
+
+my_nums &lt;- c(1,2,3)
+
+# duplicates twice (default)
+duplicate(my_nums)
+#&gt; [1] 1 2 3 1 2 3
+
+# duplicates 4 times
+duplicate(my_nums, n = 4)
+#&gt;  [1] 1 2 3 1 2 3 1 2 3 1 2 3</code></pre>
+<p>Something that you may have noticed is the use of the argument name is not required for the function to run. This is because R will fill in the values of the arguments based on position. You can run arguments in any order, so long as the names are provided. Best practice is to use the names when calling functions because it provides better readability of code, especially for the behaviour modifying ones.</p>
+<p>Another important thing to note is that we haven’t explicitly covered is the use of <code>=</code> rather than <code>&lt;-</code> when defining arguments. Technically <code>=</code> can be used for assignment of variables and you may have already seen this being done:</p>
+<pre class="r"><code># using &#39;=&#39; for assignment to a variable
+a = 3
+
+a
+#&gt; [1] 3</code></pre>
+<p>However, the key difference between <code>=</code> and <code>&lt;-</code> comes to the use of defining arguments to a function. <code>=</code> will pass the value to the argument without creating a variable in your global environment, <code>&lt;-</code> can be used (but strongly recommended against) as it will pass the value to the argument, but also create a variable in the global environment of the same name:</p>
+<pre class="r"><code>mean(x = 3)
+#&gt; [1] 3
+# x shouldn&#39;t exist so gives an error
+x
+#&gt; Error in eval(expr, envir, enclos): object &#39;x&#39; not found
+
+# don&#39;t do this:
+mean(x &lt;- 3)
+#&gt; [1] 3
+# x now exists
+x
+#&gt; [1] 3</code></pre>
+<p><strong>NB:</strong> For more on environments see the <strong>Scope</strong> section.</p>
+</div>
+<div id="outputs" class="section level3">
+<h3>Outputs</h3>
+<p>Usually the reason for calling a function is to have it provide some output, however, providing an output isn’t necessary. The last line of the function is usually what gets returned back to the user but it is possible to be explicit about what is returned by using <code>return()</code>, or to exit from the body earlier than the final line – this situation usually arises when using control statements (explained later in this handout).</p>
+<p>Here is an example of using the last line:</p>
+<pre class="r"><code>double &lt;- function( num ){
+  # the result of the next line will be automatically returned
+  num * 2
+}
+
+double(4)
+#&gt; [1] 8</code></pre>
+<p>And using <code>return()</code>:</p>
+<pre class="r"><code>double &lt;- function( num ){
+  # the result of the next line will be automatically returned
+  result &lt;- num * 2
+  return(result)
+}
+
+double(5)
+#&gt; [1] 10</code></pre>
+<p>This particular example of using return does create extra steps such as making and assigning to a local variable. The most useful time to use <code>return()</code> is in the body of a control flow statement to exit out the function early if a condition is met – see the <strong>If and Else</strong> section.</p>
+</div>
+</div>
+<div id="scope" class="section level2">
+<h2>Scope</h2>
+<p>When you specify a variable in R it will start trying to find something with that name within the global environment (displayed in the <em>Environment</em> tab in RStudio). In the case of functions, any variable defined in the function (including through its arguments) stays within the function (a separate local environment specific to the function). If however in the body of the function you refer to a variable that hasn’t been defined in the function, R will start looking at the global environment and if it finds a variable of the same name you’ve created outside of the function, it will use the value that is stored within it. This behaviour can cause issues.</p>
+<p>Here is an example, where the function needs a value for <code>n</code> but it hasn’t been supplied as an argument and there is no default value.</p>
+<pre class="r"><code># multiplies the number x by the number n
+multiply_by_n &lt;- function(x){
+  x * n
+}
+
+multiply_by_n(x = 3)
+#&gt; Error in x * n: non-numeric argument to binary operator</code></pre>
+<p>In the function body we referred to <code>n</code> which wasn’t defined anywhere so we got an error.</p>
+<p>Let’s use the same function again but define <code>n</code> outside the function:</p>
+<pre class="r"><code># multiplies the number x by the number n
+multiply_by_n &lt;- function(x){
+  x * n
+}
+
+# define n in the global environment 
+n &lt;- 10
+
+multiply_by_n(x = 3)
+#&gt; [1] 30</code></pre>
+<p>This time R looks for <code>n</code> inside the body but doesn’t find it and when it looks into the global environment it finds a variable named <code>n</code> and so uses that value.</p>
+<p>This time we’re going to modify the function to take a second argument called <code>n</code>, and also have <code>n</code> defined in the global environment:</p>
+<pre class="r"><code># multiplies the number x by the number n
+multiply_by_n &lt;- function(x, n){
+  x * n
+}
+
+# define n in the global environment
+n &lt;- 10
+
+multiply_by_n(x = 3, n = 2)
+#&gt; [1] 6</code></pre>
+<p>The value of <code>n</code> that was used was the value supplied as the argument, rather than the version that was defined in the global environment. What this tells us is that functions will use a locally defined variable, but if it can’t find one, it will start to look wider.</p>
+<p>Another example that demonstrates that functions operate locally (inside the body) is trying to modify variables that exist in the global environment:</p>
+<pre class="r"><code># assign the value provided to x to the variable a
+modify_a &lt;- function(x){
+  a &lt;- x
+}</code></pre>
+<p>This function looks like it should assign the value of <code>x</code> into <code>a</code>. To demonstrate that the function is only working on the <em>function</em> version of <code>a</code>, we’ll define <code>a</code> globally, run the function, then see what the value in <code>a</code> is afterwards:</p>
+<pre class="r"><code># define a global version of a
+a &lt;- 12
+
+# we want a to become 5
+modify_a(x = 5)
+
+
+# output the value of a
+a
+#&gt; [1] 12</code></pre>
+<p>The value of <code>a</code> has remained 12 rather than <code>5</code> like we had hoped. This shows again that the function is creating variables that only exist inside the function, and isn’t modifying the global environment.</p>
+</div>
+</div>
+<div id="control-statements" class="section level1">
+<h1>Control Statements</h1>
+<p>Control statements allow us to use conditions to execute particular pieces of code based on the input. In the context of functions, often if we are creating a behaviour modifying argument, we want certain blocks of code to run depending on the value supplied to the argument. These statements rely on a test (condition/comparison) that results in a boolean (<code>TRUE</code>/<code>FALSE</code>) to determine what gets run. Boolean logic operators can be used in to modify or combine tests to result in a single <code>TRUE</code> or <code>FALSE</code>.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Boolean Operation</th>
+<th>Symbol in R</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>NOT</td>
+<td>!</td>
+</tr>
+<tr class="even">
+<td>OR</td>
+<td>|</td>
+</tr>
+<tr class="odd">
+<td>AND</td>
+<td>&amp;</td>
+</tr>
+</tbody>
+</table>
+<p>These can be combined with the comparison operators you saw in Module 3 (<code>==</code>, <code>!=</code>, <code>&lt;</code>, <code>&lt;=</code>, <code>&gt;</code>, <code>&gt;=</code>) to combine statements together into more complex logic statements. The result of the NOT, AND, and OR can be seen in the below logic table:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Statement</th>
+<th>Becomes</th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>!TRUE</td>
+<td>FALSE</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>!FALSE</td>
+<td>TRUE</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>TRUE &amp; TRUE</td>
+<td>TRUE</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>TRUE &amp; FALSE</td>
+<td>FALSE</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>FALSE &amp; TRUE</td>
+<td>FALSE</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>FALSE &amp; FALSE</td>
+<td>FALSE</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>TRUE | TRUE</td>
+<td>TRUE</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>TRUE | FALSE</td>
+<td>TRUE</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>FALSE | TRUE</td>
+<td>TRUE</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>FALSE | FALSE</td>
+<td>FALSE</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<div id="if-and-else" class="section level2">
+<h2>If and Else</h2>
+<p>We use the results of logic statements in <strong>if()</strong> to determine if a block of code should run. The format of an <code>if</code> statement is:</p>
+<pre class="r"><code>if (condition) {
+  # code here is only run if condition was TRUE
+}</code></pre>
+<p>Similar to a function, the <code>{}</code>’s denote the body of code belonging to <code>if</code>. This code is <strong>only</strong> run when the <code>if</code> condition is TRUE, otherwise it gets skipped. If we want another block of code to run when only when the condition is FALSE, we can use <code>else</code> at the end of the code block to create this second block.</p>
+<pre class="r"><code>if (condition) {
+  # code here is only run if condition was TRUE
+} else {
+  # code here is only run if condition was FALSE
+}
+</code></pre>
+<p>The following example shows how you can create a series of conditions, where the conditions are run one at a time from the top and the first condition that evaluates to <code>TRUE</code> is the only code block that gets run.</p>
+<pre class="r"><code>bmi &lt;- 21
+if(bmi &gt; 30){
+  print(&quot;obese&quot;)
+} else if (bmi &gt; 25){
+  print(&quot;overweight&quot;)
+} else if (bmi &gt; 20){
+  print(&quot;healthy&quot;)
+} else {
+  print(&quot;underweight&quot;)
+}
+#&gt; [1] &quot;healthy&quot;</code></pre>
+</div>
+<div id="improving-functions" class="section level2">
+<h2>Improving functions</h2>
+<p>Now that we have looked at control statements and how they operate, we’re going to look at how we can use them to make our functions better.</p>
+<div id="failing" class="section level3">
+<h3>Failing</h3>
+<p>One of the saying in programming is “if it’s going to fail, it’s best to fail early”. What this means in practice is that if we know that our function can only handle a specific input or it will cause issues i.e. <code>1 + 2</code> is fine but <code>1 + "a"</code> causes an error, we want to program <strong>defensively</strong> so that our function “fails” before it encounters the error. R also provides notoriously difficult error messages to understand. As part of our defensive programming we can provide some messages that are user friendly instead.</p>
+<ul>
+<li>data type check functions</li>
+<li>stop() Here is an example of how we can check that the data coming into our function is the correct data type:</li>
+</ul>
+<pre class="r"><code># Returns the provided number doubled
+double_number &lt;- function(x) {
+  if( !is.numeric(x) ){
+    stop(&quot;x needs to be a number.&quot;)
+  }
+  x * 2
+}
+
+
+double_number(4)
+#&gt; [1] 8
+
+double_number(&quot;a&quot;)
+#&gt; Error in double_number(&quot;a&quot;): x needs to be a number.</code></pre>
+<p>N.B. Check the appendix for more on data types.</p>
+<p>Following the principles of fail fast and early, we want to have our checks as some of the very first code in the function body, so that if the wrong input is given we ‘fail’ out of the function without any further code running. We can do this using the control statement <code>if</code> to check the condition. First we’re checking if <code>x</code> is a <code>numeric</code> type, <code>is.numeric</code> returns <code>TRUE</code> if it is and <code>FALSE</code> if it isn’t. But we want to enter the <code>if</code> body when <code>x</code> is not numeric so perform a boolean <code>NOT</code> using the <code>!</code>.</p>
+<p>Once we have determined that <code>x</code> isn’t numeric we want the function to exit but also provide a message to the user as to why. This is done using <code>stop()</code> which causes the function to exit and provides the error message that is provided - ideally something useful for the user.</p>
+</div>
+</div>
+</div>
+<div id="conclusion" class="section level1">
+<h1>Conclusion</h1>
+<p>This document has presented an introduction to creating your own functions and implementing control flow into your code. We covered concepts such as ‘failing fast and early’, and scoping of variables. If you would like to take your understanding of functions further then some good places to refer to are the free online books <a href="https://adv-r.hadley.nz">Advanced R</a> and <a href="https://r-pkgs.org">R packages</a>.</p>
+<div id="whats-next" class="section level2">
+<h2>What’s Next</h2>
+<p>Fill in the module feedback form <a href="https://tinyurl.com/r4ssp-module-fb">https://tinyurl.com/r4ssp-module-fb</a>.</p>
+<p>Next move onto <a href="https://r4ds.had.co.nz/iteration.html">R for Data Science Chapter 21 - Iteration (https://r4ds.had.co.nz/iteration.html)</a> to learn about how we can start to reduce code duplication, and start to repeat what we do efficiently through iteration or ‘loops’. As always, if you run into trouble, let us know.</p>
+</div>
+</div>
+<div id="appendix" class="section level1">
+<h1>Appendix</h1>
+<div id="data-types" class="section level2">
+<h2>Data types</h2>
+<p>Not all data is created equal, in R this concept is captured by <em>data types</em>. For a vector, all values must be of a single data type.</p>
+<p>The main data types that you will encounter in R are:</p>
+<ul>
+<li><em>Logical</em> ( <code>c(TRUE, FALSE)</code>)</li>
+<li><em>Numeric</em> - also called <em>Real</em> or <em>Double</em> (Numbers that have a floating point (decimal) representation e.g. <code>c(1, 3.6, 1e3)</code>)</li>
+<li><em>Character</em> - also called <em>String</em> (anything inside matching opening and closing quotes (single or double) e.g. <code>c("a", "some words", "animal"</code>))</li>
+</ul>
+<p>There are 3 other less common:</p>
+<ul>
+<li><em>Integer</em> (integers <code>c(1L, 4L, -3L)</code>)</li>
+<li><em>Complex</em> (Complex numbers e.g. <code>c(0+3i, 4i, -2-5i)</code>)</li>
+<li><em>Raw</em> (the bytes of a file)</li>
+</ul>
+<p>Each data type is known in R as an <em>atomic</em> vector. R has built in functions to be able to determine the data type of a vector, <code>typeof()</code> is the best one to use, but others such as <code>str()</code> and <code>class()</code> can be used.</p>
+<p>There is also a series of functions that let us do explicit checking for a data type which will return <code>TRUE</code> or <code>FALSE</code>:</p>
+<ul>
+<li><code>is.logical()</code></li>
+<li><code>is.numeric()</code> or <code>is.double()</code></li>
+<li><code>is.character()</code></li>
+<li><code>is.integer()</code></li>
+<li><code>is.complex()</code></li>
+<li><code>is.raw()</code></li>
+</ul>
+<div id="data-type-coercion" class="section level3">
+<h3>Data Type Coercion</h3>
+<p>In R, when doing operations on multiple vectors, they all need to be the same data type - but how can this work if we have for example a numeric vector and a character vector? <em>Coercion</em> is how R deals with trying to operate on two vectors of different data types. What this means in practice is that R will convert the data type of a vector in a defined manner such that we end up will all of the same type and follows a “lowest common data type” approach. Using the 3 main data types from above, the following is the order in which they will be coerced into the next data type: <em>logical</em> -&gt; <em>numeric</em> -&gt; <em>character</em>.</p>
+<p>This principle applies when you try to create a vector of mixed data types too, R will coerce everything until it is a single data type.</p>
+<p>See if you can predict what data type the result will be (you can check by using <code>typeof()</code>:</p>
+<pre class="r"><code># logical and numeric
+c(4, TRUE, 5)
+
+# numeric and character
+c(1, 3, &quot;A&quot;)
+
+# logical and character
+c(FALSE, &quot;cat&quot;,&quot;frog&quot;)
+
+# mixed
+c(&quot;see&quot;, TRUE, 4.8)
+
+# tricky
+c(&quot;1.3&quot;, &quot;4&quot;, TRUE)</code></pre>
+<p>We can also explicitly force coercion into a particular data type by using the following:</p>
+<ul>
+<li><code>as.logical()</code></li>
+<li><code>as.numeric()</code></li>
+<li><code>as.character()</code></li>
+</ul>
+<p>The other data types also have similarly named functions. When going against the normal direction of coercion, it is important to realise that if your data doesn’t have a representation in that data type, it will become <em>NA</em> (missing).</p>
+</div>
+</div>
+</div>
+
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiUiBmb3IgU3VjY2Vzc2Z1bCBTdHVkZW50IFByb2plY3RzIDA3IC0gTW9kdWxhcml0eSBhbmQgRmxvdyBvZiBDb250cm9sIDEiCmRhdGU6ICJTZW1lc3RlciAxLCAyMDIyIgpvdXRwdXQ6CiAgaHRtbF9kb2N1bWVudDoKICAgIHRvYzogdHJ1ZQogICAgdG9jX2Zsb2F0OiB0cnVlCiAgICB0b2NfZGVwdGg6IDMKICAgIGNvZGVfZG93bmxvYWQ6IHRydWUKICAgIGNvZGVfZm9sZGluZzogc2hvdwotLS0KCmBgYHtyIHNldHVwLCBpbmNsdWRlPUZBTFNFfQpsaWJyYXJ5KGtuaXRyKQoKa25pdHI6Om9wdHNfY2h1bmskc2V0KAogIGNvbW1lbnQgPSAiIz4iLAogIGZpZy5wYXRoID0gImZpZ3VyZXMvIiwgIyB1c2Ugb25seSBmb3Igc2luZ2xlIFJtZCBmaWxlcwogIGNvbGxhcHNlID0gVFJVRSwKICBlY2hvID0gVFJVRQopCmBgYAoKIyBJbnRyb2R1Y3Rpb24KClRoZXNlIG5leHQgdHdvIG1vZHVsZXMgYXJlIGdvaW5nIHRvIGludHJvZHVjZSB0aGUgaWRlYSBvZiBtb2R1bGFyaXR5IG9mIGNvZGUuIFdoYXQgZG9lcyB0aGlzIGFjdHVhbGx5IG1lYW4gaW4gcHJhY3RpY2UgdGhvdWdoPyBXaGF0IHRoaXMgbWVhbnMgaXMgdGhhdCB3ZSdyZSBnb2luZyB0byBiZSBsb29raW5nIG91dCBmb3Igd2hlcmUgd2UgYXJlIGNvcHkgYW5kIHBhc3RpbmcgdGhlIHNhbWUgY29kZSwgYW5kIGxvb2tpbmcgdG8gdHVybiB0aGlzIGludG8gYSByZXVzYWJsZSBmdW5jdGlvbiBpbnN0ZWFkIC0tIGdpdmluZyBvdXJzZWx2ZXMgYSBzaW5nbGUgcGxhY2UgdG8gbWFrZSB1cGRhdGVzL2NoYW5nZXMsIHJhdGhlciB0aGFuIGhhdmluZyB0byB0cmFjayBkb3duIGFsbCBkdXBsaWNhdGlvbnMgYW5kIG1ha2luZyB0aGUgY2hhbmdlcyB0byB0aGVtLiBUaGVyZSBpcyBhbiB1cGZyb250ICdjb3N0JyB0byBkb2luZyB0aGlzIGJlY2F1c2Ugd2UgaGF2ZSB0byBwdXQgbW9yZSBlZmZvcnQgaW4gaW5pdGlhbGx5IGJ1dCB0aGlzIHBheXMgb2ZmIGluIHRoZSBsb25nIHJ1biBhcyB3ZSBiZW5lZml0IGZyb20gbGVzcyBtYWludGVuYW5jZSBidXJkZW4sIGFuZCB3ZSBnYWluIG1vcmUgdHJ1c3QgdGhhdCBvdXIgY29kZSBpcyBiZWhhdmluZyBob3cgd2Ugd2FudCBpdC4KCkxhcmdlbHkgdXAgdW50aWwgdGhpcyBwb2ludCBhbGwgdGhlIGZ1bmN0aW9ucyBpbiBSIGZvciB3aGF0IHlvdSB3YW50IHRvIGRvIGhhdmUgYmVlbiBwcm92aWRlZCB0aHJvdWdoIGVpdGhlciAiQmFzZSBSIiBvciBwYWNrYWdlcyB0aGF0IGhhdmUgbmVlZGVkIHRvIGJlIGluc3RhbGxlZCBzdWNoIGFzIHRoZSB0aWR5dmVyc2UuIEluIHRoaXMgbW9kdWxlIGFuZCB0aGUgbmV4dCwgd2UncmUgZ29pbmcgdG8gbGVhcm4gaG93IHRvIGNyZWF0ZSBvdXIgb3duIGZ1bmN0aW9ucyB3aXRoaW4gUiBzbyB0aGF0IHdlIGNhbiBkbyBleGFjdGx5IHdoYXQgd2Ugd2FudCB0byBkby4gVGhlIGNvbnRlbnQgZm9yIHRoaXMgbW9kdWxlIGlzIGNvdmVyZWQgd2VsbCBieSBbUjREUyBjaGFwdGVyIDE5IChodHRwczovL3I0ZHMuaGFkLmNvLm56L2Z1bmN0aW9ucy5odG1sKV0oaHR0cHM6Ly9yNGRzLmhhZC5jby5uei9mdW5jdGlvbnMuaHRtbCksIHNvIG1ha2Ugc3VyZSB0byBoYXZlIGEgcmVhZCBvZiB0aGF0IGNoYXB0ZXIuIFBhcnQgb2YgbWFraW5nIGZ1bmN0aW9ucyByZXF1aXJlcyB1cyB0byBtYWtlIG91ciBjb2RlIGJlIGFibGUgdG8gbWFrZSBjaG9pY2VzLCB0aGlzIG1vZHVsZSB3aWxsIGFsc28gY292ZXIgdGhpcyBvciBhcyBpdCBpcyBhbHNvIGtub3cgImZsb3cgb2YgY29udHJvbCIuCgo8IS0tIFtQcmV2aW91cyBjb3Vyc2Ugb2YgTXVycmF5XShodHRwczovL2dpdGh1Yi5jb20vbXVycmF5Y2Fkem93L1JfZnVuY3Rpb25zX2FuZF9pdGVyYXRvcnMvYmxvYi9tYXN0ZXIvQ29kZS9mdW5jdGlvbnMuUm1kKSAtLT4KCgoKKipMZWFybmluZyBPYmplY3RpdmVzKioKCi0gIEJlIGFibGUgdG8gY3JlYXRlIGN1c3RvbSBmdW5jdGlvbnMKICAgIC0gICBEZWZpbmUgYXJndW1lbnRzCiAgICAtICAgSW5wdXQgY2hlY2sKICAgIC0gICBSZXR1cm4gcmVzdWx0cwotIFVzZSBjb250cm9sIHN0YXRlbWVudHMgdG8gcGVyZm9ybSBpbnB1dCBjaGVja2luZyBvbiBmdW5jdGlvbnMKCiMgRnVuY3Rpb25zCgpGaXJzdGx5LCB5b3UgbWlnaHQgYmUgd29uZGVyaW5nICJXaHkgd291bGQgSSB3YW50IHRvIGNyZWF0ZSBteSBvd24gZnVuY3Rpb25zIHdoZW4gSSBjYW4gZmluZCBhIHBhY2thZ2UgdGhhdCBhbHJlYWR5IGRvZXMgd2hhdCBJIHdhbnQ/IiBJdCdzIGdyZWF0IGlmIHNvbWVvbmUgZWxzZSBoYXMgbWFkZSBzb21ldGhpbmcgdGhhdCBkb2VzIHdoYXQgeW91IHdhbnQsIGJ1dCBzb21ldGltZXMgaXQgZG9lc24ndCBmaXQgeW91ciBleGFjdCBwdXJwb3NlLiBBbm90aGVyIHJlYXNvbiB0byBsZWFybiBhYm91dCBmdW5jdGlvbnMgaXMgZm9yIG1vZHVsYXJpdHkgYW5kIG1haW50YWluYWJpbGl0eSBvZiB5b3VyIG93biBjb2RlL2FuYWx5c2lzLiBGcm9tIFtSIGZvciBEYXRhIFNjaWVuY2VdKGh0dHBzOi8vcjRkcy5oYWQuY28ubnovZnVuY3Rpb25zLmh0bWwpOgoKPiBPbmUgb2YgdGhlIGJlc3Qgd2F5cyB0byBpbXByb3ZlIHlvdXIgcmVhY2ggYXMgYSBkYXRhIHNjaWVudGlzdCBpcyB0byB3cml0ZSBmdW5jdGlvbnMuIEZ1bmN0aW9ucyBhbGxvdyB5b3UgdG8gYXV0b21hdGUgY29tbW9uIHRhc2tzIGluIGEgbW9yZSBwb3dlcmZ1bCBhbmQgZ2VuZXJhbCB3YXkgdGhhbiBjb3B5LWFuZC1wYXN0aW5nLiBXcml0aW5nIGEgZnVuY3Rpb24gaGFzIHRocmVlIGJpZyBhZHZhbnRhZ2VzIG92ZXIgdXNpbmcgY29weS1hbmQtcGFzdGU6Cj4KPiAxLiAgWW91IGNhbiBnaXZlIGEgZnVuY3Rpb24gYW4gZXZvY2F0aXZlIG5hbWUgdGhhdCBtYWtlcyB5b3VyIGNvZGUgZWFzaWVyIHRvIHVuZGVyc3RhbmQuCj4gMi4gIEFzIHJlcXVpcmVtZW50cyBjaGFuZ2UsIHlvdSBvbmx5IG5lZWQgdG8gdXBkYXRlIGNvZGUgaW4gb25lIHBsYWNlLCBpbnN0ZWFkIG9mIG1hbnkuCj4gMy4gIFlvdSBlbGltaW5hdGUgdGhlIGNoYW5jZSBvZiBtYWtpbmcgaW5jaWRlbnRhbCBtaXN0YWtlcyB3aGVuIHlvdSBjb3B5IGFuZCBwYXN0ZSAoaS5lLiB1cGRhdGluZyBhIHZhcmlhYmxlIG5hbWUgaW4gb25lIHBsYWNlLCBidXQgbm90IGluIGFub3RoZXIpLgo+Cj4gWW91IHNob3VsZCBjb25zaWRlciB3cml0aW5nIGEgZnVuY3Rpb24gd2hlbmV2ZXIgeW91J3ZlIGNvcGllZCBhbmQgcGFzdGVkIGEgYmxvY2sgb2YgY29kZSBtb3JlIHRoYW4gdHdpY2UgKGkuZS4geW91IG5vdyBoYXZlIHRocmVlIGNvcGllcyBvZiB0aGUgc2FtZSBjb2RlKS4KCiMjIENvbXBvc2l0aW9uIG9mIGEgZnVuY3Rpb24KCkEgZnVuY3Rpb24gaW4gUiBpcyBjb21wcmlzZWQgb2YgZm91ciBwYXJ0czoKCjEuIGEgbmFtZQoyLiBpbnB1dHMgKGFyZ3VtZW50cy92YXJpYWJsZXMpCjMuIHRoZSBib2R5ICh0aGUgY29kZSB0aGF0IGRvZXMgc29tZXRoaW5nKQo0LiBvdXRwdXQgKHdoYXQgZ2V0cyByZXR1cm5lZCBhZnRlciB0aGUgYm9keSBoYXMgcnVuKQoKQXMgeW91IGhhdmUgYmVlbiB1c2luZyBSIHlvdSB3aWxsIGhhdmUgbm90aWNlZCB0aGF0IG1hbnkgdGFza3MgaGF2ZSBhIHBhcnRpY3VsYXIgZnVuY3Rpb24gYWxyZWFkeSBhdmFpbGFibGUgZm9yIHlvdSB0byB1c2UsIHN1Y2ggYXMgYG1lYW5gIG9yIGBzZGAuIEluIHRoaXMgc2VjdGlvbiB3ZSBhcmUgZ29pbmcgdG8gbGVhcm4gaG93IHRvIG1ha2Ugb3VyIG93biBmdW5jdGlvbnMuIFdlIGNhbiBkZWZpbmUgb3VyIG93biBmdW5jdGlvbnMgdXNpbmcgdGhlIGBmdW5jdGlvbigpYCBmdW5jdGlvbi4KCkluc2lkZSB0aGUgcGFyZW50aGVzaXMgd2UgZGVmaW5lIHdoYXQgdmFyaWFibGVzIGFyZSBnb2luZyB0byBiZSBwYXNzZWQgdG8gb3VyIGZ1bmN0aW9uIGFuZCBjdXJseSBicmFjZXMgY29udGFpbiB0aGUgYm9keSBvZiB0aGUgZnVuY3Rpb24uIElmIHdlIHdhbnQgdG8gcmV0dXJuIGEgdmFsdWUgZnJvbSBvdXIgZnVuY3Rpb24gIFIgd2lsbCBhdXRvbWF0aWNhbGx5IHJldHVybiB0aGUgcmVzdWx0IG9mIHRoZSBsYXN0IGxpbmUgb2YgdGhlIGZ1bmN0aW9uIGJvZHkgb3Igd2UgZW5kIGNhbiBkbyBzbyBleHBsaWNpdGx5IHdpdGggYHJldHVybigpYC4KCldlIGNhbiBhc3NpZ24gdGhpcyBuZXcgZnVuY3Rpb24gdG8gYSB2YXJpYWJsZSBzbyB0aGF0IHdlIGNhbGwgb24gaXQgbGF0ZXIsIGl0IGlzIHBvc3NpYmxlIHRvIGhhdmUgYW4gX2Fub255bW91c18gZnVuY3Rpb24gYnV0IHRoZXNlIGFyZSB1c3VhbGx5IGZvdW5kIGFzIHBhcnQgb2YgYG1hcGAgb3IgdGhlIGFwcGx5IGZhbWlseSAoaW50cm9kdWNlZCBpbiBNb2R1bGUgOCkgYnV0IHdlIHdvbid0IGJlIGNvdmVyaW5nIGFub255bW91cyBmdW5jdGlvbnMgaW4gdGhpcyBjb3Vyc2UuIAoKVG8gY2FsbCBvdXIgbmV3IGZ1bmN0aW9uIHdlIG5vdyB1c2UgdGhlIHZhcmlhYmxlIG5hbWUgYW5kIHBhc3MgYW55IHJlcXVpcmVkIGFyZ3VtZW50cy4KCkhlcmUgaXMgYW4gZXhhbXBsZSBvZiBob3cgdG8gY3JlYXRlIGEgZnVuY3Rpb246CmBgYHtyfQojIGFuIGV4YW1wbGUgZnVuY3Rpb24gc2tlbGV0b24KbmFtZSA8LSBmdW5jdGlvbih2YXJpYWJsZXMpIHsKICAjIGJvZHkKfQpgYGAKCioqTkI6KiogaW4gUlN0dWRpbyB5b3UgY2FuIGdldCBhIGNvZGUgc25pcHBldC90ZW1wbGF0ZSBieSB0eXBpbmcgImZ1biIgYW5kIGhpdHRpbmcgYDx0YWI+YAoKSGVyZSBpcyBhbiBleGFtcGxlIGZ1bmN0aW9uIHRoYXQgd2lsbCBkb3VibGUgdGhlIHZhbHVlIG9mIHRoZSBwcm92aWRlZCBudW1iZXI6CmBgYHtyLCBldmFsID0gVFJVRSwgZWNobyA9IFRSVUV9CiMgRG91YmxlcyB0aGUgcHJvdmlkZWQgbnVtYmVyCmRvdWJsZSA8LSBmdW5jdGlvbiggbnVtICl7CiAgbnVtICogMgp9Cgpkb3VibGUoMikKYGBgCgoqKkltcG9ydGFudDogRnVuY3Rpb25zIGRvbid0IGF1dG8tdXBkYXRlIHdoZW4geW91IG1vZGlmeSB0aGUgY29kZSB0aGF0IGNyZWF0ZXMgdGhlbSwgeW91IG11c3QgcmUtcnVuIHRoZSBlbnRpcmUgZnVuY3Rpb24gY29kZSBibG9jay4qKgoKCldlIGNhbiBhbHNvIGhhdmUgbXVsdGlwbGUgYXJndW1lbnRzIGZvciBvdXIgZnVuY3Rpb25zOgoKYGBge3IsIGV2YWwgPSBUUlVFLCBlY2hvID0gVFJVRX0KIyBDYWxjdWxhdGVzIEJNSSBvbiBhIHN1cHBsaWVkIGhlaWdodCAobSkgYW5kIHdlaWdodCAoa2cpCmNhbGNCTUkgPC0gZnVuY3Rpb24oaGVpZ2h0LCB3ZWlnaHQpewogIHdlaWdodCAvIGhlaWdodCBeIDIKfQoKCmNhbGNCTUkoaGVpZ2h0ID0gMS42OCwgd2VpZ2h0ID0gNzMpCmBgYAoKKipOQjoqKiBWYXJpYWJsZXMgZGVjbGFyZWQgb25seSBpbnNpZGUgYSBmdW5jdGlvbiBkb24ndCBleGlzdCBvdXRzaWRlIG9mIHRoZSBmdW5jdGlvbiAtLSBzZWUgdGhlIF9TY29wZV8gc2VjdGlvbi4KCldlJ2xsIG5vdyBnbyBpbnRvIHNvbWUgbW9yZSBleHBsYW5hdGlvbiBhYm91dCB0aGUgZWFjaCBwYXJ0IG9mIHRoZSBmdW5jdGlvbiBjb21wb3NpdGlvbi4gCgojIyMgTmFtaW5nCgpOYW1pbmcgdGhpbmdzIGlzIHJlYWxseSBoYXJkLiBBIGhlbHBmdWwgdGlwIGZvciBuYW1pbmcgb2YgZnVuY3Rpb25zIGlzIHRoZSBuYW1lIHNob3VsZCBnaXZlIHRoZSB1c2VyIGFuIGlkZWEgb2Ygd2hhdCB0aGUgZnVuY3Rpb24gKmRvZXMqLCBzbyBzaG91bGQgY29udGFpbiBhIHZlcmIuIFRyeSBub3QgdG8gY2hvb3NlIGEgbmFtZSBvZiBhIHZhcmlhYmxlIG9yIGZ1bmN0aW9uIHRoYXQgYWxyZWFkeSBleGlzdHMsIGFzIHRoaXMgd2lsbCBwcmV2ZW50IHlvdSBmcm9tIGJlaW5nIGFibGUgdG8gY2FsbCB1cG9uIHRoZSBvdGhlciB2ZXJzaW9uIGJ5IHVzaW5nIGl0J3Mgc2hvcnQgbmFtZSB0aGF0IHlvdSdsbCBiZSB1c2VkIHRvIGUuZy4gYGZpbHRlcigpYCwgYG1lYW4oKWAgYW5kIGluc3RlYWQgeW91J2xsIGhhdmUgdG8gYWNjZXNzIHRoZSBvdGhlciB2ZXJzaW9ucyB3aXRoIHRoZWlyIGZ1bGwgbmFtZSB3aGljaCBsb29rcyBsaWtlIHRoaXMgX3BhY2thZ2U6OmZ1bmN0aW9uX25hbWUoKV8gZS5nLiBgZHBseXI6OmZpbHRlcigpYCBvciBgYmFzZTo6bWVhbigpYC4gVGhpcyBmdWxsIG5hbWUgbWV0aG9kIGlzIGFsc28gaG93IHlvdSBjYW4gcmVmZXIgZXhhY3QgZnVuY3Rpb25zIGZyb20gcGFydGljdWxhciBwYWNrYWdlcyBpZiBwYWNrYWdlcyBoYXZlIGZ1bmN0aW9ucyBvZiB0aGUgc2FtZSBuYW1lIGFuZCB5b3UgaGF2ZSBsb2FkZWQgdGhlbSB3aXRoIGBsaWJyYXJ5YC4KCiMjIyBEZWZpbmluZyBhcmd1bWVudHMKClVzdWFsbHkgdGhlcmUgYXJlIHR3byBjYXRlZ29yaWVzIG9mIHZhcmlhYmxlcyBmb3IgYSBmdW5jdGlvbi4gVGhlIGZpcnN0IGNhdGVnb3J5IGFyZSAqZGF0YSogYW5kIGlzIG9mdGVuIGNhbGxlZCBgeGAuIEEgbmljZSBwcmFjdGljZSBpcyB0byBkZWZpbmUgeW91ciBhcmd1bWVudHMgZm9yIHlvdXIgaW5wdXQgZGF0YSBmaXJzdC4gVGhlIHNlY29uZCBjYXRlZ29yeSBpcyAqYmVoYXZpb3VyIG1vZGlmaWVycyosIGkuZS4gdGhleSBjb250cm9sIHRoZSBkZXRhaWxzIG9mIHRoZSBjb21wdXRhdGlvbi4gQSBjb21tb24gYmVoYXZpb3VyIG1vZGlmaWVyIGlzIHdoYXQgdG8gZG8gd2l0aCBgTkFgJ3MgZS5nLiBgbmEucm1gLgoKQXQgdGhlIHRpbWUgb2YgZGVjbGFyaW5nIHlvdXIgYXJndW1lbnRzLCB5b3UgY2FuIGFsc28gYXNzaWduIGRlZmF1bHRzLiBJdCBpcyBhIGdvb2QgaWRlYSB0byBzZXQgdGhlIGRlZmF1bHRzIG9mIHlvdXIgYmVoYXZpb3VyIG1vZGlmeWluZyBhcmd1bWVudHMgdG8gc29tZXRoaW5nIHNlbnNpYmxlLiBXaGVuIHRoZSBmdW5jdGlvbiBpcyBjYWxsZWQgYnkgdGhlIHVzZXIgaWYgdGhleSBkb24ndCBzdXBwbHkgYSB2YWx1ZSBmb3IgdGhlIGFyZ3VtZW50IHRoZSB2YWx1ZSBwcm92aWRlZCBieSB0aGUgZGVmYXVsdCBpcyB1c2VkLgoKSGVyZSBpcyBhbiBleGFtcGxlIGZ1bmN0aW9uIHRoYXQgY291bGQgYmUgdXNlZCBpZiB5b3Ugd2FudGVkIHRvIGR1cGxpY2F0ZSB5b3VyIGRhdGE6CmBgYHtyfQojIGR1cGxpY2F0ZXMgYSB2ZWN0b3IgbiB0aW1lcwpkdXBsaWNhdGUgPC0gZnVuY3Rpb24oeCwgbiA9IDIpIHsKIHJlcCh4LCBuKQp9CgpteV9udW1zIDwtIGMoMSwyLDMpCgojIGR1cGxpY2F0ZXMgdHdpY2UgKGRlZmF1bHQpCmR1cGxpY2F0ZShteV9udW1zKQoKIyBkdXBsaWNhdGVzIDQgdGltZXMKZHVwbGljYXRlKG15X251bXMsIG4gPSA0KQpgYGAKClNvbWV0aGluZyB0aGF0IHlvdSBtYXkgaGF2ZSBub3RpY2VkIGlzIHRoZSB1c2Ugb2YgdGhlIGFyZ3VtZW50IG5hbWUgaXMgbm90IHJlcXVpcmVkIGZvciB0aGUgZnVuY3Rpb24gdG8gcnVuLiBUaGlzIGlzIGJlY2F1c2UgUiB3aWxsIGZpbGwgaW4gdGhlIHZhbHVlcyBvZiB0aGUgYXJndW1lbnRzIGJhc2VkIG9uIHBvc2l0aW9uLiBZb3UgY2FuIHJ1biBhcmd1bWVudHMgaW4gYW55IG9yZGVyLCBzbyBsb25nIGFzIHRoZSBuYW1lcyBhcmUgcHJvdmlkZWQuIEJlc3QgcHJhY3RpY2UgaXMgdG8gdXNlIHRoZSBuYW1lcyB3aGVuIGNhbGxpbmcgZnVuY3Rpb25zIGJlY2F1c2UgaXQgcHJvdmlkZXMgYmV0dGVyIHJlYWRhYmlsaXR5IG9mIGNvZGUsIGVzcGVjaWFsbHkgZm9yIHRoZSBiZWhhdmlvdXIgbW9kaWZ5aW5nIG9uZXMuCgpBbm90aGVyIGltcG9ydGFudCB0aGluZyB0byBub3RlIGlzIHRoYXQgd2UgaGF2ZW4ndCBleHBsaWNpdGx5IGNvdmVyZWQgaXMgdGhlIHVzZSBvZiBgPWAgcmF0aGVyIHRoYW4gYDwtYCB3aGVuIGRlZmluaW5nIGFyZ3VtZW50cy4gVGVjaG5pY2FsbHkgYD1gIGNhbiBiZSB1c2VkIGZvciBhc3NpZ25tZW50IG9mIHZhcmlhYmxlcyBhbmQgeW91IG1heSBoYXZlIGFscmVhZHkgc2VlbiB0aGlzIGJlaW5nIGRvbmU6CgpgYGB7cn0KIyB1c2luZyAnPScgZm9yIGFzc2lnbm1lbnQgdG8gYSB2YXJpYWJsZQphID0gMwoKYQpgYGAKCkhvd2V2ZXIsIHRoZSBrZXkgZGlmZmVyZW5jZSBiZXR3ZWVuIGA9YCBhbmQgYDwtYCBjb21lcyB0byB0aGUgdXNlIG9mIGRlZmluaW5nIGFyZ3VtZW50cyB0byBhIGZ1bmN0aW9uLiBgPWAgd2lsbCBwYXNzIHRoZSB2YWx1ZSB0byB0aGUgYXJndW1lbnQgd2l0aG91dCBjcmVhdGluZyBhIHZhcmlhYmxlIGluIHlvdXIgZ2xvYmFsIGVudmlyb25tZW50LCBgPC1gIGNhbiBiZSB1c2VkIChidXQgc3Ryb25nbHkgcmVjb21tZW5kZWQgYWdhaW5zdCkgYXMgaXQgd2lsbCBwYXNzIHRoZSB2YWx1ZSB0byB0aGUgYXJndW1lbnQsIGJ1dCBhbHNvIGNyZWF0ZSBhIHZhcmlhYmxlIGluIHRoZSBnbG9iYWwgZW52aXJvbm1lbnQgb2YgdGhlIHNhbWUgbmFtZToKCmBgYHtyLCBlcnJvciA9IFRSVUV9Cm1lYW4oeCA9IDMpCiMgeCBzaG91bGRuJ3QgZXhpc3Qgc28gZ2l2ZXMgYW4gZXJyb3IKeAoKIyBkb24ndCBkbyB0aGlzOgptZWFuKHggPC0gMykKIyB4IG5vdyBleGlzdHMKeApgYGAKCgoqKk5COioqIEZvciBtb3JlIG9uIGVudmlyb25tZW50cyBzZWUgdGhlIF9fU2NvcGVfXyBzZWN0aW9uLgoKIyMjIE91dHB1dHMKClVzdWFsbHkgdGhlIHJlYXNvbiBmb3IgY2FsbGluZyBhIGZ1bmN0aW9uIGlzIHRvIGhhdmUgaXQgcHJvdmlkZSBzb21lIG91dHB1dCwgaG93ZXZlciwgcHJvdmlkaW5nIGFuIG91dHB1dCBpc24ndCBuZWNlc3NhcnkuIFRoZSBsYXN0IGxpbmUgb2YgdGhlIGZ1bmN0aW9uIGlzIHVzdWFsbHkgd2hhdCBnZXRzIHJldHVybmVkIGJhY2sgdG8gdGhlIHVzZXIgYnV0IGl0IGlzIHBvc3NpYmxlIHRvIGJlIGV4cGxpY2l0IGFib3V0IHdoYXQgaXMgcmV0dXJuZWQgYnkgdXNpbmcgYHJldHVybigpYCwgb3IgdG8gZXhpdCBmcm9tIHRoZSBib2R5IGVhcmxpZXIgdGhhbiB0aGUgZmluYWwgbGluZSAtLSB0aGlzIHNpdHVhdGlvbiB1c3VhbGx5IGFyaXNlcyB3aGVuIHVzaW5nIGNvbnRyb2wgc3RhdGVtZW50cyAoZXhwbGFpbmVkIGxhdGVyIGluIHRoaXMgaGFuZG91dCkuCgpIZXJlIGlzIGFuIGV4YW1wbGUgb2YgdXNpbmcgdGhlIGxhc3QgbGluZToKCmBgYHtyfQpkb3VibGUgPC0gZnVuY3Rpb24oIG51bSApewogICMgdGhlIHJlc3VsdCBvZiB0aGUgbmV4dCBsaW5lIHdpbGwgYmUgYXV0b21hdGljYWxseSByZXR1cm5lZAogIG51bSAqIDIKfQoKZG91YmxlKDQpCmBgYAoKQW5kIHVzaW5nIGByZXR1cm4oKWA6CgpgYGB7cn0KZG91YmxlIDwtIGZ1bmN0aW9uKCBudW0gKXsKICAjIHRoZSByZXN1bHQgb2YgdGhlIG5leHQgbGluZSB3aWxsIGJlIGF1dG9tYXRpY2FsbHkgcmV0dXJuZWQKICByZXN1bHQgPC0gbnVtICogMgogIHJldHVybihyZXN1bHQpCn0KCmRvdWJsZSg1KQpgYGAKClRoaXMgcGFydGljdWxhciBleGFtcGxlIG9mIHVzaW5nIHJldHVybiBkb2VzIGNyZWF0ZSBleHRyYSBzdGVwcyBzdWNoIGFzIG1ha2luZyBhbmQgYXNzaWduaW5nIHRvIGEgbG9jYWwgdmFyaWFibGUuIFRoZSBtb3N0IHVzZWZ1bCB0aW1lIHRvIHVzZSBgcmV0dXJuKClgIGlzIGluIHRoZSBib2R5IG9mIGEgY29udHJvbCBmbG93IHN0YXRlbWVudCB0byBleGl0IG91dCB0aGUgZnVuY3Rpb24gZWFybHkgaWYgYSBjb25kaXRpb24gaXMgbWV0IC0tIHNlZSB0aGUgKipJZiBhbmQgRWxzZSoqIHNlY3Rpb24uCgoKIyMgU2NvcGUKCldoZW4geW91IHNwZWNpZnkgYSB2YXJpYWJsZSBpbiBSIGl0IHdpbGwgc3RhcnQgdHJ5aW5nIHRvIGZpbmQgc29tZXRoaW5nIHdpdGggdGhhdCBuYW1lIHdpdGhpbiB0aGUgZ2xvYmFsIGVudmlyb25tZW50IChkaXNwbGF5ZWQgaW4gdGhlIF9FbnZpcm9ubWVudF8gdGFiIGluIFJTdHVkaW8pLiBJbiB0aGUgY2FzZSBvZiBmdW5jdGlvbnMsIGFueSB2YXJpYWJsZSBkZWZpbmVkIGluIHRoZSBmdW5jdGlvbiAoaW5jbHVkaW5nIHRocm91Z2ggaXRzIGFyZ3VtZW50cykgc3RheXMgd2l0aGluIHRoZSBmdW5jdGlvbiAoYSBzZXBhcmF0ZSBsb2NhbCBlbnZpcm9ubWVudCBzcGVjaWZpYyB0byB0aGUgZnVuY3Rpb24pLiBJZiBob3dldmVyIGluIHRoZSBib2R5IG9mIHRoZSBmdW5jdGlvbiB5b3UgcmVmZXIgdG8gYSB2YXJpYWJsZSB0aGF0IGhhc24ndCBiZWVuIGRlZmluZWQgaW4gdGhlIGZ1bmN0aW9uLCBSIHdpbGwgc3RhcnQgbG9va2luZyBhdCB0aGUgZ2xvYmFsIGVudmlyb25tZW50IGFuZCBpZiBpdCBmaW5kcyBhIHZhcmlhYmxlIG9mIHRoZSBzYW1lIG5hbWUgeW91J3ZlIGNyZWF0ZWQgb3V0c2lkZSBvZiB0aGUgZnVuY3Rpb24sIGl0IHdpbGwgdXNlIHRoZSB2YWx1ZSB0aGF0IGlzIHN0b3JlZCB3aXRoaW4gaXQuIFRoaXMgYmVoYXZpb3VyIGNhbiBjYXVzZSBpc3N1ZXMuCgoKSGVyZSBpcyBhbiBleGFtcGxlLCB3aGVyZSB0aGUgZnVuY3Rpb24gbmVlZHMgYSB2YWx1ZSBmb3IgYG5gIGJ1dCBpdCBoYXNuJ3QgYmVlbiBzdXBwbGllZCBhcyBhbiBhcmd1bWVudCBhbmQgdGhlcmUgaXMgbm8gZGVmYXVsdCB2YWx1ZS4KCmBgYHtyLCBlcnJvcj1UUlVFfQojIG11bHRpcGxpZXMgdGhlIG51bWJlciB4IGJ5IHRoZSBudW1iZXIgbgptdWx0aXBseV9ieV9uIDwtIGZ1bmN0aW9uKHgpewogIHggKiBuCn0KCm11bHRpcGx5X2J5X24oeCA9IDMpCmBgYAoKSW4gdGhlIGZ1bmN0aW9uIGJvZHkgd2UgcmVmZXJyZWQgdG8gYG5gIHdoaWNoIHdhc24ndCBkZWZpbmVkIGFueXdoZXJlIHNvIHdlIGdvdCBhbiBlcnJvci4KCgpMZXQncyB1c2UgdGhlIHNhbWUgZnVuY3Rpb24gYWdhaW4gYnV0IGRlZmluZSBgbmAgb3V0c2lkZSB0aGUgZnVuY3Rpb246CmBgYHtyfQojIG11bHRpcGxpZXMgdGhlIG51bWJlciB4IGJ5IHRoZSBudW1iZXIgbgptdWx0aXBseV9ieV9uIDwtIGZ1bmN0aW9uKHgpewogIHggKiBuCn0KCiMgZGVmaW5lIG4gaW4gdGhlIGdsb2JhbCBlbnZpcm9ubWVudCAKbiA8LSAxMAoKbXVsdGlwbHlfYnlfbih4ID0gMykKYGBgClRoaXMgdGltZSBSIGxvb2tzIGZvciBgbmAgaW5zaWRlIHRoZSBib2R5IGJ1dCBkb2Vzbid0IGZpbmQgaXQgYW5kIHdoZW4gaXQgbG9va3MgaW50byB0aGUgZ2xvYmFsIGVudmlyb25tZW50IGl0IGZpbmRzIGEgdmFyaWFibGUgbmFtZWQgYG5gIGFuZCBzbyB1c2VzIHRoYXQgdmFsdWUuCiAKIFRoaXMgdGltZSB3ZSdyZSBnb2luZyB0byBtb2RpZnkgdGhlIGZ1bmN0aW9uIHRvIHRha2UgYSBzZWNvbmQgYXJndW1lbnQgY2FsbGVkIGBuYCwgYW5kIGFsc28gaGF2ZSBgbmAgZGVmaW5lZCBpbiB0aGUgZ2xvYmFsIGVudmlyb25tZW50OgpgYGB7cn0KIyBtdWx0aXBsaWVzIHRoZSBudW1iZXIgeCBieSB0aGUgbnVtYmVyIG4KbXVsdGlwbHlfYnlfbiA8LSBmdW5jdGlvbih4LCBuKXsKICB4ICogbgp9CgojIGRlZmluZSBuIGluIHRoZSBnbG9iYWwgZW52aXJvbm1lbnQKbiA8LSAxMAoKbXVsdGlwbHlfYnlfbih4ID0gMywgbiA9IDIpCmBgYAogClRoZSB2YWx1ZSBvZiBgbmAgdGhhdCB3YXMgdXNlZCB3YXMgdGhlIHZhbHVlIHN1cHBsaWVkIGFzIHRoZSBhcmd1bWVudCwgcmF0aGVyIHRoYW4gdGhlIHZlcnNpb24gdGhhdCB3YXMgZGVmaW5lZCBpbiB0aGUgZ2xvYmFsIGVudmlyb25tZW50LiBXaGF0IHRoaXMgdGVsbHMgdXMgaXMgdGhhdCBmdW5jdGlvbnMgd2lsbCB1c2UgYSBsb2NhbGx5IGRlZmluZWQgdmFyaWFibGUsIGJ1dCBpZiBpdCBjYW4ndCBmaW5kIG9uZSwgaXQgd2lsbCBzdGFydCB0byBsb29rIHdpZGVyLgoKQW5vdGhlciBleGFtcGxlIHRoYXQgZGVtb25zdHJhdGVzIHRoYXQgZnVuY3Rpb25zIG9wZXJhdGUgbG9jYWxseSAoaW5zaWRlIHRoZSBib2R5KSBpcyB0cnlpbmcgdG8gbW9kaWZ5IHZhcmlhYmxlcyB0aGF0IGV4aXN0IGluIHRoZSBnbG9iYWwgZW52aXJvbm1lbnQ6CgpgYGB7cn0KIyBhc3NpZ24gdGhlIHZhbHVlIHByb3ZpZGVkIHRvIHggdG8gdGhlIHZhcmlhYmxlIGEKbW9kaWZ5X2EgPC0gZnVuY3Rpb24oeCl7CiAgYSA8LSB4Cn0KYGBgCgpUaGlzIGZ1bmN0aW9uIGxvb2tzIGxpa2UgaXQgc2hvdWxkIGFzc2lnbiB0aGUgdmFsdWUgb2YgYHhgIGludG8gYGFgLiBUbyBkZW1vbnN0cmF0ZSB0aGF0IHRoZSBmdW5jdGlvbiBpcyBvbmx5IHdvcmtpbmcgb24gdGhlIF9mdW5jdGlvbl8gdmVyc2lvbiBvZiBgYWAsIHdlJ2xsIGRlZmluZSBgYWAgZ2xvYmFsbHksIHJ1biB0aGUgZnVuY3Rpb24sIHRoZW4gc2VlIHdoYXQgdGhlIHZhbHVlIGluIGBhYCBpcyBhZnRlcndhcmRzOgoKYGBge3J9CiMgZGVmaW5lIGEgZ2xvYmFsIHZlcnNpb24gb2YgYQphIDwtIDEyCgojIHdlIHdhbnQgYSB0byBiZWNvbWUgNQptb2RpZnlfYSh4ID0gNSkKCgojIG91dHB1dCB0aGUgdmFsdWUgb2YgYQphCmBgYAoKVGhlIHZhbHVlIG9mIGBhYCBoYXMgcmVtYWluZWQgYHIgYWAgcmF0aGVyIHRoYW4gYDVgIGxpa2Ugd2UgaGFkIGhvcGVkLiBUaGlzIHNob3dzIGFnYWluIHRoYXQgdGhlIGZ1bmN0aW9uIGlzIGNyZWF0aW5nIHZhcmlhYmxlcyB0aGF0IG9ubHkgZXhpc3QgaW5zaWRlIHRoZSBmdW5jdGlvbiwgYW5kIGlzbid0IG1vZGlmeWluZyB0aGUgZ2xvYmFsIGVudmlyb25tZW50LgoKIyBDb250cm9sIFN0YXRlbWVudHMKCkNvbnRyb2wgc3RhdGVtZW50cyBhbGxvdyB1cyB0byB1c2UgY29uZGl0aW9ucyB0byBleGVjdXRlIHBhcnRpY3VsYXIgcGllY2VzIG9mIGNvZGUgYmFzZWQgb24gdGhlIGlucHV0LiBJbiB0aGUgY29udGV4dCBvZiBmdW5jdGlvbnMsIG9mdGVuIGlmIHdlIGFyZSBjcmVhdGluZyBhIGJlaGF2aW91ciBtb2RpZnlpbmcgYXJndW1lbnQsIHdlIHdhbnQgY2VydGFpbiBibG9ja3Mgb2YgY29kZSB0byBydW4gZGVwZW5kaW5nIG9uIHRoZSB2YWx1ZSBzdXBwbGllZCB0byB0aGUgYXJndW1lbnQuIFRoZXNlIHN0YXRlbWVudHMgcmVseSBvbiBhIHRlc3QgKGNvbmRpdGlvbi9jb21wYXJpc29uKSB0aGF0IHJlc3VsdHMgaW4gYSBib29sZWFuIChgVFJVRWAvYEZBTFNFYCkgdG8gZGV0ZXJtaW5lIHdoYXQgZ2V0cyBydW4uIEJvb2xlYW4gbG9naWMgb3BlcmF0b3JzIGNhbiBiZSB1c2VkIGluIHRvIG1vZGlmeSBvciBjb21iaW5lIHRlc3RzIHRvIHJlc3VsdCBpbiBhIHNpbmdsZSBgVFJVRWAgb3IgYEZBTFNFYC4KCgpCb29sZWFuIE9wZXJhdGlvbiB8IFN5bWJvbCBpbiBSCi0tLXwtLS0KTk9UIHwgIQpPUiB8IFx8CkFORCB8ICYKClRoZXNlIGNhbiBiZSBjb21iaW5lZCB3aXRoIHRoZSBjb21wYXJpc29uIG9wZXJhdG9ycyB5b3Ugc2F3IGluIE1vZHVsZSAzIChgPT1gLCBgIT1gLCBgPGAsIGA8PWAsIGA+YCwgYD49YCkgdG8gY29tYmluZSBzdGF0ZW1lbnRzIHRvZ2V0aGVyIGludG8gbW9yZSBjb21wbGV4IGxvZ2ljIHN0YXRlbWVudHMuIFRoZSByZXN1bHQgb2YgdGhlIE5PVCwgQU5ELCBhbmQgT1IgY2FuIGJlIHNlZW4gaW4gdGhlIGJlbG93IGxvZ2ljIHRhYmxlOgoKU3RhdGVtZW50IHwgQmVjb21lcwotLS18LS0tfC0tLXwtLS0KICAhVFJVRSB8IGByICFUUlVFYAogIUZBTFNFIHwgYHIgIUZBTFNFYCAKVFJVRSAmIFRSVUUgfCBgciBUUlVFICYgVFJVRWAKVFJVRSAmIEZBTFNFIHwgYHIgVFJVRSAmIEZBTFNFYApGQUxTRSAmIFRSVUUgfCBgciBGQUxTRSAmIFRSVUVgCkZBTFNFICYgRkFMU0UgfCBgciBGQUxTRSAmIEZBTFNFYApUUlVFIFx8IFRSVUUgfCBgciBUUlVFIHwgVFJVRWAKVFJVRSBcfCBGQUxTRSB8IGByIFRSVUUgfCBGQUxTRWAKRkFMU0UgXHwgVFJVRSB8IGByIEZBTFNFIHwgVFJVRWAKRkFMU0UgXHwgRkFMU0UgfCBgciBGQUxTRSB8IEZBTFNFYAoKCgojIyBJZiBhbmQgRWxzZQoKV2UgdXNlIHRoZSByZXN1bHRzIG9mIGxvZ2ljIHN0YXRlbWVudHMgaW4gKippZigpKiogdG8gZGV0ZXJtaW5lIGlmIGEgYmxvY2sgb2YgY29kZSBzaG91bGQgcnVuLiBUaGUgZm9ybWF0IG9mIGFuIGBpZmAgc3RhdGVtZW50IGlzOgoKYGBge3IsIGV2YWwgPSBGQUxTRX0KaWYgKGNvbmRpdGlvbikgewogICMgY29kZSBoZXJlIGlzIG9ubHkgcnVuIGlmIGNvbmRpdGlvbiB3YXMgVFJVRQp9CmBgYAoKU2ltaWxhciB0byBhIGZ1bmN0aW9uLCB0aGUgYHt9YCdzIGRlbm90ZSB0aGUgYm9keSBvZiBjb2RlIGJlbG9uZ2luZyB0byBgaWZgLiBUaGlzIGNvZGUgaXMgKipvbmx5KiogcnVuIHdoZW4gdGhlIGBpZmAgY29uZGl0aW9uIGlzIFRSVUUsIG90aGVyd2lzZSBpdCBnZXRzIHNraXBwZWQuIElmIHdlIHdhbnQgYW5vdGhlciBibG9jayBvZiBjb2RlIHRvIHJ1biB3aGVuIG9ubHkgd2hlbiB0aGUgY29uZGl0aW9uIGlzIEZBTFNFLCB3ZSBjYW4gdXNlIGBlbHNlYCBhdCB0aGUgZW5kIG9mIHRoZSBjb2RlIGJsb2NrIHRvIGNyZWF0ZSB0aGlzIHNlY29uZCBibG9jay4KCmBgYHtyLCBldmFsID0gRkFMU0V9CmlmIChjb25kaXRpb24pIHsKICAjIGNvZGUgaGVyZSBpcyBvbmx5IHJ1biBpZiBjb25kaXRpb24gd2FzIFRSVUUKfSBlbHNlIHsKICAjIGNvZGUgaGVyZSBpcyBvbmx5IHJ1biBpZiBjb25kaXRpb24gd2FzIEZBTFNFCn0KCgpgYGAKClRoZSBmb2xsb3dpbmcgZXhhbXBsZSBzaG93cyBob3cgeW91IGNhbiBjcmVhdGUgYSBzZXJpZXMgb2YgY29uZGl0aW9ucywgd2hlcmUgdGhlIGNvbmRpdGlvbnMgYXJlIHJ1biBvbmUgYXQgYSB0aW1lIGZyb20gdGhlIHRvcCBhbmQgdGhlIGZpcnN0IGNvbmRpdGlvbiB0aGF0IGV2YWx1YXRlcyB0byBgVFJVRWAgaXMgdGhlIG9ubHkgY29kZSBibG9jayB0aGF0IGdldHMgcnVuLgoKCmBgYHtyfQpibWkgPC0gMjEKaWYoYm1pID4gMzApewogIHByaW50KCJvYmVzZSIpCn0gZWxzZSBpZiAoYm1pID4gMjUpewogIHByaW50KCJvdmVyd2VpZ2h0IikKfSBlbHNlIGlmIChibWkgPiAyMCl7CiAgcHJpbnQoImhlYWx0aHkiKQp9IGVsc2UgewogIHByaW50KCJ1bmRlcndlaWdodCIpCn0KYGBgCgoKIyMgSW1wcm92aW5nIGZ1bmN0aW9ucwoKTm93IHRoYXQgd2UgaGF2ZSBsb29rZWQgYXQgY29udHJvbCBzdGF0ZW1lbnRzIGFuZCBob3cgdGhleSBvcGVyYXRlLCB3ZSdyZSBnb2luZyB0byBsb29rIGF0IGhvdyB3ZSBjYW4gdXNlIHRoZW0gdG8gbWFrZSBvdXIgZnVuY3Rpb25zIGJldHRlci4KCiMjIyBGYWlsaW5nCgpPbmUgb2YgdGhlIHNheWluZyBpbiBwcm9ncmFtbWluZyBpcyAiaWYgaXQncyBnb2luZyB0byBmYWlsLCBpdCdzIGJlc3QgdG8gZmFpbCBlYXJseSIuIFdoYXQgdGhpcyBtZWFucyBpbiBwcmFjdGljZSBpcyB0aGF0IGlmIHdlIGtub3cgdGhhdCBvdXIgZnVuY3Rpb24gY2FuIG9ubHkgaGFuZGxlIGEgc3BlY2lmaWMgaW5wdXQgb3IgaXQgd2lsbCBjYXVzZSBpc3N1ZXMgaS5lLiBgMSArIDJgIGlzIGZpbmUgYnV0IGAxICsgImEiYCBjYXVzZXMgYW4gZXJyb3IsIHdlIHdhbnQgdG8gcHJvZ3JhbSAqKmRlZmVuc2l2ZWx5Kiogc28gdGhhdCBvdXIgZnVuY3Rpb24gImZhaWxzIiBiZWZvcmUgaXQgZW5jb3VudGVycyB0aGUgZXJyb3IuIFIgYWxzbyBwcm92aWRlcyBub3RvcmlvdXNseSBkaWZmaWN1bHQgZXJyb3IgbWVzc2FnZXMgdG8gdW5kZXJzdGFuZC4gQXMgcGFydCBvZiBvdXIgZGVmZW5zaXZlIHByb2dyYW1taW5nIHdlIGNhbiBwcm92aWRlIHNvbWUgbWVzc2FnZXMgdGhhdCBhcmUgdXNlciBmcmllbmRseSBpbnN0ZWFkLgoKLSBkYXRhIHR5cGUgY2hlY2sgZnVuY3Rpb25zCi0gc3RvcCgpCkhlcmUgaXMgYW4gZXhhbXBsZSBvZiBob3cgd2UgY2FuIGNoZWNrIHRoYXQgdGhlIGRhdGEgY29taW5nIGludG8gb3VyIGZ1bmN0aW9uIGlzIHRoZSBjb3JyZWN0IGRhdGEgdHlwZToKCgpgYGB7ciwgZXJyb3I9VFJVRX0KIyBSZXR1cm5zIHRoZSBwcm92aWRlZCBudW1iZXIgZG91YmxlZApkb3VibGVfbnVtYmVyIDwtIGZ1bmN0aW9uKHgpIHsKICBpZiggIWlzLm51bWVyaWMoeCkgKXsKICAgIHN0b3AoInggbmVlZHMgdG8gYmUgYSBudW1iZXIuIikKICB9CiAgeCAqIDIKfQoKCmRvdWJsZV9udW1iZXIoNCkKCmRvdWJsZV9udW1iZXIoImEiKQpgYGAKCk4uQi4gQ2hlY2sgdGhlIGFwcGVuZGl4IGZvciBtb3JlIG9uIGRhdGEgdHlwZXMuCgpGb2xsb3dpbmcgdGhlIHByaW5jaXBsZXMgb2YgZmFpbCBmYXN0IGFuZCBlYXJseSwgd2Ugd2FudCB0byBoYXZlIG91ciBjaGVja3MgYXMgc29tZSBvZiB0aGUgdmVyeSBmaXJzdCBjb2RlIGluIHRoZSBmdW5jdGlvbiBib2R5LCBzbyB0aGF0IGlmIHRoZSB3cm9uZyBpbnB1dCBpcyBnaXZlbiB3ZSAnZmFpbCcgb3V0IG9mIHRoZSBmdW5jdGlvbiB3aXRob3V0IGFueSBmdXJ0aGVyIGNvZGUgcnVubmluZy4gV2UgY2FuIGRvIHRoaXMgdXNpbmcgdGhlIGNvbnRyb2wgc3RhdGVtZW50IGBpZmAgdG8gY2hlY2sgdGhlIGNvbmRpdGlvbi4gRmlyc3Qgd2UncmUgY2hlY2tpbmcgaWYgYHhgIGlzIGEgYG51bWVyaWNgIHR5cGUsIGBpcy5udW1lcmljYCByZXR1cm5zIGBUUlVFYCBpZiBpdCBpcyBhbmQgYEZBTFNFYCBpZiBpdCBpc24ndC4gQnV0IHdlIHdhbnQgdG8gZW50ZXIgdGhlIGBpZmAgYm9keSB3aGVuIGB4YCBpcyBub3QgbnVtZXJpYyBzbyBwZXJmb3JtIGEgYm9vbGVhbiBgTk9UYCB1c2luZyB0aGUgYCFgLgoKT25jZSB3ZSBoYXZlIGRldGVybWluZWQgdGhhdCBgeGAgaXNuJ3QgbnVtZXJpYyB3ZSB3YW50IHRoZSBmdW5jdGlvbiB0byBleGl0IGJ1dCBhbHNvIHByb3ZpZGUgYSBtZXNzYWdlIHRvIHRoZSB1c2VyIGFzIHRvIHdoeS4gVGhpcyBpcyBkb25lIHVzaW5nIGBzdG9wKClgIHdoaWNoIGNhdXNlcyB0aGUgZnVuY3Rpb24gdG8gZXhpdCBhbmQgcHJvdmlkZXMgdGhlIGVycm9yIG1lc3NhZ2UgdGhhdCBpcyBwcm92aWRlZCAtIGlkZWFsbHkgc29tZXRoaW5nIHVzZWZ1bCBmb3IgdGhlIHVzZXIuCgoKCgoKIyBDb25jbHVzaW9uCgpUaGlzIGRvY3VtZW50IGhhcyBwcmVzZW50ZWQgYW4gaW50cm9kdWN0aW9uIHRvIGNyZWF0aW5nIHlvdXIgb3duIGZ1bmN0aW9ucyBhbmQgaW1wbGVtZW50aW5nIGNvbnRyb2wgZmxvdyBpbnRvIHlvdXIgY29kZS4gV2UgY292ZXJlZCBjb25jZXB0cyBzdWNoIGFzICdmYWlsaW5nIGZhc3QgYW5kIGVhcmx5JywgYW5kIHNjb3Bpbmcgb2YgdmFyaWFibGVzLiBJZiB5b3Ugd291bGQgbGlrZSB0byB0YWtlIHlvdXIgdW5kZXJzdGFuZGluZyBvZiBmdW5jdGlvbnMgZnVydGhlciB0aGVuIHNvbWUgZ29vZCBwbGFjZXMgdG8gcmVmZXIgdG8gYXJlIHRoZSBmcmVlIG9ubGluZSBib29rcyBbQWR2YW5jZWQgUl0oaHR0cHM6Ly9hZHYtci5oYWRsZXkubnopIGFuZCBbUiBwYWNrYWdlc10oaHR0cHM6Ly9yLXBrZ3Mub3JnKS4KCgojIyBXaGF0J3MgTmV4dAoKRmlsbCBpbiB0aGUgbW9kdWxlIGZlZWRiYWNrIGZvcm0gW2h0dHBzOi8vdGlueXVybC5jb20vcjRzc3AtbW9kdWxlLWZiXShodHRwczovL3Rpbnl1cmwuY29tL3I0c3NwLW1vZHVsZS1mYikuCgpOZXh0IG1vdmUgb250byBbUiBmb3IgRGF0YSBTY2llbmNlIENoYXB0ZXIgMjEgLSBJdGVyYXRpb24gKGh0dHBzOi8vcjRkcy5oYWQuY28ubnovaXRlcmF0aW9uLmh0bWwpXShodHRwczovL3I0ZHMuaGFkLmNvLm56L2l0ZXJhdGlvbi5odG1sKSB0byBsZWFybiBhYm91dCBob3cgd2UgY2FuIHN0YXJ0IHRvIHJlZHVjZSBjb2RlIGR1cGxpY2F0aW9uLCBhbmQgc3RhcnQgdG8gcmVwZWF0IHdoYXQgd2UgZG8gZWZmaWNpZW50bHkgdGhyb3VnaCBpdGVyYXRpb24gb3IgJ2xvb3BzJy4gQXMgYWx3YXlzLCBpZiB5b3UgcnVuIGludG8gdHJvdWJsZSwgbGV0IHVzIGtub3cuCgojIEFwcGVuZGl4CgojIyBEYXRhIHR5cGVzCgpOb3QgYWxsIGRhdGEgaXMgY3JlYXRlZCBlcXVhbCwgaW4gUiB0aGlzIGNvbmNlcHQgaXMgY2FwdHVyZWQgYnkgX2RhdGEgdHlwZXNfLiBGb3IgYSB2ZWN0b3IsIGFsbCB2YWx1ZXMgbXVzdCBiZSBvZiBhIHNpbmdsZSBkYXRhIHR5cGUuCgpUaGUgbWFpbiBkYXRhIHR5cGVzIHRoYXQgeW91IHdpbGwgZW5jb3VudGVyIGluIFIgYXJlOgoKLSBfTG9naWNhbF8gKCBgYyhUUlVFLCBGQUxTRSlgKQotIF9OdW1lcmljXyAtIGFsc28gY2FsbGVkIF9SZWFsXyBvciBfRG91YmxlXyAoTnVtYmVycyB0aGF0IGhhdmUgYSBmbG9hdGluZyBwb2ludCAoZGVjaW1hbCkgcmVwcmVzZW50YXRpb24gZS5nLiBgYygxLCAzLjYsIDFlMylgKQotIF9DaGFyYWN0ZXJfIC0gYWxzbyBjYWxsZWQgX1N0cmluZ18gKGFueXRoaW5nIGluc2lkZSBtYXRjaGluZyBvcGVuaW5nIGFuZCBjbG9zaW5nIHF1b3RlcyAoc2luZ2xlIG9yIGRvdWJsZSkgZS5nLiBgYygiYSIsICJzb21lIHdvcmRzIiwgImFuaW1hbCJgKSkKClRoZXJlIGFyZSAzIG90aGVyIGxlc3MgY29tbW9uOgoKLSBfSW50ZWdlcl8gKGludGVnZXJzIGBjKDFMLCA0TCwgLTNMKWApCi0gX0NvbXBsZXhfIChDb21wbGV4IG51bWJlcnMgZS5nLiBgYygwKzNpLCA0aSwgLTItNWkpYCkKLSBfUmF3XyAodGhlIGJ5dGVzIG9mIGEgZmlsZSkKCgpFYWNoIGRhdGEgdHlwZSBpcyBrbm93biBpbiBSIGFzIGFuIF9hdG9taWNfIHZlY3Rvci4gUiBoYXMgYnVpbHQgaW4gZnVuY3Rpb25zIHRvIGJlIGFibGUgdG8gZGV0ZXJtaW5lIHRoZSBkYXRhIHR5cGUgb2YgYSB2ZWN0b3IsIGB0eXBlb2YoKWAgaXMgdGhlIGJlc3Qgb25lIHRvIHVzZSwgYnV0IG90aGVycyBzdWNoIGFzIGBzdHIoKWAgYW5kIGBjbGFzcygpYCBjYW4gYmUgdXNlZC4KClRoZXJlIGlzIGFsc28gYSBzZXJpZXMgb2YgZnVuY3Rpb25zIHRoYXQgbGV0IHVzIGRvIGV4cGxpY2l0IGNoZWNraW5nIGZvciBhIGRhdGEgdHlwZSB3aGljaCB3aWxsIHJldHVybiBgVFJVRWAgb3IgYEZBTFNFYDoKCi0gYGlzLmxvZ2ljYWwoKWAKLSBgaXMubnVtZXJpYygpYCBvciBgaXMuZG91YmxlKClgCi0gYGlzLmNoYXJhY3RlcigpYAotIGBpcy5pbnRlZ2VyKClgCi0gYGlzLmNvbXBsZXgoKWAKLSBgaXMucmF3KClgCgoKCiMjIyBEYXRhIFR5cGUgQ29lcmNpb24KCkluIFIsIHdoZW4gZG9pbmcgb3BlcmF0aW9ucyBvbiBtdWx0aXBsZSB2ZWN0b3JzLCB0aGV5IGFsbCBuZWVkIHRvIGJlIHRoZSBzYW1lIGRhdGEgdHlwZSAtIGJ1dCBob3cgY2FuIHRoaXMgd29yayBpZiB3ZSBoYXZlIGZvciBleGFtcGxlIGEgbnVtZXJpYyB2ZWN0b3IgYW5kIGEgY2hhcmFjdGVyIHZlY3Rvcj8gX0NvZXJjaW9uXyBpcyBob3cgUiBkZWFscyB3aXRoIHRyeWluZyB0byBvcGVyYXRlIG9uIHR3byB2ZWN0b3JzIG9mIGRpZmZlcmVudCBkYXRhIHR5cGVzLiBXaGF0IHRoaXMgbWVhbnMgaW4gcHJhY3RpY2UgaXMgdGhhdCBSIHdpbGwgY29udmVydCB0aGUgZGF0YSB0eXBlIG9mIGEgdmVjdG9yIGluIGEgZGVmaW5lZCBtYW5uZXIgc3VjaCB0aGF0IHdlIGVuZCB1cCB3aWxsIGFsbCBvZiB0aGUgc2FtZSB0eXBlIGFuZCBmb2xsb3dzIGEgImxvd2VzdCBjb21tb24gZGF0YSB0eXBlIgogYXBwcm9hY2guIFVzaW5nIHRoZSAzIG1haW4gZGF0YSB0eXBlcyBmcm9tIGFib3ZlLCB0aGUgZm9sbG93aW5nIGlzIHRoZSBvcmRlciBpbiB3aGljaCB0aGV5IHdpbGwgYmUgY29lcmNlZCBpbnRvIHRoZSBuZXh0IGRhdGEgdHlwZTogX2xvZ2ljYWxfIC0+IF9udW1lcmljXyAtPiBfY2hhcmFjdGVyXy4KIApUaGlzIHByaW5jaXBsZSBhcHBsaWVzIHdoZW4geW91IHRyeSB0byBjcmVhdGUgYSB2ZWN0b3Igb2YgbWl4ZWQgZGF0YSB0eXBlcyB0b28sIFIgd2lsbCBjb2VyY2UgZXZlcnl0aGluZyB1bnRpbCBpdCBpcyBhIHNpbmdsZSBkYXRhIHR5cGUuCiAKClNlZSBpZiB5b3UgY2FuIHByZWRpY3Qgd2hhdCBkYXRhIHR5cGUgdGhlIHJlc3VsdCB3aWxsIGJlICh5b3UgY2FuIGNoZWNrIGJ5IHVzaW5nIGB0eXBlb2YoKWA6IApgYGB7ciwgZXZhbCA9IEZBTFNFfQojIGxvZ2ljYWwgYW5kIG51bWVyaWMKYyg0LCBUUlVFLCA1KQoKIyBudW1lcmljIGFuZCBjaGFyYWN0ZXIKYygxLCAzLCAiQSIpCgojIGxvZ2ljYWwgYW5kIGNoYXJhY3RlcgpjKEZBTFNFLCAiY2F0IiwiZnJvZyIpCgojIG1peGVkCmMoInNlZSIsIFRSVUUsIDQuOCkKCiMgdHJpY2t5CmMoIjEuMyIsICI0IiwgVFJVRSkKYGBgCgpXZSBjYW4gYWxzbyBleHBsaWNpdGx5IGZvcmNlIGNvZXJjaW9uIGludG8gYSBwYXJ0aWN1bGFyIGRhdGEgdHlwZSBieSB1c2luZyB0aGUgZm9sbG93aW5nOgoKLSBgYXMubG9naWNhbCgpYAotIGBhcy5udW1lcmljKClgCi0gYGFzLmNoYXJhY3RlcigpYAoKVGhlIG90aGVyIGRhdGEgdHlwZXMgYWxzbyBoYXZlIHNpbWlsYXJseSBuYW1lZCBmdW5jdGlvbnMuIFdoZW4gZ29pbmcgYWdhaW5zdCB0aGUgbm9ybWFsIGRpcmVjdGlvbiBvZiBjb2VyY2lvbiwgaXQgaXMgaW1wb3J0YW50IHRvIHJlYWxpc2UgdGhhdCBpZiB5b3VyIGRhdGEgZG9lc24ndCBoYXZlIGEgcmVwcmVzZW50YXRpb24gaW4gdGhhdCBkYXRhIHR5cGUsIGl0IHdpbGwgYmVjb21lIF9OQV8gKG1pc3NpbmcpLgoK</div>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("handout7.Rmd");
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

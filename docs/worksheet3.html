@@ -317,7 +317,7 @@ div.tocify {
 
 
 
-<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
@@ -334,6 +334,47 @@ div.tocify {
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Modules
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Intro</li>
+    <li>
+      <a href="01-intro.html">Intro to R and RStudio</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Data Focus</li>
+    <li>
+      <a href="02-visualise.html">Part 1: Data Loading and Looking</a>
+    </li>
+    <li>
+      <a href="03-subset.html">Part 2: Subsetting</a>
+    </li>
+    <li>
+      <a href="04-transform.html">Part 3: Transforming</a>
+    </li>
+    <li>
+      <a href="05-summarise.html">Part 4: Summarising</a>
+    </li>
+    <li>
+      <a href="06-communicate.html">Part 5: Communicating</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Programming focus</li>
+    <li>
+      <a href="07-functions.html">Functions and logic branching</a>
+    </li>
+    <li>
+      <a href="08-iterate.html">Loops and iterators</a>
+    </li>
+    <li>
+      <a href="09-workflows.html">Workflows</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     Handouts
      
     <span class="caret"></span>
@@ -344,6 +385,27 @@ div.tocify {
     </li>
     <li>
       <a href="handout2.html">Handout 2</a>
+    </li>
+    <li>
+      <a href="handout3.html">Handout 3</a>
+    </li>
+    <li>
+      <a href="handout4.html">Handout 4</a>
+    </li>
+    <li>
+      <a href="handout5.html">Handout 5</a>
+    </li>
+    <li>
+      <a href="handout6.html">Handout 6</a>
+    </li>
+    <li>
+      <a href="handout7.html">Handout 7</a>
+    </li>
+    <li>
+      <a href="handout8.html">Handout 8</a>
+    </li>
+    <li>
+      <a href="handout9.html">Handout 9</a>
     </li>
   </ul>
 </li>
@@ -416,7 +478,7 @@ str(penguins)</code></pre>
 ##  $ flipper_length_mm: int [1:344] 181 186 195 NA 193 190 181 195 193 190 ...
 ##  $ body_mass_g      : int [1:344] 3750 3800 3250 NA 3450 3650 3625 4675 3475 4250 ...
 ##  $ sex              : Factor w/ 2 levels &quot;female&quot;,&quot;male&quot;: 2 1 1 NA 1 2 1 2 NA NA ...
-##  $ year             : int [1:344] 2007 2007 2007 2007 2007 2007 2007 2007 2007 2007 ...</code></pre>
+##  $ year             : Factor w/ 3 levels &quot;2007&quot;,&quot;2008&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...</code></pre>
 <p>The output from <code>str(penguins</code>) indicates that three of the columns in the data frame are <strong>Factors</strong>. In R, a factor is a categorical variable, usually corresponding to an experimental factor. Although factors look like strings, a factor is restricted to a specific set of legal values, which R infers when the data are loaded. The legal values are called <strong>levels</strong>, and correspond to the different groups or conditions represented by the factor. For example, column <code>penguins$sex</code> is a factor with levels “female” and “male”.</p>
 </div>
 <div id="exercises" class="section level2">
