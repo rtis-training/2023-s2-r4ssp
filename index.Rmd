@@ -2,8 +2,23 @@
 title: "R for Successful Student Projects"
 ---
 
+
+
 Semester 1 2022 R for Successful Student Projects (R4SSP) will be commencing ~3rd week of semester (to be confirmed)
 
 
 For more information please email rtis.training@otago.ac.nz
 
+## Syllabus
+
+Date | Week | Module | Part | Topic | Readings
+---|---|---|---|---|---|---
+- | 1 | Setup | | Introduce the tools: R and Rstudio | R4DS Intro + Handout 1
+- | 2 | Data focus |1 | Data vis |R4DS Data visualisation with ggplot2
+- | 3 | Data focus |2 | Data selecting and filtering
+- | 4 | Data focus |3 | Data Transformation | R4DS data transformation
+- | 5 | Data focus |4 | Exploratory and Descriptive data analysis | R4DS - EDA
+- | 6 | Data focus |5 | R Markdown
+- | 7 | Programming focus | 1 | Modularity and flow of control 1 | R4DS functions
+- | 8 | Programming focus | 2 | Modularity and flow of control 2 | R4DS iteration
+- | 9 | Programming focus | 3 | Workflows and debugging | 

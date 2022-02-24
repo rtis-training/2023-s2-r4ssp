@@ -113,7 +113,10 @@ vectors
 - use of [] for subsetting
 - subsetting by index
 - atomic data types
-  - typeof
+  - character
+  - double
+  - logical
+  - `typeof()`
 
 
 ### Comparitors
@@ -121,9 +124,31 @@ vectors
 - logic statements
 - comparitor subsetting
 
+- equality: `==`
+- not equal to:`!=`
+- greater than / greater than or equal to: `>` / `>=`
+- less than / less than or equal to: `<` / `<=`
+
+
+- not: `!`
+- or: `|`
+- and: `&`
+
+
 ### Expanding R's functionality
 
 You can add packages to R using `install.packages("<package name>")` - you only need to install a package once^[packages need to be re-installed for major R version upgrades]. Once a package is installed, each time R is opened you will need to use `library(<package name>)` to make the package available for the session.
 
 
 Base R and Tidyverse
+
+
+```{r, eval = FALSE}
+install.packages("tidyverse")
+```
+
+
+```{r, eval = FALSE}
+library(tidyverse)
+```
+

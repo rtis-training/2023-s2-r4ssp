@@ -120,13 +120,13 @@ R understands numbers (things like 8 and 3.14159) and mathematical operators (ac
 
 ### Code-along Exercise
 
-1.  Launch RStudio. [^1]. If you have installed R and RStudio on your own machine, you should have a Desktop (Windows) or Dock (Mac OS) icon that you can click to launch RStudio. If not, search through the Programs start-up menu (Windows) or Applications (Mac OS).
+1.  Launch RStudio. If you have installed R and RStudio on your own machine, you should have a Desktop (Windows) or Dock (Mac OS) icon that you can click to launch RStudio. If not, search through the Programs start-up menu (Windows) or Applications (Mac OS). Users of the Virtual Student Desktop follow <https://blogs.otago.ac.nz/studentit/student-desktop/student-desktop-own-device/> for how to access it from your computer.
 
 2.  The Console pane on the left will contain some explanatory text. At the bottom of the text is a right angle bracket **\>**. That is where you will begin typing. There will be a small, flashing, vertical line beside the angle bracket. (If you don't have the flashing vertical line, click your mouse beside and slightly to the right of the angle bracket.)
 
 3.  Type the following characters into the Console pane, followed by the <kbd>Enter</kbd> key.
 
-[^1]: If running For instructions to launch the Student Desktop follow <https://blogs.otago.ac.nz/studentit/student-desktop/student-desktop-own-device/>
+[^1]: 
 
 **4 + 5**
 
@@ -146,7 +146,7 @@ For the remainder of this document, we will not show you pictures of the whole s
 
 4.  Explore more of R's mathematical operators. For division use / and for multiplication use \*. Enter each of these R commands into the console and confirm that you receive the expected output.
 
-```{r more maths}
+```{r more maths, eval = FALSE}
 10 / 8
 
 8 * 12

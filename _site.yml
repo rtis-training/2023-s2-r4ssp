@@ -5,12 +5,51 @@ navbar:
   left:
     - text: "Home"
       href: index.html
+    - text: "Modules"
+      menu:
+        - text: "Intro"
+        - text: "Intro to R and RStudio"
+          href: 01-intro.html
+        - text: "-------------"
+        - text: "Data Focus"
+        - text: "Part 1: Data Loading and Looking"
+          href: 02-visualise.html
+        - text: "Part 2: Subsetting"
+          href: 03-subset.html
+        - text: "Part 3: Transforming"
+          href: 04-transform.html
+        - text: "Part 4: Summarising"
+          href: 05-summarise.html
+        - text: "Part 5: Communicating"
+          href: 06-communicate.html
+        - text: "-------------"
+        - text: "Programming focus"
+        - text: "Functions and logic branching"
+          href: 07-functions.html
+        - text: "Loops and iterators"
+          href: 08-iterate.html
+        - text: "Workflows"
+          href: 09-workflows.html
     - text: "Handouts"
       menu:
         - text: "Handout 1"
           href: handout1.html
         - text: "Handout 2"
           href: handout2.html
+        - text: "Handout 3"
+          href: handout3.html
+        - text: "Handout 4"
+          href: handout4.html
+        - text: "Handout 5"
+          href: handout5.html
+        - text: "Handout 6"
+          href: handout6.html
+        - text: "Handout 7"
+          href: handout7.html
+        - text: "Handout 8"
+          href: handout8.html
+        - text: "Handout 9"
+          href: handout9.html
     - text: "Worksheets"
       menu:
         - text: "Worksheet 1"
@@ -19,7 +58,7 @@ navbar:
           href: worksheet3.html
     - text: "About"
       href: about.html
-  inverse: true
+  type: "inverse"
 output:
   html_document:
     theme: yeti

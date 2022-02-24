@@ -1,5 +1,68 @@
 ---
-title: "About This Website"
+title: "About R4SSP"
 ---
 
-More about this website.
+\
+
+## Description
+
+Advances in scientific technologies from remote sensors to genetic sequencers mean scientists are now working with huge data sets, and must be expert in the computer tools that can analyse those data. Many undergraduate science papers now require students to process and analyse real data using special programming languages like R. In this mini-course, we will help you to learn exactly those parts of R that science students need for their in-course research assignments. Class sessions combine structured presentation of new material, and hands-on coding practice with support from experienced R programmers, scientists, and educators.
+
+There is no course credit or summative assessment associated with this course.
+
+\
+
+## Course Delivery
+
+This course uses a hybrid delivery model where teaching sessions combine succinct presentations of new content with hands-on, focused coding practice in the classroom. Facilitator support is tailored to individual student need. The course comprises eight modules, delivered over nine weekly sessions. However, support is provided for any module at any time, to accommodate each student's rate of work.
+
+
+\
+
+## Learning Outcomes
+
+At the completion of this paper, students will be able to:
+
+1. Prepare a scientific data set for digital processing
+2. Use the programming language R and the programming environment RStudio to: 
+    a. explore scientific data sets
+    b. perform basic data summaries and statistical analyses
+    c. produce graphs and tables appropriate for inclusion in student  research assignments
+3. Demonstrate efficient workflow for digital data processing
+4. Independently explore resources and materials to develop more advanced R skills
+
+\
+
+## Indicative Content 
+
+1. Relationship between programming language and programming environment 
+2. RStudio elements and interface 
+3. Preparing research data for analysis 
+4. Importing data files into RStudio 
+5. Manipulating and transforming data in RStudio 
+6. Producing plots and graphs 
+7. Performing simple statistical summaries and tests in Rstudio
+8. Basic flow of control in R 
+9. Exporting results from RStudio for inclusion in research reports
+
+\
+
+## Resources
+
+### Software
+
+R, RStudio, and assorted RStudio packages. All required software is open
+source, is available online for download at no cost, and is included in
+the current University of Otago student computer image.
+
+\
+
+### Readings, Practicals, & Materials
+
+Content materials consist of digital documents (provided), online texts,
+online videos, and online interactive exercises (suggested), all at
+publicly accessible websites. Modules have associated practical
+exercises (provided). Students will be able to choose exemplar data sets
+to use in the performance of later practical exercises, ensuring that
+the work will be largely contextualised in each student's preferred
+field of study.
