@@ -1,0 +1,129 @@
+---
+title: "Introducing R and RStudio"
+output:
+  html_document:
+    toc: yes
+    toc_float: yes
+    code_download: true
+    code_folding: show
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  comment = "#>",
+  #fig.path = "figs" # use only for single Rmd files
+  collapse = TRUE
+)
+```
+
+[Link to the Handout](handout1.html)
+
+Reading:
+
+
+
+## R and RStudio
+
+R is the language, RStudio is an interface for interacting with R
+
+## The RStudio environment
+
+Panels of RStudio
+
+- console
+- source
+- environment/history
+- file/plot/help/viewer
+
+### Projects
+
+
+
+### Scripts
+
+R Script
+
+RMarkdown
+
+## R syntax
+
+General syntax info:
+
+- R is case sensitive
+- spaces are ignored by R
+- there is no difference between single `'` and double `"` quotes but you have to use the same type to close as you open with
+
+
+### Mathematical operators
+
+addition: `+`
+
+subtraction: `-`
+
+multiplication: `*`
+
+division: `/`
+
+exponent: `**`
+
+modulo/remainder: `%%`
+
+```{r}
+# addition
+1 + 2
+
+# subtraction
+3 - 6
+
+# multiplication
+4 * 2
+
+# division
+12 / 3
+
+# exponent
+2 ** 5
+
+# modulo
+5 %% 2
+
+```
+
+
+### Variables
+
+- `<-` and `=`
+- last thing assigned overwrites
+
+### Functions
+
+- arguments
+- `args()`
+
+### Help
+
+- `?` and `??`
+- `help()`
+- google
+
+### Vectors
+
+vectors
+
+- use of [] for subsetting
+- subsetting by index
+- atomic data types
+  - typeof
+
+
+### Comparitors
+
+- logic statements
+- comparitor subsetting
+
+### Expanding R's functionality
+
+You can add packages to R using `install.packages("<package name>")` - you only need to install a package once^[packages need to be re-installed for major R version upgrades]. Once a package is installed, each time R is opened you will need to use `library(<package name>)` to make the package available for the session.
+
+
+Base R and Tidyverse
