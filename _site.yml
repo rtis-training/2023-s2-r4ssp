@@ -12,7 +12,7 @@ navbar:
           href: 01-intro.html
         - text: "-------------"
         - text: "Data Focus"
-        - text: "Part 1: Data Loading and Looking"
+        - text: "Part 1: Visualising"
           href: 02-visualise.html
         - text: "Part 2: Subsetting"
           href: 03-subset.html
@@ -24,9 +24,9 @@ navbar:
           href: 06-communicate.html
         - text: "-------------"
         - text: "Programming focus"
-        - text: "Functions and logic branching"
+        - text: "Functions and Choices"
           href: 07-functions.html
-        - text: "Loops and iterators"
+        - text: "Repeating Code"
           href: 08-iterate.html
         - text: "Workflows"
           href: 09-workflows.html
@@ -50,12 +50,6 @@ navbar:
           href: handout8.html
         - text: "Handout 9"
           href: handout9.html
-    - text: "Worksheets"
-      menu:
-        - text: "Worksheet 1"
-          href: worksheet1.html
-        - text: "Worksheet 3"
-          href: worksheet3.html
     - text: "About"
       href: about.html
   type: "inverse"
