@@ -1,0 +1,356 @@
+---
+title: "Handout 3 - Data Transformation with Base R"
+author: "Patricia Haden & Murray Cadzow"
+date: "Semester 1, 2022"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 3
+    code_download: true
+    code_folding: show
+---
+
+```{r setup, include=FALSE}
+library(knitr)
+
+knitr::opts_chunk$set(
+  comment = "#>",
+  fig.path = "figures/", # use only for single Rmd files
+  collapse = TRUE,
+  echo = TRUE
+)
+```
+
+
+## Introduction
+If you are working through the suggested materials in order, you have just completed **[Chapter 5 - Data Transformation (https://r4ds.had.co.nz/transform.html)](https://r4ds.had.co.nz/transform.html)** from the online text *R for Data Science*. This material demonstrated how to use the library **dplyr**, one of the libraries in the **tidyverse** family. You will have learned how to use the five core transformation functions -- `filter`, `arrange`, `select`, `mutate` and `summarise` (with its helper function `group_by`). These functions allow you to modify and perform summaries on data frames, and to pull out specific portions of data frames for detailed analysis. Library `dplyr` is widely used, and you will see many examples of it in R code you find in the wild. 
+
+The functions in `dplyr` (and in all the other libraries in the tidyverse) are technically **wrappers** around base R code. That is, they themselves are written using base R commands. Thus it is possible to perform all the same transformations *without* `dplyr`, by using only base R. Many programmers and researchers (including some of your lecturers) prefer to use base R for these operations, and you will also see it often in R code in the wild. Therefore, in this supplementary handout, we will illustrate the equivalent base R syntax for the `dplyr` functions you just learned.
+
+People make the choice between `dplyr` and base R for several reasons. Many people find `dplyr` syntax easier to use, because it is more **uniform**. That is, all the big five `dplyr` transformation functions use approximately the same syntax. In base R, there is more variation. Scientists who work with very large data sets are often concerned about how fast their code can be executed. In some cases, `dplyr` executes more slowly than base R (because of the extra code required for the wrapping), leading these researchers to prefer the base R approach. Because `dplyr` is a relatively new addition to R, some people prefer base R because they learned it first, and are happy to continue using it. 
+
+Unless you are required to use a particular approach (check with your lecturer if you are unsure), you can choose whichever set of commands you like using. You can even mix and match them -- they give the same results, and R doesn't care. However, it is very important that you can *understand* both styles. One of the great benefits of the R ecosystem is the wide sharing of code, and you can't fully participate in this unless you are comfortable with all the major dialects.
+
+## Selection
+We will begin with selection, because in base R, it is used by some of the other transformation techniques. You have already seen how, in base R, you can select a single column from a data frame using `$`. You have seen how to select a subset of rows using function `subset`. You can make more detailed selections from data frames using the **selection operator** [ ].
+
+The general syntax of the selection operator is:
+
+*name_of_data_frame[row_information, column_information]*
+
+We place the square brackets right against the name of the data frame. Inside the square brackets we provide information about the row or rows we want (we will see the exact format for this in a moment), then a comma, then information about the column or columns we want.
+
+There are a variety of ways to express row and column information. To see how they work, let's first make a very simple data frame by hand, and then perform some selection operations on it. Enter the following code into RStudio to create **geography_df**.
+
+
+```{r manual data 1}
+countries <- c("Austria", "Brazil", "Canada", "Denmark")
+capitals <- c("Vienna", "Brasilia", "Ottawa", "Copenhagen")
+population_in_millions <- c(9, 211, 38, 6)
+
+geography_df <- data.frame(Country = countries,
+                           Capital = capitals,
+                           PopulationMillions = population_in_millions)
+
+geography_df
+```
+
+In the simplest form of selection, we want just one single value from a data frame, so we provide the row number and column number of the cell of interest. For example, imagine we want the population of Vienna. We know that Vienna is in row 1 and the population is in column 3. To select that cell we provide 1 for the row information and 3 for the column information in the square brackets:
+
+```{r single selection}
+geography_df[1,3]
+```
+Don't worry about how you would know the specific row and column of the cell you are interested in. This particular selection operation is typically used in situations where your code is computing those values based on complex criteria. This example is merely illustrative. ^[If you have programmed before in Java or one of the C-family of languages, you may expect the first row to be **row 0**, not **row 1**, and the first column to be **column 0**, not **column 1**. Just let go of that. In R, row and column numbering starts at 1.  Different languages, different rules.]
+
+There are two very useful extensions to this pattern:
+
+1. Either the row or column index (or both) may specify a **range** using the : operator. For example, 1:3 or 6:12 (these are "1 to 3" and "6 to 12" respectively).
+
+```{r range}
+# For rows 2 to 4 (Brazil, Canada, Denmark), select the population (column 3)
+geography_df[2:4, 3]
+
+# For Canada (row 3), select both the capital name and population (cols 2 and 3)
+geography_df[3, 2:3]
+
+```
+
+
+2. Either the row or column index **may be omitted**. That is, we can say `geography_df[3 , ]` or `geography_df[ , 2]`. The missing element is interpreted as **all**. Omit the row number and you want **all rows** in the supplied column(s). Omit the column number and you want **all columns** in the supplied row(s).
+
+```{r omitted index}
+
+# For Denmark (row 4), select all the columns
+geography_df[4, ]
+
+# For all rows, select the capital city name (column 2)
+geography_df[ , 2]
+
+```
+
+You may have been surprised by the output generated by that last example. Although you have selected a single column, the output is printed horizontally, as though it were a row. This is a peculiarity of R. Any collection that has a single dimension (i.e. doesn't have both columns and rows) is treated as a plain vector. And vectors are always printed horizontally. By extension, since a selected column of a data frame is a vector, you can apply everything you have learned about vectors to selected data frame columns, which is exactly what we want to be able to do.
+
+You can combine ranges and the *missing index = all* technique:
+
+```{r together}
+# For the first three rows, select all the columns
+geography_df[1:3 , ]
+
+```
+
+As an exercise, what do you think `geography_df[ , ]` (i.e. where both row and column information are omitted) will do? Try it. Were you right?
+
+
+Instead of using column numbers, you can provide column names as the column information (and row names as the row information if your data frame has named rows). Use the combine function `c()` to provide multiple column names, and be sure to surround each column name with quotes, because R considers them to be strings in this situation.
+
+```{r named columns}
+geography_df[2:4, "Capital"]
+
+geography_df[3:4, c("Country", "Capital")]
+```
+
+To see how selection with the `select` function from `dplyr` compares to selection with the selection operator [ ] in base R, let's load the **flights** data frame and repeat some of the exercises from *R for Data Science*.
+
+```{r load flights, warning=FALSE}
+
+# Load the library that contains the flights data frame
+library(nycflights13)
+
+# Load dplyr
+library(dplyr)
+
+
+
+# Select the year, month, and day columns from the flights data frame
+
+# With dplyr
+year_month_day_cols_dplyr <- select(flights, year, month, day)
+year_month_day_cols_dplyr
+
+# With base R
+year_month_day_cols_base <- flights[ , c("year", "month", "day")]
+year_month_day_cols_base
+```
+
+
+## Subsetting
+The `dplyr` function `filter` is analogous to the base R function `subset`. The two functions have identical syntax. We can see how some of the `dplyr` filter operations from the previous section would be written using base R. If you wish, run this code in RStudio, and inspect the results of each statement.
+
+```{r filter and subset}
+
+# In all cases, these pairs of commands produce the same output
+# In each pair, the first version is dplyr and the second
+# is base R
+
+# All flights with arrival delay >= 120 minutes
+late_dplyr <- filter(flights, arr_delay > 120)
+late_base <- subset(flights, arr_delay > 120)
+
+# Flew to IAH or HOU
+houston_dplyr <- filter(flights, dest == "IAH" | dest == "HOU")
+houston_base <- subset(flights, dest == "IAH" | dest == "HOU")
+
+# Alternatively, using %in%, which requires less typing
+houston_dplyr <- filter(flights, dest %in% c("IAH", "HOU"))
+houston_base <- subset(flights, dest %in% c("IAH", "HOU"))
+
+# Select rows with missing values using is.na() 
+missing_dep_time_dplyr <- filter(flights, is.na(dep_time))
+missing_dep_time_base <- subset(flights, is.na(dep_time))
+```
+
+Base R does not have the helper function `between`, but the same result can be achieved in a number of ways:
+
+```{r between}
+# Between
+
+# These four commands all produce the same result
+
+# dplyr
+summer_dplyr <- filter(flights, between(month, 7, 9))
+
+# base R
+summer_base_01 <- subset(flights, month %in% c(7,8,9))
+summer_base_02 <- subset(flights, month %in% 7:9)
+summer_base_03 <- subset(flights, month >=7 & month <= 9)
+```
+
+When you have multiple options for performing a computation, the general goal is to strike a balance between **parsimony** (not too much typing) and **readability** (your code is easy *for other people* to understand). When working on group projects, or in a professional software development context, readablity is considered the more critical of the two features. 
+
+
+## Arranging (sorting)
+The `dplyr` function `arrange` is analogous to base R selection using [ ] combined with function `order`. We use `order` as the row information to [ ]. The arguments to `order` are a comma separated sequence of the columns on which we wish to sort. We identify the columns using the $ operator, in the usual way. 
+
+For example, the `dplyr` statement and the base R statement below both sort the entire flight data frame on the year, month, and day columns:
+
+
+```{r order}
+
+# Sort using arrange or order
+
+# dplyr
+year_month_day_dplyr <- arrange(flights, year, month, day)
+
+# base R – we omit the column index to get all columns in the result
+year_month_day_base <- flights[order(flights$year, flights$month, flights$day), ] 
+
+# Compare the results
+year_month_day_dplyr
+year_month_day_base
+
+```
+
+If you find it tiresome to type the name of the data frame in front of each column in `order`, use function `attach`. This function accepts a data frame as its argument. In all subsequent code, you can refer to columns of the data frame without having to preface them with the data frame name and $:
+
+```{r attach}
+
+# Call attach
+attach(flights)
+
+# Just use the column names; no flights$ needed
+year_month_day_base <- flights[order(year, month, day), ]
+
+# Check the result
+year_month_day_base
+```
+
+To turn off the effect of `attach`, call function `detach`, passing in the name of the data frame. A more industrial-strength version of the attach-detach behaviour can be achieved with function `with`. This function has some technical advantages, but has a more complicated syntax. Google for details if you are interested.
+
+By default, `order` sorts in ascending order (i.e. from smallest to largest). To sort in descending order, place - (the negative sign; the hyphen) in front of an argument to `order`. We can again compare this operation in `dplyr` and base R:
+
+```{r descending}
+# Descending sort
+
+# dplyr
+desc_dep_delay_dplyr <- arrange(flights, desc(dep_delay))
+
+# base R
+desc_dep_delay_base <- flights[order(-flights$dep_delay),]
+
+# Check dplyr – the data frame is sorted in descending order of dep_delay
+desc_dep_delay_dplyr
+
+# Check base – the data frame is sorted in descending order of dep_delay
+desc_dep_delay_base
+
+```
+
+## Creating new columns
+In `dplyr` we use function `mutate` to create new columns. In base R, we simply assign the new column directly to the data frame, using $. Each new column must be created in a separate statement. In the code below, we will compare the two techniques. In both approaches we will begin by making a copy of data frame flights, before we start to modify it. This is common practice so that you always have a clean copy of your original data.
+
+```{r mutate, warning=FALSE}
+
+# dplyr
+
+# Make a copy
+flights_dplyr <- flights
+
+# Add new columns with mutate
+flights_dplyr <- mutate(flights_dplyr, gain=dep_delay - arr_delay, speed = distance / air_time * 60)
+
+
+# base R
+
+# Make a copy
+flights_base <- flights
+
+# Add the new columns
+attach(flights_base)
+flights_base$gain <- dep_delay - arr_delay
+flights_base$speed <- distance / air_time * 60
+
+# Compare using base R selection
+# Ask for columns gain and speed for rows 1 to 15
+# They are the same
+flights_dplyr[1:5, c("gain", "speed")]
+flights_base[1:5, c("gain", "speed")]
+```
+## Grouping and Summarising
+With `dplyr` we take group summaries (e.g. getting the average arrival for all flights in each month) by using `group_by` to group the data frame (gather the rows together by month) and `summarise` to apply the summary function (take the average for each month). In base R both of these steps are handled by the single function `aggregate`. This function takes four arguments:
+
+Arg name | Meaning
+------------|--------
+x | The name of the data frame
+by | A list of columns to group by
+FUN | The name of the summary function to apply
+na.rm | Set to TRUE is you want to ignore missing values
+
+The only new part is the syntax used to declare a list for argument **by**. We will first look at an example of how to take group means in both `dplyr` and base R, and then discuss the list in more detail.
+
+```{r group means 01, warning=FALSE}
+# Compute the average arrival delay, collapsed across months
+
+# Using dplyr
+
+# Group by month
+by_month <- group_by(flights, month)
+
+# Take the means
+mean_delay_by_month_dplyr <- summarise(by_month, MeanDelay = mean(arr_delay, na.rm = TRUE))
+
+# Check the output
+mean_delay_by_month_dplyr
+
+
+
+# Using base R function aggregate
+mean_delay_by_month_base <- aggregate(x = flights$arr_delay, 
+                                      by = list(Month = flights$month),
+                                      FUN = mean,
+                                      na.rm = TRUE)
+
+
+# Check the output
+mean_delay_by_month_base
+```
+
+Use function `list` to create the value for argument `by` . This function is like the combine function for vectors, except it creates a collection of *named elements*. We often see the function in situations like this:
+
+```{r list}
+# A list is a collection of named elements
+pet_data <- list(PetName = "Snoopy", PetOwner = "Charlie Brown", PetBreed = "Beagle")
+pet_data
+```
+When using `aggregate` you create a list of columns that you want to group by. The names of the columns will be the column headers for the output table of summarised results. To group by multiple columns, add more elements to the list. For example, if we wanted the average delay by month *for each origin airport separately* we would say:
+
+```{r group means 02, warning=FALSE}
+# Compute the average arrival delay, collapsed across months, separately for
+# each origin airport. There are 3 airports and 12 months, so we expect to 
+# get 36 means.
+
+# Using dplyr
+
+# Group by month and origin
+by_month_origin <- group_by(flights, month, origin)
+
+# Take the means
+mean_month_origin_dplyr <- summarise(by_month_origin, MeanDelay = mean(arr_delay, na.rm = TRUE))
+
+# Check the output
+mean_month_origin_dplyr
+
+
+
+# Using base R function aggregate
+mean_month_origin_base <- aggregate(x = flights$arr_delay, 
+                                      by = list(Month = flights$month, Origin = flights$origin),
+                                      FUN = mean,
+                                      na.rm = TRUE)
+
+
+# Check the output. Note that dplyr and base R sort the output in different orders
+mean_month_origin_base
+```
+
+As before, if you don't want to type *flights$* multiple times, use `attach`.
+
+
+# Conclusion
+R users are constantly adding new libraries to base R, meaning that you will probably have several options for doing any job in R. The various options sometimes have subtle technical differences that will generate a lot of argument between professional programmers, but are unlikely to matter much to research scientists. In general, you should explore the R ecosystem freely and use whatever you like. **However** on assignments, it is wise to check with the lecturer before using something that is really different from what is presented in class. Your lecturer may, for educational reasons, want you to use specific R tools.
+
+## What's Next
+
+Fill in the module feedback form [https://tinyurl.com/r4ssp-module-fb](https://tinyurl.com/r4ssp-module-fb).
+
+You may recall that way back in the first module of this mini-course we said we were going to analyse data. We haven't really done much of that yet. So far we have been *getting ready* to analyse data. In the next module, we will start really digging into our data with exploratory analysis and descriptive statistics. Because this is not a statistics course *per se* we will only be using common general analyses in the handouts and readings. If, for a project or assignment, you need to do something more esoteric, just let us know -- someone has probably written an R library for it.

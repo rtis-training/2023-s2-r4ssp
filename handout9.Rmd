@@ -1,0 +1,298 @@
+---
+title: "R for Successful Student Projects - Module 9 Inferential Statistics"
+author: "Patricia Haden & Murray Cadzow"
+date: "Semester 1, 2022"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 3
+    code_download: true
+    code_folding: show
+---
+
+```{r setup, include=FALSE}
+library(knitr)
+
+knitr::opts_chunk$set(
+  comment = "#>",
+  fig.path = "figures/", # use only for single Rmd files
+  collapse = TRUE,
+  echo = TRUE
+)
+
+library(ggplot2)
+library(palmerpenguins)
+
+```
+
+
+## Introduction
+In Module 05, we saw that descriptive statistical tests are used to summarise and describe our data, illustrating the effects of experimental manipulations or factors. However, those tests apply only to our observed data. If we wish to claim that the patterns in our data would also be observed in the larger (possibly infinite) population, we must use inferential statistical techniques.
+
+In this module, we will consider standard **frequentist** statistical tests, which are all examples of **Null Hypothesis Significance Testing** (NHST). We assume that you have covered the relevant statistical theory in class. To summarise very briefly, when using these tests, the researcher has an **experimental hypothesis** (e.g. "there is a difference between my experimental groups in the population"). The mechanics of the test specify a **null hypothesis**, which is a special null opposite of the experimental hypothesis (e.g. "there is no difference in the experimental groups in the population"). NHST tests use the observed group difference and the observed variability in the data to determine the chance that the observed difference would have occurred just by chance, if the null hypothesis were true (e.g. the chance that your observed group difference is only due to random noise, not to any real effect of the experimental treatment). If this chance is very small (traditionally less than 5%), the researcher **rejects** the null hypothesis and concludes that the experimental hypothesis is likely to be true. 
+
+Inferential tests output this "chance" in a term called the **p-value**. Our inferential testing process in R is 1) tidy the data 2) call the appropriate function 3) inspect the output, with particular focus on the p-value and 4) interpret the results in context of your experiment.
+
+There are hundreds of NHST inferential tests. Fortunately, the bulk of published analyses use only a small subset of them. In this module we will look only at these common tests. Also fortunately, if you ever do need to perform one of the more esoteric inferential tests, there is probably an existing R library that supports it. 
+
+As always, we concentrate in this module on how to use R to perform statistical anlayses, not on the underlying statistical theory, which we assume you are learning in class.
+
+## The Common Inferential Tests
+In this module we will cover:
+
+
+* t-test (two-sample or paired) 
+* Analysis of Variance (with and without repeated measures)
+* Correlation
+* Chi-square (test for frequency independence)
+
+The ANOVA and t-test are used when comparing group/condition means and comprise a large portion of data analysis in the sciences. In Rm the functions used to perform these tests have similar syntax. They accept two main arguments: `data` which should be assigned the name of the input data frame, and `formula` which is a specially formatted text description of the analysis to be performed. The `formula` argument is extremely common in R. For example, most of R's powerful linear modeling and machine learning libraries (not covered in this module) also use `formula`. Although the syntax of `formula` can initially be confusing, it is well worth learning. Once you can correctly state `formula`, you can use most of R's statistical functions.
+
+## The `formula` Argument
+
+The general format for an R formula argument is:
+
+**predicted ~ predictors**
+
+The **predicted** term is the data measure in whose behaviour you are interested -- the **dependent variable**.
+
+The *~* is the **tilda** character. On most keyboards, ~ is on the key left of the numeral 1.
+
+The **predictors** are the experimental conditions or factors whose effect you wish to observe. In factorial designs (i.e. experiments with discrete conditions), these are often called **independent variables**.
+
+We identify the predicted and predictor variables by their columns names in the input data frame.
+
+The **predicted** and **~** part of a formula are usually straight-forward; the complexity arises when specifying the **predictors**. To illustrate, we will use the experimental design from the "Palmer Penguin" data set. You will recall that this study had several dependent variables (e.g. body mass, flipper length, etc.) and three independent variables (species, island and sex). Assume that we are analysing body mass, looking for effects of these three predictors. 
+
+## Examples of `formula`
+
+**A single predictor**: To analyse whether there is an effect of island on body mass use formula:
+
+`body_mass_g ~ island` 
+
+
+**Multiple predictors**: To analyse the effect of multiple predictors, combine them with `+`
+
+`body_mass_g ~ island + species`
+
+
+**Multiple predictors including interaction terms**: Factors in an interaction term are combined with `*`
+
+
+`body_mass_g ~ island + species + (island * species)'
+
+
+As the number of experimental factors increases it become tedious to specify all the possible interaction terms in a fully-crossed experimental design. As a short-hand, you can combine all factors with `*`. This means that the formula should contain all main effect terms and all possible interaction terms. For example, if your design has factors A, B, and C, you can say:
+
+`DV ~ A * B * C`
+
+This formula means "DV is predicted by the main effect of A, the main effect of B, the main effect of C, the AB, BC, and AC two-way interactions, and the ABC three-way interaction.
+
+
+**Repeated measures designs (ANOVA only)**
+In the Palmer Penguin data set, there are three islands. Each penguin lives on only one island, so there are different penguins in the different island groups -- each penguin contributes a data point to only one of the three island groups. We say that **island** is a **between-subjects factor**. Imagine however, that the researchers had wanted to explore how penguin body weight varied by **season**, so they measured each penguin twice -- once in summer and once in winter. Now each penguin would contribute a data point to both the summer and winter groups of experimental factor **season**. We say that **season** is a **within-subjects factor**, and that the experiment is a **repeated-measures design**. In ANOVA, the computation of p-values is different for between and within subjects factors. Specifically, the way that *noise* or *error* in the data is computed changes for the two types of predictor. Thus when building an R formula argument, we must specify our within-subjects factors. This is done by adding a special term to the formula using the following pattern:
+
+Error(*name of subject identifier column*/*name of within subjects factor*)
+
+Assume that we have in our data frame a column called PenguinID which holds a unique identifier for each penguin (essential with within-subjects factors, of course, so you can correctly pair up the two scores from the same individual). Assume that we want to use ANOVA to test whether body mass depends on island and season. Since season is a within-subject variable, our complete formula is:
+
+`body_mass_g ~ island + season + (island * season) + Error(PenguinID/season)`
+
+
+## Syntax of the Common Inferential Tests
+
+Test|Function|Main Arguments|Comments
+----|--------|--------------|--------
+t-test|t.test|formula and data|For a paired t-test (i.e. the same participants in both groups) add argument `paired=true`
+ANOVA|aov|formula and data| To see the output table, pass the result of the function call to `summary`.
+Correlation|cor|The two variables whose correlation is being tested
+Chi-square|chisq.test|The two variables whose independence is being tested
+
+
+## Exercises
+Solve each of these exercises using an inferential test in R. In each case, state the null hypothesis, the p-value produced by your test and a statistically correct interpretation of the result. Our solutions can be found at the bottom of the handout.
+
+
+1. Parks, Derocher & Lunn 2006 used GPS tracking collars to monitor the movements of a group of polar bears in 1991 and a different group in 2004. For each monitored bear, they computed the total habitat range in square meters for the year. A data set based on their results can be found in file polar_bear_range_following_park_2006.csv. Use a t-test to analyse the change in size of polar bear habitat range between 1992 and 2004.
+
+2. Use the Palmer Penguin data to explore the change in average body mass of penguins across the years of the study. Data were collected in 2007, 2008 and 2009. Since there are three groups (three levels of experimental factor **year**) you cannot perform a t-test; you must perform ANOVA. **NB:Be sure to cast the year column to a factor so that R will recognise it as categorical.** 
+
+3. The analysis below indicates that mean population bill length differs between penguin species (p < 0.001). 
+
+```{r single factor species}
+
+# Graphical display of the effect
+boxplot(bill_length_mm ~ species, data = penguins)
+aov_bill_length_species <- aov(bill_length_mm ~ species, data = penguins)
+summary(aov_bill_length_species) # Use summary to generate the ANOVA table
+```
+
+3.a) The null hypothesis in ANOVA is that **all population group means are equal**. A significant main effect tells us only that this statement is violated **somewhere**. It does not tell us specifically which population means are different, and which are not. From the boxplot, it appears that Adelie penguins have shorter bills that the other two species, but it is not clear whether Chinstrap and Gentoo penguins have truly different population averages. Determining this requires another test.
+
+Use Google or your favourite R textbook to explore function `TukeyHSD`. This function computes **Tukey's Honestly Significant Difference**, comparing all possible pairs of population means. Perform Tukey and describe, in statistically correct language, the results of your analysis.
+
+3.b) Use an ANOVA to determine if this bill length pattern is the same across all species. Reminder: In an ANOVA model, the interaction term between two factors tests whether the pattern of effect of one factor is the same at all levels of the second factor.
+
+4) A significance test for correlation between two variables tests the null hypothesis that *rho* (the population correlation) is 0. If we reject the null hypothesis we conclude that the factors are truly correlated in the population. The function `cor.test` performs a significance test for correlation. It does not require a `formula` argument -- just pass in the two data columns of interest.
+
+4.a) The file BeechSeedBirdAbundance.csv contains (simulated but realistic) abundance counts for beech tree seeds (an important food source) and native birds measured weekly for five consecutive years. Use inferential testing to decide whether there is a true correlation between seed abundance and bird population in this ecosystem. Describe your results.
+
+4.b) Our analysis shows that higher density of beech seeds is associated with *lower* bird abundance. This result is surprising, as we would have expected that more food would result in higher bird populations (as is the common pattern). Propose an explanation for these data. What additional metric might you need to test your hypothesis?
+
+5) Chi-square is an inferential test for categorical frequency data which tests for **independence** of factors. That is, a chi-square on two factors tests whether the frequency pattern on one factor is the same at all levels of the other factor (logically similar to the interaction term in an ANOVA for continuous data).
+
+The file TeachingModePreferences.csv contains (simulated) results from a survey of 100 randomly selected University students. Each student was asked whether they preferred online for face-to-face teaching. Each student was coded as either post-graduate or undergraduate depending on their current enrollment.
+
+5.a) What proportion of students are post-grads?
+
+5.b) Ignoring level of study, do the students in the sample *overall* prefer online or face-to-face teaching?
+
+5.c) Using chi-square, test the null hypothesis that the pattern or preference for the different teaching modes is the same for both post-grad and undergraduate students. Like `cor.test` the function `chisq.test` simply takes the two data columns as arguments; no formula is required. Describe the results of your analysis.
+
+
+## Solutions
+1. 
+
+```{r polar bear soln}
+
+polar_bear_df <- read.csv("data/polar_bear_range_following_park_2006.csv")
+head(polar_bear_df)
+
+boxplot(Range ~ Year, data = polar_bear_df)
+
+library(ggplot2)
+ggplot(data = polar_bear_df) +
+  geom_histogram(mapping = aes(x = Range, fill = Year), color = "black", binwidth = 10000, position="dodge")
+
+t.test(Range ~ Year, data = polar_bear_df)
+
+```
+
+Discussion:
+* H0: Mean habitat range across the population of polar bears is the same in 1992 and 2004.
+* Population mean habitat range for polar bears is smaller in 2004 than in 1992 (p < 0.001). 
+
+
+2. 
+
+```{r anova penguins}
+library(palmerpenguins) # load the penguins
+
+penguins$year <- as.factor(penguins$year) # Cast year to a factor
+
+boxplot(body_mass_g ~ year, data = penguins) # It looks like 2008 might have been a heavy year....
+
+aov_penguin_species <- aov(body_mass_g ~ year, data = penguins)
+
+summary(aov_penguin_species) # Use summary to generate the ANOVA table
+```
+
+Discussion:
+
+* H0: There is no difference between population means for the three years
+* p = 0.414. Fail to reject H0. We find no evidence that average population body mass is different between 2007, 2008 and 2009. That is, given the noise in our data, our observed differences were likely to occur just by chance (41.4% probability).
+
+
+
+3.a) 
+
+```{r Tukey}
+TukeyHSD(aov_bill_length_species)
+```
+
+Discussion: 
+
+* All p-values < 0.05, so all paired comparisons are different. We conclude with > 95% confidence that the population mean bill lengths of all species are different. Based on the confidence intervals, Chinstrap have the longest mean bill length, Adelie have the shortest, and Gentoo are intermediate.
+
+
+3.b)
+
+```{r two way}
+
+# Visualise the data. Because the lines for male and female are close to parallel we expect that the effect of species is the same
+# for both sexes.
+interaction.plot(penguins$species, penguins$sex, penguins$bill_length_mm)
+
+# Perform the ANOVA. Note the changes to the model from the one-factor analysis above.
+aov_bill_length_species_sex <- aov(bill_length_mm ~ species + sex + (species * sex), data = penguins)
+
+# Display the ANOVA table
+summary(aov_bill_length_species_sex)
+```
+
+Discussion:
+
+* For the species:sex interaction term, the p-value is 0.103 (greater than 0.05) so we fail to reject the null hypothesis and state that we have no evidence for an interaction between these two factors. Our expectation based on the interaction plot is supported.
+
+
+
+4.a) 
+
+```{r cor}
+# Load the data
+beech_seed_bird_abundance_df <- read.csv("data/BeechSeedBirdAbundance.csv")
+
+# Visualise the data
+library(ggplot2)
+ggplot(data = beech_seed_bird_abundance_df) +
+  geom_point(mapping = aes(x = SeedPerSqM, y=BirdAbundance))
+
+# Compute the observed correlation
+cor(beech_seed_bird_abundance_df$SeedPerSqM, beech_seed_bird_abundance_df$BirdAbundance)
+
+# Test for significance
+cor.test(beech_seed_bird_abundance_df$BirdAbundance, beech_seed_bird_abundance_df$SeedPerSqM)
+```
+
+Discussion:
+* p < 0.001. We reject H0: rho = 0 and conclude that these two measures are correlated in the population. The correlation is negative (r-observed = -0.6). Thus, higher density of beech seeds is associated with fewer birds.
+
+
+4.b) A possible explanation is that more seed also means more predators (rats like beech seeds too) and the negative effect of predation on bird populations is greater than the positive effect of greater food availability. To test this you should count abundance of seed-eating predators (e.g. rats).
+
+
+
+
+5.a) 
+
+```{r pr student level}
+
+# Load the data
+student_preference_df <- read.csv("data/TeachingModePreferences.csv")
+
+# Generate the frequency table for one factor
+table(student_preference_df$StudentLevel)
+
+```
+
+
+5.b) 
+
+```{r pr preference}
+
+# Generate the frequency table for one factor
+# Preference appears to be approximately evenly split between online and ftf
+table(student_preference_df$Preference)
+
+```
+
+
+5.c) 
+
+```{r chi sq}
+
+# Visualise the data -- preference doesn't look so evenly split now....
+ggplot(data = student_preference_df) +
+  geom_bar(aes(x = StudentLevel, fill=Preference), position = "dodge")
+
+
+# Run the inferential test
+chisq.test(student_preference_df$StudentLevel, student_preference_df$Preference)
+
+```
+
+Discussion:
+
+* p < 0.001 We reject the null hypothesis that the two factors are independent. Based on o ur observed data, we conclude that for post-grad students, a greater proportion prefer online teaching than ftf teaching. For undergraduate students this pattern is reversed.
+
