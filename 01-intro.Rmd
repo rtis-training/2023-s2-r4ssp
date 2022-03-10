@@ -1,5 +1,6 @@
 ---
 title: "Introducing R and RStudio"
+date: "Semester 1, 2022"
 output:
   html_document:
     toc: true
@@ -22,9 +23,22 @@ knitr::opts_chunk$set(
 
 ```
 
-[Link to the Handout](handout1.html)
 
-Reading:
+> #### Associated material
+> Handout: [Handout 01 - Introducing R and Rstudio](handout1.html)
+> 
+> Associated Readings:
+>
+> - [R for Data Science - Chapter 1](https://r4ds.had.co.nz/introduction.html)
+> - [R for Data Science - Chapter 4](https://r4ds.had.co.nz/workflow-basics.htm)
+
+#### Before we start
+
+This course is designed with two components - the module and the handout. The module content provides more explanation and background so that you can work through it on your own if you wish. The handout content provides the structure for the content that will be delivered in the online sessions. Both sets of content are complementary to each other.
+
+At the top right hand corner of both the module and handout pages is a "code" button. This can be used to toggle seeing/hiding the code or to download the code that that created the page as an Rmarkdown file (we cover Rmarkdown more in-depth in [module](06-communicate.html)/[handout](handout6.html) 6).
+
+
 
 
 
@@ -52,7 +66,7 @@ This handout is designed to be read in conjunction with Chapter 1: Introduction 
 We think of computers as storing rich meaningful data (mostly cat videos). Actually, what computers really contain are millions of tiny little storage units, each of which either holds an electrical charge (usually called a 1) or holds nothing (usually called a 0). Really. That's it. That's all there is.
 
 ```{r, fig.align='center', fig.cap="What's inside the computer", echo=FALSE, out.width="50%"}
-include_graphics("images/computer.png" )
+include_graphics("images/01-computer.png" )
 ```
 
 All of the amazing things that computers do happen through extremely complicated manipulation of all those 0s and 1s.This involves a lot of maths and a lot of electronics, and is very, very confusing. So that computer users don't have to think about all these 0s and 1s, computer scientists have developed **programming languages**, which are symbolic systems that we can use to express what we want to happen inside the machine. Programming languages are designed to be similar to human languages, so they are easy for us to work with. Over the last 60 years many such languages have been developed: FORTRAN, BASIC, C, Java, Python, etc., and the one we are using in this mini-course, R. Each programming language has a vocabulary and a grammar (just like human languages) which must be followed **exactly** (they are, in fact, much stricter about this than human languages).
@@ -60,7 +74,7 @@ All of the amazing things that computers do happen through extremely complicated
 To communicate with your computer using a program language, you need a special computer program (previously written in a programming language, of course) that knows how to translate from the human-friendly programming language into actions on the computer. These are called **Development Environments**, because this is where people develop software.
 
 ```{r, fig.cap = "All The Parts", echo=FALSE, fig.align='center', out.width="100%"}
-include_graphics("images/language_ide_machine.png")
+include_graphics("images/01-language_ide_machine.png")
 ```
 
 The most popular development environment for R is a program called **RStudio**.
@@ -82,7 +96,7 @@ When programming a computer you must always remember one very important fact: Co
 Really. The computer "understands" only a very small and *strictly limited* set of commands (the grammar and vocabulary of a programming language). If you deviate from this set of commands *in any way*, the computer cannot figure out what you mean. It is best to think of your computer as a well-meaning, well-trained, but not particularly bright dog. It wants to do as it is told, but if you use a command it doesn't know, it can't figure out what you intend. Be nice to your computer -- don't confuse it.
 
 ```{r, fig.align='center', fig.cap = "Confused Dog", echo = FALSE}
-include_graphics("images/dog.jpg")
+include_graphics("images/01-dog.jpg")
 ```
 
 <!-- Image: https://imgflip.com/memetemplate/116235568/confused-dog -->
@@ -104,7 +118,7 @@ In the first instance, just to make sure R and RStudio are working correctly, we
 The RStudio interface is divided into separate **panes**. As you become more comfortable with RStudio, you may wish to reorganise the locations of the different panes. In its default configuration when it first opens, RStudio will have three panes, each of which has multiple tabs. On the left is the Console pane. This is where we will enter our first R commands. At the upper right is the Environment pane. This is where we will see information about the state of our program. At the lower right is the Files pane. Here we can navigate among files on our computer. But more usefully, the Files pane contains a tab labelled Plots. We will switch to this tab to see graphs that we draw with R.
 
 ```{r, fig.align='center', fig.cap = "RStudio", echo = FALSE, fig.pos = "H", out.width="100%"}
-include_graphics("images/RStudio.png")
+include_graphics("images/01-RStudio.png")
 ```
 
 ### Using Projects in RStudio
@@ -144,7 +158,7 @@ R understands numbers (things like 8 and 3.14159) and mathematical operators (ac
 If everything is working as it should, your screen should look like this (the contents of the Files pane may be different):
 
 ```{r, fig.align='center', out.width= "100%", fig.pos="H", fig.cap = "First R Command", echo = FALSE}
-include_graphics("images/first_command.png")
+include_graphics("images/01-first_command.png")
 ```
 
 You have given R two **things**: the number 4 and the number 5. You have asked R to perform an **action** on those things: addition. R has done so, and RStudio has displayed the result (in this case, the value 9). It has also printed [1] on the console screen. This is RStudio trying to help you. As your R commands become more complicated, you will end up with many results rather than just one. RStudio prints these numbers at the start of output lines to help you count your results. It's not really necessary when you only have one result, but that's just how RStudio behaves (we refer you again to the picture of the well-meaning doggo above).
@@ -278,7 +292,7 @@ Look **very carefully** at the variable name on the left hand side of the assign
 Inside our computer, variables are implemented (conceptually) as shown below. A location in memory is "named". When you refer to the name, the computer supplies whatever value is stored at that location.
 
 ```{r, fig.align='center', out.width="50%", fig.cap="How Variables Work", echo = FALSE}
-include_graphics("images/computer_with_variable.png")
+include_graphics("images/01-computer_with_variable.png")
 ```
 
 This means that the value of a variable can change over time. (We will see later that this turns out to be extremely useful.)
@@ -418,13 +432,13 @@ We have typed a lot of R commands into the console. When we close RStudio, **all
 1\. From the menu at the top of the RStudio screen select File-\>New File then click on R Script. (Alternatively, you can type shift+ctrl+N (Windows) or shift+cmd+N (Mac).)
 
 ```{r, fig.align='center', out.width="50%", fig.cap = "Making an R File", echo = FALSE}
-include_graphics("images/make_script.png")
+include_graphics("images/01-make_script.png")
 ```
 
 2\. This opens a new untitled file in an editing pane in the upper left of the RStudio screen. The console pane will be pushed down to the bottom half of the screen. You can click and drag the dividers between the four panes to change their sizes as you prefer.
 
 ```{r, fig.align='center', out.width = "100%", fig.cap = "New Script", fig.pos = 'H', echo = FALSE}
-include_graphics("images/new_script.png")
+include_graphics("images/01-new_script.png")
 ```
 
 3\. From the main RStudio menu select File-\>Save As.. to save your file. Always give your files descriptive names to make it easy to find the one you want later.
@@ -452,25 +466,25 @@ A basic script file (of type .R) will store and preserve your code. RStudio also
 1\. In RStudio, click on the File menu, select New File and, from the submenu that opens, click on R Markdown.
 
 ```{r, fig.align='center', out.width="50%", fig.cap = "Create an R Markdown File", fig.pos = "H", echo = FALSE}
-include_graphics("images/make_rmd.png")
+include_graphics("images/01-make_rmd.png")
 ```
 
 2\. A dialogue box will open, where you have a chance to enter a title for your document and the name of the author. These will appear at the top of the knit document. You can select the output format. Leave it as HTML for this exercise.
 
 ```{r, fig.align='center', out.width = "75%", fig.pos = "H", fig.cap = "R Markdown Dialogue", echo = FALSE}
-include_graphics("images/markdown_dialogue.png")
+include_graphics("images/01-markdown_dialogue.png")
 ```
 
 3\. RStudio will create a new file and open it in a new tab. The file is untitled, so save it and give it a sensible name.
 
 ```{r, fig.align='center', fig.cap = "A New R Markdown File", out.width = "100%", echo = FALSE, fig.pos = "H"}
-include_graphics("images/markdown_template.png")
+include_graphics("images/01-markdown_template.png")
 ```
 
 The file already contains some text. This is some sample contents to give you an idea of what an R Markdown file looks like. You will note that the file has areas with a white background and areas with a shaded background. The white areas are plain text, the shaded areas are R commands. When the file is knit, that code will be run, and its output inserted into the text. To see this in action, click the **Knit** icon at the top the RStudio tab.
 
 ```{r, fig.align='center', fig.cap = "The Knit Button", out.width = "50%", echo = FALSE, fig.pos = "H"}
-include_graphics("images/markdown_knit_button.png")
+include_graphics("images/01-markdown_knit_button.png")
 ```
 
 RStudio will produce a beautiful HTML document and open it in a local browser window. See if you can match the R code segments in the R Markdown document to the output that appears in the HTML page.

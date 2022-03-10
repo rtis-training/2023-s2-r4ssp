@@ -8,9 +8,19 @@ title: "R for Successful Student Projects"
 Semester 1 2022 R for Successful Student Projects (R4SSP) will be online 10-noon Wednesdays, commencing from 16th March.
 
 
-
-
 For more information please email rtis.training@otago.ac.nz
+
+## Content
+
+This course is designed to provide many avenues to learning R. We have provided both Modules that give more in-depth information on topics and handouts, which are representative of the content that will be covered in the online sessions. Both resources are designed to be complementary to each other.
+
+We have split the content into two common purposes for learning R
+
+- Using R for data analysis
+- Programming using R
+
+The main motivation for many people is to perform data analysis, so we have structured the order so that people can 'get stuff done' and then learn about how to improve their efficiency using R.
+
 
 ## Syllabus
 
@@ -26,3 +36,5 @@ Date | Week | Module | Part | Topic
 4 May | 7 | Programming focus | 1 | Functions and Choices
 11 May | 8 | Programming focus | 2 | Repeating code
 18 May | 9 | Programming focus | 3 | Workflows and debugging 
+
+
