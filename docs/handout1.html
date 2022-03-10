@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Murray Cadzow &amp; Patricia Haden" />
+
+
+<title>Handout 01 - Introducing R and RStudio</title>
+
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">R4SSP Semester 1 2022</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Modules
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Intro</li>
+    <li>
+      <a href="01-intro.html">Intro to R and RStudio</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Data Focus</li>
+    <li class="dropdown-header">Part 1: Visualising</li>
+    <li class="dropdown-header">Part 2: Subsetting</li>
+    <li class="dropdown-header">Part 3: Transforming</li>
+    <li class="dropdown-header">Part 4: Summarising</li>
+    <li class="dropdown-header">Part 5: Communicating</li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Programming focus</li>
+    <li class="dropdown-header">Functions and Choices</li>
+    <li class="dropdown-header">Repeating Code</li>
+    <li class="dropdown-header">Workflows</li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Handouts
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="handout1.html">Handout 1</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+<li role="separator" class="divider"></li>
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Handout 01 - Introducing R and RStudio</h1>
+<h4 class="author">Murray Cadzow &amp; Patricia Haden</h4>
+<h4 class="date">Semester 1, 2022</h4>
+
+</div>
+
+
+<blockquote>
+<h4 id="associated-material">Associated material</h4>
+<p>Module: <a href="01-intro.html">Module 01 - Introducing R and Rstudio</a></p>
+<p>Associated Readings:</p>
+<ul>
+<li><a href="https://r4ds.had.co.nz/introduction.html">R for Data Science - Chapter 1</a></li>
+<li><a href="https://r4ds.had.co.nz/workflow-basics.htm">R for Data Science - Chapter 4</a></li>
+</ul>
+</blockquote>
+<div id="before-we-start" class="section level4">
+<h4>Before we start</h4>
+<p>This course is designed with two components - the module and the handout. The module content provides more explanation and background so that you can work through it on your own if you wish. The handout content provides the structure for the content that will be delivered in the online sessions. Both sets of content are complementary to each other.</p>
+<p>At the top right hand corner of both the module and handout pages is a “code” button. This can be used to toggle seeing/hiding the code or to download the code that that created the page as an Rmarkdown file (we cover Rmarkdown more in-depth in <a href="06-communicate.html">module</a>/<a href="handout6.html">handout</a> 6).</p>
+<p><br />
+</p>
+</div>
+<div id="r-and-rstudio" class="section level1">
+<h1>R and RStudio</h1>
+<p>R is the language, RStudio is an interface for interacting with R.</p>
+<p><br />
+</p>
+<div id="the-rstudio-environment" class="section level2">
+<h2>The RStudio environment</h2>
+<p>RStudio is what is known as an integrated development environment (IDE) which provides a graphical interface (among other things) for interacting with R. The main environment of RStudio is comprised of panels.</p>
+<p>Panels of RStudio</p>
+<ul>
+<li>console</li>
+<li>source</li>
+<li>environment/history</li>
+<li>file/plot/help/viewer</li>
+</ul>
+<p><br />
+</p>
+<div id="global-settings-for-reproducibility" class="section level3">
+<h3>Global settings for reproducibility</h3>
+<p>Before we get under way we want to set up our environment to help enforce some behaviours that encourage reproducibility.</p>
+<p>We want to disable a few default settings</p>
+<ul>
+<li>Restore .RData on startup</li>
+<li>Save workspace to .Rdata</li>
+</ul>
+<p>To do this select the <code>Tools</code> menu -&gt; <code>Global options</code>, then on the “General” tab under the “Workspace” heading:</p>
+<ol style="list-style-type: decimal">
+<li>Untick “Restore .RData on startup”</li>
+<li>Set “Save workspace to .RData on exit” to “Never”</li>
+<li>Click “Apply”</li>
+</ol>
+<p><br />
+</p>
+</div>
+<div id="projects" class="section level3">
+<h3>Projects</h3>
+<p>Projects within RStudio provide mechanism to encapsulate a project - be it particular data analysis you’re working on, an R package you’re making (Modules/Handouts 7 and 8), or even a book (Module/Handout 6).</p>
+<p>A project is a directory on your computer that you want to put all your code, documentation, data, and associated outputs so that everything needed to recreate an analysis is “bundled together”.</p>
+<p>We’ll create a project for the course and create a common project structure:</p>
+<ul>
+<li>File -&gt; New Project -&gt; New Directory -&gt; New Project</li>
+<li>Choose where you want it to live and give it a name</li>
+<li>“Create Project”</li>
+</ul>
+<p>Now we have our new project we’ll create some directories to store various aspects of our project. We’ll create the following directories:</p>
+<ul>
+<li>scripts</li>
+<li>docs</li>
+<li>data</li>
+<li>outputs</li>
+</ul>
+<p>You can do this either using the “New Folder” button in the Files panel or using the code below.</p>
+<pre class="r"><code>dir.create(&quot;scripts&quot;)
+#&gt; Warning in dir.create(&quot;scripts&quot;): &#39;scripts&#39; already exists
+dir.create(&quot;data&quot;)
+#&gt; Warning in dir.create(&quot;data&quot;): &#39;data&#39; already exists
+dir.create(&quot;data&quot;)
+#&gt; Warning in dir.create(&quot;data&quot;): &#39;data&#39; already exists
+dir.create(&quot;outputs&quot;)
+#&gt; Warning in dir.create(&quot;outputs&quot;): &#39;outputs&#39; already exists</code></pre>
+<p><br />
+</p>
+</div>
+<div id="scripts" class="section level3">
+<h3>Scripts</h3>
+<p>Scripts in R are a way in which we can document the steps we take through our analysis and can be used to recreate what we have done. There are two main forms that scripts come in:</p>
+<p>R Script - plain text document that contains R commands</p>
+<p>RMarkdown - a plain text document that has text areas and code areas which is processed/compiled thought to a output format such as html or pdf which contains formatted text, code plus the results of the code embedded in the document. We’ll cover this in more depth Module/Handout 6.</p>
+<p><br />
+</p>
+</div>
+</div>
+<div id="r-syntax" class="section level2">
+<h2>R syntax</h2>
+<p>General syntax info:</p>
+<ul>
+<li>R is case sensitive</li>
+<li>spaces are ignored by R</li>
+<li>there is no difference between single <code>'</code> and double <code>"</code> quotes but you have to use the same type to close as you open with</li>
+</ul>
+<p><br />
+</p>
+<div id="mathematical-operators" class="section level3">
+<h3>Mathematical operators</h3>
+<p>addition: <code>+</code></p>
+<p>subtraction: <code>-</code></p>
+<p>multiplication: <code>*</code></p>
+<p>division: <code>/</code></p>
+<p>exponent: <code>**</code></p>
+<p>modulo/remainder: <code>%%</code></p>
+<pre class="r"><code># addition
+1 + 2
+#&gt; [1] 3
+
+# subtraction
+3 - 6
+#&gt; [1] -3
+
+# multiplication
+4 * 2
+#&gt; [1] 8
+
+# division
+12 / 3
+#&gt; [1] 4
+
+# exponent
+2 ** 5
+#&gt; [1] 32
+
+# modulo
+5 %% 2
+#&gt; [1] 1</code></pre>
+<p>The <code>#</code> symbol is used to denote a ‘comment’ and R will ignore everything to the right of it. This lets us add comments to our code to describe the what and why of the code being run.</p>
+<p><br />
+</p>
+</div>
+<div id="data-types" class="section level3">
+<h3>Data types</h3>
+<p>In R there are 3 main types of data you’ll likely use in day-to-day life, these are:</p>
+<ul>
+<li>numeric</li>
+<li>characters</li>
+<li>boolean</li>
+</ul>
+<p>The numeric type covers is your numbers both “double” (decimal), and integers (defined by a integer number followed by L e.g. <code>2L</code>). These can be typed straight in as we have been doing and can have mathematical operations performed on them.</p>
+<p>The character type is any combination of characters zero or more that is represented on the keyboard and includes letters, numbers and symbols. Characters are defined in R by enclosing them in quotation marks (either single or double, e.g. <code>"some words"</code>). Characters can’t have mathematical operations performed on them.</p>
+<p>Booleans are the logical data type, they consist of <code>TRUE</code> and <code>FALSE</code> and are used for logical operations.</p>
+<p>Within R there are other types such as complex, and raw but they are less common</p>
+<p><br />
+</p>
+</div>
+<div id="variables" class="section level3">
+<h3>Variables</h3>
+<p>Variables are named objects that we can store data in that we can reference/use later in our code.</p>
+<p>The main rules for naming variables - Start with a letter - No symbols (except . or _)</p>
+<p>It’s also highly recommended to use variable names that are descriptive of the contents. This will help you remember and keep track of things easier later on.</p>
+<p><br />
+</p>
+<div id="assigment-operators" class="section level4">
+<h4>Assigment operators</h4>
+<p><code>&lt;-</code> and <code>=</code> are both used for assignment within R. <code>&lt;-</code> is the older/more commonly used for assigning to a variable, <code>=</code> is the only one that you use inside a function call to assign the parameters/arguments.</p>
+<p>In terms of priority of operators, assignment happens <strong>last</strong>, and takes the result of evaluating the right hand side and stores it into the object of named on the left hand side.</p>
+<p>Another key thing about variables is they <strong>only contain the last thing that was assigned to them</strong>.</p>
+<p><br />
+</p>
+</div>
+</div>
+<div id="functions" class="section level3">
+<h3>Functions</h3>
+<p>Functions in R let us perform operations. Functions in R are really R code stored in a variable that does stuff. In order to “do the stuff” we need call the variable with parentheses <code>()</code> on the end. Inside the parentheses we can pass values for the parameters/arguments which let us change the behaviour of the function.</p>
+<p>For instance, if we want to find the square root of a number, we can use the <code>sqrt</code> function and provide the number we want the square root for as an argument:</p>
+<pre class="r"><code>sqrt(64)
+#&gt; [1] 8</code></pre>
+<p>To supply multiple arguments or parameters to a function we separate them by a comma. Each argument also has a name. Arguments are filled either by name, or based on the position.</p>
+<pre class="r"><code># by position
+round(3.142, 1)
+#&gt; [1] 3.1
+
+# by name
+round(x = 3.142, digits = 1)
+#&gt; [1] 3.1</code></pre>
+<p>To find out what the names of the arguments a function takes we can run the <code>args</code> function on the function name:</p>
+<pre class="r"><code>args(round)
+#&gt; function (x, digits = 0) 
+#&gt; NULL</code></pre>
+<p><br />
+</p>
+</div>
+<div id="help" class="section level3">
+<h3>Help</h3>
+<p>Being able to find things out for yourself is extremely important and within R there are a couple way this can be done.</p>
+<ul>
+<li><code>help()</code> or <code>?</code></li>
+<li><code>??</code></li>
+<li>google</li>
+</ul>
+<p>There is usually pretty good documentation that goes along side functions and this can be accessed through the inbuilt help system using <code>help()</code>, <code>?</code>, or <code>??</code>.</p>
+<p><code>help()</code>and <code>?</code> are equivalent and will find the manual page for the exact function, e.g. to find the manual page for the <code>mean</code> function: <code>help("mean")</code> or <code>?mean</code>. The most useful sections of the manual pages are “Usage”, “Arguments”, and “Examples” which tell you how to run the function, what the arguments are supposed to be, and gives some ‘copy-paste’ examples to show you how it’s run.</p>
+<p><code>??</code> on the other hand will bring up a list of all the manual pages that mention the word.</p>
+<p>Google is also extremely useful and my most common search is “how to … in R”.</p>
+<p><br />
+</p>
+</div>
+<div id="comparatives" class="section level3">
+<h3>Comparatives</h3>
+<p>One final set of syntax operators to cover are the comparatives. These are used to create logical statements based on comparisons that will evaluate to be either <code>TRUE</code> or <code>FALSE</code>.</p>
+<p>Comparators:</p>
+<ul>
+<li>equality: <code>==</code></li>
+<li>not equal to:<code>!=</code></li>
+<li>greater than / greater than or equal to: <code>&gt;</code> / <code>&gt;=</code></li>
+<li>less than / less than or equal to: <code>&lt;</code> / <code>&lt;=</code></li>
+</ul>
+<p>Logical operators</p>
+<ul>
+<li>not: <code>!</code></li>
+<li>or: <code>|</code></li>
+<li>and: <code>&amp;</code></li>
+</ul>
+<p>We’ll cover these in more depth in the Selecting and Filtering <a href="03-subset.html">Module</a>/<a href="handout3.html">Handout</a>.</p>
+<p><br />
+</p>
+</div>
+</div>
+<div id="starting-with-data" class="section level2">
+<h2>Starting with data</h2>
+<div id="vectors" class="section level3">
+<h3>Vectors</h3>
+<p>Until now we’ve been operating on single items at a time. R has way of storing multiple pieces of information - the <em>vector</em>.</p>
+<p>A vector is zero or more entries of the <strong>same data type</strong>.</p>
+<p>To create a vector of more than one piece of information we can use the <em>combine</em> function, which because it is used so frequently in R, has been reduced to be <code>c()</code>. Each item is comma separated.</p>
+<pre class="r"><code>some_letters &lt;- c(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;)
+some_letters
+#&gt; [1] &quot;a&quot; &quot;b&quot; &quot;c&quot;
+
+some_numbers &lt;- c(2, 4, 6)
+some_numbers
+#&gt; [1] 2 4 6</code></pre>
+<p>We can see what the data type is of a vector using <code>typeof</code></p>
+<pre class="r"><code>typeof(some_letters)
+#&gt; [1] &quot;character&quot;
+
+typeof(some_numbers)
+#&gt; [1] &quot;double&quot;</code></pre>
+<p><br />
+</p>
+<div id="subsetting-by-index" class="section level4">
+<h4>Subsetting by index</h4>
+<p>The final syntax we’ll introduce this week is <code>[]</code> which enables us to extract items out of a vector.</p>
+<p>Each item has a positional index (starting from 1 - other languages differ). We can use this index as an argument to <code>[]</code> to pull out the specified item. If we want multiple items we supply a vector of numbers for the indexes we want</p>
+<pre class="r"><code>some_numbers
+#&gt; [1] 2 4 6
+
+# pull out the second item
+some_numbers[2]
+#&gt; [1] 4
+
+some_letters
+#&gt; [1] &quot;a&quot; &quot;b&quot; &quot;c&quot;
+# pull out items 1 and 3
+some_letters[c(1,3)]
+#&gt; [1] &quot;a&quot; &quot;c&quot;</code></pre>
+<p>In the Selecting and Filtering Data module/handout we will cover this more and expand to 2 dimensions.</p>
+<p><br />
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="exercises" class="section level1">
+<h1>Exercises</h1>
+<ol style="list-style-type: decimal">
+<li><p>Create and assign a vector of 5 numbers.</p></li>
+<li><p>Find out the <code>length</code> of the vector.</p></li>
+<li><p>Divide the entire vector by 2 and store the result into a variable called <em>div_2</em> - what is the result of the division?</p></li>
+<li><p>Calculate the minimum, maximum, mean, and standard deviation for the <em>div_2</em> vector. Can you round the results to 2 decimal places?</p></li>
+<li><p>Create and assign a vector of at least 4 animal names into <em>animals</em>.</p></li>
+<li><p>Can you find a way to tell you the number of characters per item?</p></li>
+<li><p>Into a new variable, extract the first and fourth animal.</p></li>
+<li><p>Remove the third animal from your original animals vector (what does using a negative index do?).</p></li>
+<li><p>Create a vector that has three copies of this updated animals vector.</p></li>
+<li><p>Combine your animal and number vectors together into a new variable called “<em>coerced</em>”. Run <code>typeof</code> on this vector - how does it compare to the types of the original vector?</p></li>
+</ol>
+</div>
+
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiSGFuZG91dCAwMSAtIEludHJvZHVjaW5nIFIgYW5kIFJTdHVkaW8iCmF1dGhvcjogIk11cnJheSBDYWR6b3cgJiBQYXRyaWNpYSBIYWRlbiIKZGF0ZTogIlNlbWVzdGVyIDEsIDIwMjIiCm91dHB1dDoKICBodG1sX2RvY3VtZW50OgogICAgdG9jOiB0cnVlCiAgICB0b2NfZmxvYXQ6IHRydWUKICAgIHRvY19kZXB0aDogMwogICAgY29kZV9kb3dubG9hZDogdHJ1ZQogICAgY29kZV9mb2xkaW5nOiBzaG93Ci0tLQoKYGBge3Igc2V0dXAsIGluY2x1ZGU9RkFMU0V9CmxpYnJhcnkoa25pdHIpCgprbml0cjo6b3B0c19jaHVuayRzZXQoCiAgY29tbWVudCA9ICIjPiIsCiAgZmlnLnBhdGggPSAiZmlndXJlcy8iLCAjIHVzZSBvbmx5IGZvciBzaW5nbGUgUm1kIGZpbGVzCiAgY29sbGFwc2UgPSBUUlVFLAogIGVjaG8gPSBUUlVFCikKCgpgYGAKCgoKPiAjIyMjIEFzc29jaWF0ZWQgbWF0ZXJpYWwKPiBNb2R1bGU6IFtNb2R1bGUgMDEgLSBJbnRyb2R1Y2luZyBSIGFuZCBSc3R1ZGlvXSgwMS1pbnRyby5odG1sKQo+IAo+IEFzc29jaWF0ZWQgUmVhZGluZ3M6Cj4KPiAtIFtSIGZvciBEYXRhIFNjaWVuY2UgLSBDaGFwdGVyIDFdKGh0dHBzOi8vcjRkcy5oYWQuY28ubnovaW50cm9kdWN0aW9uLmh0bWwpCj4gLSBbUiBmb3IgRGF0YSBTY2llbmNlIC0gQ2hhcHRlciA0XShodHRwczovL3I0ZHMuaGFkLmNvLm56L3dvcmtmbG93LWJhc2ljcy5odG0pCgoKIyMjIyBCZWZvcmUgd2Ugc3RhcnQKClRoaXMgY291cnNlIGlzIGRlc2lnbmVkIHdpdGggdHdvIGNvbXBvbmVudHMgLSB0aGUgbW9kdWxlIGFuZCB0aGUgaGFuZG91dC4gVGhlIG1vZHVsZSBjb250ZW50IHByb3ZpZGVzIG1vcmUgZXhwbGFuYXRpb24gYW5kIGJhY2tncm91bmQgc28gdGhhdCB5b3UgY2FuIHdvcmsgdGhyb3VnaCBpdCBvbiB5b3VyIG93biBpZiB5b3Ugd2lzaC4gVGhlIGhhbmRvdXQgY29udGVudCBwcm92aWRlcyB0aGUgc3RydWN0dXJlIGZvciB0aGUgY29udGVudCB0aGF0IHdpbGwgYmUgZGVsaXZlcmVkIGluIHRoZSBvbmxpbmUgc2Vzc2lvbnMuIEJvdGggc2V0cyBvZiBjb250ZW50IGFyZSBjb21wbGVtZW50YXJ5IHRvIGVhY2ggb3RoZXIuCgpBdCB0aGUgdG9wIHJpZ2h0IGhhbmQgY29ybmVyIG9mIGJvdGggdGhlIG1vZHVsZSBhbmQgaGFuZG91dCBwYWdlcyBpcyBhICJjb2RlIiBidXR0b24uIFRoaXMgY2FuIGJlIHVzZWQgdG8gdG9nZ2xlIHNlZWluZy9oaWRpbmcgdGhlIGNvZGUgb3IgdG8gZG93bmxvYWQgdGhlIGNvZGUgdGhhdCB0aGF0IGNyZWF0ZWQgdGhlIHBhZ2UgYXMgYW4gUm1hcmtkb3duIGZpbGUgKHdlIGNvdmVyIFJtYXJrZG93biBtb3JlIGluLWRlcHRoIGluIFttb2R1bGVdKDA2LWNvbW11bmljYXRlLmh0bWwpL1toYW5kb3V0XShoYW5kb3V0Ni5odG1sKSA2KS4KCgoKXAoKIyBSIGFuZCBSU3R1ZGlvCgpSIGlzIHRoZSBsYW5ndWFnZSwgUlN0dWRpbyBpcyBhbiBpbnRlcmZhY2UgZm9yIGludGVyYWN0aW5nIHdpdGggUi4KClwKCiMjIFRoZSBSU3R1ZGlvIGVudmlyb25tZW50CgpSU3R1ZGlvIGlzIHdoYXQgaXMga25vd24gYXMgYW4gaW50ZWdyYXRlZCBkZXZlbG9wbWVudCBlbnZpcm9ubWVudCAoSURFKSB3aGljaCBwcm92aWRlcyBhIGdyYXBoaWNhbCBpbnRlcmZhY2UgKGFtb25nIG90aGVyIHRoaW5ncykgZm9yIGludGVyYWN0aW5nIHdpdGggUi4gVGhlIG1haW4gZW52aXJvbm1lbnQgb2YgUlN0dWRpbyBpcyBjb21wcmlzZWQgb2YgcGFuZWxzLgoKUGFuZWxzIG9mIFJTdHVkaW8KCi0gY29uc29sZQotIHNvdXJjZQotIGVudmlyb25tZW50L2hpc3RvcnkKLSBmaWxlL3Bsb3QvaGVscC92aWV3ZXIKClwKCiMjIyBHbG9iYWwgc2V0dGluZ3MgZm9yIHJlcHJvZHVjaWJpbGl0eQoKQmVmb3JlIHdlIGdldCB1bmRlciB3YXkgd2Ugd2FudCB0byBzZXQgdXAgb3VyIGVudmlyb25tZW50IHRvIGhlbHAgZW5mb3JjZSBzb21lIGJlaGF2aW91cnMgdGhhdCBlbmNvdXJhZ2UgcmVwcm9kdWNpYmlsaXR5LgoKV2Ugd2FudCB0byBkaXNhYmxlIGEgZmV3IGRlZmF1bHQgc2V0dGluZ3MKCi0gUmVzdG9yZSAuUkRhdGEgb24gc3RhcnR1cAotIFNhdmUgd29ya3NwYWNlIHRvIC5SZGF0YQoKVG8gZG8gdGhpcyBzZWxlY3QgdGhlIGBUb29sc2AgbWVudSAtPiBgR2xvYmFsIG9wdGlvbnNgLCB0aGVuIG9uIHRoZSAiR2VuZXJhbCIgdGFiIHVuZGVyIHRoZSAiV29ya3NwYWNlIiBoZWFkaW5nOgoKMS4gVW50aWNrICJSZXN0b3JlIC5SRGF0YSBvbiBzdGFydHVwIgoyLiBTZXQgIlNhdmUgd29ya3NwYWNlIHRvIC5SRGF0YSBvbiBleGl0IiB0byAiTmV2ZXIiCjMuIENsaWNrICJBcHBseSIKClwKCiMjIyBQcm9qZWN0cwoKUHJvamVjdHMgd2l0aGluIFJTdHVkaW8gcHJvdmlkZSBtZWNoYW5pc20gdG8gZW5jYXBzdWxhdGUgYSBwcm9qZWN0IC0gYmUgaXQgcGFydGljdWxhciBkYXRhIGFuYWx5c2lzIHlvdSdyZSB3b3JraW5nIG9uLCBhbiBSIHBhY2thZ2UgeW91J3JlIG1ha2luZyAoTW9kdWxlcy9IYW5kb3V0cyA3IGFuZCA4KSwgb3IgZXZlbiBhIGJvb2sgKE1vZHVsZS9IYW5kb3V0IDYpLgoKQSBwcm9qZWN0IGlzIGEgZGlyZWN0b3J5IG9uIHlvdXIgY29tcHV0ZXIgdGhhdCB5b3Ugd2FudCB0byBwdXQgYWxsIHlvdXIgY29kZSwgZG9jdW1lbnRhdGlvbiwgZGF0YSwgYW5kIGFzc29jaWF0ZWQgb3V0cHV0cyBzbyB0aGF0IGV2ZXJ5dGhpbmcgbmVlZGVkIHRvIHJlY3JlYXRlIGFuIGFuYWx5c2lzIGlzICJidW5kbGVkIHRvZ2V0aGVyIi4KCldlJ2xsIGNyZWF0ZSBhIHByb2plY3QgZm9yIHRoZSBjb3Vyc2UgYW5kIGNyZWF0ZSBhIGNvbW1vbiBwcm9qZWN0IHN0cnVjdHVyZToKCi0gRmlsZSAtPiBOZXcgUHJvamVjdCAtPiBOZXcgRGlyZWN0b3J5IC0+IE5ldyBQcm9qZWN0Ci0gQ2hvb3NlIHdoZXJlIHlvdSB3YW50IGl0IHRvIGxpdmUgYW5kIGdpdmUgaXQgYSBuYW1lCi0gIkNyZWF0ZSBQcm9qZWN0IgoKTm93IHdlIGhhdmUgb3VyIG5ldyBwcm9qZWN0IHdlJ2xsIGNyZWF0ZSBzb21lIGRpcmVjdG9yaWVzIHRvIHN0b3JlIHZhcmlvdXMgYXNwZWN0cyBvZiBvdXIgcHJvamVjdC4gV2UnbGwgY3JlYXRlIHRoZSBmb2xsb3dpbmcgZGlyZWN0b3JpZXM6CgotIHNjcmlwdHMKLSBkb2NzCi0gZGF0YQotIG91dHB1dHMKCllvdSBjYW4gZG8gdGhpcyBlaXRoZXIgdXNpbmcgdGhlICJOZXcgRm9sZGVyIiBidXR0b24gaW4gdGhlIEZpbGVzIHBhbmVsIG9yIHVzaW5nIHRoZSBjb2RlIGJlbG93LgoKYGBge3J9CmRpci5jcmVhdGUoInNjcmlwdHMiKQpkaXIuY3JlYXRlKCJkYXRhIikKZGlyLmNyZWF0ZSgiZGF0YSIpCmRpci5jcmVhdGUoIm91dHB1dHMiKQpgYGAKClwKCiMjIyBTY3JpcHRzCgpTY3JpcHRzIGluIFIgYXJlIGEgd2F5IGluIHdoaWNoIHdlIGNhbiBkb2N1bWVudCB0aGUgc3RlcHMgd2UgdGFrZSB0aHJvdWdoIG91ciBhbmFseXNpcyBhbmQgY2FuIGJlIHVzZWQgdG8gcmVjcmVhdGUgd2hhdCB3ZSBoYXZlIGRvbmUuIFRoZXJlIGFyZSB0d28gbWFpbiBmb3JtcyB0aGF0IHNjcmlwdHMgY29tZSBpbjoKClIgU2NyaXB0IC0gcGxhaW4gdGV4dCBkb2N1bWVudCB0aGF0IGNvbnRhaW5zIFIgY29tbWFuZHMKClJNYXJrZG93biAtIGEgcGxhaW4gdGV4dCBkb2N1bWVudCB0aGF0IGhhcyB0ZXh0IGFyZWFzIGFuZCBjb2RlIGFyZWFzIHdoaWNoIGlzIHByb2Nlc3NlZC9jb21waWxlZCB0aG91Z2h0IHRvIGEgb3V0cHV0IGZvcm1hdCBzdWNoIGFzIGh0bWwgb3IgcGRmIHdoaWNoIGNvbnRhaW5zIGZvcm1hdHRlZCB0ZXh0LCBjb2RlIHBsdXMgdGhlIHJlc3VsdHMgb2YgdGhlIGNvZGUgZW1iZWRkZWQgaW4gdGhlIGRvY3VtZW50LiBXZSdsbCBjb3ZlciB0aGlzIGluIG1vcmUgZGVwdGggTW9kdWxlL0hhbmRvdXQgNi4KClwKCiMjIFIgc3ludGF4CgpHZW5lcmFsIHN5bnRheCBpbmZvOgoKLSBSIGlzIGNhc2Ugc2Vuc2l0aXZlCi0gc3BhY2VzIGFyZSBpZ25vcmVkIGJ5IFIKLSB0aGVyZSBpcyBubyBkaWZmZXJlbmNlIGJldHdlZW4gc2luZ2xlIGAnYCBhbmQgZG91YmxlIGAiYCBxdW90ZXMgYnV0IHlvdSBoYXZlIHRvIHVzZSB0aGUgc2FtZSB0eXBlIHRvIGNsb3NlIGFzIHlvdSBvcGVuIHdpdGgKClwKCiMjIyBNYXRoZW1hdGljYWwgb3BlcmF0b3JzCgphZGRpdGlvbjogYCtgCgpzdWJ0cmFjdGlvbjogYC1gCgptdWx0aXBsaWNhdGlvbjogYCpgCgpkaXZpc2lvbjogYC9gCgpleHBvbmVudDogYCoqYAoKbW9kdWxvL3JlbWFpbmRlcjogYCUlYAoKYGBge3J9CiMgYWRkaXRpb24KMSArIDIKCiMgc3VidHJhY3Rpb24KMyAtIDYKCiMgbXVsdGlwbGljYXRpb24KNCAqIDIKCiMgZGl2aXNpb24KMTIgLyAzCgojIGV4cG9uZW50CjIgKiogNQoKIyBtb2R1bG8KNSAlJSAyCgpgYGAKClRoZSBgI2Agc3ltYm9sIGlzIHVzZWQgdG8gZGVub3RlIGEgJ2NvbW1lbnQnIGFuZCBSIHdpbGwgaWdub3JlIGV2ZXJ5dGhpbmcgdG8gdGhlIHJpZ2h0IG9mIGl0LiBUaGlzIGxldHMgdXMgYWRkIGNvbW1lbnRzIHRvIG91ciBjb2RlIHRvIGRlc2NyaWJlIHRoZSB3aGF0IGFuZCB3aHkgb2YgdGhlIGNvZGUgYmVpbmcgcnVuLgoKXAoKIyMjIERhdGEgdHlwZXMKCkluIFIgdGhlcmUgYXJlIDMgbWFpbiB0eXBlcyBvZiBkYXRhIHlvdSdsbCBsaWtlbHkgdXNlIGluIGRheS10by1kYXkgbGlmZSwgdGhlc2UgYXJlOgoKLSBudW1lcmljCi0gY2hhcmFjdGVycwotIGJvb2xlYW4KClRoZSBudW1lcmljIHR5cGUgY292ZXJzIGlzIHlvdXIgbnVtYmVycyBib3RoICJkb3VibGUiIChkZWNpbWFsKSwgYW5kIGludGVnZXJzIChkZWZpbmVkIGJ5IGEgaW50ZWdlciBudW1iZXIgZm9sbG93ZWQgYnkgTCBlLmcuIGAyTGApLiBUaGVzZSBjYW4gYmUgdHlwZWQgc3RyYWlnaHQgaW4gYXMgd2UgaGF2ZSBiZWVuIGRvaW5nIGFuZCBjYW4gaGF2ZSBtYXRoZW1hdGljYWwgb3BlcmF0aW9ucyBwZXJmb3JtZWQgb24gdGhlbS4KClRoZSBjaGFyYWN0ZXIgdHlwZSBpcyBhbnkgY29tYmluYXRpb24gb2YgY2hhcmFjdGVycyB6ZXJvIG9yIG1vcmUgdGhhdCBpcyByZXByZXNlbnRlZCBvbiB0aGUga2V5Ym9hcmQgYW5kIGluY2x1ZGVzIGxldHRlcnMsIG51bWJlcnMgYW5kIHN5bWJvbHMuIENoYXJhY3RlcnMgYXJlIGRlZmluZWQgaW4gUiBieSBlbmNsb3NpbmcgdGhlbSBpbiBxdW90YXRpb24gbWFya3MgKGVpdGhlciBzaW5nbGUgb3IgZG91YmxlLCBlLmcuIGAic29tZSB3b3JkcyJgKS4gQ2hhcmFjdGVycyBjYW4ndCBoYXZlIG1hdGhlbWF0aWNhbCBvcGVyYXRpb25zIHBlcmZvcm1lZCBvbiB0aGVtLgoKQm9vbGVhbnMgYXJlIHRoZSBsb2dpY2FsIGRhdGEgdHlwZSwgdGhleSBjb25zaXN0IG9mIGBUUlVFYCBhbmQgYEZBTFNFYCBhbmQgYXJlIHVzZWQgZm9yIGxvZ2ljYWwgb3BlcmF0aW9ucy4KCldpdGhpbiBSIHRoZXJlIGFyZSBvdGhlciB0eXBlcyBzdWNoIGFzIGNvbXBsZXgsIGFuZCByYXcgYnV0IHRoZXkgYXJlIGxlc3MgY29tbW9uCgpcCgojIyMgVmFyaWFibGVzCgpWYXJpYWJsZXMgYXJlIG5hbWVkIG9iamVjdHMgdGhhdCB3ZSBjYW4gc3RvcmUgZGF0YSBpbiB0aGF0IHdlIGNhbiByZWZlcmVuY2UvdXNlIGxhdGVyIGluIG91ciBjb2RlLgoKVGhlIG1haW4gcnVsZXMgZm9yIG5hbWluZyB2YXJpYWJsZXMKLSBTdGFydCB3aXRoIGEgbGV0dGVyCi0gTm8gc3ltYm9scyAoZXhjZXB0IC4gb3IgXykKCkl0J3MgYWxzbyBoaWdobHkgcmVjb21tZW5kZWQgdG8gdXNlIHZhcmlhYmxlIG5hbWVzIHRoYXQgYXJlIGRlc2NyaXB0aXZlIG9mIHRoZSBjb250ZW50cy4gVGhpcyB3aWxsIGhlbHAgeW91IHJlbWVtYmVyIGFuZCBrZWVwIHRyYWNrIG9mIHRoaW5ncyBlYXNpZXIgbGF0ZXIgb24uCgpcCgojIyMjIEFzc2lnbWVudCBvcGVyYXRvcnMKCmA8LWAgYW5kIGA9YCBhcmUgYm90aCB1c2VkIGZvciBhc3NpZ25tZW50IHdpdGhpbiBSLiBgPC1gIGlzIHRoZSBvbGRlci9tb3JlIGNvbW1vbmx5IHVzZWQgZm9yIGFzc2lnbmluZyB0byBhIHZhcmlhYmxlLCBgPWAgaXMgdGhlIG9ubHkgb25lIHRoYXQgeW91IHVzZSBpbnNpZGUgYSBmdW5jdGlvbiBjYWxsIHRvIGFzc2lnbiB0aGUgcGFyYW1ldGVycy9hcmd1bWVudHMuCgpJbiB0ZXJtcyBvZiBwcmlvcml0eSBvZiBvcGVyYXRvcnMsIGFzc2lnbm1lbnQgaGFwcGVucyAqKmxhc3QqKiwgYW5kIHRha2VzIHRoZSByZXN1bHQgb2YgZXZhbHVhdGluZyB0aGUgcmlnaHQgaGFuZCBzaWRlIGFuZCBzdG9yZXMgaXQgaW50byB0aGUgb2JqZWN0IG9mIG5hbWVkIG9uIHRoZSBsZWZ0IGhhbmQgc2lkZS4KCkFub3RoZXIga2V5IHRoaW5nIGFib3V0IHZhcmlhYmxlcyBpcyB0aGV5ICoqb25seSBjb250YWluIHRoZSBsYXN0IHRoaW5nIHRoYXQgd2FzIGFzc2lnbmVkIHRvIHRoZW0qKi4KClwKCgojIyMgRnVuY3Rpb25zCgpGdW5jdGlvbnMgaW4gUiBsZXQgdXMgcGVyZm9ybSBvcGVyYXRpb25zLiBGdW5jdGlvbnMgaW4gUiBhcmUgcmVhbGx5IFIgY29kZSBzdG9yZWQgaW4gYSB2YXJpYWJsZSB0aGF0IGRvZXMgc3R1ZmYuIEluIG9yZGVyIHRvICJkbyB0aGUgc3R1ZmYiIHdlIG5lZWQgY2FsbCB0aGUgdmFyaWFibGUgd2l0aCBwYXJlbnRoZXNlcyBgKClgIG9uIHRoZSBlbmQuIEluc2lkZSB0aGUgcGFyZW50aGVzZXMgd2UgY2FuIHBhc3MgdmFsdWVzIGZvciB0aGUgcGFyYW1ldGVycy9hcmd1bWVudHMgd2hpY2ggbGV0IHVzIGNoYW5nZSB0aGUgYmVoYXZpb3VyIG9mIHRoZSBmdW5jdGlvbi4KCkZvciBpbnN0YW5jZSwgaWYgd2Ugd2FudCB0byBmaW5kIHRoZSBzcXVhcmUgcm9vdCBvZiBhIG51bWJlciwgd2UgY2FuIHVzZSB0aGUgYHNxcnRgIGZ1bmN0aW9uIGFuZCBwcm92aWRlIHRoZSBudW1iZXIgd2Ugd2FudCB0aGUgc3F1YXJlIHJvb3QgZm9yIGFzIGFuIGFyZ3VtZW50OgoKYGBge3J9CnNxcnQoNjQpCmBgYAoKVG8gc3VwcGx5IG11bHRpcGxlIGFyZ3VtZW50cyBvciBwYXJhbWV0ZXJzIHRvIGEgZnVuY3Rpb24gd2Ugc2VwYXJhdGUgdGhlbSBieSBhIGNvbW1hLiBFYWNoIGFyZ3VtZW50IGFsc28gaGFzIGEgbmFtZS4gQXJndW1lbnRzIGFyZSBmaWxsZWQgZWl0aGVyIGJ5IG5hbWUsIG9yIGJhc2VkIG9uIHRoZSBwb3NpdGlvbi4KCmBgYHtyfQojIGJ5IHBvc2l0aW9uCnJvdW5kKDMuMTQyLCAxKQoKIyBieSBuYW1lCnJvdW5kKHggPSAzLjE0MiwgZGlnaXRzID0gMSkKYGBgCgpUbyBmaW5kIG91dCB3aGF0IHRoZSBuYW1lcyBvZiB0aGUgYXJndW1lbnRzIGEgZnVuY3Rpb24gdGFrZXMgd2UgY2FuIHJ1biB0aGUgYGFyZ3NgIGZ1bmN0aW9uIG9uIHRoZSBmdW5jdGlvbiBuYW1lOgoKYGBge3J9CmFyZ3Mocm91bmQpCmBgYAoKXAoKIyMjIEhlbHAKCkJlaW5nIGFibGUgdG8gZmluZCB0aGluZ3Mgb3V0IGZvciB5b3Vyc2VsZiBpcyBleHRyZW1lbHkgaW1wb3J0YW50IGFuZCB3aXRoaW4gUiB0aGVyZSBhcmUgYSBjb3VwbGUgd2F5IHRoaXMgY2FuIGJlIGRvbmUuCgotIGBoZWxwKClgIG9yIGA/YAotIGA/P2AKLSBnb29nbGUKCgpUaGVyZSBpcyB1c3VhbGx5IHByZXR0eSBnb29kIGRvY3VtZW50YXRpb24gdGhhdCBnb2VzIGFsb25nIHNpZGUgZnVuY3Rpb25zIGFuZCB0aGlzIGNhbiBiZSBhY2Nlc3NlZCB0aHJvdWdoIHRoZSBpbmJ1aWx0IGhlbHAgc3lzdGVtIHVzaW5nIGBoZWxwKClgLCBgP2AsIG9yIGA/P2AuCgpgaGVscCgpYGFuZCBgP2AgYXJlIGVxdWl2YWxlbnQgYW5kIHdpbGwgZmluZCB0aGUgbWFudWFsIHBhZ2UgZm9yIHRoZSBleGFjdCBmdW5jdGlvbiwgZS5nLiB0byBmaW5kIHRoZSBtYW51YWwgcGFnZSBmb3IgdGhlIGBtZWFuYCBmdW5jdGlvbjogYGhlbHAoIm1lYW4iKWAgb3IgYD9tZWFuYC4gVGhlIG1vc3QgdXNlZnVsIHNlY3Rpb25zIG9mIHRoZSBtYW51YWwgcGFnZXMgYXJlICJVc2FnZSIsICJBcmd1bWVudHMiLCBhbmQgIkV4YW1wbGVzIiB3aGljaCB0ZWxsIHlvdSBob3cgdG8gcnVuIHRoZSBmdW5jdGlvbiwgd2hhdCB0aGUgYXJndW1lbnRzIGFyZSBzdXBwb3NlZCB0byBiZSwgYW5kIGdpdmVzIHNvbWUgJ2NvcHktcGFzdGUnIGV4YW1wbGVzIHRvIHNob3cgeW91IGhvdyBpdCdzIHJ1bi4KCmA/P2Agb24gdGhlIG90aGVyIGhhbmQgd2lsbCBicmluZyB1cCBhIGxpc3Qgb2YgYWxsIHRoZSBtYW51YWwgcGFnZXMgdGhhdCBtZW50aW9uIHRoZSB3b3JkLgoKR29vZ2xlIGlzIGFsc28gZXh0cmVtZWx5IHVzZWZ1bCBhbmQgbXkgbW9zdCBjb21tb24gc2VhcmNoIGlzICJob3cgdG8gLi4uIGluIFIiLgoKXAoKIyMjIENvbXBhcmF0aXZlcwoKT25lIGZpbmFsIHNldCBvZiBzeW50YXggb3BlcmF0b3JzIHRvIGNvdmVyIGFyZSB0aGUgY29tcGFyYXRpdmVzLiBUaGVzZSBhcmUgdXNlZCB0byBjcmVhdGUgbG9naWNhbCBzdGF0ZW1lbnRzIGJhc2VkIG9uIGNvbXBhcmlzb25zIHRoYXQgd2lsbCBldmFsdWF0ZSB0byBiZSBlaXRoZXIgYFRSVUVgIG9yIGBGQUxTRWAuCgpDb21wYXJhdG9yczoKCi0gZXF1YWxpdHk6IGA9PWAKLSBub3QgZXF1YWwgdG86YCE9YAotIGdyZWF0ZXIgdGhhbiAvIGdyZWF0ZXIgdGhhbiBvciBlcXVhbCB0bzogYD5gIC8gYD49YAotIGxlc3MgdGhhbiAvIGxlc3MgdGhhbiBvciBlcXVhbCB0bzogYDxgIC8gYDw9YAoKTG9naWNhbCBvcGVyYXRvcnMKCi0gbm90OiBgIWAKLSBvcjogYHxgCi0gYW5kOiBgJmAKCldlJ2xsIGNvdmVyIHRoZXNlIGluIG1vcmUgZGVwdGggaW4gdGhlIFNlbGVjdGluZyBhbmQgRmlsdGVyaW5nIFtNb2R1bGVdKDAzLXN1YnNldC5odG1sKS9bSGFuZG91dF0oaGFuZG91dDMuaHRtbCkuCgpcCgojIyBTdGFydGluZyB3aXRoIGRhdGEKCiMjIyBWZWN0b3JzCgpVbnRpbCBub3cgd2UndmUgYmVlbiBvcGVyYXRpbmcgb24gc2luZ2xlIGl0ZW1zIGF0IGEgdGltZS4gUiBoYXMgd2F5IG9mIHN0b3JpbmcgbXVsdGlwbGUgcGllY2VzIG9mIGluZm9ybWF0aW9uIC0gdGhlIF92ZWN0b3JfLgoKQSB2ZWN0b3IgaXMgemVybyBvciBtb3JlIGVudHJpZXMgb2YgdGhlICoqc2FtZSBkYXRhIHR5cGUqKi4KClRvIGNyZWF0ZSBhIHZlY3RvciBvZiBtb3JlIHRoYW4gb25lIHBpZWNlIG9mIGluZm9ybWF0aW9uIHdlIGNhbiB1c2UgdGhlIF9jb21iaW5lXyBmdW5jdGlvbiwgd2hpY2ggYmVjYXVzZSBpdCBpcyB1c2VkIHNvIGZyZXF1ZW50bHkgaW4gUiwgaGFzIGJlZW4gcmVkdWNlZCB0byBiZSBgYygpYC4gRWFjaCBpdGVtIGlzIGNvbW1hIHNlcGFyYXRlZC4KCmBgYHtyfQpzb21lX2xldHRlcnMgPC0gYygiYSIsICJiIiwgImMiKQpzb21lX2xldHRlcnMKCnNvbWVfbnVtYmVycyA8LSBjKDIsIDQsIDYpCnNvbWVfbnVtYmVycwpgYGAKCldlIGNhbiBzZWUgd2hhdCB0aGUgZGF0YSB0eXBlIGlzIG9mIGEgdmVjdG9yIHVzaW5nIGB0eXBlb2ZgCgpgYGB7cn0KdHlwZW9mKHNvbWVfbGV0dGVycykKCnR5cGVvZihzb21lX251bWJlcnMpCmBgYAoKXAoKIyMjIyBTdWJzZXR0aW5nIGJ5IGluZGV4CgpUaGUgZmluYWwgc3ludGF4IHdlJ2xsIGludHJvZHVjZSB0aGlzIHdlZWsgaXMgYFtdYCB3aGljaCBlbmFibGVzIHVzIHRvIGV4dHJhY3QgaXRlbXMgb3V0IG9mIGEgdmVjdG9yLgoKRWFjaCBpdGVtIGhhcyBhIHBvc2l0aW9uYWwgaW5kZXggKHN0YXJ0aW5nIGZyb20gMSAtIG90aGVyIGxhbmd1YWdlcyBkaWZmZXIpLiBXZSBjYW4gdXNlIHRoaXMgaW5kZXggYXMgYW4gYXJndW1lbnQgdG8gYFtdYCB0byBwdWxsIG91dCB0aGUgc3BlY2lmaWVkIGl0ZW0uIElmIHdlIHdhbnQgbXVsdGlwbGUgaXRlbXMgd2Ugc3VwcGx5IGEgdmVjdG9yIG9mIG51bWJlcnMgZm9yIHRoZSBpbmRleGVzIHdlIHdhbnQKCmBgYHtyfQpzb21lX251bWJlcnMKCiMgcHVsbCBvdXQgdGhlIHNlY29uZCBpdGVtCnNvbWVfbnVtYmVyc1syXQoKc29tZV9sZXR0ZXJzCiMgcHVsbCBvdXQgaXRlbXMgMSBhbmQgMwpzb21lX2xldHRlcnNbYygxLDMpXQpgYGAKCkluIHRoZSBTZWxlY3RpbmcgYW5kIEZpbHRlcmluZyBEYXRhIG1vZHVsZS9oYW5kb3V0IHdlIHdpbGwgY292ZXIgdGhpcyBtb3JlIGFuZCBleHBhbmQgdG8gMiBkaW1lbnNpb25zLgoKXAoKIyBFeGVyY2lzZXMKCgoxLiBDcmVhdGUgYW5kIGFzc2lnbiBhIHZlY3RvciBvZiA1IG51bWJlcnMuCgoyLiBGaW5kIG91dCB0aGUgYGxlbmd0aGAgb2YgdGhlIHZlY3Rvci4KCjMuIERpdmlkZSB0aGUgZW50aXJlIHZlY3RvciBieSAyIGFuZCBzdG9yZSB0aGUgcmVzdWx0IGludG8gYSB2YXJpYWJsZSBjYWxsZWQgKmRpdl8yKiAtIHdoYXQgaXMgdGhlIHJlc3VsdCBvZiB0aGUgZGl2aXNpb24/Cgo0LiBDYWxjdWxhdGUgdGhlIG1pbmltdW0sIG1heGltdW0sIG1lYW4sIGFuZCBzdGFuZGFyZCBkZXZpYXRpb24gZm9yIHRoZSAqZGl2XzIqIHZlY3Rvci4gQ2FuIHlvdSByb3VuZCB0aGUgcmVzdWx0cyB0byAyIGRlY2ltYWwgcGxhY2VzPwoKNS4gQ3JlYXRlIGFuZCBhc3NpZ24gYSB2ZWN0b3Igb2YgYXQgbGVhc3QgNCBhbmltYWwgbmFtZXMgaW50byBfYW5pbWFsc18uCgo2LiBDYW4geW91IGZpbmQgYSB3YXkgdG8gdGVsbCB5b3UgdGhlIG51bWJlciBvZiBjaGFyYWN0ZXJzIHBlciBpdGVtPwoKNy4gSW50byBhIG5ldyB2YXJpYWJsZSwgZXh0cmFjdCB0aGUgZmlyc3QgYW5kIGZvdXJ0aCBhbmltYWwuCgo4LiBSZW1vdmUgdGhlIHRoaXJkIGFuaW1hbCBmcm9tIHlvdXIgb3JpZ2luYWwgYW5pbWFscyB2ZWN0b3IgKHdoYXQgZG9lcyB1c2luZyBhIG5lZ2F0aXZlIGluZGV4IGRvPykuCgo5LiBDcmVhdGUgYSB2ZWN0b3IgdGhhdCBoYXMgdGhyZWUgY29waWVzIG9mIHRoaXMgdXBkYXRlZCBhbmltYWxzIHZlY3Rvci4KCjEwLiBDb21iaW5lIHlvdXIgYW5pbWFsIGFuZCBudW1iZXIgdmVjdG9ycyB0b2dldGhlciBpbnRvIGEgbmV3IHZhcmlhYmxlIGNhbGxlZCAiX2NvZXJjZWRfIi4gUnVuIGB0eXBlb2ZgIG9uIHRoaXMgdmVjdG9yIC0gaG93IGRvZXMgaXQgY29tcGFyZSB0byB0aGUgdHlwZXMgb2YgdGhlIG9yaWdpbmFsIHZlY3Rvcj8K</div>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("handout1.Rmd");
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
