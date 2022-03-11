@@ -60,7 +60,7 @@ In general we would recommend saving your data in the "comma separated values" (
 
 ### Downloading data
 
-```{r}
+```{r, eval=FALSE}
 download.file(url = "https://raw.githubusercontent.com/rtis-training/2022-s1-r4ssp/main/data/r4ssp_donations_data.csv", destfile = "data/r4ssp_donations_data.csv")
 ```
 
@@ -176,20 +176,20 @@ Here we'll introduce you to both systems to create some simple plots. In future 
 
 Scatter plots are a straight forward way to get a look at our data
 
-```{r}
+```{r handout2_scatter}
 plot(puppy_donations_data$CollectorNumber, puppy_donations_data$Amount)
 ```
 
 And once more with colour!
 
-```{r}
+```{r handout2_red_scatter}
 plot(puppy_donations_data$CollectorNumber, puppy_donations_data$Amount, col = "red")
 ```
 
 
 #### Line plots
 
-```{r}
+```{r handout2_lineplot}
 plot(puppy_donations_data$CollectorNumber, puppy_donations_data$Amount, type = 'l')
 ```
 
@@ -197,7 +197,7 @@ plot(puppy_donations_data$CollectorNumber, puppy_donations_data$Amount, type = '
 #### Histograms
 
 
-```{r}
+```{r handout2_hist}
 hist(puppy_donations_data$Amount)
 ```
 #### Boxplots
