@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Handout 02- Visualising Data</title>
+
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">R4SSP Semester 1 2022</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Modules
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Intro</li>
+    <li>
+      <a href="01-intro.html">Intro to R and RStudio</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Data Focus</li>
+    <li>
+      <a href="02-visualise.html">Part 1: Visualising</a>
+    </li>
+    <li class="dropdown-header">Part 2: Subsetting</li>
+    <li class="dropdown-header">Part 3: Transforming</li>
+    <li class="dropdown-header">Part 4: Summarising</li>
+    <li class="dropdown-header">Part 5: Communicating</li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Programming focus</li>
+    <li class="dropdown-header">Functions and Choices</li>
+    <li class="dropdown-header">Repeating Code</li>
+    <li class="dropdown-header">Workflows</li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Handouts
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="handout1.html">Handout 1</a>
+    </li>
+    <li>
+      <a href="handout2.html">Handout 2</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+<li role="separator" class="divider"></li>
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Handout 02- Visualising Data</h1>
+<h4 class="date">Semester 1, 2022</h4>
+
+</div>
+
+
+<blockquote>
+<h4 id="data-focus">Data Focus</h4>
+<p>Modules and Handouts 2–6 cover topics that are part of the data
+analysis journey and are all interrelated to one another. The way that
+it has been separated is to introduce main topic but then each
+subsequent topic will add in additional content for previous topics.
+E.g. we start with data visualisation to introduce the basics of the
+plotting systems but then each other handout will include extra options
+and customisations.</p>
+</blockquote>
+<p><br />
+</p>
+<p><br />
+</p>
+<p>Handout: <a href="handout2.html">Handout 02 - Visualising
+Data</a></p>
+<p>Associated Readings:</p>
+<ul>
+<li><a href="https://r4ds.had.co.nz/tidy-data.html">R for Data Science -
+Chapter 12</a></li>
+<li><a href="https://r4ds.had.co.nz/data-import.html">R for Data Science
+- Chapter 11</a></li>
+<li><a href="https://r4ds.had.co.nz/data-visualisation.html">R for Data
+Science - Chapter 3</a></li>
+</ul>
+<div id="tidy-data-principles" class="section level2">
+<h2>Tidy data principles</h2>
+<p>Before we delve we bring data into R and start to visualise it. We
+first need to learn about how computers like data to be structured.</p>
+<p>It’s very common to collect data using a spreadsheet, so here are
+some principles for setting up your spreadsheet:</p>
+<ol style="list-style-type: decimal">
+<li>Make it rectangular</li>
+<li>Columns are variables</li>
+<li>Rows are observations</li>
+<li>One piece of information per cell</li>
+</ol>
+<p>Think about how you are dealing with missing data.</p>
+<p>In general we would recommend saving your data in the “comma
+separated values” (csv) format. This is a format where all your data is
+in plain text (you can view it in a text editor) and it is highly
+portable between different languages/programs.</p>
+</div>
+<div id="read-data-in-from-csv" class="section level2">
+<h2>Read data in from csv</h2>
+<p>There are two main approaches to reading data into R.</p>
+<ul>
+<li>Data imported (point and click)</li>
+<li>Code</li>
+</ul>
+<p>Both methods provide either a Base R option or a Tidyverse
+(<code>readr</code>) option.</p>
+<p><strong>Data Importer</strong></p>
+<p>The first approach is a point-and-click method, using the data
+importer found in the environment panel. This can be useful to get a
+preview of how your data is going to be read in. Once you have imported
+your data, make sure to keep the code that was generated and can
+subsequently be used as the second approach</p>
+<p><strong>Code</strong></p>
+<p>Using code there are two main functions that are used for reading in
+csv data. <code>read.csv</code> from Base R and <code>read_csv</code>
+from <code>readr</code> (as part of the Tidyverse). They have minor
+differences in how they operate, the main difference being that prior to
+R v4, <code>read.csv</code> would by default load character type data in
+as <em>Factors</em>.</p>
+<blockquote>
+<h3 id="tidyverse-and-base-r">Tidyverse and Base R</h3>
+<p>So far the syntax and methods you have been introduced to have been
+entirely part of what is known as “Base R” i.e. it’s all available right
+out of the box. There’s an ecosystem of extremely popular additional
+packages created by most prominently by Hadley Wickham (and others) that
+follow a similar (opinionated) design principle that is primarily
+focused on (tidy) data analysis - the Tidyverse. The Tidyverse is a
+collection of packages that we will make heavy use of during this course
+but such as <code>readr</code> for reading data, <code>ggplot2</code>
+for plotting, and <code>dplyr</code> and <code>tidyr</code> for data
+manipulations.</p>
+<p>the <code>tidyverse</code> “metapackage” provides a convenient way to
+both install and load the core packages that form the tidyverse, but you
+may choose to load only the exact packages you wish to use.</p>
+<pre class="r"><code>install.packages(&quot;tidyverse&quot;)
+
+library(tidyverse)</code></pre>
+<p>We believe that it’s important to show you how to use both Base R and
+the Tidyverse because together they will give you a very powerful set of
+tools to tackle your data analysis and understand other code you come
+across.</p>
+</blockquote>
+<hr />
+<div id="base-r" class="section level3">
+<h3>Base R</h3>
+<pre class="r"><code># common options for running read.csv
+my_data &lt;- read.csv(file = &quot;myfile.csv&quot;, header = TRUE , stringsAsFactors = FALSE)</code></pre>
+<blockquote>
+<p><code>stringsAsFactors=FALSE</code></p>
+<p>Factors are a datatype that is used within R for coding categorical
+data. For R versions &lt; 4, the default for <code>read.csv</code> was
+to bring in character data as a Factor
+(i.e. <code>stringsAsFactors=TRUE</code>), to prevent this and have the
+data be read in as character type it is common to see the argument
+<code>stringsAsFactors=FALSE</code>. From R v4 and up, the <em>default
+option was changed</em> to be <code>stringsAsFactors=FALSE</code>.</p>
+</blockquote>
+<hr />
+</div>
+<div id="tidyverse" class="section level3">
+<h3>Tidyverse</h3>
+<p>The package from the tidyverse the deals with reading in data is
+<code>readr</code>. If you have already run
+<code>library(tidyverse)</code> it will automatically have been loaded
+for you. If you aren’t making use of the other Tidyverse packages if can
+be a good idea load only <code>readr</code>:
+<code>library(readr)</code>.</p>
+<pre class="r"><code># common options for running read_csv
+read_csv(file = &quot;my_file.csv&quot;, col_names = TRUE)</code></pre>
+<p><code>read_csv</code> will display an output describing the data load
+process. This output can be an extremely useful first check if you data
+has loaded in how you wanted it to and is worth checking that columns
+are of the correct data type.</p>
+<hr />
+</div>
+</div>
+<div id="previewing-data" class="section level2">
+<h2>Previewing data</h2>
+<p>Once your data is loaded, it’s worth checking to make sure that
+everything is as you expect, as this is usually the largest source of
+errors once you get to analysis.</p>
+<div id="viewing" class="section level3">
+<h3>Viewing</h3>
+<p>These functions give different ways of viewing your data</p>
+<ul>
+<li><code>View</code></li>
+<li><code>head</code></li>
+<li><code>tail</code></li>
+</ul>
+</div>
+<div id="checking" class="section level3">
+<h3>Checking</h3>
+<p>These functions provide ways of checking the size and type of data
+that has been read in.</p>
+<p>Size:</p>
+<ul>
+<li><code>dim</code></li>
+<li><code>nrow</code></li>
+<li><code>ncol</code></li>
+</ul>
+<p>Type:</p>
+<ul>
+<li><code>class</code></li>
+<li><code>names</code></li>
+<li><code>str</code></li>
+</ul>
+<p>The largest source (anecdotal) of analysis errors is either numeric
+data coming in as characters - which could be caused by something unseen
+like a ‘blank cell’ in Excel that actually contained a space.</p>
+<p>Sanity:</p>
+<p><code>summary</code></p>
+</div>
+</div>
+<div id="data-visualisation" class="section level2 tabset">
+<h2 class="tabset">Data visualisation</h2>
+<p>There are two main methods for plotting data in R. The first is the
+in-built plotting functions within base R. The second is using a popular
+package called <code>ggplot2</code>.</p>
+<p>Here we’ll introduce you to both systems to create some simple plots.
+In future modules we’ll cover more about plotting.</p>
+<div id="base-r-1" class="section level3">
+<h3>Base R</h3>
+<div id="scatter-plots" class="section level4">
+<h4>Scatter plots</h4>
+<p>Scatter plots are a straight forward way to get a look at our
+data</p>
+<pre class="r"><code>plot(puppy_donations_data$CollectorNumber, puppy_donations_data$Amount)</code></pre>
+<p><img src="figures/unnamed-chunk-4-1.png" width="672" /></p>
+<p>And once more with colour!</p>
+<pre class="r"><code>plot(puppy_donations_data$CollectorNumber, puppy_donations_data$Amount, col = &quot;red&quot;)</code></pre>
+<p><img src="figures/unnamed-chunk-5-1.png" width="672" /></p>
+</div>
+<div id="line-plots" class="section level4">
+<h4>Line plots</h4>
+<pre class="r"><code>plot(puppy_donations_data$CollectorNumber, puppy_donations_data$Amount, type = &#39;l&#39;)</code></pre>
+<p><img src="figures/unnamed-chunk-6-1.png" width="672" /></p>
+</div>
+<div id="histograms" class="section level4">
+<h4>Histograms</h4>
+<pre class="r"><code>hist(puppy_donations_data$Amount)</code></pre>
+<p><img src="figures/unnamed-chunk-7-1.png" width="672" /> ####
+Boxplots</p>
+<p>Remember that this data has a condition under which the data was
+collected - with and without a puppy. Boxplots provide a way to get an
+understanding of our data using categorical information.</p>
+<p>The R function <code>boxplot</code> accepts two arguments.</p>
+<p>The first argument is the <strong>formula</strong>. This is a
+complex, yet very common, argument format for R statistical functions.
+The formula describes a linear model for a data set with the general
+structure: <strong>dependent or predicted variable ~ independent
+variables or predictors</strong>, using columns names from the data
+frame. The ~ (tilde) is read as “depends on” or “is predicted by”. For
+our example, we are interested in the way that Amount is dependent on
+the Puppy/Alone condition, so we specify our formula as <strong>Amount ~
+Condition</strong>. We will see more complex examples of the formula
+argument later in the semester.</p>
+<p>The second argument to boxplot is the data frame.</p>
+<pre class="r"><code>boxplot(Amount ~ Condition, puppy_donations_data)</code></pre>
+<p><img src="figures/handout2_boxplot01-1.png" width="672" /></p>
+</div>
+<div id="customising" class="section level4">
+<h4>Customising</h4>
+<p>There are a multitude of customisations that can be done to plots
+such as titles, labels, colours, etc.</p>
+<p>A fantastic resource for looking at how to customise your plots made
+using the Base R plotting system is the <a
+href="https://r-graphics.org">R Graphics Cookbook</a>.</p>
+</div>
+</div>
+<div id="tidyverse-1" class="section level3">
+<h3>Tidyverse</h3>
+<p>The ggplot2 package is a popular data visualisation package for R. In
+order to use it we need to first load it into R.</p>
+<pre class="r"><code>library(ggplot2)</code></pre>
+<p>Ggplot tackles plotting reducing it into three components</p>
+<ul>
+<li>what is the data</li>
+<li>how the data is mapped to aesthetics (aes)</li>
+<li>how the data is represented geometrically (geom)</li>
+</ul>
+<p>So to create a plot using ggplot we need to specify these three
+components.</p>
+<p>Plots can then be made incrementally by adding on additional
+layers.</p>
+<div id="creating-a-plot" class="section level4">
+<h4>Creating a plot</h4>
+<pre class="r"><code>ggplot(data = mtcars, aes(x = mpg, y = wt)) + geom_point()</code></pre>
+<p><img src="figures/unnamed-chunk-9-1.png" width="672" /></p>
+</div>
+<div id="section" class="section level4">
+<h4></h4>
+</div>
+</div>
+</div>
+<div id="excercises" class="section level2">
+<h2>Excercises</h2>
+<ol style="list-style-type: decimal">
+<li><p>Using the Base R scatter plot of the puppies data, customise the
+label, title, and colour. <code>help("plot")</code> may offer some
+assistance.</p></li>
+<li><p>Modify the Base R histogram to be a different colour.</p></li>
+</ol>
+</div>
+
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiSGFuZG91dCAwMi0gVmlzdWFsaXNpbmcgRGF0YSIKZGF0ZTogIlNlbWVzdGVyIDEsIDIwMjIiCm91dHB1dDoKICBodG1sX2RvY3VtZW50OgogICAgdG9jOiB0cnVlCiAgICB0b2NfZmxvYXQ6IHRydWUKICAgIHRvY19kZXB0aDogMwogICAgY29kZV9kb3dubG9hZDogdHJ1ZQogICAgY29kZV9mb2xkaW5nOiBzaG93Ci0tLQoKYGBge3Igc2V0dXAsIGluY2x1ZGU9RkFMU0V9CmxpYnJhcnkoa25pdHIpCgprbml0cjo6b3B0c19jaHVuayRzZXQoCiAgY29tbWVudCA9ICIjPiIsCiAgZmlnLnBhdGggPSAiZmlndXJlcy8iLCAjIHVzZSBvbmx5IGZvciBzaW5nbGUgUm1kIGZpbGVzCiAgY29sbGFwc2UgPSBUUlVFLAogIGVjaG8gPSBUUlVFCikKYGBgCgoKCj4gIyMjIyBEYXRhIEZvY3VzCj4KPiBNb2R1bGVzIGFuZCBIYW5kb3V0cyAyLS02IGNvdmVyIHRvcGljcyB0aGF0IGFyZSBwYXJ0IG9mIHRoZSBkYXRhIGFuYWx5c2lzIGpvdXJuZXkgYW5kIGFyZSBhbGwgaW50ZXJyZWxhdGVkIHRvIG9uZSBhbm90aGVyLiBUaGUgd2F5IHRoYXQgaXQgaGFzIGJlZW4gc2VwYXJhdGVkIGlzIHRvIGludHJvZHVjZSBtYWluIHRvcGljIGJ1dCB0aGVuIGVhY2ggc3Vic2VxdWVudCB0b3BpYyB3aWxsIGFkZCBpbiBhZGRpdGlvbmFsIGNvbnRlbnQgZm9yIHByZXZpb3VzIHRvcGljcy4gRS5nLiB3ZSBzdGFydCB3aXRoIGRhdGEgdmlzdWFsaXNhdGlvbiB0byBpbnRyb2R1Y2UgdGhlIGJhc2ljcyBvZiB0aGUgcGxvdHRpbmcgc3lzdGVtcyBidXQgdGhlbiBlYWNoIG90aGVyIGhhbmRvdXQgd2lsbCBpbmNsdWRlIGV4dHJhIG9wdGlvbnMgYW5kIGN1c3RvbWlzYXRpb25zLgogClwKClwKIAogCkhhbmRvdXQ6IFtIYW5kb3V0IDAyIC0gVmlzdWFsaXNpbmcgRGF0YV0oaGFuZG91dDIuaHRtbCkKCkFzc29jaWF0ZWQgUmVhZGluZ3M6CgotIFtSIGZvciBEYXRhIFNjaWVuY2UgLSBDaGFwdGVyIDEyXShodHRwczovL3I0ZHMuaGFkLmNvLm56L3RpZHktZGF0YS5odG1sKQotIFtSIGZvciBEYXRhIFNjaWVuY2UgLSBDaGFwdGVyIDExXShodHRwczovL3I0ZHMuaGFkLmNvLm56L2RhdGEtaW1wb3J0Lmh0bWwpCi0gW1IgZm9yIERhdGEgU2NpZW5jZSAtIENoYXB0ZXIgM10oaHR0cHM6Ly9yNGRzLmhhZC5jby5uei9kYXRhLXZpc3VhbGlzYXRpb24uaHRtbCkKCgogCiMjIFRpZHkgZGF0YSBwcmluY2lwbGVzCgpCZWZvcmUgd2UgZGVsdmUgd2UgYnJpbmcgZGF0YSBpbnRvIFIgYW5kIHN0YXJ0IHRvIHZpc3VhbGlzZSBpdC4gV2UgZmlyc3QgbmVlZCB0byBsZWFybiBhYm91dCBob3cgY29tcHV0ZXJzIGxpa2UgZGF0YSB0byBiZSBzdHJ1Y3R1cmVkLgoKSXQncyB2ZXJ5IGNvbW1vbiB0byBjb2xsZWN0IGRhdGEgdXNpbmcgYSBzcHJlYWRzaGVldCwgc28gaGVyZSBhcmUgc29tZSBwcmluY2lwbGVzIGZvciBzZXR0aW5nIHVwIHlvdXIgc3ByZWFkc2hlZXQ6CgoxLiBNYWtlIGl0IHJlY3Rhbmd1bGFyCjIuIENvbHVtbnMgYXJlIHZhcmlhYmxlcwozLiBSb3dzIGFyZSBvYnNlcnZhdGlvbnMKNC4gT25lIHBpZWNlIG9mIGluZm9ybWF0aW9uIHBlciBjZWxsCgpUaGluayBhYm91dCBob3cgeW91IGFyZSBkZWFsaW5nIHdpdGggbWlzc2luZyBkYXRhLgoKSW4gZ2VuZXJhbCB3ZSB3b3VsZCByZWNvbW1lbmQgc2F2aW5nIHlvdXIgZGF0YSBpbiB0aGUgImNvbW1hIHNlcGFyYXRlZCB2YWx1ZXMiIChjc3YpIGZvcm1hdC4gVGhpcyBpcyBhIGZvcm1hdCB3aGVyZSBhbGwgeW91ciBkYXRhIGlzIGluIHBsYWluIHRleHQgKHlvdSBjYW4gdmlldyBpdCBpbiBhIHRleHQgZWRpdG9yKSBhbmQgaXQgaXMgaGlnaGx5IHBvcnRhYmxlIGJldHdlZW4gZGlmZmVyZW50IGxhbmd1YWdlcy9wcm9ncmFtcy4KCgoKCgoKCgoKIyMgUmVhZCBkYXRhIGluIGZyb20gY3N2CgpUaGVyZSBhcmUgdHdvIG1haW4gYXBwcm9hY2hlcyB0byByZWFkaW5nIGRhdGEgaW50byBSLgoKLSBEYXRhIGltcG9ydGVkIChwb2ludCBhbmQgY2xpY2spCi0gQ29kZQoKQm90aCBtZXRob2RzIHByb3ZpZGUgZWl0aGVyIGEgQmFzZSBSIG9wdGlvbiBvciBhIFRpZHl2ZXJzZSAoYHJlYWRyYCkgb3B0aW9uLgoKCioqRGF0YSBJbXBvcnRlcioqCgpUaGUgZmlyc3QgYXBwcm9hY2ggaXMgYSBwb2ludC1hbmQtY2xpY2sgbWV0aG9kLCB1c2luZyB0aGUgZGF0YSBpbXBvcnRlciBmb3VuZCBpbiB0aGUgZW52aXJvbm1lbnQgcGFuZWwuIFRoaXMgY2FuIGJlIHVzZWZ1bCB0byBnZXQgYSBwcmV2aWV3IG9mIGhvdyB5b3VyIGRhdGEgaXMgZ29pbmcgdG8gYmUgcmVhZCBpbi4gT25jZSB5b3UgaGF2ZSBpbXBvcnRlZCB5b3VyIGRhdGEsIG1ha2Ugc3VyZSB0byBrZWVwIHRoZSBjb2RlIHRoYXQgd2FzIGdlbmVyYXRlZCBhbmQgY2FuIHN1YnNlcXVlbnRseSBiZSB1c2VkIGFzIHRoZSBzZWNvbmQgYXBwcm9hY2gKCgoqKkNvZGUqKgoKVXNpbmcgY29kZSB0aGVyZSBhcmUgdHdvIG1haW4gZnVuY3Rpb25zIHRoYXQgYXJlIHVzZWQgZm9yIHJlYWRpbmcgaW4gY3N2IGRhdGEuIGByZWFkLmNzdmAgZnJvbSBCYXNlIFIgYW5kIGByZWFkX2NzdmAgZnJvbSBgcmVhZHJgIChhcyBwYXJ0IG9mIHRoZSBUaWR5dmVyc2UpLiBUaGV5IGhhdmUgbWlub3IgZGlmZmVyZW5jZXMgaW4gaG93IHRoZXkgb3BlcmF0ZSwgdGhlIG1haW4gZGlmZmVyZW5jZSBiZWluZyB0aGF0IHByaW9yIHRvIFIgdjQsIGByZWFkLmNzdmAgd291bGQgYnkgZGVmYXVsdCBsb2FkIGNoYXJhY3RlciB0eXBlIGRhdGEgaW4gYXMgX0ZhY3RvcnNfLgoKPiAjIyMgVGlkeXZlcnNlIGFuZCBCYXNlIFIKPiAKPiBTbyBmYXIgdGhlIHN5bnRheCBhbmQgbWV0aG9kcyB5b3UgaGF2ZSBiZWVuIGludHJvZHVjZWQgdG8gaGF2ZSBiZWVuIGVudGlyZWx5IHBhcnQgb2Ygd2hhdCBpcyBrbm93biBhcyAiQmFzZSBSIiBpLmUuIGl0J3MgYWxsIGF2YWlsYWJsZSByaWdodCBvdXQgb2YgdGhlIGJveC4gVGhlcmUncyBhbiBlY29zeXN0ZW0gb2YgZXh0cmVtZWx5IHBvcHVsYXIgYWRkaXRpb25hbCBwYWNrYWdlcyBjcmVhdGVkIGJ5IG1vc3QgcHJvbWluZW50bHkgYnkgSGFkbGV5IFdpY2toYW0gKGFuZCBvdGhlcnMpIHRoYXQgZm9sbG93IGEgc2ltaWxhciAob3BpbmlvbmF0ZWQpIGRlc2lnbiBwcmluY2lwbGUgdGhhdCBpcyBwcmltYXJpbHkgZm9jdXNlZCBvbiAodGlkeSkgZGF0YSBhbmFseXNpcyAtIHRoZSBUaWR5dmVyc2UuIFRoZSBUaWR5dmVyc2UgaXMgYSBjb2xsZWN0aW9uIG9mIHBhY2thZ2VzIHRoYXQgd2Ugd2lsbCBtYWtlIGhlYXZ5IHVzZSBvZiBkdXJpbmcgdGhpcyBjb3Vyc2UgYnV0IHN1Y2ggYXMgYHJlYWRyYCBmb3IgcmVhZGluZyBkYXRhLCBgZ2dwbG90MmAgZm9yIHBsb3R0aW5nLCBhbmQgYGRwbHlyYCBhbmQgYHRpZHlyYCBmb3IgZGF0YSBtYW5pcHVsYXRpb25zLgo+Cj4gdGhlIGB0aWR5dmVyc2VgICJtZXRhcGFja2FnZSIgcHJvdmlkZXMgYSBjb252ZW5pZW50IHdheSB0byBib3RoIGluc3RhbGwgYW5kIGxvYWQgdGhlIGNvcmUgcGFja2FnZXMgdGhhdCBmb3JtIHRoZSB0aWR5dmVyc2UsIGJ1dCB5b3UgbWF5IGNob29zZSB0byBsb2FkIG9ubHkgdGhlIGV4YWN0IHBhY2thZ2VzIHlvdSB3aXNoIHRvIHVzZS4KPiAKPiBgYGB7ciwgZXZhbCA9IEZBTFNFfQo+IGluc3RhbGwucGFja2FnZXMoInRpZHl2ZXJzZSIpCj4gCj4gbGlicmFyeSh0aWR5dmVyc2UpCj4gYGBgCj4KPiBXZSBiZWxpZXZlIHRoYXQgaXQncyBpbXBvcnRhbnQgdG8gc2hvdyB5b3UgaG93IHRvIHVzZSBib3RoIEJhc2UgUiBhbmQgdGhlIFRpZHl2ZXJzZSBiZWNhdXNlIHRvZ2V0aGVyIHRoZXkgd2lsbCBnaXZlIHlvdSBhIHZlcnkgcG93ZXJmdWwgc2V0IG9mIHRvb2xzIHRvIHRhY2tsZSB5b3VyIGRhdGEgYW5hbHlzaXMgYW5kIHVuZGVyc3RhbmQgb3RoZXIgY29kZSB5b3UgY29tZSBhY3Jvc3MuCgoKLS0tLQogIAojIyMgQmFzZSBSCgpgYGB7ciwgZXZhbD1GQUxTRX0KIyBjb21tb24gb3B0aW9ucyBmb3IgcnVubmluZyByZWFkLmNzdgpteV9kYXRhIDwtIHJlYWQuY3N2KGZpbGUgPSAibXlmaWxlLmNzdiIsIGhlYWRlciA9IFRSVUUgLCBzdHJpbmdzQXNGYWN0b3JzID0gRkFMU0UpCmBgYAoKPiBgc3RyaW5nc0FzRmFjdG9ycz1GQUxTRWAKPgo+IEZhY3RvcnMgYXJlIGEgZGF0YXR5cGUgdGhhdCBpcyB1c2VkIHdpdGhpbiBSIGZvciBjb2RpbmcgY2F0ZWdvcmljYWwgZGF0YS4gRm9yIFIgdmVyc2lvbnMgPCA0LCB0aGUgZGVmYXVsdCBmb3IgYHJlYWQuY3N2YCB3YXMgdG8gYnJpbmcgaW4gY2hhcmFjdGVyIGRhdGEgYXMgYSBGYWN0b3IgKGkuZS4gYHN0cmluZ3NBc0ZhY3RvcnM9VFJVRWApLCB0byBwcmV2ZW50IHRoaXMgYW5kIGhhdmUgdGhlIGRhdGEgYmUgcmVhZCBpbiBhcyBjaGFyYWN0ZXIgdHlwZSBpdCBpcyBjb21tb24gdG8gc2VlIHRoZSBhcmd1bWVudCBgc3RyaW5nc0FzRmFjdG9ycz1GQUxTRWAuIEZyb20gUiB2NCBhbmQgdXAsIHRoZSBfZGVmYXVsdCBvcHRpb24gd2FzIGNoYW5nZWRfIHRvIGJlIGBzdHJpbmdzQXNGYWN0b3JzPUZBTFNFYC4KCi0tLS0KCiMjIyBUaWR5dmVyc2UKClRoZSBwYWNrYWdlIGZyb20gdGhlIHRpZHl2ZXJzZSB0aGUgZGVhbHMgd2l0aCByZWFkaW5nIGluIGRhdGEgaXMgYHJlYWRyYC4gSWYgeW91IGhhdmUgYWxyZWFkeSBydW4gYGxpYnJhcnkodGlkeXZlcnNlKWAgaXQgd2lsbCBhdXRvbWF0aWNhbGx5IGhhdmUgYmVlbiBsb2FkZWQgZm9yIHlvdS4gSWYgeW91IGFyZW4ndCBtYWtpbmcgdXNlIG9mIHRoZSBvdGhlciBUaWR5dmVyc2UgcGFja2FnZXMgaWYgY2FuIGJlIGEgZ29vZCBpZGVhIGxvYWQgb25seSBgcmVhZHJgOiBgbGlicmFyeShyZWFkcilgLgoKYGBge3IsIGV2YWw9RkFMU0V9CiMgY29tbW9uIG9wdGlvbnMgZm9yIHJ1bm5pbmcgcmVhZF9jc3YKcmVhZF9jc3YoZmlsZSA9ICJteV9maWxlLmNzdiIsIGNvbF9uYW1lcyA9IFRSVUUpCmBgYAoKYHJlYWRfY3N2YCB3aWxsIGRpc3BsYXkgYW4gb3V0cHV0IGRlc2NyaWJpbmcgdGhlIGRhdGEgbG9hZCBwcm9jZXNzLiBUaGlzIG91dHB1dCBjYW4gYmUgYW4gZXh0cmVtZWx5IHVzZWZ1bCBmaXJzdCBjaGVjayBpZiB5b3UgZGF0YSBoYXMgbG9hZGVkIGluIGhvdyB5b3Ugd2FudGVkIGl0IHRvIGFuZCBpcyB3b3J0aCBjaGVja2luZyB0aGF0IGNvbHVtbnMgYXJlIG9mIHRoZSBjb3JyZWN0IGRhdGEgdHlwZS4KCi0tLS0KCiMjIFByZXZpZXdpbmcgZGF0YQoKT25jZSB5b3VyIGRhdGEgaXMgbG9hZGVkLCBpdCdzIHdvcnRoIGNoZWNraW5nIHRvIG1ha2Ugc3VyZSB0aGF0IGV2ZXJ5dGhpbmcgaXMgYXMgeW91IGV4cGVjdCwgYXMgdGhpcyBpcyB1c3VhbGx5IHRoZSBsYXJnZXN0IHNvdXJjZSBvZiBlcnJvcnMgb25jZSB5b3UgZ2V0IHRvIGFuYWx5c2lzLgoKCiMjIyBWaWV3aW5nCgpUaGVzZSBmdW5jdGlvbnMgZ2l2ZSBkaWZmZXJlbnQgd2F5cyBvZiB2aWV3aW5nIHlvdXIgZGF0YQoKLSBgVmlld2AKLSBgaGVhZGAKLSBgdGFpbGAKCiMjIyBDaGVja2luZwoKClRoZXNlIGZ1bmN0aW9ucyBwcm92aWRlIHdheXMgb2YgY2hlY2tpbmcgdGhlIHNpemUgYW5kIHR5cGUgb2YgZGF0YSB0aGF0IGhhcyBiZWVuIHJlYWQgaW4uCgpTaXplOgoKLSBgZGltYAotIGBucm93YAotIGBuY29sYAoKVHlwZToKCi0gYGNsYXNzYAotIGBuYW1lc2AKLSBgc3RyYAoKVGhlIGxhcmdlc3Qgc291cmNlIChhbmVjZG90YWwpIG9mIGFuYWx5c2lzIGVycm9ycyBpcyBlaXRoZXIgbnVtZXJpYyBkYXRhIGNvbWluZyBpbiBhcyBjaGFyYWN0ZXJzIC0gd2hpY2ggY291bGQgYmUgY2F1c2VkIGJ5IHNvbWV0aGluZyB1bnNlZW4gbGlrZSBhICdibGFuayBjZWxsJyBpbiBFeGNlbCB0aGF0IGFjdHVhbGx5IGNvbnRhaW5lZCBhIHNwYWNlLgoKU2FuaXR5OgoKYHN1bW1hcnlgCgojIyBEYXRhIHZpc3VhbGlzYXRpb24gey50YWJzZXR9CgpUaGVyZSBhcmUgdHdvIG1haW4gbWV0aG9kcyBmb3IgcGxvdHRpbmcgZGF0YSBpbiBSLiBUaGUgZmlyc3QgaXMgdGhlIGluLWJ1aWx0IHBsb3R0aW5nIGZ1bmN0aW9ucyB3aXRoaW4gYmFzZSBSLiBUaGUgc2Vjb25kIGlzIHVzaW5nIGEgcG9wdWxhciBwYWNrYWdlIGNhbGxlZCBgZ2dwbG90MmAuCgpIZXJlIHdlJ2xsIGludHJvZHVjZSB5b3UgdG8gYm90aCBzeXN0ZW1zIHRvIGNyZWF0ZSBzb21lIHNpbXBsZSBwbG90cy4gSW4gZnV0dXJlIG1vZHVsZXMgd2UnbGwgY292ZXIgbW9yZSBhYm91dCBwbG90dGluZy4KCiMjIyBCYXNlIFIgCgojIyMjIFNjYXR0ZXIgcGxvdHMKClNjYXR0ZXIgcGxvdHMgYXJlIGEgc3RyYWlnaHQgZm9yd2FyZCB3YXkgdG8gZ2V0IGEgbG9vayBhdCBvdXIgZGF0YQoKYGBge3J9CnBsb3QocHVwcHlfZG9uYXRpb25zX2RhdGEkQ29sbGVjdG9yTnVtYmVyLCBwdXBweV9kb25hdGlvbnNfZGF0YSRBbW91bnQpCmBgYAoKQW5kIG9uY2UgbW9yZSB3aXRoIGNvbG91ciEKCmBgYHtyfQpwbG90KHB1cHB5X2RvbmF0aW9uc19kYXRhJENvbGxlY3Rvck51bWJlciwgcHVwcHlfZG9uYXRpb25zX2RhdGEkQW1vdW50LCBjb2wgPSAicmVkIikKYGBgCgoKIyMjIyBMaW5lIHBsb3RzCgpgYGB7cn0KcGxvdChwdXBweV9kb25hdGlvbnNfZGF0YSRDb2xsZWN0b3JOdW1iZXIsIHB1cHB5X2RvbmF0aW9uc19kYXRhJEFtb3VudCwgdHlwZSA9ICdsJykKYGBgCgoKIyMjIyBIaXN0b2dyYW1zCgoKYGBge3J9Cmhpc3QocHVwcHlfZG9uYXRpb25zX2RhdGEkQW1vdW50KQpgYGAKIyMjIyBCb3hwbG90cwoKUmVtZW1iZXIgdGhhdCB0aGlzIGRhdGEgaGFzIGEgY29uZGl0aW9uIHVuZGVyIHdoaWNoIHRoZSBkYXRhIHdhcyBjb2xsZWN0ZWQgLSB3aXRoIGFuZCB3aXRob3V0IGEgcHVwcHkuIEJveHBsb3RzIHByb3ZpZGUgYSB3YXkgdG8gZ2V0IGFuIHVuZGVyc3RhbmRpbmcgb2Ygb3VyIGRhdGEgdXNpbmcgY2F0ZWdvcmljYWwgaW5mb3JtYXRpb24uCgpUaGUgUiBmdW5jdGlvbiBgYm94cGxvdGAgYWNjZXB0cyB0d28gYXJndW1lbnRzLiAKClRoZSBmaXJzdCBhcmd1bWVudCBpcyB0aGUgKipmb3JtdWxhKiouIFRoaXMgaXMgYSBjb21wbGV4LCB5ZXQgdmVyeSBjb21tb24sIGFyZ3VtZW50IGZvcm1hdCBmb3IgUiBzdGF0aXN0aWNhbCBmdW5jdGlvbnMuIFRoZSBmb3JtdWxhIGRlc2NyaWJlcyBhIGxpbmVhciBtb2RlbCBmb3IgYSBkYXRhIHNldCB3aXRoIHRoZSBnZW5lcmFsIHN0cnVjdHVyZTogKipkZXBlbmRlbnQgb3IgcHJlZGljdGVkIHZhcmlhYmxlIH4gaW5kZXBlbmRlbnQgdmFyaWFibGVzIG9yIHByZWRpY3RvcnMqKiwgdXNpbmcgY29sdW1ucyBuYW1lcyBmcm9tIHRoZSBkYXRhIGZyYW1lLiBUaGUgfiAodGlsZGUpIGlzIHJlYWQgYXMgImRlcGVuZHMgb24iIG9yICJpcyBwcmVkaWN0ZWQgYnkiLiBGb3Igb3VyIGV4YW1wbGUsIHdlIGFyZSBpbnRlcmVzdGVkIGluIHRoZSB3YXkgdGhhdCBBbW91bnQgaXMgZGVwZW5kZW50IG9uIHRoZSBQdXBweS9BbG9uZSBjb25kaXRpb24sIHNvIHdlIHNwZWNpZnkgb3VyIGZvcm11bGEgYXMgKipBbW91bnQgfiBDb25kaXRpb24qKi4gIFdlIHdpbGwgc2VlIG1vcmUgY29tcGxleCBleGFtcGxlcyBvZiB0aGUgZm9ybXVsYSBhcmd1bWVudCBsYXRlciBpbiB0aGUgc2VtZXN0ZXIuCgoKVGhlIHNlY29uZCBhcmd1bWVudCB0byBib3hwbG90IGlzIHRoZSBkYXRhIGZyYW1lLgoKYGBge3IgaGFuZG91dDJfYm94cGxvdDAxfQpib3hwbG90KEFtb3VudCB+IENvbmRpdGlvbiwgcHVwcHlfZG9uYXRpb25zX2RhdGEpCmBgYAoKIyMjIyBDdXN0b21pc2luZwoKVGhlcmUgYXJlIGEgbXVsdGl0dWRlIG9mIGN1c3RvbWlzYXRpb25zIHRoYXQgY2FuIGJlIGRvbmUgdG8gcGxvdHMgc3VjaCBhcyB0aXRsZXMsIGxhYmVscywgY29sb3VycywgZXRjLgoKQSBmYW50YXN0aWMgcmVzb3VyY2UgZm9yIGxvb2tpbmcgYXQgaG93IHRvIGN1c3RvbWlzZSB5b3VyIHBsb3RzIG1hZGUgdXNpbmcgdGhlIEJhc2UgUiBwbG90dGluZyBzeXN0ZW0gaXMgdGhlIFtSIEdyYXBoaWNzIENvb2tib29rXShodHRwczovL3ItZ3JhcGhpY3Mub3JnKS4KCgojIyMgVGlkeXZlcnNlCgpUaGUgZ2dwbG90MiBwYWNrYWdlIGlzIGEgcG9wdWxhciBkYXRhIHZpc3VhbGlzYXRpb24gcGFja2FnZSBmb3IgUi4gSW4gb3JkZXIgdG8gdXNlIGl0IHdlIG5lZWQgdG8gZmlyc3QgbG9hZCBpdCBpbnRvIFIuCgpgYGB7cn0KbGlicmFyeShnZ3Bsb3QyKQpgYGAKCkdncGxvdCB0YWNrbGVzIHBsb3R0aW5nIHJlZHVjaW5nIGl0IGludG8gdGhyZWUgY29tcG9uZW50cwoKLSB3aGF0IGlzIHRoZSBkYXRhCi0gaG93IHRoZSBkYXRhIGlzIG1hcHBlZCB0byBhZXN0aGV0aWNzIChhZXMpCi0gaG93IHRoZSBkYXRhIGlzIHJlcHJlc2VudGVkIGdlb21ldHJpY2FsbHkgKGdlb20pCgpTbyB0byBjcmVhdGUgYSBwbG90IHVzaW5nIGdncGxvdCB3ZSBuZWVkIHRvIHNwZWNpZnkgdGhlc2UgdGhyZWUgY29tcG9uZW50cy4KCgpQbG90cyBjYW4gdGhlbiBiZSBtYWRlIGluY3JlbWVudGFsbHkgYnkgYWRkaW5nIG9uIGFkZGl0aW9uYWwgbGF5ZXJzLgoKIyMjIyBDcmVhdGluZyBhIHBsb3QKCmBgYHtyfQpnZ3Bsb3QoZGF0YSA9IG10Y2FycywgYWVzKHggPSBtcGcsIHkgPSB3dCkpICsgZ2VvbV9wb2ludCgpCmBgYAoKCiMjIyMKCgojIyBFeGNlcmNpc2VzCgoKMS4gVXNpbmcgdGhlIEJhc2UgUiBzY2F0dGVyIHBsb3Qgb2YgdGhlIHB1cHBpZXMgZGF0YSwgY3VzdG9taXNlIHRoZSBsYWJlbCwgdGl0bGUsIGFuZCBjb2xvdXIuIGBoZWxwKCJwbG90IilgIG1heSBvZmZlciBzb21lIGFzc2lzdGFuY2UuCgoyLiBNb2RpZnkgdGhlIEJhc2UgUiBoaXN0b2dyYW0gdG8gYmUgYSBkaWZmZXJlbnQgY29sb3VyLgo=</div>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("handout2.Rmd");
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

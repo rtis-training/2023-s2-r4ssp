@@ -1,5 +1,5 @@
 ---
-title: "R for Successful Student Projects 02 - Tabular Data Basics"
+title: "Handout 02- Visualising Data"
 date: "Semester 1, 2022"
 output:
   html_document:
@@ -21,6 +21,26 @@ knitr::opts_chunk$set(
 )
 ```
 
+
+
+> #### Data Focus
+>
+> Modules and Handouts 2--6 cover topics that are part of the data analysis journey and are all interrelated to one another. The way that it has been separated is to introduce main topic but then each subsequent topic will add in additional content for previous topics. E.g. we start with data visualisation to introduce the basics of the plotting systems but then each other handout will include extra options and customisations.
+ 
+\
+
+\
+ 
+ 
+Handout: [Handout 02 - Visualising Data](handout2.html)
+
+Associated Readings:
+
+- [R for Data Science - Chapter 12](https://r4ds.had.co.nz/tidy-data.html)
+- [R for Data Science - Chapter 11](https://r4ds.had.co.nz/data-import.html)
+- [R for Data Science - Chapter 3](https://r4ds.had.co.nz/data-visualisation.html)
+
+
  
 ## Tidy data principles
 
@@ -38,18 +58,111 @@ Think about how you are dealing with missing data.
 In general we would recommend saving your data in the "comma separated values" (csv) format. This is a format where all your data is in plain text (you can view it in a text editor) and it is highly portable between different languages/programs.
 
 
+### Downloading data
+
+```{r}
+download.file(url = "https://raw.githubusercontent.com/rtis-training/2022-s1-r4ssp/main/data/r4ssp_donations_data.csv", destfile = "data/r4ssp_donations_data.csv")
+```
+
+
+
 ## Read data in from csv
 
-read.csv and read_csv
+There are two main approaches to reading data into R.
 
-- stringsAsFactors=FALSE
-- prechecks
-  - `dim`
-  - `View`
-  - `head`
-  - `tail`
-  - `names`
+- Data imported (point and click)
+- Code
 
+Both methods provide either a Base R option or a Tidyverse (`readr`) option.
+
+
+**Data Importer**
+
+The first approach is a point-and-click method, using the data importer found in the environment panel. This can be useful to get a preview of how your data is going to be read in. Once you have imported your data, make sure to keep the code that was generated and can subsequently be used as the second approach
+
+
+**Code**
+
+Using code there are two main functions that are used for reading in csv data. `read.csv` from Base R and `read_csv` from `readr` (as part of the Tidyverse). They have minor differences in how they operate, the main difference being that prior to R v4, `read.csv` would by default load character type data in as _Factors_.
+
+> ### Tidyverse and Base R
+> 
+> So far the syntax and methods you have been introduced to have been entirely part of what is known as "Base R" i.e. it's all available right out of the box. There's an ecosystem of extremely popular additional packages created by most prominently by Hadley Wickham (and others) that follow a similar (opinionated) design principle that is primarily focused on (tidy) data analysis - the Tidyverse. The Tidyverse is a collection of packages that we will make heavy use of during this course but such as `readr` for reading data, `ggplot2` for plotting, and `dplyr` and `tidyr` for data manipulations.
+>
+> the `tidyverse` "metapackage" provides a convenient way to both install and load the core packages that form the tidyverse, but you may choose to load only the exact packages you wish to use.
+> 
+> ```{r, eval = FALSE}
+> install.packages("tidyverse")
+> 
+> library(tidyverse)
+> ```
+>
+> We believe that it's important to show you how to use both Base R and the Tidyverse because together they will give you a very powerful set of tools to tackle your data analysis and understand other code you come across.
+
+
+----
+  
+### Base R
+
+```{r, eval=FALSE}
+# common options for running read.csv
+my_data <- read.csv(file = "myfile.csv", header = TRUE , stringsAsFactors = FALSE)
+```
+
+> `stringsAsFactors=FALSE`
+>
+> Factors are a datatype that is used within R for coding categorical data. For R versions < 4, the default for `read.csv` was to bring in character data as a Factor (i.e. `stringsAsFactors=TRUE`), to prevent this and have the data be read in as character type it is common to see the argument `stringsAsFactors=FALSE`. From R v4 and up, the _default option was changed_ to be `stringsAsFactors=FALSE`.
+
+----
+
+### Tidyverse
+
+The package from the tidyverse the deals with reading in data is `readr`. If you have already run `library(tidyverse)` it will automatically have been loaded for you. If you aren't making use of the other Tidyverse packages if can be a good idea load only `readr`: `library(readr)`.
+
+```{r, eval=FALSE}
+# common options for running read_csv
+read_csv(file = "my_file.csv", col_names = TRUE)
+```
+
+`read_csv` will display an output describing the data load process. This output can be an extremely useful first check if you data has loaded in how you wanted it to and is worth checking that columns are of the correct data type.
+
+----
+
+## Previewing data
+
+Once your data is loaded, it's worth checking to make sure that everything is as you expect, as this is usually the largest source of errors once you get to analysis.
+
+
+### Viewing
+
+These functions give different ways of viewing your data
+
+- `View`
+- `head`
+- `tail`
+
+### Checking
+
+
+These functions provide ways of checking the size and type of data that has been read in.
+
+Size:
+
+- `dim`
+- `nrow`
+- `ncol`
+
+Type:
+
+- `class`
+- `names`
+- `str`
+
+The largest source (anecdotal) of analysis errors is either numeric data coming in as characters - which could be caused by something unseen like a 'blank cell' in Excel that actually contained a space.
+
+Sanity:
+
+`summary`
 
 ## Data visualisation {.tabset}
 
@@ -60,22 +173,53 @@ Here we'll introduce you to both systems to create some simple plots. In future 
 ### Base R 
 
 #### Scatter plots
+
+Scatter plots are a straight forward way to get a look at our data
+
 ```{r}
-plot(mtcars$mpg, mtcars$wt)
+plot(puppy_donations_data$CollectorNumber, puppy_donations_data$Amount)
 ```
+
+And once more with colour!
+
+```{r}
+plot(puppy_donations_data$CollectorNumber, puppy_donations_data$Amount, col = "red")
+```
+
 
 #### Line plots
 
 ```{r}
-plot(mtcars$hp, mtcars$mpg)
+plot(puppy_donations_data$CollectorNumber, puppy_donations_data$Amount, type = 'l')
 ```
 
 
 #### Histograms
 
+
 ```{r}
-hist(mtcars$mpg)
+hist(puppy_donations_data$Amount)
 ```
+#### Boxplots
+
+Remember that this data has a condition under which the data was collected - with and without a puppy. Boxplots provide a way to get an understanding of our data using categorical information.
+
+The R function `boxplot` accepts two arguments. 
+
+The first argument is the **formula**. This is a complex, yet very common, argument format for R statistical functions. The formula describes a linear model for a data set with the general structure: **dependent or predicted variable ~ independent variables or predictors**, using columns names from the data frame. The ~ (tilde) is read as "depends on" or "is predicted by". For our example, we are interested in the way that Amount is dependent on the Puppy/Alone condition, so we specify our formula as **Amount ~ Condition**.  We will see more complex examples of the formula argument later in the semester.
+
+
+The second argument to boxplot is the data frame.
+
+```{r handout2_boxplot01}
+boxplot(Amount ~ Condition, puppy_donations_data)
+```
+
+#### Customising
+
+There are a multitude of customisations that can be done to plots such as titles, labels, colours, etc.
+
+A fantastic resource for looking at how to customise your plots made using the Base R plotting system is the [R Graphics Cookbook](https://r-graphics.org).
 
 
 ### Tidyverse
@@ -86,7 +230,16 @@ The ggplot2 package is a popular data visualisation package for R. In order to u
 library(ggplot2)
 ```
 
+Ggplot tackles plotting reducing it into three components
 
+- what is the data
+- how the data is mapped to aesthetics (aes)
+- how the data is represented geometrically (geom)
+
+So to create a plot using ggplot we need to specify these three components.
+
+
+Plots can then be made incrementally by adding on additional layers.
 
 #### Creating a plot
 
@@ -95,7 +248,12 @@ ggplot(data = mtcars, aes(x = mpg, y = wt)) + geom_point()
 ```
 
 
-- scatter plot
-- line plot
+####
 
 
+## Excercises
+
+
+1. Using the Base R scatter plot of the puppies data, customise the label, title, and colour. `help("plot")` may offer some assistance.
+
+2. Modify the Base R histogram to be a different colour.

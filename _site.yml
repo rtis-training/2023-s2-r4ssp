@@ -13,7 +13,7 @@ navbar:
         - text: "-------------"
         - text: "Data Focus"
         - text: "Part 1: Visualising"
-        #  href: 02-visualise.html
+          href: 02-visualise.html
         - text: "Part 2: Subsetting"
         #  href: 03-subset.html
         - text: "Part 3: Transforming"
@@ -34,8 +34,8 @@ navbar:
       menu:
         - text: "Handout 1"
           href: handout1.html
-        # - text: "Handout 2"
-        #   href: handout2.html
+        - text: "Handout 2"
+          href: handout2.html
         # - text: "Handout 3"
         #   href: handout3.html
         # - text: "Handout 4"

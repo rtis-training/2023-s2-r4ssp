@@ -345,7 +345,9 @@ div.tocify {
     </li>
     <li class="divider"></li>
     <li class="dropdown-header">Data Focus</li>
-    <li class="dropdown-header">Part 1: Visualising</li>
+    <li>
+      <a href="02-visualise.html">Part 1: Visualising</a>
+    </li>
     <li class="dropdown-header">Part 2: Subsetting</li>
     <li class="dropdown-header">Part 3: Transforming</li>
     <li class="dropdown-header">Part 4: Summarising</li>
@@ -366,6 +368,9 @@ div.tocify {
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="handout1.html">Handout 1</a>
+    </li>
+    <li>
+      <a href="handout2.html">Handout 2</a>
     </li>
   </ul>
 </li>
@@ -403,28 +408,45 @@ div.tocify {
 
 <blockquote>
 <h4 id="associated-material">Associated material</h4>
-<p>Module: <a href="01-intro.html">Module 01 - Introducing R and Rstudio</a></p>
+<p>Module: <a href="01-intro.html">Module 01 - Introducing R and
+Rstudio</a></p>
 <p>Associated Readings:</p>
 <ul>
-<li><a href="https://r4ds.had.co.nz/introduction.html">R for Data Science - Chapter 1</a></li>
-<li><a href="https://r4ds.had.co.nz/workflow-basics.htm">R for Data Science - Chapter 4</a></li>
+<li><a href="https://r4ds.had.co.nz/introduction.html">R for Data
+Science - Chapter 1</a></li>
+<li><a href="https://r4ds.had.co.nz/workflow-basics.htm">R for Data
+Science - Chapter 4</a></li>
 </ul>
 </blockquote>
 <div id="before-we-start" class="section level4">
 <h4>Before we start</h4>
-<p>This course is designed with two components - the module and the handout. The module content provides more explanation and background so that you can work through it on your own if you wish. The handout content provides the structure for the content that will be delivered in the online sessions. Both sets of content are complementary to each other.</p>
-<p>At the top right hand corner of both the module and handout pages is a “code” button. This can be used to toggle seeing/hiding the code or to download the code that that created the page as an Rmarkdown file (we cover Rmarkdown more in-depth in <a href="06-communicate.html">module</a>/<a href="handout6.html">handout</a> 6).</p>
+<p>This course is designed with two components - the module and the
+handout. The module content provides more explanation and background so
+that you can work through it on your own if you wish. The handout
+content provides the structure for the content that will be delivered in
+the online sessions. Both sets of content are complementary to each
+other.</p>
+<p>At the top right hand corner of both the module and handout pages is
+a “code” button. This can be used to toggle seeing/hiding the code or to
+download the code that that created the page as an Rmarkdown file (we
+cover Rmarkdown more in-depth in <a
+href="06-communicate.html">module</a>/<a
+href="handout6.html">handout</a> 6).</p>
 <p><br />
 </p>
 </div>
 <div id="r-and-rstudio" class="section level1">
 <h1>R and RStudio</h1>
-<p>R is the language, RStudio is an interface for interacting with R.</p>
+<p>R is the language, RStudio is an interface for interacting with
+R.</p>
 <p><br />
 </p>
 <div id="the-rstudio-environment" class="section level2">
 <h2>The RStudio environment</h2>
-<p>RStudio is what is known as an integrated development environment (IDE) which provides a graphical interface (among other things) for interacting with R. The main environment of RStudio is comprised of panels.</p>
+<p>RStudio is what is known as an integrated development environment
+(IDE) which provides a graphical interface (among other things) for
+interacting with R. The main environment of RStudio is comprised of
+panels.</p>
 <p>Panels of RStudio</p>
 <ul>
 <li>console</li>
@@ -436,13 +458,16 @@ div.tocify {
 </p>
 <div id="global-settings-for-reproducibility" class="section level3">
 <h3>Global settings for reproducibility</h3>
-<p>Before we get under way we want to set up our environment to help enforce some behaviours that encourage reproducibility.</p>
+<p>Before we get under way we want to set up our environment to help
+enforce some behaviours that encourage reproducibility.</p>
 <p>We want to disable a few default settings</p>
 <ul>
 <li>Restore .RData on startup</li>
 <li>Save workspace to .Rdata</li>
 </ul>
-<p>To do this select the <code>Tools</code> menu -&gt; <code>Global options</code>, then on the “General” tab under the “Workspace” heading:</p>
+<p>To do this select the <code>Tools</code> menu -&gt;
+<code>Global options</code>, then on the “General” tab under the
+“Workspace” heading:</p>
 <ol style="list-style-type: decimal">
 <li>Untick “Restore .RData on startup”</li>
 <li>Set “Save workspace to .RData on exit” to “Never”</li>
@@ -453,22 +478,31 @@ div.tocify {
 </div>
 <div id="projects" class="section level3">
 <h3>Projects</h3>
-<p>Projects within RStudio provide mechanism to encapsulate a project - be it particular data analysis you’re working on, an R package you’re making (Modules/Handouts 7 and 8), or even a book (Module/Handout 6).</p>
-<p>A project is a directory on your computer that you want to put all your code, documentation, data, and associated outputs so that everything needed to recreate an analysis is “bundled together”.</p>
-<p>We’ll create a project for the course and create a common project structure:</p>
+<p>Projects within RStudio provide mechanism to encapsulate a project -
+be it particular data analysis you’re working on, an R package you’re
+making (Modules/Handouts 7 and 8), or even a book (Module/Handout
+6).</p>
+<p>A project is a directory on your computer that you want to put all
+your code, documentation, data, and associated outputs so that
+everything needed to recreate an analysis is “bundled together”.</p>
+<p>We’ll create a project for the course and create a common project
+structure:</p>
 <ul>
 <li>File -&gt; New Project -&gt; New Directory -&gt; New Project</li>
 <li>Choose where you want it to live and give it a name</li>
 <li>“Create Project”</li>
 </ul>
-<p>Now we have our new project we’ll create some directories to store various aspects of our project. We’ll create the following directories:</p>
+<p>Now we have our new project we’ll create some directories to store
+various aspects of our project. We’ll create the following
+directories:</p>
 <ul>
 <li>scripts</li>
 <li>docs</li>
 <li>data</li>
 <li>outputs</li>
 </ul>
-<p>You can do this either using the “New Folder” button in the Files panel or using the code below.</p>
+<p>You can do this either using the “New Folder” button in the Files
+panel or using the code below.</p>
 <pre class="r"><code>dir.create(&quot;scripts&quot;)
 #&gt; Warning in dir.create(&quot;scripts&quot;): &#39;scripts&#39; already exists
 dir.create(&quot;data&quot;)
@@ -482,9 +516,15 @@ dir.create(&quot;outputs&quot;)
 </div>
 <div id="scripts" class="section level3">
 <h3>Scripts</h3>
-<p>Scripts in R are a way in which we can document the steps we take through our analysis and can be used to recreate what we have done. There are two main forms that scripts come in:</p>
+<p>Scripts in R are a way in which we can document the steps we take
+through our analysis and can be used to recreate what we have done.
+There are two main forms that scripts come in:</p>
 <p>R Script - plain text document that contains R commands</p>
-<p>RMarkdown - a plain text document that has text areas and code areas which is processed/compiled thought to a output format such as html or pdf which contains formatted text, code plus the results of the code embedded in the document. We’ll cover this in more depth Module/Handout 6.</p>
+<p>RMarkdown - a plain text document that has text areas and code areas
+which is processed/compiled thought to a output format such as html or
+pdf which contains formatted text, code plus the results of the code
+embedded in the document. We’ll cover this in more depth Module/Handout
+6.</p>
 <p><br />
 </p>
 </div>
@@ -495,7 +535,9 @@ dir.create(&quot;outputs&quot;)
 <ul>
 <li>R is case sensitive</li>
 <li>spaces are ignored by R</li>
-<li>there is no difference between single <code>'</code> and double <code>"</code> quotes but you have to use the same type to close as you open with</li>
+<li>there is no difference between single <code>'</code> and double
+<code>"</code> quotes but you have to use the same type to close as you
+open with</li>
 </ul>
 <p><br />
 </p>
@@ -530,48 +572,78 @@ dir.create(&quot;outputs&quot;)
 # modulo
 5 %% 2
 #&gt; [1] 1</code></pre>
-<p>The <code>#</code> symbol is used to denote a ‘comment’ and R will ignore everything to the right of it. This lets us add comments to our code to describe the what and why of the code being run.</p>
+<p>The <code>#</code> symbol is used to denote a ‘comment’ and R will
+ignore everything to the right of it. This lets us add comments to our
+code to describe the what and why of the code being run.</p>
 <p><br />
 </p>
 </div>
 <div id="data-types" class="section level3">
 <h3>Data types</h3>
-<p>In R there are 3 main types of data you’ll likely use in day-to-day life, these are:</p>
+<p>In R there are 3 main types of data you’ll likely use in day-to-day
+life, these are:</p>
 <ul>
 <li>numeric</li>
 <li>characters</li>
 <li>boolean</li>
 </ul>
-<p>The numeric type covers is your numbers both “double” (decimal), and integers (defined by a integer number followed by L e.g. <code>2L</code>). These can be typed straight in as we have been doing and can have mathematical operations performed on them.</p>
-<p>The character type is any combination of characters zero or more that is represented on the keyboard and includes letters, numbers and symbols. Characters are defined in R by enclosing them in quotation marks (either single or double, e.g. <code>"some words"</code>). Characters can’t have mathematical operations performed on them.</p>
-<p>Booleans are the logical data type, they consist of <code>TRUE</code> and <code>FALSE</code> and are used for logical operations.</p>
-<p>Within R there are other types such as complex, and raw but they are less common</p>
+<p>The numeric type covers is your numbers both “double” (decimal), and
+integers (defined by a integer number followed by L
+e.g. <code>2L</code>). These can be typed straight in as we have been
+doing and can have mathematical operations performed on them.</p>
+<p>The character type is any combination of characters zero or more that
+is represented on the keyboard and includes letters, numbers and
+symbols. Characters are defined in R by enclosing them in quotation
+marks (either single or double, e.g. <code>"some words"</code>).
+Characters can’t have mathematical operations performed on them.</p>
+<p>Booleans are the logical data type, they consist of <code>TRUE</code>
+and <code>FALSE</code> and are used for logical operations.</p>
+<p>Within R there are other types such as complex, and raw but they are
+less common</p>
 <p><br />
 </p>
 </div>
 <div id="variables" class="section level3">
 <h3>Variables</h3>
-<p>Variables are named objects that we can store data in that we can reference/use later in our code.</p>
-<p>The main rules for naming variables - Start with a letter - No symbols (except . or _)</p>
-<p>It’s also highly recommended to use variable names that are descriptive of the contents. This will help you remember and keep track of things easier later on.</p>
+<p>Variables are named objects that we can store data in that we can
+reference/use later in our code.</p>
+<p>The main rules for naming variables - Start with a letter - No
+symbols (except . or _)</p>
+<p>It’s also highly recommended to use variable names that are
+descriptive of the contents. This will help you remember and keep track
+of things easier later on.</p>
 <p><br />
 </p>
 <div id="assigment-operators" class="section level4">
 <h4>Assigment operators</h4>
-<p><code>&lt;-</code> and <code>=</code> are both used for assignment within R. <code>&lt;-</code> is the older/more commonly used for assigning to a variable, <code>=</code> is the only one that you use inside a function call to assign the parameters/arguments.</p>
-<p>In terms of priority of operators, assignment happens <strong>last</strong>, and takes the result of evaluating the right hand side and stores it into the object of named on the left hand side.</p>
-<p>Another key thing about variables is they <strong>only contain the last thing that was assigned to them</strong>.</p>
+<p><code>&lt;-</code> and <code>=</code> are both used for assignment
+within R. <code>&lt;-</code> is the older/more commonly used for
+assigning to a variable, <code>=</code> is the only one that you use
+inside a function call to assign the parameters/arguments.</p>
+<p>In terms of priority of operators, assignment happens
+<strong>last</strong>, and takes the result of evaluating the right hand
+side and stores it into the object of named on the left hand side.</p>
+<p>Another key thing about variables is they <strong>only contain the
+last thing that was assigned to them</strong>.</p>
 <p><br />
 </p>
 </div>
 </div>
 <div id="functions" class="section level3">
 <h3>Functions</h3>
-<p>Functions in R let us perform operations. Functions in R are really R code stored in a variable that does stuff. In order to “do the stuff” we need call the variable with parentheses <code>()</code> on the end. Inside the parentheses we can pass values for the parameters/arguments which let us change the behaviour of the function.</p>
-<p>For instance, if we want to find the square root of a number, we can use the <code>sqrt</code> function and provide the number we want the square root for as an argument:</p>
+<p>Functions in R let us perform operations. Functions in R are really R
+code stored in a variable that does stuff. In order to “do the stuff” we
+need call the variable with parentheses <code>()</code> on the end.
+Inside the parentheses we can pass values for the parameters/arguments
+which let us change the behaviour of the function.</p>
+<p>For instance, if we want to find the square root of a number, we can
+use the <code>sqrt</code> function and provide the number we want the
+square root for as an argument:</p>
 <pre class="r"><code>sqrt(64)
 #&gt; [1] 8</code></pre>
-<p>To supply multiple arguments or parameters to a function we separate them by a comma. Each argument also has a name. Arguments are filled either by name, or based on the position.</p>
+<p>To supply multiple arguments or parameters to a function we separate
+them by a comma. Each argument also has a name. Arguments are filled
+either by name, or based on the position.</p>
 <pre class="r"><code># by position
 round(3.142, 1)
 #&gt; [1] 3.1
@@ -579,7 +651,8 @@ round(3.142, 1)
 # by name
 round(x = 3.142, digits = 1)
 #&gt; [1] 3.1</code></pre>
-<p>To find out what the names of the arguments a function takes we can run the <code>args</code> function on the function name:</p>
+<p>To find out what the names of the arguments a function takes we can
+run the <code>args</code> function on the function name:</p>
 <pre class="r"><code>args(round)
 #&gt; function (x, digits = 0) 
 #&gt; NULL</code></pre>
@@ -588,28 +661,43 @@ round(x = 3.142, digits = 1)
 </div>
 <div id="help" class="section level3">
 <h3>Help</h3>
-<p>Being able to find things out for yourself is extremely important and within R there are a couple way this can be done.</p>
+<p>Being able to find things out for yourself is extremely important and
+within R there are a couple way this can be done.</p>
 <ul>
 <li><code>help()</code> or <code>?</code></li>
 <li><code>??</code></li>
 <li>google</li>
 </ul>
-<p>There is usually pretty good documentation that goes along side functions and this can be accessed through the inbuilt help system using <code>help()</code>, <code>?</code>, or <code>??</code>.</p>
-<p><code>help()</code>and <code>?</code> are equivalent and will find the manual page for the exact function, e.g. to find the manual page for the <code>mean</code> function: <code>help("mean")</code> or <code>?mean</code>. The most useful sections of the manual pages are “Usage”, “Arguments”, and “Examples” which tell you how to run the function, what the arguments are supposed to be, and gives some ‘copy-paste’ examples to show you how it’s run.</p>
-<p><code>??</code> on the other hand will bring up a list of all the manual pages that mention the word.</p>
-<p>Google is also extremely useful and my most common search is “how to … in R”.</p>
+<p>There is usually pretty good documentation that goes along side
+functions and this can be accessed through the inbuilt help system using
+<code>help()</code>, <code>?</code>, or <code>??</code>.</p>
+<p><code>help()</code>and <code>?</code> are equivalent and will find
+the manual page for the exact function, e.g. to find the manual page for
+the <code>mean</code> function: <code>help("mean")</code> or
+<code>?mean</code>. The most useful sections of the manual pages are
+“Usage”, “Arguments”, and “Examples” which tell you how to run the
+function, what the arguments are supposed to be, and gives some
+‘copy-paste’ examples to show you how it’s run.</p>
+<p><code>??</code> on the other hand will bring up a list of all the
+manual pages that mention the word.</p>
+<p>Google is also extremely useful and my most common search is “how to
+… in R”.</p>
 <p><br />
 </p>
 </div>
 <div id="comparatives" class="section level3">
 <h3>Comparatives</h3>
-<p>One final set of syntax operators to cover are the comparatives. These are used to create logical statements based on comparisons that will evaluate to be either <code>TRUE</code> or <code>FALSE</code>.</p>
+<p>One final set of syntax operators to cover are the comparatives.
+These are used to create logical statements based on comparisons that
+will evaluate to be either <code>TRUE</code> or <code>FALSE</code>.</p>
 <p>Comparators:</p>
 <ul>
 <li>equality: <code>==</code></li>
 <li>not equal to:<code>!=</code></li>
-<li>greater than / greater than or equal to: <code>&gt;</code> / <code>&gt;=</code></li>
-<li>less than / less than or equal to: <code>&lt;</code> / <code>&lt;=</code></li>
+<li>greater than / greater than or equal to: <code>&gt;</code> /
+<code>&gt;=</code></li>
+<li>less than / less than or equal to: <code>&lt;</code> /
+<code>&lt;=</code></li>
 </ul>
 <p>Logical operators</p>
 <ul>
@@ -617,7 +705,9 @@ round(x = 3.142, digits = 1)
 <li>or: <code>|</code></li>
 <li>and: <code>&amp;</code></li>
 </ul>
-<p>We’ll cover these in more depth in the Selecting and Filtering <a href="03-subset.html">Module</a>/<a href="handout3.html">Handout</a>.</p>
+<p>We’ll cover these in more depth in the Selecting and Filtering <a
+href="03-subset.html">Module</a>/<a
+href="handout3.html">Handout</a>.</p>
 <p><br />
 </p>
 </div>
@@ -626,9 +716,14 @@ round(x = 3.142, digits = 1)
 <h2>Starting with data</h2>
 <div id="vectors" class="section level3">
 <h3>Vectors</h3>
-<p>Until now we’ve been operating on single items at a time. R has way of storing multiple pieces of information - the <em>vector</em>.</p>
-<p>A vector is zero or more entries of the <strong>same data type</strong>.</p>
-<p>To create a vector of more than one piece of information we can use the <em>combine</em> function, which because it is used so frequently in R, has been reduced to be <code>c()</code>. Each item is comma separated.</p>
+<p>Until now we’ve been operating on single items at a time. R has way
+of storing multiple pieces of information - the <em>vector</em>.</p>
+<p>A vector is zero or more entries of the <strong>same data
+type</strong>.</p>
+<p>To create a vector of more than one piece of information we can use
+the <em>combine</em> function, which because it is used so frequently in
+R, has been reduced to be <code>c()</code>. Each item is comma
+separated.</p>
 <pre class="r"><code>some_letters &lt;- c(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;)
 some_letters
 #&gt; [1] &quot;a&quot; &quot;b&quot; &quot;c&quot;
@@ -636,7 +731,8 @@ some_letters
 some_numbers &lt;- c(2, 4, 6)
 some_numbers
 #&gt; [1] 2 4 6</code></pre>
-<p>We can see what the data type is of a vector using <code>typeof</code></p>
+<p>We can see what the data type is of a vector using
+<code>typeof</code></p>
 <pre class="r"><code>typeof(some_letters)
 #&gt; [1] &quot;character&quot;
 
@@ -646,8 +742,12 @@ typeof(some_numbers)
 </p>
 <div id="subsetting-by-index" class="section level4">
 <h4>Subsetting by index</h4>
-<p>The final syntax we’ll introduce this week is <code>[]</code> which enables us to extract items out of a vector.</p>
-<p>Each item has a positional index (starting from 1 - other languages differ). We can use this index as an argument to <code>[]</code> to pull out the specified item. If we want multiple items we supply a vector of numbers for the indexes we want</p>
+<p>The final syntax we’ll introduce this week is <code>[]</code> which
+enables us to extract items out of a vector.</p>
+<p>Each item has a positional index (starting from 1 - other languages
+differ). We can use this index as an argument to <code>[]</code> to pull
+out the specified item. If we want multiple items we supply a vector of
+numbers for the indexes we want</p>
 <pre class="r"><code>some_numbers
 #&gt; [1] 2 4 6
 
@@ -660,7 +760,8 @@ some_letters
 # pull out items 1 and 3
 some_letters[c(1,3)]
 #&gt; [1] &quot;a&quot; &quot;c&quot;</code></pre>
-<p>In the Selecting and Filtering Data module/handout we will cover this more and expand to 2 dimensions.</p>
+<p>In the Selecting and Filtering Data module/handout we will cover this
+more and expand to 2 dimensions.</p>
 <p><br />
 </p>
 </div>
@@ -672,14 +773,26 @@ some_letters[c(1,3)]
 <ol style="list-style-type: decimal">
 <li><p>Create and assign a vector of 5 numbers.</p></li>
 <li><p>Find out the <code>length</code> of the vector.</p></li>
-<li><p>Divide the entire vector by 2 and store the result into a variable called <em>div_2</em> - what is the result of the division?</p></li>
-<li><p>Calculate the minimum, maximum, mean, and standard deviation for the <em>div_2</em> vector. Can you round the results to 2 decimal places?</p></li>
-<li><p>Create and assign a vector of at least 4 animal names into <em>animals</em>.</p></li>
-<li><p>Can you find a way to tell you the number of characters per item?</p></li>
-<li><p>Into a new variable, extract the first and fourth animal.</p></li>
-<li><p>Remove the third animal from your original animals vector (what does using a negative index do?).</p></li>
-<li><p>Create a vector that has three copies of this updated animals vector.</p></li>
-<li><p>Combine your animal and number vectors together into a new variable called “<em>coerced</em>”. Run <code>typeof</code> on this vector - how does it compare to the types of the original vector?</p></li>
+<li><p>Divide the entire vector by 2 and store the result into a
+variable called <em>div_2</em> - what is the result of the
+division?</p></li>
+<li><p>Calculate the minimum, maximum, mean, and standard deviation for
+the <em>div_2</em> vector. Can you round the results to 2 decimal
+places?</p></li>
+<li><p>Create and assign a vector of at least 4 animal names into
+<em>animals</em>.</p></li>
+<li><p>Can you find a way to tell you the number of characters per
+item?</p></li>
+<li><p>Into a new variable, extract the first and fourth
+animal.</p></li>
+<li><p>Remove the third animal from your original animals vector (what
+does using a negative index do?).</p></li>
+<li><p>Create a vector that has three copies of this updated animals
+vector.</p></li>
+<li><p>Combine your animal and number vectors together into a new
+variable called “<em>coerced</em>”. Run <code>typeof</code> on this
+vector - how does it compare to the types of the original
+vector?</p></li>
 </ol>
 </div>
 
