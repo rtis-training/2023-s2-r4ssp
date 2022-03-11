@@ -200,6 +200,7 @@ plot(puppy_donations_data$CollectorNumber, puppy_donations_data$Amount, type = '
 ```{r handout2_hist}
 hist(puppy_donations_data$Amount)
 ```
+
 #### Boxplots
 
 Remember that this data has a condition under which the data was collected - with and without a puppy. Boxplots provide a way to get an understanding of our data using categorical information.

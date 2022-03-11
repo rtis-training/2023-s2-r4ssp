@@ -1,5 +1,32 @@
 ---
-title: "R for Successful Student Projects - R Markdown"
-author: "Patricia Haden & Murray Cadzow"
-date: "Semester 1, 2021"
+title: "Handout 06 - Communicating Data"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 3
+    code_download: true
+    code_folding: show
 ---
+
+```{r setup, include=FALSE}
+library(knitr)
+
+knitr::opts_chunk$set(
+  comment = "#>",
+  fig.path = "figures/", # use only for single Rmd files
+  collapse = TRUE,
+  echo = TRUE
+)
+
+
+```
+
+
+Scripts
+
+Rmarkdown
+
+Bookdown
+
+Websites

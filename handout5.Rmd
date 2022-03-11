@@ -1,3 +1,40 @@
 ---
-title: "Handout 5"
+title: "Handout 05 - Summarising Data"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 3
+    code_download: true
+    code_folding: show
 ---
+
+```{r setup, include=FALSE}
+library(knitr)
+
+knitr::opts_chunk$set(
+  comment = "#>",
+  fig.path = "figures/", # use only for single Rmd files
+  collapse = TRUE,
+  echo = TRUE
+)
+
+
+```
+
+
+
+base R
+
+split
+aggregate
+
+
+Tidyverse
+
+- group by
+- count
+- tally
+- summarise
+- n
+
