@@ -60,11 +60,16 @@ In general we would recommend saving your data in the "comma separated values" (
 
 ### Downloading data
 
+In order to obtain the example data used in the rest of the handout you can download and save it using:
+
 ```{r, eval=FALSE}
-download.file(url = "https://raw.githubusercontent.com/rtis-training/2022-s1-r4ssp/main/data/r4ssp_donations_data.csv", destfile = "data/r4ssp_donations_data.csv")
+download.file(url = "https://raw.githubusercontent.com/rtis-training/2022-s1-r4ssp/main/data/r4ssp_donations_data.csv", 
+              destfile = "data/r4ssp_donations_data.csv")
 ```
 
+Please note this assumes you are using the project and structure created in the last handout. Importantly if this doesn't work for you check that the "data" folder exists and matches exactly.
 
+\
 
 ## Read data in from csv
 
@@ -91,9 +96,13 @@ Using code there are two main functions that are used for reading in csv data. `
 >
 > the `tidyverse` "metapackage" provides a convenient way to both install and load the core packages that form the tidyverse, but you may choose to load only the exact packages you wish to use.
 > 
-> ```{r, eval = FALSE}
+> ```{r eval = FALSE}
+> # only needs to be done once
 > install.packages("tidyverse")
-> 
+> ```
+>
+> ```{r}
+> # do each time you start an R session
 > library(tidyverse)
 > ```
 >
@@ -121,14 +130,25 @@ The package from the tidyverse the deals with reading in data is `readr`. If you
 
 ```{r, eval=FALSE}
 # common options for running read_csv
-read_csv(file = "my_file.csv", col_names = TRUE)
+my_data <- read_csv(file = "my_file.csv", col_names = TRUE)
 ```
 
 `read_csv` will display an output describing the data load process. This output can be an extremely useful first check if you data has loaded in how you wanted it to and is worth checking that columns are of the correct data type.
 
+
 ----
 
+\
+
 ## Previewing data
+
+First we'll load in the example dataset that is going to be used, we'll use `read_csv` from `readr` to do this.
+
+```{r}
+# Read a csv file into R. Store the result in a named variable
+puppy_donations_data <- read_csv("data/r4ssp_donations_data.csv")
+```
+
 
 Once your data is loaded, it's worth checking to make sure that everything is as you expect, as this is usually the largest source of errors once you get to analysis.
 
@@ -162,19 +182,35 @@ The largest source (anecdotal) of analysis errors is either numeric data coming 
 
 Sanity:
 
-`summary`
+It can also be a good idea to do a 'sanity' check on your data which can give a very quick summary of each of the columns to give you an idea if the data was read in properly, and give you an idea about the distributions and possible issues you might encounter.
 
-## Data visualisation {.tabset}
+This can be done with `summary`
+
+```{r}
+summary(puppy_donations_data)
+```
+
+
+\
+
+\
+
+## Data visualisation 
 
 There are two main methods for plotting data in R. The first is the in-built plotting functions within base R. The second is using a popular package called `ggplot2`.
 
 Here we'll introduce you to both systems to create some simple plots. In future modules we'll cover more about plotting.
+
+
+
 
 ### Base R 
 
 #### Scatter plots
 
 Scatter plots are a straight forward way to get a look at our data
+
+
 
 ```{r handout2_scatter}
 plot(puppy_donations_data$CollectorNumber, puppy_donations_data$Amount)
@@ -189,10 +225,16 @@ plot(puppy_donations_data$CollectorNumber, puppy_donations_data$Amount, col = "r
 
 #### Line plots
 
+
 ```{r handout2_lineplot}
 plot(puppy_donations_data$CollectorNumber, puppy_donations_data$Amount, type = 'l')
 ```
 
+You can also include the exact data points too
+
+```{r handout2_lineplot2}
+plot(puppy_donations_data$CollectorNumber, puppy_donations_data$Amount, type = 'b')
+```
 
 #### Histograms
 
@@ -201,7 +243,7 @@ plot(puppy_donations_data$CollectorNumber, puppy_donations_data$Amount, type = '
 hist(puppy_donations_data$Amount)
 ```
 
-#### Boxplots
+### Boxplots
 
 Remember that this data has a condition under which the data was collected - with and without a puppy. Boxplots provide a way to get an understanding of our data using categorical information.
 
@@ -216,22 +258,19 @@ The second argument to boxplot is the data frame.
 boxplot(Amount ~ Condition, puppy_donations_data)
 ```
 
-#### Customising
+\
 
-There are a multitude of customisations that can be done to plots such as titles, labels, colours, etc.
+\
 
-A fantastic resource for looking at how to customise your plots made using the Base R plotting system is the [R Graphics Cookbook](https://r-graphics.org).
+### Tidyverse - ggplot2
 
-
-### Tidyverse
-
-The ggplot2 package is a popular data visualisation package for R. In order to use it we need to first load it into R.
+The ggplot2 package is a popular data visualisation package for R. It was developed by Hadley Wickham to implement the 'grammar of graphics'. In order to use it we need to first load it into R.
 
 ```{r}
 library(ggplot2)
 ```
 
-Ggplot tackles plotting reducing it into three components
+ggplot tackles plotting reducing it into three components
 
 - what is the data
 - how the data is mapped to aesthetics (aes)
@@ -242,15 +281,181 @@ So to create a plot using ggplot we need to specify these three components.
 
 Plots can then be made incrementally by adding on additional layers.
 
-#### Creating a plot
+We'll now recreate the same plots as we did with the Base R plotting system.
+
+#### Scatter plots
+
+Here you'll see we've defined our data, we've mapped specific columns to our axes, and are using a 'point' as our geometric representation.
+
+```{r handout2_gg_point1}
+ggplot(data = puppy_donations_data, mapping = aes(x = CollectorNumber, y = Amount)) + 
+  geom_point()
+```
+
+We can also store our plots in a variable to build upon
 
 ```{r}
-ggplot(data = mtcars, aes(x = mpg, y = wt)) + geom_point()
+p <- ggplot(data = puppy_donations_data, mapping = aes(x = CollectorNumber, y = Amount))
+```
+
+What does `p` actually contain?
+```{r handout2_gg}
+p
 ```
 
 
-####
+```{r handout2_gg_point2}
+p + geom_point()
+```
 
+
+##### Specifiying colour
+
+Remember `p` contains our initial specification of the data and mappings
+
+```{r handout2_gg_point3}
+p + geom_point(colour = 'red')
+```
+
+##### Mapping colour from our data
+
+```{r handout2_gg_point4}
+p + geom_point(aes(colour = Condition))
+```
+Notice that we didn't specify the colour for our points, instead we have told ggplot to use colours based on the values that were found in the "Condition" column using `aes`.
+
+\
+
+#### Line plots
+
+In this case, we have the same data and mapping, but we want to have the data represented by a line so we choose `geom_line` as our "geom".
+
+```{r handout2_gg_line1}
+p + geom_line()
+```
+
+
+
+
+##### Adding layers
+
+```{r handout2_gg_line2}
+p + 
+  geom_line() + 
+  geom_point()
+```
+
+
+
+```{r handout2_gg_line3}
+p + 
+  geom_line(colour = 'gold') + 
+  geom_point(colour = 'tomato')
+```
+
+##### Using mappings
+
+If you would like to plot individual lines based on a categorical variable you can used a 'group' mapping:
+
+```{r handout2_gg_line4}
+p + 
+  geom_line(aes(group = Condition))
+```
+
+
+We can specify separate aesthestics for each layer
+
+```{r handout2_gg_line5}
+p + 
+  geom_line(aes(colour = Condition)) + 
+  geom_point(aes(colour = Condition))
+```
+
+Note that colour will automatically imply a _group_.
+
+or if it is common to all layers, we can specify them in the initial setting up:
+
+```{r handout2_gg_line6}
+ggplot(data = puppy_donations_data, 
+       mapping = aes(x = CollectorNumber, 
+                     y = Amount, 
+                     colour = Condition)) + 
+  geom_line() + 
+  geom_point()
+```
+
+\
+
+#### Histogram
+
+A histogram is created from a single continuous variable.
+
+```{r handout2_gg_hist}
+ggplot(data = puppy_donations_data, aes(x = Amount)) + 
+  geom_histogram()
+```
+
+\
+
+#### Boxplot
+
+In ggplot, to create a boxplot, we need to specify a continuous variable, and a categorical variable.
+
+```{r handout2_gg_box1}
+ggplot(data = puppy_donations_data, aes(x = Condition, y = Amount)) + 
+  geom_boxplot()
+```
+
+Or you could make it horizontal by switching the the x/y arguments.
+
+```{r handout2_gg_box2}
+ggplot(data = puppy_donations_data, aes(x = Amount, y = Condition)) + 
+  geom_boxplot()
+```
+
+\
+
+### Customising
+
+There are a multitude of customisations that can be done to plots such as titles, labels, colours, etc.
+
+A fantastic resource for looking at how to customise your plots made using the Base R plotting system is the [R Graphics Cookbook](https://r-graphics.org).
+
+#### Themes
+
+For ggplot, the plots are made up of _elements_ and can be customised using `theme()` or by picking one of the pre-defined themes - e.g. `theme_bw()` provides a black/white theme.
+
+The main elements are
+
+- `element_text` for text
+- `element_rect` for rectangular areas
+- `element_line` for lines
+- `element_blank` to remove/hide elements
+
+```{r handout2_gg_theme1}
+ggplot(data = puppy_donations_data, aes(x = Condition, y = Amount)) + 
+  geom_boxplot() + 
+  theme(axis.title = element_text(size = 16), 
+        panel.grid = element_blank(), 
+        panel.background = element_rect(colour = "blue", fill = "light green"))
+
+```
+
+
+
+```{r handout2_gg_theme2}
+ggplot(data = puppy_donations_data, aes(x = Condition, y = Amount)) + 
+  geom_boxplot() + 
+  theme_bw()
+```
+
+
+
+There is also a fantastic cheat sheet available in RStudio under `Help` -> `Cheat Sheats` -> `Data Visualization with ggplot2`
+
+\
+
+\
 
 ## Excercises
 
@@ -258,3 +463,7 @@ ggplot(data = mtcars, aes(x = mpg, y = wt)) + geom_point()
 1. Using the Base R scatter plot of the puppies data, customise the label, title, and colour. `help("plot")` may offer some assistance.
 
 2. Modify the Base R histogram to be a different colour.
+
+3. Using the ggplot scatter plot: customise the label, title, and colour
+
+4. Using a ggplot of your choice, choose a predefined theme and then modify it

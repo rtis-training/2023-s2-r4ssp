@@ -40,7 +40,7 @@ Associated Readings:
 
 
 
-# Tabular Data
+## Tabular Data
 
 In this module we begin to work with complete tables of data, and learn how to make informative graphs. 
 We begin by getting our scientific research data into RStudio. Commonly, we first enter our data into Excel for cleaning and organising, and save it out as a csv (comma separated values) file. We then import the file into R for data analysis.   We will provide the csv file to be used with this document.
@@ -67,12 +67,22 @@ Document organisation is vitally important. We suggest that you keep a separate 
 
 5. Create a new folder (name it something sensible) and place the script file in it.
 
-6. Retrieve the sample csv data file used in this module from the course Google Drive shared folder ^[https://drive.google.com/drive/folders/1ttf1s8-vkJNOlHdphfi2zFyMq6gGEvCy?usp=sharing]. Place the csv file into the folder with your script file.
+6. Retrieve the sample csv data file used in this module from the course github repository ^[https://raw.githubusercontent.com/rtis-training/2022-s1-r4ssp/main/data/r4ssp_donations_data.csv]. Place the csv file into your data folder.
+
+> Or you can download the file directly using R:
+>
+> ```{r, eval=FALSE}
+> download.file(url = "https://raw.githubusercontent.com/rtis-training/2022-s1-r4ssp/main/data/r4ssp_donations_data.csv", 
+>              destfile = "data/r4ssp_donations_data.csv")
+> ```
+>
+> Please note this assumes you are using the project and structure created in the last handout. Importantly if this doesn't work for you check that the "data" folder exists and matches exactly.
 
 7. Open the folder and double-click **on your script file** to open it in RStudio.
 
 If you set things up this way, RStudio will be able to find your data file for the next step -- importing data.
 
+\
 
 ## Importing a data file
 
@@ -98,6 +108,8 @@ However, we are not quite ready to run this command. The function `read_csv` is 
 `read_csv("r4ssp_donations_data.csv")`
 
 Note that you only have to execute `library` once each time you open RStudio. After loading a library, it is available for the remainder of your R session (i.e. until you quit RStudio) and you can call its functions as normal.
+
+\
 
 ## Import and check your data
 
@@ -142,6 +154,7 @@ puppy_donations_data
 
 ```
 
+\
 
 ## Perform descriptive analyses on columns
 
@@ -220,31 +233,226 @@ The `boxplot` function actually has many optional arguments for things like addi
 boxplot(formula = Amount ~ Condition, data = puppy_donations_data)
 ```
 
-## GGplot2
+### Tidyverse - ggplot2
+
+
+There is a fantastic introduction to Data Visualisation using ggplot in "R for Data Science" (https://r4ds.had.co.nz/data-visualisation.html). It's highly recommended to have a read through this chapter as we'll only touch on a very brief introduction of this framework in this module.
+
+The ggplot2 package is a popular data visualisation package for R. It was developed by Hadley Wickham to implement the 'grammar of graphics'. In order to use it we need to first load it into R.
+
+
 
 ```{r}
 library(ggplot2)
 ```
 
+ggplot tackles plotting reducing it into three components
+
+- what is the data
+- how the data is mapped to aesthetics (aes)
+- how the data is represented geometrically (geom)
+
+So to create a plot using ggplot we need to specify these three components.
 
 
-# Conclusion
+Plots can then be made incrementally by adding on additional layers.
+
+We'll now recreate the same plots as we did with the Base R plotting system.
+
+#### Scatter plots
+
+Here you'll see we've defined our data, we've mapped specific columns to our axes, and are using a 'point' as our geometric representation.
+
+```{r 02-gg_point1}
+ggplot(data = puppy_donations_data, mapping = aes(x = CollectorNumber, y = Amount)) + 
+  geom_point()
+```
+
+We can also store our plots in a variable to build upon
+
+```{r}
+p <- ggplot(data = puppy_donations_data, mapping = aes(x = CollectorNumber, y = Amount))
+```
+
+What does `p` actually contain?
+```{r 02-gg}
+p
+```
+
+
+```{r 02-gg_point2}
+p + geom_point()
+```
+
+
+##### Specifiying colour
+
+Remember `p` contains our initial specification of the data and mappings
+
+```{r 02-gg_point3}
+p + geom_point(colour = 'red')
+```
+
+##### Mapping colour from our data
+
+```{r 02-gg_point4}
+p + geom_point(aes(colour = Condition))
+```
+Notice that we didn't specify the colour for our points, instead we have told ggplot to use colours based on the values that were found in the "Condition" column using `aes`.
+
+\
+
+#### Line plots
+
+In this case, we have the same data and mapping, but we want to have the data represented by a line so we choose `geom_line` as our "geom".
+
+```{r 02-gg_line1}
+p + geom_line()
+```
+
+
+
+
+##### Adding layers
+
+```{r 02-gg_line2}
+p + 
+  geom_line() + 
+  geom_point()
+```
+
+
+
+```{r 02-gg_line3}
+p + 
+  geom_line(colour = 'gold') + 
+  geom_point(colour = 'tomato')
+```
+
+##### Using mappings
+
+If you would like to plot individual lines based on a categorical variable you can used a 'group' mapping:
+
+```{r 02-gg_line4}
+p + 
+  geom_line(aes(group = Condition))
+```
+
+
+We can specify separate aesthestics for each layer
+
+```{r 02-gg_line5}
+p + 
+  geom_line(aes(colour = Condition)) + 
+  geom_point(aes(colour = Condition))
+```
+
+Note that colour will automatically imply a _group_.
+
+or if it is common to all layers, we can specify them in the initial setting up:
+
+```{r 02-gg_line6}
+ggplot(data = puppy_donations_data, 
+       mapping = aes(x = CollectorNumber, 
+                     y = Amount, 
+                     colour = Condition)) + 
+  geom_line() + 
+  geom_point()
+```
+
+\
+
+#### Histogram
+
+A histogram is created from a single continuous variable.
+
+```{r 02-gg_hist}
+ggplot(data = puppy_donations_data, aes(x = Amount)) + 
+  geom_histogram()
+```
+
+\
+
+#### Boxplot
+
+In ggplot, to create a boxplot, we need to specify a continuous variable, and a categorical variable.
+
+```{r 02-gg_box1}
+ggplot(data = puppy_donations_data, aes(x = Condition, y = Amount)) + 
+  geom_boxplot()
+```
+
+Or you could make it horizontal by switching the the x/y arguments.
+
+```{r 02-gg_box2}
+ggplot(data = puppy_donations_data, aes(x = Amount, y = Condition)) + 
+  geom_boxplot()
+```
+
+\
+
+### Customising
+
+There are a multitude of customisations that can be done to plots such as titles, labels, colours, etc.
+
+A fantastic resource for looking at how to customise your plots made using the Base R plotting system is the [R Graphics Cookbook](https://r-graphics.org).
+
+#### Themes
+
+For ggplot, the plots are made up of _elements_ and can be customised using `theme()` or by picking one of the pre-defined themes - e.g. `theme_bw()` provides a black/white theme.
+
+The main elements are
+
+- `element_text` for text
+- `element_rect` for rectangular areas
+- `element_line` for lines
+- `element_blank` to remove/hide elements
+
+```{r 02-gg_theme1}
+ggplot(data = puppy_donations_data, aes(x = Condition, y = Amount)) + 
+  geom_boxplot() + 
+  theme(axis.title = element_text(size = 16), 
+        panel.grid = element_blank(), 
+        panel.background = element_rect(colour = "blue", fill = "light green"))
+
+```
+
+
+
+```{r 02-gg_theme2}
+ggplot(data = puppy_donations_data, aes(x = Condition, y = Amount)) + 
+  geom_boxplot() + 
+  theme_bw()
+```
+
+
+
+There is also a fantastic cheat sheet available in RStudio under `Help` -> `Cheat Sheats` -> `Data Visualization with ggplot2`
+
+\
+
+\
+
+## Conclusion
 
 This document has presented a simple introduction to working with complete tables of data in R. We learned how to import a csv file into a data frame, how to select columns and rows of interest from the data frame, and how to perform simple, yet illustrative summaries on them. We have covered only a tiny fraction of the data analyses you can perform with R and RStudio. You can also do very complex statistics like ANOVA, regression, factor analysis, and complex modelling. The specific statistical analyses you will need to do for your in-course assignments will depend on the papers you are taking, but you can be confident that whatever your lecturers require can almost certainly by done efficiently in R. As we proceed through the semester, if you wish to discuss a particular data analysis, processing, or presentation task, please let us know.
 
 
-## What's Next
+### What's Next
 
 Fill in the module feedback form [https://tinyurl.com/r4ssp-module-fb](https://tinyurl.com/r4ssp-module-fb).
 
 Ensure you have the `tidyverse` package installed. Refer to Appendix 2, or [https://r4ds.had.co.nz/introduction.html](https://r4ds.had.co.nz/introduction.html) for how to do this.
  
-Next, move onto Section 3 - Data Visualisation in the online text "R for Data Science" (https://r4ds.had.co.nz/data-visualisation.html). This material covers **ggplot**, the industry-standard graphics package for R. Be prepared: The ggplot syntax is probably different from anything you have used before, and it can take a little getting used to. But be patient, because with ggplot you can produce publication-quality plots and figures that will definitely enhance your own research project reports. As always, if you run into trouble, let us know.
 
 
-# Appendix
+\
 
-## Manual Data Entry in R
+\
+
+## Appendix
+
+### Manual Data Entry in R
 
 For extremely small data sets, you can manually enter tabular data into R. You create a vector for each data column using the combine function `c`, and then collect those vectors into a data frame:
 
@@ -261,7 +469,7 @@ geography_df
 ```
 
 
-## Installing Packages
+### Installing Packages
 
 When R is installed, it comes with a large set of commands, data structure, and functions which are together known as **base R**. Over the years, researchers and programmer have written thousands of additional functions and modules (called **libraries**) that you can use in your own R code. This **third-party code** is checked by moderators and, if it passes inspection, loaded onto an official R server in a file structure called a **package**. To use packages, you must first download them to your computer. They are placed in the same folders where base R was originally installed. 
 
