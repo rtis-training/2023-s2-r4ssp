@@ -217,11 +217,21 @@ boxplot(Amount ~ Condition, puppy_donations_data)
 Boxplots efficiently illustrate both the central tendency and the variability of a data set. Each grey box extends from the first quartile to the third quartile of its input values. The dark line across the box is at the median. The two thin lines outside the qrey box show the values of the minimum and maximum scores, excluding extreme outliers. If extreme outliers are present, they are shown as small circles. This boxplot clearly shows that, in our sample, people tended to donate more when the collector had a puppy.
 
 
-### Tidyverse - ggplot2
+### Plotting with ggplot2
 
-There is a fantastic introduction to Data Visualisation using ggplot in "R for Data Science" (https://r4ds.had.co.nz/data-visualisation.html). It's highly recommended to have a read through this chapter as we'll only touch on a very brief introduction of this framework in this module.
+The ggplot2 package is a popular data visualisation package for R. It was developed by Dr. Hadley Wickham and based on a complex symbolic system called the 'Grammar of Graphics'. It contains the library **ggplot**, with which we can make a wide variety of sophisticated, publication-quality plots and figures.
 
-The ggplot2 package is a popular data visualisation package for R. It was developed by Hadley Wickham to implement the 'grammar of graphics'. In order to use it we need to first load it into R.
+The syntax of ggplot is complex, and we will concentrate on the foundations in this module. For a more detailed treatment, see the Data Visualisation chapter in the R for Data Science online text, at  https://r4ds.had.co.nz/data-visualisation.html.
+
+
+
+# !!! STOPPED HERE
+
+
+
+
+
+In order to use it we need to first load it into R.
 
 
 
@@ -242,19 +252,21 @@ Plots can then be made incrementally by adding on additional layers.
 
 We'll now recreate the same plots as we did with the Base R plotting system.
 
+# PH Not appropriate for this type of data set
+
 #### Scatter plots
 
 Here you'll see we've defined our data, we've mapped specific columns to our axes, and are using a 'point' as our geometric representation.
 
 ```{r 02-gg_point1}
-ggplot(data = puppy_donations_data, mapping = aes(x = CollectorNumber, y = Amount)) + 
+ggplot(data = puppy_donations_data, mapping = aes(x = CollectorID, y = Amount)) + 
   geom_point()
 ```
 
 We can also store our plots in a variable to build upon
 
 ```{r}
-p <- ggplot(data = puppy_donations_data, mapping = aes(x = CollectorNumber, y = Amount))
+p <- ggplot(data = puppy_donations_data, mapping = aes(x = CollectorID, y = Amount))
 ```
 
 What does `p` actually contain?
@@ -407,8 +419,6 @@ ggplot(data = puppy_donations_data, aes(x = Condition, y = Amount)) +
   geom_boxplot() + 
   theme_bw()
 ```
-
-
 
 There is also a fantastic cheat sheet available in RStudio under `Help` -> `Cheat Sheats` -> `Data Visualization with ggplot2`
 
