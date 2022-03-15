@@ -23,7 +23,7 @@ knitr::opts_chunk$set(
 
 > #### Data Focus
 >
-> Modules and Handouts 2--6 cover topics that are part of the data analysis journey and are all interrelated to one another. The way that it has been separated is to introduce main topic but then each subsequent topic will add in additional content for previous topics. E.g. we start with data visualisation to introduce the basics of the plotting systems but then each other handout will include extra options and customisations.
+> Modules and Handouts 2--6 cover topics that are part of the data analysis journey and are all interrelated. Each module will introduce new content and expand on the material covered in previous modules. For example, in Module 2 we introduce the basics of the R plotting systems. Subsequent handouts include more advanced plotting options and techniques.
 
 \
 
@@ -43,13 +43,14 @@ Associated Readings:
 ## Tabular Data
 
 In this module we begin to work with complete tables of data, and learn how to make informative graphs. 
-We begin by getting our scientific research data into RStudio. Commonly, we first enter our data into Excel for cleaning and organising, and save it out as a csv (comma separated values) file. We then import the file into R for data analysis.   We will provide the csv file to be used with this document.
 
-Note that in this document we are using Base R (the R functions that are automatically available in RStudio). These Base R functions are simple to work with, and are a good way to get familiar with R. In later modules, we will meet some more sophisticated R tools which, while more complicated, can also be more efficient.
+We will start by getting our scientific research data into RStudio. Commonly, we first enter our data into Excel for cleaning and organising, and save it out as a csv (comma separated values) file. We then import the file into R for data analysis. We will provide the csv file to be used with this module.
 
-Work carefully through each of the sections below, confirming that all your outputs match ours. When you feel completely comfortable with the content, move on to R for Data Science: Data Visualisation (https://r4ds.had.co.nz/data-visualisation.html) which covers advanced plotting with the ggplot library.
+Note that in this document we are primarily using Base R (the R functions that are automatically available in RStudio). These Base R functions are simple to work with, and are a good way to get familiar with R. In later modules, we will meet some more sophisticated R tools which, while more complicated, can also be more efficient.
 
-When you have completed this module, you should be ready to produce the graphs and figures you will need for your in-course research projects. If you run into any problems or have any questions, email us, and/or come to the drop-in session Monday 10.00 to 12.00 in the Science Library Seminar Room.
+Work carefully through each of the sections below, confirming that all your outputs match ours. When you feel completely comfortable with the content, we recommend moving on to Section 3 - Data Visualisation in the  R for Data Science online text (https://r4ds.had.co.nz/data-visualisation.html), which covers advanced plotting with the ggplot library in detail.
+
+When you have completed this module, you should be ready to produce the graphs and figures you will need for your in-course research projects. If you run into any problems or have any questions, email us, or drop us a message in the R4SSP class team on MS Teams.
 
 
 ## Preparation - Do this very carefully
@@ -59,7 +60,7 @@ Document organisation is vitally important. We suggest that you keep a separate 
 
 1. Launch R Studio
 
-2. Following the procedure from **Using a Script File** in Module 2 - Get Started with R, create a script file and save it to your desktop or other location where you will be able to find it.
+2. Following the procedure from **Using a Script File** in Module 1 - Intro to R and RStudio, create a script file and save it to your desktop or other location where you will be able to find it.
 
 3. Quit R Studio
 
@@ -67,16 +68,7 @@ Document organisation is vitally important. We suggest that you keep a separate 
 
 5. Create a new folder (name it something sensible) and place the script file in it.
 
-6. Retrieve the sample csv data file used in this module from the course github repository ^[https://raw.githubusercontent.com/rtis-training/2022-s1-r4ssp/main/data/r4ssp_donations_data.csv]. Place the csv file into your data folder.
-
-> Or you can download the file directly using R:
->
-> ```{r, eval=FALSE}
-> download.file(url = "https://raw.githubusercontent.com/rtis-training/2022-s1-r4ssp/main/data/r4ssp_donations_data.csv", 
->              destfile = "data/r4ssp_donations_data.csv")
-> ```
->
-> Please note this assumes you are using the project and structure created in the last handout. Importantly if this doesn't work for you check that the "data" folder exists and matches exactly.
+6. Retrieve the sample csv data file used in this module from the course Google Drive shared folder ^[https://drive.google.com/drive/folders/1ttf1s8-vkJNOlHdphfi2zFyMq6gGEvCy?usp=sharing]. Place the csv file into the folder with your script file.
 
 7. Open the folder and double-click **on your script file** to open it in RStudio.
 
@@ -96,7 +88,7 @@ include_graphics("images/02-donations_puppy.png")
 
 We will import this file into R for some preliminary data analysis.
 
-To import a csv file into R we can use the function `read_csv`. Like the R functions we used in Module 2, `read_csv` accepts an argument between its round brackets. The argument is the name of the input file. Because the name of the file is a string, we surround it with double quotes. We will therefore say:
+To import a csv file into R we can use the function `read_csv`. Like the R functions we used in Module 1, `read_csv` accepts an argument between its round brackets. The argument is the name of the input file. Because the name of the file is a string, we surround it with double quotes. We will therefore say:
 
 `read_csv("r4ssp_donations_data.csv")`
 
@@ -126,15 +118,15 @@ When imported into R, the data from the csv file are stored in an R object calle
 
 When you call `read_csv`, passing in a file name, R reads in the file, converts it to a tibble, and displays it in the console. The columns have the same names as in the csv file. We will see later that we can use the column names to explore specific properties of our data set.
 
-R also gives you some information about how it understands the contents of the file it has imported. In the console you will see the words **Parsed with column specification:** followed by a list of the imported columns. 
+R also gives you some information about how it understands the contents of the file it has imported. In the console you will see the number of rows and columns in the imported data. You will also see the words **Column specification** followed by a list of the imported columns. 
 
-Each column header is associated with a value **col_double()**, or **col_character()**. These indicate what kind of data R identified in the input file. Columns that are **col_double** are numbers; columns that are **col_character** are strings. The same information is shown where RStudio prints the imported data. Beneath each column header you will see **dbl** for numbers and **chr** for strings. 
+Each column header is associated with a value **dbl**, or **chr**. These indicate what kind of data R identified in the input file. Columns that are **dbl** are numbers; columns that are **chr** are strings. The same information is shown when RStudio prints the imported data. Beneath each column header you will see **dbl** for numbers and **chr** for strings. 
 
 This is a good moment to pause and check that your data have been imported correctly. Data entry errors can cause R to make the wrong assumptions about your data. If you have a column of numbers that contains even one accidental alphabetic character (typos do happen) R will consider the whole column to be strings. Later, R will give the wrong results when you perform statistical analyses on these data (or it will refuse to perform them at all).   
 
 You will often also see files imported with the function `read.csv` (note the . instead of the _ ). This is the base R function for importing files. To use `read.csv` you don't need to load a library first, but R doesn't generate any information about how it has parsed the data in the columns. You can use the function `str` to get this information. Google for details.
 
-With both `read_csv` and `read.csv` R will import the file and display its contents in the console, but this is not quite enough. We want R to store the data in a named variable so that we can refer to it later (i.e., do analyses on it). We do that with the assignment operator, as we did in our previous module. For example, we can say:
+With both `read_csv` and `read.csv` R will import the file and display its contents in the console, but this is not quite enough. We want R to store the data in a named variable so that we can refer to it later (i.e., perform analyses on it). We do that with the assignment operator, as we did in our previous module. For example, we can say:
 
 `puppy_donations_data <- read_csv("r4ssp_donations_data.csv")`
 
@@ -178,23 +170,12 @@ amount_only <- puppy_donations_data$Amount
 amount_only
 ```
 
-
 We can now apply R's many, many statistical functions to our variable.
-
-
-### Simple plots - the histogram
-
-First, let's plot a histogram of the amounts collected, (ignoring the Puppy/Alone condition), to get a quick sense of how much people are donating. We generate this graph with function `hist`. The graph will be displayed in the Plots tab of RStudio's lower-right pane.
-
-```{r 02-hist}
-hist(amount_only)
-```
-Our data appear to be bimodal (i.e. they have two peaks). This pattern can indicate the presence of distinct groups in a data set, an informative result in this study. 
-
 
 ### Simple numeric descriptive statistics
 
-We can also generate some useful numeric summaries:
+We can compute some useful descriptive statistics using Base R built-in functions:
+
 ```{r someStats}
 # Compute the mathematical mean with function mean()
 mean(amount_only)
@@ -206,12 +187,20 @@ sd(amount_only)
 summary(amount_only)
 ```
 
-There are, literally, hundreds of interesting functions in R for performing summary analyses. Sadly, we do not have time to cover them all, but we encourage you to explore R textbooks and online resources to learn more about them.
+There are a variety of complex analyses that we could perform on these data using R's built-in functions, and those available additional packages and libraries. For this module, we concentrate on how we can explore our data visually with graphs.
 
+### Simple plots - the histogram
+
+A histogram shows the **frequency distribution** of a data set. That is, it shows counts of the  different values of the dependent variable. We can plot a histogram of the amounts collected, (ignoring the Puppy/Alone condition for now), to get a quick sense of how much people are donating. We generate this graph with function `hist`. The graph will be displayed in the Plots tab of RStudio's lower-right pane.
+
+```{r 02-hist}
+hist(amount_only)
+```
+Our data appear to be bimodal (i.e. they have two peaks). This pattern can indicate the presence of distinct groups in a data set, an informative result in this study. 
 
 
 ### Boxplots
-We can see that the mean amount is higher for collectors who had puppies than for those who did not ($197.79 vs. $102.30). We can illustrate this difference graphically using a boxplot. 
+In a later module, we will learn some efficient ways to extract group means from complex data sets. For this module, assume that we computed the average amount collected for the Puppy and Alone groups separately. We would see that the mean amount is higher for collectors who had puppies than for those who did not ($197.79 vs. $102.30). We can see  this difference clearly using a boxplot. 
 
 The R function `boxplot` accepts two arguments. 
 
