@@ -214,16 +214,10 @@ boxplot(Amount ~ Condition, puppy_donations_data)
 ```
 
 
-Boxplots efficiently illustrate both the central tendency and the variability of a data set. Each grey box extends from the first quartile to the third quartile of its input values. The dark line across the box is at the median. The two thin lines outside the qrey box show the values of the minimum and maximum scores, excluding extreme outliers. If extreme outliers are present, they are shown as asterisks.
+Boxplots efficiently illustrate both the central tendency and the variability of a data set. Each grey box extends from the first quartile to the third quartile of its input values. The dark line across the box is at the median. The two thin lines outside the qrey box show the values of the minimum and maximum scores, excluding extreme outliers. If extreme outliers are present, they are shown as small circles. This boxplot clearly shows that, in our sample, people tended to donate more when the collector had a puppy.
 
-The `boxplot` function actually has many optional arguments for things like adding legends and formatting plot axes, and calls to this function can get quite elaborate. Because of this, it is common to see the function called with its arguments named (as with stringsAsFactors, above). For example:
-
-```{r 02-boxplot02}
-boxplot(formula = Amount ~ Condition, data = puppy_donations_data)
-```
 
 ### Tidyverse - ggplot2
-
 
 There is a fantastic introduction to Data Visualisation using ggplot in "R for Data Science" (https://r4ds.had.co.nz/data-visualisation.html). It's highly recommended to have a read through this chapter as we'll only touch on a very brief introduction of this framework in this module.
 
