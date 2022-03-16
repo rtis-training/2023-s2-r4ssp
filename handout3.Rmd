@@ -25,8 +25,37 @@ knitr::opts_chunk$set(
 
 ## Vector subsetting
 
-In the first week we touched on vectors and using the `[]` to extract items out based on an index. We're now going to expand on this idea but for our dataframes.
+In the [first week](handout1.html) we touched on vectors and using the `[]` to extract items out based on an index. We're now going to expand on this idea but for our dataframes.
 
+Often it's fairly laborious to work out exactly which index corresponds to the data you're interested in. Usually we're more interested in data that meets certain _conditions_. Instead of sub-setting by indices, we can do conditional sub-setting.
+
+
+Lets create an example vector to work use
+```{r}
+nums <- c(1, 2, 3, 4, 5, 6)
+
+nums
+```
+
+Similar to sub-setting by index, we can provide a vector of booleans (`TRUE`/`FALSE`) to `[]` to specify which elements to keep.
+
+```{r}
+nums[c(TRUE, FALSE, TRUE, FALSE, TRUE, FALSE)]
+```
+
+
+
+We can apply mathematical operators and our comparative operators to entire vectors. When using a comparator we get back a vector of equal length of booleans.
+
+```{r}
+nums < 4
+```
+
+We can use this vector to filter our vectors to keep only the values that returned `TRUE`.
+
+```{r}
+nums[nums < 4]
+```
 
 
 ## Dataframe subsetting {.tabset}
@@ -38,6 +67,8 @@ In the first week we touched on vectors and using the `[]` to extract items out 
   - names
   - index
   - conditional
+
+
 
 
 ### dplyr
