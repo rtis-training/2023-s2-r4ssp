@@ -136,88 +136,68 @@ You can see the same information about the structure of a data frame in the Envi
 include_graphics("images/df_in_env_pane.PNG")
 ```
 
-
 \
 
 
-## Inspecting columns of data
-You will note that function `str` prefaces each column name with `$`. We use the `$` to select individual columns of data from a data frame. For example, to select just the life expectancy values from our data, we say `gapminder_data$lifeExp`. (Be sure to type the column name exactly as it appears)
+## Selecting and using columns of data
+
+In both of the above displays, each column name is prefaced with `$`. We can use the `$` operator to select individual columns of data from a data frame. For example, to select just the life expectancy values from our data, we say `gapminder_data$lifeExp`. (Be sure to type the column name exactly as it appears in the output of `str` and in the Environment pane.) We can use this directly as the argument to a function, or we can store the selected column in a variable (which will be a vector) for later processing. 
+
+For example:
+
+``` {r single column examples}
+
+# Print the first few values of column year
+head(gapminder_data$year)
 
 
-## Perform descriptive analyses on columns
+# Store column continent in a new variable
+continents <- gapminder$continent
 
-It is always informative to begin data analysis by inspecting your dependent variable (in this case, amount of money collected). Work through each of the following steps, adding the code to your script file (and remember to **Save Often**).
+# Pass the variable to function levels which returns the values
+# of a categorical variable
+levels(continents)
 
-To select a single column from a data frame, we apply the **$** operator to the data frame, and specify the column name. The output is a **vector** containing the values in the named column.
-
-```{r selectColumn}
-
-# Select a single column with $ and the column name
-puppy_donations_data$Amount
 ```
 
-To simplify our later typing, we can use the assignment operator to save the output into a named variable.
+## Creating graphs in R
 
-```{r saveColumn}
-# Save a single column into a variable
-amount_only <- puppy_donations_data$Amount
+There are a variety of complex analyses that we can perform on a data frame using R's built-in statistical functions and those available in additional packages and libraries. We will explore many of these techniques in later modules. However, an effective first step in getting to know a data set is to generate plots and graphs to represent visually the patterns in the data.
 
-# Display the variable
-amount_only
-```
-
-We can now apply R's many, many statistical functions to our variable.
-
-### Simple numeric descriptive statistics
-
-We can compute some useful descriptive statistics using Base R built-in functions:
-
-```{r someStats}
-# Compute the mathematical mean with function mean()
-mean(amount_only)
-
-# Compute the standard deviation with function sd()
-sd(amount_only)
-
-# Get a selection of distribution descriptors with function summary()
-summary(amount_only)
-```
-
-There are a variety of complex analyses that we could perform on these data using R's built-in functions, and those available additional packages and libraries. For this module, we concentrate on how we can explore our data visually with graphs.
 
 ### Simple plots - the histogram
 
-A histogram shows the **frequency distribution** of a data set. That is, it shows counts of the  different values of the dependent variable. We can plot a histogram of the amounts collected, (ignoring the Puppy/Alone condition for now), to get a quick sense of how much people are donating. We generate this graph with function `hist`. The graph will be displayed in the Plots tab of RStudio's lower-right pane.
+A histogram shows the **frequency distribution** of a data set. That is, it shows counts of the  different values of the dependent variable (or ranges of values, for continuous variables). We generate this graph with function `hist`. The graph will be displayed in the Plots tab of RStudio's lower-right pane.
 
 ```{r 02-hist}
-hist(amount_only)
+# Histogram of life expectancy values from gapminder
+hist(gapminder_data$lifeExp)
 ```
-Our data appear to be bimodal (i.e. they have two peaks). This pattern can indicate the presence of distinct groups in a data set, an informative result in this study. 
+
+We see that life expectancy is approximately bell-shaped, with many scores between 65 and 85, with a small number of extreme values greater than 80 or less than 30. 
 
 
 ### Boxplots
-In a later module, we will learn some efficient ways to extract group means from complex data sets. For this module, assume that we computed the average amount collected for the Puppy and Alone groups separately. We would see that the mean amount is higher for collectors who had puppies than for those who did not ($197.79 vs. $102.30). We can see  this difference clearly using a boxplot. 
+The boxplot allows us to compare distribution information between groups. For example, we can compare life expectancy for the different continents. 
 
 The R function `boxplot` accepts two arguments. 
 
-The first argument is the **formula**. This is a complex, yet very common, argument format for R statistical functions. The formula describes a linear model for a data set with the general structure: **dependent or predicted variable ~ independent variables or predictors**, using columns names from the data frame. The ~ (tilde) is read as "depends on" or "is predicted by". For our example, we are interested in the way that Amount is dependent on the Puppy/Alone condition, so we specify our formula as **Amount ~ Condition**.  We will see more complex examples of the formula argument later in the semester.
-
+The first argument is the **formula**. This is a complex, yet very common, argument format for R statistical functions. The formula describes a linear model for a data set with the general structure: **dependent or predicted variable ~ independent variables or predictors**, using columns names from the data frame. The ~ (tilde) is read as "depends on" or "is predicted by". For our example, we are interested in the way that life expectancy is dependent on the continent, so we specify our formula as **lifeExp ~ continent**.  We will see more complex examples of the formula argument later in the semester.
 
 The second argument to boxplot is the data frame.
 
 ```{r 02-boxplot01}
-boxplot(Amount ~ Condition, puppy_donations_data)
+boxplot(lifeExp ~ continent, gapminder_data)
 ```
 
-
-Boxplots efficiently illustrate both the central tendency and the variability of a data set. Each grey box extends from the first quartile to the third quartile of its input values. The dark line across the box is at the median. The two thin lines outside the qrey box show the values of the minimum and maximum scores, excluding extreme outliers. If extreme outliers are present, they are shown as small circles. This boxplot clearly shows that, in our sample, people tended to donate more when the collector had a puppy.
+Boxplots efficiently illustrate both the central tendency and the variability of a data set. Each grey box extends from the first quartile to the third quartile of its input values. The dark line across the box is at the median. The two thin lines outside the qrey box show the values of the minimum and maximum scores, excluding extreme outliers. If extreme outliers are present, they are shown as small circles. This figure clearly illustrates that, in the gapminder data, life expectancy -- both central tendency and variablity -- is not the same for all continents.
 
 
 ### Plotting with ggplot2
 
-The ggplot2 package is a popular data visualisation package for R. It was developed by Dr. Hadley Wickham and based on a complex symbolic system called the 'Grammar of Graphics'. It contains the library **ggplot**, with which we can make a wide variety of sophisticated, publication-quality plots and figures.
+The `hist` and `boxplot` functions are part of Base R. They are useful, but for more elaborate, publication-quality graphs, we can use the third-party library **ggplot** contained in package **ggplot2**. ggplot is a very popular data visualisation package based on a very elaborate symbolic system called the 'Grammar of Graphics'. 
 
-The syntax of ggplot is complex, and we will concentrate on the foundations in this module. For a more detailed treatment, see the Data Visualisation chapter in the R for Data Science online text, at  https://r4ds.had.co.nz/data-visualisation.html.
+The syntax of ggplot is complex, and we will concentrate on the foundations in this module. For additional detail, see the Data Visualisation chapter in the R for Data Science online text, at  https://r4ds.had.co.nz/data-visualisation.html.
 
 
 
