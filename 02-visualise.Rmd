@@ -255,6 +255,24 @@ ggplot(data = gapminder_data, mapping = aes(x = gdpPercap, y = lifeExp )) +
 ```
 This figure This type of graph (usually called a **scatterplot**) illustrates the relationship between two dependent variables. Even from this very simple figure we can see that there is a *general tendency* for higher per capita GDP to be associated with higher life expectancy.
 
+Like most functions, `geom_point` can accept arguments that modify its behaviour. The argument **colour** determines the colour of the points to be drawn, and can be assigned any of ggplots built-in colour names (call function `colours()` to list all possible values) or a hexidecimal RGB code (see for example, https://r-charts.com/colors/).
+
+``` {r colour}
+ggplot(data = gapminder_data, mapping = aes(x = gdpPercap, y = lifeExp )) +
+  geom_point(colour = 'tomato')
+```
+
+This livens up our plot, but it doesn't acutally add any new information. It is better technique to use colour as, effectively, a third axis on our graph. That is, we can use colour to distinguish between another of our data columns. We might, for example, wish to apply a different colour to each continent, to see how the relationship between GDP and life expectancy varies across continents. This involves defining a mapping between a visual feature (colour) and a property of the data set (column continent) so we again initialise the `mapping` property with function `aes`.
+
+```{r mapping colour}
+ggplot(data = gapminder_data, mapping = aes(x = gdpPercap, y = lifeExp )) +
+  geom_point(mapping = aes(colour = continent))
+```
+This second graph illustrates clearly that, in the gapminder data, left expectancy and per capita GDP vary substantially between continents.
+
+You should carefully compare the two preceding graphs. In the first, we simply set the **colour** argument of function`geom_point`. In the second, we set the **mapping** argument of `geom_point` using function `aes`. In the former graph, all points are the same colour. In the latter graph, the colour of each point depends on its continent value. That is, we have **mapped** colour to continent. 
+
+
 
 
 
