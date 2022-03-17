@@ -11,6 +11,8 @@ output:
 ---
 
 ```{r setup, include=FALSE}
+library(ggplot2)
+
 library(knitr)
 
 knitr::opts_chunk$set(
@@ -107,7 +109,12 @@ When you call `read.csv`, passing in a file name, R reads in the file, converts 
 
 Our call to function `read.csv` will import the file and display its contents in the console, but this is not quite enough. We want R to store the data in a named variable so that we can refer to it later (i.e., perform analyses on it). We do that with the assignment operator, as we did in our previous module. For example, we can say:
 
-`gapminder_data <- read.csv("gapminder_data_2007.csv")`
+```{r import into variable}
+
+# Save an imported data frame into a named variable
+gapminder_data <- read.csv("gapminder_data_2007.csv")
+
+```
 
 After storing our imported data into a variable, you should always check that your data have been imported correctly. Data entry errors can cause R to make the wrong assumptions about your data. If you have a column of numbers that contains even one accidental alphabetic character (typos do happen) R will consider the whole column to be strings. Later, R will give the wrong results when you perform statistical analyses on these data (or it will refuse to perform them at all). 
 
@@ -200,31 +207,56 @@ The `hist` and `boxplot` functions are part of Base R. They are useful, but for 
 The syntax of ggplot is complex, and we will concentrate on the foundations in this module. For additional detail, see the Data Visualisation chapter in the R for Data Science online text, at  https://r4ds.had.co.nz/data-visualisation.html.
 
 
+## Semantics of ggplot
+You can think of a ggplot graph as bring built as a sequence of layers. On the bottom is the base of the graph, with axes, then the data are layered on, then titles and notations and other features. A ggplot command reflects this layered structure.
 
-# !!! STOPPED HERE
+# Building a graph
 
+To use the ggplot library, we must install the ggplot2 package (once on a computer) and invoke the library command (for every RStudio session).
 
+```{r install and load, eval = FALSE}
 
+# Once on any computer
+install.packages(ggplot2)
 
-
-In order to use it we need to first load it into R.
-
-
-
-```{r}
+# Once for any RStudio session
 library(ggplot2)
 ```
 
-ggplot tackles plotting reducing it into three components
+Every graph must represent a data frame. The base part of any ggplot command is a call to function `ggplot()` passing in the data frame assigned to function argument `data`.
 
-- what is the data
-- how the data is mapped to aesthetics (aes)
-- how the data is represented geometrically (geom)
+```{r ggplot base}
 
-So to create a plot using ggplot we need to specify these three components.
+# The ggplot base layer
+ggplot(data = gapminder_data)
+
+```
+
+If you run this command from the RStudio console or an R script in Rstudio, the grey square shown above appears in the Plots pane. This indicates that ggplot is ready to draw a figure -- this is the  bottom layer of a ggplot graph.
+
+To add x and y axes to the graph, we need to define the relationship between an informational element in the data set and a visual element (the axes) in our graph. In ggplot this relationship is a **mapping**. To initialise a mapping, we identify a particular element of the graph (e.g. the x-axis) and assign a particular element of the data (e.g. a column in the data frame) to it. This assignment is called an **aesthetic** in the Grammar of Graphics, and in ggplot we use function `aes()` to specify aesthetics. 
+
+Imagine that we wish to make a graph showing the relationship between per capita GDP and life expectancy (two columns in gapminder_data). We map the first variable to the x axis (argument x) of our graph and the second to the y axis (argument y). This will add a new layer. We add this information part of the command to the ggplot() base call. Note that we don't need to use the `$` operator here, as all column names in a ggplot command apply to the supplied data frame.
+
+```{r mapping x and y}
+
+ggplot(data = gapminder_data, mapping = aes(x = gdpPercap, y = lifeExp ))
 
 
-Plots can then be made incrementally by adding on additional layers.
+```
+
+We have added a new layer to our graph with axes and grid lines. Note that the axes' tic values are correctly formatted for the associated data and the data frame column names are use as the axis labels (we will see how to format those labels later).
+
+To add points to our graph, we specify a **geometry** (another term from the Grammar of Graphics). There are many, many available geometries in ggplot, corresponding to all the different sorts of graphs -- scatterplots, bar plots, pir charts, line graphs, etc. -- that you might wish to make. For our current graph, we wish to place a point at the intersection of per capita GDP (our x axis) and life expectancy (out y axis) for each row in the input data frame. To add this geometry to ggplot append `geom_point()` to your current ggplot command using the `+` operator. It is conventional to place each chunk of the ggplot command on its own line in the code.
+
+```{r geom point}
+ggplot(data = gapminder_data, mapping = aes(x = gdpPercap, y = lifeExp )) +
+  geom_point()
+```
+This figure This type of graph (usually called a **scatterplot**) illustrates the relationship between two dependent variables. Even from this very simple figure we can see that there is a *general tendency* for higher per capita GDP to be associated with higher life expectancy.
+
+
+
 
 We'll now recreate the same plots as we did with the Base R plotting system.
 
