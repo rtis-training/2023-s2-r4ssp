@@ -46,10 +46,6 @@ In this module we begin to work with complete tables of data, and learn how to m
 
 We will start by getting our scientific research data into RStudio. Commonly, we first enter our data into Excel for cleaning and organising, and save it out as a csv (comma separated values) file. We then import the file into R for data analysis. We will provide the csv file to be used with this module.
 
-Note that in this document we are primarily using Base R (the R functions that are automatically available in RStudio). These Base R functions are simple to work with, and are a good way to get familiar with R. In later modules, we will meet some more sophisticated R tools which, while more complicated, can also be more efficient.
-
-Work carefully through each of the sections below, confirming that all your outputs match ours. When you feel completely comfortable with the content, we recommend moving on to Section 3 - Data Visualisation in the  R for Data Science online text (https://r4ds.had.co.nz/data-visualisation.html), which covers advanced plotting with the ggplot library in detail.
-
 When you have completed this module, you should be ready to produce the graphs and figures you will need for your in-course research projects. If you run into any problems or have any questions, email us, or drop us a message in the R4SSP class team on MS Teams.
 
 
@@ -68,7 +64,9 @@ Document organisation is vitally important. We suggest that you keep a separate 
 
 5. Create a new folder (name it something sensible) and place the script file in it.
 
-6. Retrieve the sample csv data file used in this module from the course Google Drive shared folder ^[https://drive.google.com/drive/folders/1ttf1s8-vkJNOlHdphfi2zFyMq6gGEvCy?usp=sharing]. Place the csv file into the folder with your script file.
+6. The sample csv data file used in this module is called **gapminder_data_2007.csv**. This file contains life expectancy, population and GDP values for 142 different countries. The data for each country were measured 12 times between 1952 and 2007. These data are sourced from the GapMinder foundation (https://www.gapminder.org/).
+
+Retrieve the sample csv data file from the course Google Drive shared folder ^[https://drive.google.com/drive/folders/1ttf1s8-vkJNOlHdphfi2zFyMq6gGEvCy?usp=sharing]. Place the csv file into the folder with your script file.
 
 7. Open the folder and double-click **on your script file** to open it in RStudio.
 
@@ -78,75 +76,73 @@ If you set things up this way, RStudio will be able to find your data file for t
 
 ## Importing a data file
 
-The provided file **r4ssp_donations_data.csv** contains the (fictitious) results of a study designed to explore the factors which affect donations to street-corner charity collectors. Fifty student researchers each spent four hours at one of 50 randomly selected positions on George Street, collecting donations for *Blind Low Vision NZ Guide Dogs*, an organisation that raises and trains service dogs. Twenty-five of the collectors were accompanied by guide dog puppies; the other 25 were alone. Assignment to the Puppy or Alone conditions was done randomly. Each researcher recorded the total amount of money collected during their four hour shift. The start of the data file is shown below.
+The first few lines of our data file **gapminder_data_2007.csv** as it appears when opened in Excel, are shown below:
 
-```{r, fig.align='center', out.width = "50%", fig.cap = "Donations - Puppy or Alone", fig.pos = "H", echo = FALSE}
-include_graphics("images/02-donations_puppy.png")
+```{r fig01, fig.align='center', out.width = "50%", fig.cap = "GapMinder Data", fig.pos = "H", echo = FALSE}
+include_graphics("images/gapminder_data_2007.png")
 ```
 
 
 
 We will import this file into R for some preliminary data analysis.
 
-To import a csv file into R we can use the function `read_csv`. Like the R functions we used in Module 1, `read_csv` accepts an argument between its round brackets. The argument is the name of the input file. Because the name of the file is a string, we surround it with double quotes. We will therefore say:
+To import a csv file into R we can use the function `read.csv`. Like the R functions we used in Module 1, `read.csv` accepts an argument between its round brackets. The argument is the name of the input file. Because the name of the file is a string, we surround it with double quotes. We will therefore say:
 
-`read_csv("r4ssp_donations_data.csv")`
-
-However, we are not quite ready to run this command. The function `read_csv` is not part of base R (the R functions that are automatically available in RStudio). It is part of a **library**, a set of additional functions that can be loaded into RStudio. Function `read_csv` is part of the **readr** library, and we load it with the `library` command. We will therefore need two lines of code:
-
-
-`library(readr)`
-
-`read_csv("r4ssp_donations_data.csv")`
-
-Note that you only have to execute `library` once each time you open RStudio. After loading a library, it is available for the remainder of your R session (i.e. until you quit RStudio) and you can call its functions as normal.
+`read.csv("gapminder_data_2007.csv")`
 
 \
 
 ## Import and check your data
 
-Type the following lines into your script file. Execute your commands as you did in the previous module.
+Type the following line into your script file. Execute the command as you did in the previous module by placing the cursor anywhere on the line and typing ctrl-Enter (Windows) or cmd-Enter (Mac).
 
-```{r read_csv}
-library(readr)
-read_csv("data/r4ssp_donations_data.csv")
+```{r read.csv}
+read.csv("gapminder_data_2007.csv")
 ```
 
-NB: When you try to execute this code, you may receive an error message: *Error in library(readr) : there is no package called ‘readr’*. If this happens it means that the functions in library readr have not yet been installed on your computer. Please see **Appendix 2 - Installing Packages** at the end of this handout for instructions.
 
-When imported into R, the data from the csv file are stored in an R object called a **tibble**. A tibble is a slightly enhanced version of a core R object called a **data frame**. Tibbles and data frames are simply tables, organised into rows and columns. The columns have names, and each row of the csv file becomes a row in the data frame. 
+When imported into R, the data from the csv file are stored in an R object called a **data frame**.Data frames are simply tables, organised into rows and columns. The columns have names taken from the first row of the csv file, and each subsequent row of the csv file becomes a row in the data frame. 
 
-When you call `read_csv`, passing in a file name, R reads in the file, converts it to a tibble, and displays it in the console. The columns have the same names as in the csv file. We will see later that we can use the column names to explore specific properties of our data set.
+When you call `read.csv`, passing in a file name, R reads in the file, converts it to a data frame, and displays it in the console. The columns have the same names as in the csv file. We will see later that we can use the column names to explore specific properties of our data set.
 
-R also gives you some information about how it understands the contents of the file it has imported. In the console you will see the number of rows and columns in the imported data. You will also see the words **Column specification** followed by a list of the imported columns. 
+Our call to function `read.csv` will import the file and display its contents in the console, but this is not quite enough. We want R to store the data in a named variable so that we can refer to it later (i.e., perform analyses on it). We do that with the assignment operator, as we did in our previous module. For example, we can say:
 
-Each column header is associated with a value **dbl**, or **chr**. These indicate what kind of data R identified in the input file. Columns that are **dbl** are numbers; columns that are **chr** are strings. The same information is shown when RStudio prints the imported data. Beneath each column header you will see **dbl** for numbers and **chr** for strings. 
+`gapminder_data <- read.csv("gapminder_data_2007.csv")`
 
-This is a good moment to pause and check that your data have been imported correctly. Data entry errors can cause R to make the wrong assumptions about your data. If you have a column of numbers that contains even one accidental alphabetic character (typos do happen) R will consider the whole column to be strings. Later, R will give the wrong results when you perform statistical analyses on these data (or it will refuse to perform them at all).   
+After storing our imported data into a variable, you should always check that your data have been imported correctly. Data entry errors can cause R to make the wrong assumptions about your data. If you have a column of numbers that contains even one accidental alphabetic character (typos do happen) R will consider the whole column to be strings. Later, R will give the wrong results when you perform statistical analyses on these data (or it will refuse to perform them at all). 
 
-You will often also see files imported with the function `read.csv` (note the . instead of the _ ). This is the base R function for importing files. To use `read.csv` you don't need to load a library first, but R doesn't generate any information about how it has parsed the data in the columns. You can use the function `str` to get this information. Google for details.
+Use the following commands to visually inspect your imported data:
 
-With both `read_csv` and `read.csv` R will import the file and display its contents in the console, but this is not quite enough. We want R to store the data in a named variable so that we can refer to it later (i.e., perform analyses on it). We do that with the assignment operator, as we did in our previous module. For example, we can say:
+```{r check 1}
+# Write the first few lines of a data frame to the console with function head
+head(gapminder_data)
 
-`puppy_donations_data <- read_csv("r4ssp_donations_data.csv")`
 
-Then, we can refer to this whole dataset any time with `puppy_donations_data`.
-
-Enter and run these commands:
-
-```{r load_data}
-# Load the library before the first time you call read_csv
-library(readr)
-
-# Read a csv file into R. Store the result in a named variable
-puppy_donations_data <- read_csv("data/r4ssp_donations_data.csv")
-
-# As always in R, we can display the contents of a variable by simply typing its name.
-puppy_donations_data
-
+# Write the last few lines of a data frame to the console with function tail
+tail(gapminder_data)
 ```
+
+```{r check 2}
+# Display the number of lines, the column names, and the data type of each 
+# column, with function str
+str(gapminder_data)
+```
+
+Each column header is associated with a data type **chr**, **int**, or **num**. These indicate what kind of data R identified in the input file. Columns that are **chr** contain strings (characters), columns that are **int** contain integers (whole numbers) and columns that are num contain numbers with a decimal part. 
+
+You can see the same information about the structure of a data frame in the Environment panel of RStudio (upper-right of screen; Environment tab). When you successfully import a csv into a variable with `read.csv`, the resulting data frame appears in the Environment pane. Click the blue arrow beside the object to display the details of its structure.
+
+```{r fig02, fig.align='center', out.width = "50%", fig.cap = "Data Frame in Environment Pane", fig.pos = "H", echo = FALSE}
+include_graphics("images/df_in_env_pane.PNG")
+```
+
 
 \
+
+
+## Inspecting columns of data
+You will note that function `str` prefaces each column name with `$`. We use the `$` to select individual columns of data from a data frame. For example, to select just the life expectancy values from our data, we say `gapminder_data$lifeExp`. (Be sure to type the column name exactly as it appears)
+
 
 ## Perform descriptive analyses on columns
 
