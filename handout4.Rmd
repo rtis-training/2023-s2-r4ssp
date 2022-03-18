@@ -1,5 +1,5 @@
 ---
-title: "Handout 04 - Transformating Data"
+title: "Handout 04 - Summarising Data"
 output:
   html_document:
     toc: true
@@ -22,27 +22,5 @@ knitr::opts_chunk$set(
 
 ```
 
-String manipulations
-- str_sub
-- str_split
-- paste/paste0
 
-
-Base R
-
-- $
-- rbind
-- cbind
-- merge
-
-Dplyr
-- mutate
-- transmute
-- across
-- join
-- bind_rows
-- bind_cols
-- pivot_wider
-- pivot_longer
-- unite
-- separate
+<!-- Patricia to populate -->

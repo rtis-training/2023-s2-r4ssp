@@ -15,11 +15,11 @@ navbar:
         - text: "Part 1: Visualising"
           href: 02-visualise.html
         - text: "Part 2: Subsetting"
-        #  href: 03-subset.html
-        - text: "Part 3: Transforming"
-          #href: 04-transform.html
-        - text: "Part 4: Summarising"
-          #href: 05-summarise.html
+          href: 03-subset.html
+        - text: "Part 3: Summarising"
+          href: 04-summarise.html
+        - text: "Part 4: Transforming"
+          href: 05-transform.html
         - text: "Part 5: Communicating"
           #href: 06-communicate.html
         - text: "-------------"
@@ -30,18 +30,18 @@ navbar:
           #href: 08-iterate.html
         - text: "Workflows"
           #href: 09-workflows.html
-    - text: "Handouts"
+    - text: "Zoom Notes"
       menu:
         - text: "Handout 1"
           href: handout1.html
         - text: "Handout 2"
           href: handout2.html
-        # - text: "Handout 3"
-        #   href: handout3.html
-        # - text: "Handout 4"
-        #   href: handout4.html
-    #     - text: "Handout 5"
-    #       href: handout5.html
+        - text: "Handout 3"
+          href: handout3.html
+        - text: "Handout 4"
+          href: handout4.html
+        - text: "Handout 5"
+          href: handout5.html
     #     - text: "Handout 6"
     #       href: handout6.html
     #     - text: "Handout 7"

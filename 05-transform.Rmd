@@ -1,5 +1,6 @@
 ---
-title: "Handout 05 - Transforming Data"
+title: "Transforming"
+date: "Semester 1, 2022"
 output:
   html_document:
     toc: true
@@ -18,34 +19,24 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   echo = TRUE
 )
-
-
 ```
 
-String manipulations
-- str_sub
-- str_split
-- paste/paste0
-- parse_numeric
+Handout: [Handout 05 - Transforming Data](handout5.html)
+
+Associated readings:
+
+- [R for Data Science - Chapter 5](https://r4ds.had.co.nz/transform.html)
 
 
-Base R
+data cleaning
 
-- $
-- rbind
-- cbind
-- merge
-
-Dplyr
-- mutate
-- transmute
-- across
-- join
-- bind_rows
-- bind_cols
-- pivot_wider
-- pivot_longer
-- unite
-- separate
+- string manipulations
+- parse_number
+- as.numeric, as.character...
 
 
+
+
+group_by
+
+across
