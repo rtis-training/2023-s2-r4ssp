@@ -22,30 +22,43 @@ knitr::opts_chunk$set(
 
 ```
 
-String manipulations
+
+Main topics to cover:
+
+'tidying' data through string manipulations
+
+- unite
+- separate
 - str_sub
 - str_split
+- trimws
 - paste/paste0
-- parse_numeric
+- replace_na
+- parse_numeric/as.numeric
+- drop_na
+- {janitor} for clean column names
+- {broom} for turning base R stat output into nice rectangles
+
+pivoting data long/wide -> useful for ggplot
+
+- pivot_wider
+- pivot_longer
 
 
-Base R
+combining datasets through joins/binds
 
-- $
 - rbind
 - cbind
 - merge
-
-Dplyr
-- mutate
-- transmute
-- across
-- join
+- full/inner/left/right joins
 - bind_rows
 - bind_cols
-- pivot_wider
-- pivot_longer
-- unite
-- separate
+
+
+
+
+
+
+
 
 

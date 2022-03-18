@@ -28,15 +28,33 @@ Associated readings:
 - [R for Data Science - Chapter 5](https://r4ds.had.co.nz/transform.html)
 
 
-data cleaning
+Main topics to cover:
 
-- string manipulations
-- parse_number
-- as.numeric, as.character...
+'tidying' data through string manipulations
+
+- unite
+- separate
+- str_sub
+- str_split
+- trimws
+- paste/paste0
+- replace_na
+- parse_numeric/as.numeric
+- drop_na
+- {janitor} for clean column names
+- {broom} for turning base R stat output into nice rectangles
+
+pivoting data long/wide -> useful for ggplot
+
+- pivot_wider
+- pivot_longer
 
 
+combining datasets through joins/binds
 
-
-group_by
-
-across
+- rbind
+- cbind
+- merge
+- full/inner/left/right joins
+- bind_rows
+- bind_cols
