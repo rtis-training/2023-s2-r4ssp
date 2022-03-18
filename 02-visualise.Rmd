@@ -153,7 +153,7 @@ continents <- gapminder_data$continent
 levels(continents)
 ```
 
-/
+\
 
 ## Creating graphs in R
 
@@ -192,17 +192,17 @@ boxplot(lifeExp ~ continent, gapminder_data)
 Boxplots efficiently illustrate both the central tendency and the variability of a data set. Each grey box extends from the first quartile to the third quartile of its input values. The dark line across the box is at the median. The two thin lines outside the qrey box show the values of the minimum and maximum scores, excluding extreme outliers. If extreme outliers are present, they are shown as small circles. This figure clearly illustrates that, in the gapminder data, life expectancy -- both central tendency and variablity -- is not the same for all continents.
 
 
-### Plotting with ggplot2
+## Plotting with ggplot2
 
 The `hist` and `boxplot` functions are part of Base R. They are useful, but for more elaborate, publication-quality graphs, we can use the third-party library **ggplot** contained in package **ggplot2**. The ggplot library is a very popular data visualisation tool based on an elaborate symbolic system called the 'Grammar of Graphics'. 
 
 The syntax of ggplot is complex, and we will concentrate on the foundations in this module. For additional detail, see the Data Visualisation chapter in the R for Data Science online text, at  https://r4ds.had.co.nz/data-visualisation.html.
 
 
-## Semantics of ggplot
+### Semantics of ggplot
 You can think of a ggplot graph as being built as a sequence of layers. On the bottom is the base of the graph, then the axes and the data are layered on, then titles and notations and other features. A ggplot command reflects this layered structure.
 
-# Building a graph
+### Building a graph
 
 To use the ggplot library, we must install the ggplot2 package (once on a computer) and invoke the library command (for every RStudio session).
 
@@ -274,7 +274,7 @@ This graph illustrates clearly that, in the gapminder data, life expectancy and 
 You should carefully compare the two preceding graphs. In the first, we simply set the **colour** argument of function`geom_point`. In the second, we set the **mapping** argument of `geom_point` using function `aes`. In the former graph, all points are the same colour. In the latter graph, the colour of each point depends on its continent value. That is, we have **mapped** colour to continent. 
 
 
-## Choosing geometries
+### Choosing geometries
 
 It is essential to select the correct type of graph (the correct geometry in ggplot) for the data pattern you wish to illustrate.
 
@@ -316,11 +316,11 @@ ggplot(data = gapminder_data, mapping = aes(x = continent, y = lifeExp)) +
 
 \
 
-## Exercise:
+### Exercise:
 What would you predict to be the effect of swapping the values of x and y in the call to `aes` above? Test your prediction.
 
 
-## Refining the appearance of a plot
+### Refining the appearance of a plot
 After we have built the foundation of our plot with data and geometry, we can add further layers to modify other visual features. For example, we can use function `labs` to set the axis, legend, and main titles of our plots. Consider the following enhancements to our figure illustrating the relationship between GDP and life expectancy by continent:
 
 ``` {r labels}
@@ -343,7 +343,7 @@ The code for ggplot formatting can get extremely complex, and the full functiona
 The formal documentation for ggplot can be found at https://ggplot2.tidyverse.org/index.html. If you prefer tutorials and galleries, there are many available online. Two good places to start are http://www.cookbook-r.com/Graphs/ and https://www.r-graph-gallery.com/.
 
 
-## Saving ggplots
+### Saving ggplots
 You can save figures made with ggplot to image files, which can then be used in documents generated in MS Word or other text editors. We first save the output of our ggplot command into a named variable (to R a ggplot is a data object just like a number or a string). We then use function `ggsave` to export out plot as an image file. You specify the image format by supplying an outfile name with the corresponding file suffix (e.g. .jpg or .png). By default, the file is saved into the working folder (in our case, the folder containing our csv and script files).
 
 ```{r ggsave}
