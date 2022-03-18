@@ -319,45 +319,22 @@ ggplot(data = gapminder_data, mapping = aes(x = gdpPercap, y = lifeExp )) +
 
 The options for ggplot formatting can get extremely complex, and the full functionality is beyond the scope of this module. The formal documentation for ggplot can be found at https://ggplot2.tidyverse.org/index.html. If you prefer tutorials and galleries, there are many, many available online. Two good places to start are http://www.cookbook-r.com/Graphs/ and https://www.r-graph-gallery.com/.
 
-### Customising
 
-There are a multitude of customisations that can be done to plots such as titles, labels, colours, etc.
+## Saving ggplots
+You can save figures made with ggplot to image files, which can then be used in documents generated in MS Word or other text editors. We first save the output of our ggplot command into a named variable -- to R a ggplot is a data object just like a number or a string. We then use function `ggsave` to export out plot as an image file. You specify the image format by supplying an outfile name. By default, the file is saved into the working folder (in our case, the folder containing our csv and script files).
 
-A fantastic resource for looking at how to customise your plots made using the Base R plotting system is the [R Graphics Cookbook](https://r-graphics.org).
+```{r ggsave}
 
-#### Themes
+# Save a ggplot to a variable. The syntax of the gpplot command is unaffected
+gdp_lifeExp_plot <- ggplot(data = gapminder_data, mapping = aes(x = gdpPercap, y = lifeExp )) +
+  geom_point(mapping = aes(colour = continent)) +
+  xlab("GDP Per Capita") +
+  ylab("Life Expectancy") +
+  ggtitle("Gap Minder Data 1952 to 2007")
 
-For ggplot, the plots are made up of _elements_ and can be customised using `theme()` or by picking one of the pre-defined themes - e.g. `theme_bw()` provides a black/white theme.
-
-The main elements are
-
-- `element_text` for text
-- `element_rect` for rectangular areas
-- `element_line` for lines
-- `element_blank` to remove/hide elements
-
-```{r 02-gg_theme1}
-ggplot(data = puppy_donations_data, aes(x = Condition, y = Amount)) + 
-  geom_boxplot() + 
-  theme(axis.title = element_text(size = 16), 
-        panel.grid = element_blank(), 
-        panel.background = element_rect(colour = "blue", fill = "light green"))
-
+# Save the variable. Provide the file name and the ggplot object
+ggsave(filename = "gdp_lifeExp_plot.png", gdp_lifeExp_plot)
 ```
-
-
-
-```{r 02-gg_theme2}
-ggplot(data = puppy_donations_data, aes(x = Condition, y = Amount)) + 
-  geom_boxplot() + 
-  theme_bw()
-```
-
-There is also a fantastic cheat sheet available in RStudio under `Help` -> `Cheat Sheats` -> `Data Visualization with ggplot2`
-
-\
-
-\
 
 ## Conclusion
 
@@ -368,59 +345,10 @@ This document has presented a simple introduction to working with complete table
 
 Fill in the module feedback form [https://tinyurl.com/r4ssp-module-fb](https://tinyurl.com/r4ssp-module-fb).
 
-Ensure you have the `tidyverse` package installed. Refer to Appendix 2, or [https://r4ds.had.co.nz/introduction.html](https://r4ds.had.co.nz/introduction.html) for how to do this.
+Ensure you have the `tidyverse` installed for the next module. The tidyverse is a collection of packages (a metapackage) that provide a succinct syntax for performing data manipulation and basic analysis in R.  Running `install.packages(tidyverse)` installs all the individual packages to your machine.
+
+The tidyverse consists of `ggplot2` (plotting), `dplyr` (data manipulation), `tidyr` (data tidying), `readr` (data importing), `purrr` (functional programming), `tibble` (a special type of data frame), `stringr` (common tasks for string manipulations), and  `forcats` (dealing with factors)
  
-
-
-\
-
-\
-
-## Appendix
-
-### Manual Data Entry in R
-
-For extremely small data sets, you can manually enter tabular data into R. You create a vector for each data column using the combine function `c`, and then collect those vectors into a data frame:
-
-```{r manual data 1}
-countries <- c("Austria", "Brazil", "Canada")
-capitals <- c("Vienna", "Brasilia", "Ottawa")
-population_in_millions <- c(9, 211, 38)
-
-geography_df <- data.frame(Country = countries,
-                           Capital = capitals,
-                           PopulationMillions = population_in_millions)
-
-geography_df
-```
-
-
-### Installing Packages
-
-When R is installed, it comes with a large set of commands, data structure, and functions which are together known as **base R**. Over the years, researchers and programmer have written thousands of additional functions and modules (called **libraries**) that you can use in your own R code. This **third-party code** is checked by moderators and, if it passes inspection, loaded onto an official R server in a file structure called a **package**. To use packages, you must first download them to your computer. They are placed in the same folders where base R was originally installed. 
-
-To access the functions in a package in your R code, you load the package using the `library` command, as we saw above with **readr**. You only need to download a package one time on any machine, but the `library` command must be executed at the start of each RStudio session (i.e. every time you launch RStudio).
-
-To install a package, use the `install.packages` command passing the name of the package as the function argument. The name is a string **so must be surrounded by double quotes**. To use an installed package, use the `library` command, passing in the name of the package. Now that the package has been installed, R recognises it as an entity (like a variable) so you do not put double quotes around the package name in the library command.
-
-For example, when you want to use function `read_csv`, contained in library **readr**:
-
-```{r getting readr, eval = FALSE}
-
-# Download the reshape2 code to your machine
-install.packages("readr")
-
-
-# Load the library for the current session
-library(readr)
-```
-
-### Tidyverse
-
-The tidyverse is a collection of packages (metapackage) that are an (opinionated) way of performing analysis in R and are all designed to operate nicely together. When `tidyverse` is installed it actually is a wrapper that installs the individual packages that make up the tidyverse core.
-
-The tidyverse consists of a core set of packages to perform common tasks in data analysis and are `ggplot2` (plotting), `dplyr` (data manipulation), `tidyr` (data tidying), `readr` (data importing), `purrr` (functional programming), `tibble` (a special type of data frame), `stringr` (common tasks for string manipulations), and  `forcats` (dealing with factors)
-
 
 ```{r install tidyverse, eval = FALSE}
 # Download and install the packages of tidyverse
@@ -432,19 +360,6 @@ install.packages("tidyverse")
 # load the tidyverse packages for the current session
 library(tidyverse)
 ```
-
-### R for Data science extra packages
-
-If you are following along with R for Data Science make sure you have these packages installed:
-
-- nycflights13
-- gapminder
-- Lahman
-
-```{r, eval = FALSE}
-install.packages(c("nycflights13", "gapminder", "Lahman"))
-```
-
 
 
 
