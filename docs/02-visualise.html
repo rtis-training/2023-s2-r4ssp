@@ -423,8 +423,6 @@ div.tocify {
 <h2>Tabular Data</h2>
 <p>In this module we begin to work with complete tables of data, and learn how to make informative graphs.</p>
 <p>We will start by getting our scientific research data into RStudio. Commonly, we first enter our data into Excel for cleaning and organising, and save it out as a csv (comma separated values) file. We then import the file into R for data analysis. We will provide the csv file to be used with this module.</p>
-<p>Note that in this document we are primarily using Base R (the R functions that are automatically available in RStudio). These Base R functions are simple to work with, and are a good way to get familiar with R. In later modules, we will meet some more sophisticated R tools which, while more complicated, can also be more efficient.</p>
-<p>Work carefully through each of the sections below, confirming that all your outputs match ours. When you feel completely comfortable with the content, we recommend moving on to Section 3 - Data Visualisation in the R for Data Science online text (<a href="https://r4ds.had.co.nz/data-visualisation.html" class="uri">https://r4ds.had.co.nz/data-visualisation.html</a>), which covers advanced plotting with the ggplot library in detail.</p>
 <p>When you have completed this module, you should be ready to produce the graphs and figures you will need for your in-course research projects. If you run into any problems or have any questions, email us, or drop us a message in the R4SSP class team on MS Teams.</p>
 </div>
 <div id="preparation---do-this-very-carefully" class="section level2">
@@ -436,9 +434,9 @@ div.tocify {
 <li><p>Quit R Studio</p></li>
 <li><p>Locate the script file you just made (it will have a .R file suffix).</p></li>
 <li><p>Create a new folder (name it something sensible) and place the script file in it.</p></li>
-<li><p>Retrieve the sample csv data file used in this module from the course Google Drive shared folder <a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>. Place the csv file into the folder with your script file.</p></li>
+<li><p>The sample csv data file used in this module is called <strong>gapminder_data_2007.csv</strong>. This file contains life expectancy, population, and GDP values for 142 different countries. The data for each country were measured 12 times between 1952 and 2007. These data are sourced from the GapMinder foundation (<a href="https://www.gapminder.org/" class="uri">https://www.gapminder.org/</a>).</p></li>
 </ol>
-<p><a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a></p>
+<p>Retrieve the sample csv data file from the course Google Drive shared folder <a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>. Place the csv file into the folder with your script file.</p>
 <ol start="7" style="list-style-type: decimal">
 <li>Open the folder and double-click <strong>on your script file</strong> to open it in RStudio.</li>
 </ol>
@@ -448,290 +446,224 @@ div.tocify {
 </div>
 <div id="importing-a-data-file" class="section level2">
 <h2>Importing a data file</h2>
-<p>The provided file <strong>r4ssp_donations_data.csv</strong> contains the (fictitious) results of a study designed to explore the factors which affect donations to street-corner charity collectors. Fifty student researchers each spent four hours at one of 50 randomly selected positions on George Street, collecting donations for <em>Blind Low Vision NZ Guide Dogs</em>, an organisation that raises and trains service dogs. Twenty-five of the collectors were accompanied by guide dog puppies; the other 25 were alone. Assignment to the Puppy or Alone conditions was done randomly. Each researcher recorded the total amount of money collected during their four hour shift. The start of the data file is shown below.</p>
+<p>The first few lines of our data file <strong>gapminder_data_2007.csv</strong> as it appears when opened in Excel, are shown below:</p>
 <div class="figure" style="text-align: center">
-<img src="images/02-donations_puppy.png" alt="Donations - Puppy or Alone" width="50%" />
+<img src="images/gapminder_data_2007.PNG" alt="GapMinder Data" width="50%" />
 <p class="caption">
-Donations - Puppy or Alone
+GapMinder Data
 </p>
 </div>
 <p>We will import this file into R for some preliminary data analysis.</p>
-<p>To import a csv file into R we can use the function <code>read_csv</code>. Like the R functions we used in Module 2, <code>read_csv</code> accepts an argument between its round brackets. The argument is the name of the input file. Because the name of the file is a string, we surround it with double quotes. We will therefore say:</p>
-<p><code>read_csv("r4ssp_donations_data.csv")</code></p>
-<p>However, we are not quite ready to run this command. The function <code>read_csv</code> is not part of base R (the R functions that are automatically available in RStudio). It is part of a <strong>library</strong>, a set of additional functions that can be loaded into RStudio. Function <code>read_csv</code> is part of the <strong>readr</strong> library, and we load it with the <code>library</code> command. We will therefore need two lines of code:</p>
-<p><code>library(readr)</code></p>
-<p><code>read_csv("r4ssp_donations_data.csv")</code></p>
-<p>Note that you only have to execute <code>library</code> once each time you open RStudio. After loading a library, it is available for the remainder of your R session (i.e. until you quit RStudio) and you can call its functions as normal.</p>
+<p>To import a csv file into R we can use the function <code>read.csv</code>. Like the R functions we used in Module 1, <code>read.csv</code> accepts an argument between its round brackets. The argument is the name of the input file. Because the name of the file is a string, we surround it with double quotes. For this data set we want the columns that contain words (country and continent) to be imported as categorical variables. To achieve this, we will set the <code>stringsAsFactors</code> argument to TRUE when we call <code>read.csv</code>. The complete command is shown below.</p>
 <p><br />
 </p>
 </div>
 <div id="import-and-check-your-data" class="section level2">
 <h2>Import and check your data</h2>
-<p>Type the following lines into your script file. Execute your commands as you did in the previous module.</p>
-<pre class="r"><code>library(readr)
-read_csv(&quot;data/r4ssp_donations_data.csv&quot;)
-#&gt; Rows: 50 Columns: 3
-#&gt; -- Column specification --------------------------------------------------------
-#&gt; Delimiter: &quot;,&quot;
-#&gt; chr (1): Condition
-#&gt; dbl (2): CollectorNumber, Amount
-#&gt; 
-#&gt; i Use `spec()` to retrieve the full column specification for this data.
-#&gt; i Specify the column types or set `show_col_types = FALSE` to quiet this message.
-#&gt; # A tibble: 50 x 3
-#&gt;    CollectorNumber Amount Condition
-#&gt;              &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;    
-#&gt;  1               1   190. Puppy    
-#&gt;  2               2   178. Puppy    
-#&gt;  3               3   178. Puppy    
-#&gt;  4               4   210. Puppy    
-#&gt;  5               5   188. Puppy    
-#&gt;  6               6   199. Puppy    
-#&gt;  7               7   180. Puppy    
-#&gt;  8               8   195. Puppy    
-#&gt;  9               9   186. Puppy    
-#&gt; 10              10   233. Puppy    
-#&gt; # ... with 40 more rows</code></pre>
-<p>NB: When you try to execute this code, you may receive an error message: <em>Error in library(readr) : there is no package called ‘readr’</em>. If this happens it means that the functions in library readr have not yet been installed on your computer. Please see <strong>Appendix 2 - Installing Packages</strong> at the end of this handout for instructions.</p>
-<p>When imported into R, the data from the csv file are stored in an R object called a <strong>tibble</strong>. A tibble is a slightly enhanced version of a core R object called a <strong>data frame</strong>. Tibbles and data frames are simply tables, organised into rows and columns. The columns have names, and each row of the csv file becomes a row in the data frame.</p>
-<p>When you call <code>read_csv</code>, passing in a file name, R reads in the file, converts it to a tibble, and displays it in the console. The columns have the same names as in the csv file. We will see later that we can use the column names to explore specific properties of our data set.</p>
-<p>R also gives you some information about how it understands the contents of the file it has imported. In the console you will see the words <strong>Parsed with column specification:</strong> followed by a list of the imported columns.</p>
-<p>Each column header is associated with a value <strong>col_double()</strong>, or <strong>col_character()</strong>. These indicate what kind of data R identified in the input file. Columns that are <strong>col_double</strong> are numbers; columns that are <strong>col_character</strong> are strings. The same information is shown where RStudio prints the imported data. Beneath each column header you will see <strong>dbl</strong> for numbers and <strong>chr</strong> for strings.</p>
-<p>This is a good moment to pause and check that your data have been imported correctly. Data entry errors can cause R to make the wrong assumptions about your data. If you have a column of numbers that contains even one accidental alphabetic character (typos do happen) R will consider the whole column to be strings. Later, R will give the wrong results when you perform statistical analyses on these data (or it will refuse to perform them at all).</p>
-<p>You will often also see files imported with the function <code>read.csv</code> (note the . instead of the _ ). This is the base R function for importing files. To use <code>read.csv</code> you don’t need to load a library first, but R doesn’t generate any information about how it has parsed the data in the columns. You can use the function <code>str</code> to get this information. Google for details.</p>
-<p>With both <code>read_csv</code> and <code>read.csv</code> R will import the file and display its contents in the console, but this is not quite enough. We want R to store the data in a named variable so that we can refer to it later (i.e., do analyses on it). We do that with the assignment operator, as we did in our previous module. For example, we can say:</p>
-<p><code>puppy_donations_data &lt;- read_csv("r4ssp_donations_data.csv")</code></p>
-<p>Then, we can refer to this whole dataset any time with <code>puppy_donations_data</code>.</p>
-<p>Enter and run these commands:</p>
-<pre class="r"><code># Load the library before the first time you call read_csv
-library(readr)
+<p>Type the following line into your script file. Execute the command as you did in the previous module by placing the cursor anywhere on the line and typing ctrl-Enter (Windows) or cmd-Enter (Mac).</p>
+<pre class="r"><code>
+# Save an imported data frame into a named variable
+gapminder_data &lt;- read.csv(&quot;gapminder_data_2007.csv&quot;, stringsAsFactors = TRUE)</code></pre>
+<p>When imported into R, the data from the csv file are translated into an R object called a <strong>data frame</strong>. Data frames are simply tables, organised into rows and columns. The columns have names taken from the first row of the csv file, and each subsequent row of the csv file becomes a row in the data frame.</p>
+<p>We store the data frame in a named variable so that we can refer to it later (i.e., perform analyses on it). We use the assignment operator, as we did in our previous module.</p>
+<p>After storing our imported data into a variable, you should always check that the data have been imported correctly. Data entry errors can cause R to make the wrong assumptions about your data. If you have a column of numbers that contains even one accidental alphabetic character (typos do happen) R will consider the whole column to be strings. Later, R will give the wrong results when you perform statistical analyses on these data (or it will refuse to perform them at all).</p>
+<p>Use the following commands to visually inspect your imported data:</p>
+<pre class="r"><code># Write the first few lines of a data frame to the console with function head
+head(gapminder_data)
+#&gt;       country continent year lifeExp      pop gdpPercap
+#&gt; 1 Afghanistan      Asia 1952  28.801  8425333  779.4453
+#&gt; 2 Afghanistan      Asia 1957  30.332  9240934  820.8530
+#&gt; 3 Afghanistan      Asia 1962  31.997 10267083  853.1007
+#&gt; 4 Afghanistan      Asia 1967  34.020 11537966  836.1971
+#&gt; 5 Afghanistan      Asia 1972  36.088 13079460  739.9811
+#&gt; 6 Afghanistan      Asia 1977  38.438 14880372  786.1134
 
-# Read a csv file into R. Store the result in a named variable
-puppy_donations_data &lt;- read_csv(&quot;data/r4ssp_donations_data.csv&quot;)
-#&gt; Rows: 50 Columns: 3
-#&gt; -- Column specification --------------------------------------------------------
-#&gt; Delimiter: &quot;,&quot;
-#&gt; chr (1): Condition
-#&gt; dbl (2): CollectorNumber, Amount
-#&gt; 
-#&gt; i Use `spec()` to retrieve the full column specification for this data.
-#&gt; i Specify the column types or set `show_col_types = FALSE` to quiet this message.
 
-# As always in R, we can display the contents of a variable by simply typing its name.
-puppy_donations_data
-#&gt; # A tibble: 50 x 3
-#&gt;    CollectorNumber Amount Condition
-#&gt;              &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;    
-#&gt;  1               1   190. Puppy    
-#&gt;  2               2   178. Puppy    
-#&gt;  3               3   178. Puppy    
-#&gt;  4               4   210. Puppy    
-#&gt;  5               5   188. Puppy    
-#&gt;  6               6   199. Puppy    
-#&gt;  7               7   180. Puppy    
-#&gt;  8               8   195. Puppy    
-#&gt;  9               9   186. Puppy    
-#&gt; 10              10   233. Puppy    
-#&gt; # ... with 40 more rows</code></pre>
+# Write the last few lines of a data frame to the console with function tail
+tail(gapminder_data)
+#&gt;       country continent year lifeExp      pop gdpPercap
+#&gt; 1699 Zimbabwe    Africa 1982  60.363  7636524  788.8550
+#&gt; 1700 Zimbabwe    Africa 1987  62.351  9216418  706.1573
+#&gt; 1701 Zimbabwe    Africa 1992  60.377 10704340  693.4208
+#&gt; 1702 Zimbabwe    Africa 1997  46.809 11404948  792.4500
+#&gt; 1703 Zimbabwe    Africa 2002  39.989 11926563  672.0386
+#&gt; 1704 Zimbabwe    Africa 2007  43.487 12311143  469.7093</code></pre>
+<pre class="r"><code># Display the number of lines, the column names, and the data type of each 
+# column, with function str
+str(gapminder_data)
+#&gt; &#39;data.frame&#39;:    1704 obs. of  6 variables:
+#&gt;  $ country  : Factor w/ 142 levels &quot;Afghanistan&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...
+#&gt;  $ continent: Factor w/ 5 levels &quot;Africa&quot;,&quot;Americas&quot;,..: 3 3 3 3 3 3 3 3 3 3 ...
+#&gt;  $ year     : int  1952 1957 1962 1967 1972 1977 1982 1987 1992 1997 ...
+#&gt;  $ lifeExp  : num  28.8 30.3 32 34 36.1 ...
+#&gt;  $ pop      : int  8425333 9240934 10267083 11537966 13079460 14880372 12881816 13867957 16317921 22227415 ...
+#&gt;  $ gdpPercap: num  779 821 853 836 740 ...</code></pre>
+<p>Each column header is associated with a data type <strong>chr</strong>, <strong>int</strong>, or <strong>num</strong>. These indicate what kind of data R identified in the input file. Columns that are <strong>chr</strong> contain strings (characters), columns that are <strong>int</strong> contain integers (whole numbers) and columns that are num contain numbers with a decimal part.</p>
+<p>You can see the same information about the structure of a data frame in the Environment panel of RStudio (upper-right of screen; Environment tab). When you successfully import a csv into a variable with <code>read.csv</code>, the resulting data frame appears in the Environment pane. Click the blue arrow beside the object to display the details of its structure.</p>
+<div class="figure" style="text-align: center">
+<img src="images/df_in_env_pane.PNG" alt="Data Frame in Environment Pane" width="50%" />
+<p class="caption">
+Data Frame in Environment Pane
+</p>
+</div>
 <p><br />
 </p>
 </div>
-<div id="perform-descriptive-analyses-on-columns" class="section level2">
-<h2>Perform descriptive analyses on columns</h2>
-<p>It is always informative to begin data analysis by inspecting your dependent variable (in this case, amount of money collected). Work through each of the following steps, adding the code to your script file (and remember to <strong>Save Often</strong>).</p>
-<p>To select a single column from a data frame, we apply the <strong>$</strong> operator to the data frame, and specify the column name. The output is a <strong>vector</strong> containing the values in the named column.</p>
+<div id="selecting-and-using-columns-of-data" class="section level2">
+<h2>Selecting and using columns of data</h2>
+<p>In both of the above displays, each column name is prefaced with <code>$</code>. We use the <code>$</code> operator to select individual columns of data from a data frame. For example, to select just the life expectancy values from our data, we say <code>gapminder_data$lifeExp</code>. (Be sure to type the column name exactly as it appears in the output of <code>str</code> and in the Environment pane.) We can use this directly as the argument to a function, or we can store the selected column in a variable (which will be a vector) for later processing.</p>
+<p>For example:</p>
 <pre class="r"><code>
-# Select a single column with $ and the column name
-puppy_donations_data$Amount
-#&gt;  [1] 190.38 177.51 178.09 209.87 187.87 198.60 179.60 195.11 185.56 232.98
-#&gt; [11] 216.03 197.06 214.47 174.53 219.43 212.66 193.52 221.99 178.27 209.49
-#&gt; [21] 199.28 191.20 208.00 178.99 194.26 121.53 118.48  67.32  84.30 119.68
-#&gt; [31]  92.08  83.41  83.33 104.34 102.26 108.04 135.12 110.30  94.69 139.86
-#&gt; [41]  97.36  73.75  86.17  88.94 146.30 114.49 101.28  93.41  92.41  98.69</code></pre>
-<p>To simplify our later typing, we can use the assignment operator to save the output into a named variable.</p>
-<pre class="r"><code># Save a single column into a variable
-amount_only &lt;- puppy_donations_data$Amount
+# Print the first few values of column year
+head(gapminder_data$year)
+#&gt; [1] 1952 1957 1962 1967 1972 1977
 
-# Display the variable
-amount_only
-#&gt;  [1] 190.38 177.51 178.09 209.87 187.87 198.60 179.60 195.11 185.56 232.98
-#&gt; [11] 216.03 197.06 214.47 174.53 219.43 212.66 193.52 221.99 178.27 209.49
-#&gt; [21] 199.28 191.20 208.00 178.99 194.26 121.53 118.48  67.32  84.30 119.68
-#&gt; [31]  92.08  83.41  83.33 104.34 102.26 108.04 135.12 110.30  94.69 139.86
-#&gt; [41]  97.36  73.75  86.17  88.94 146.30 114.49 101.28  93.41  92.41  98.69</code></pre>
-<p>We can now apply R’s many, many statistical functions to our variable.</p>
+
+# Store column continent in a new variable
+continents &lt;- gapminder_data$continent
+
+# Pass the variable to function levels which returns the values
+# of a categorical variable
+levels(continents)
+#&gt; [1] &quot;Africa&quot;   &quot;Americas&quot; &quot;Asia&quot;     &quot;Europe&quot;   &quot;Oceania&quot;</code></pre>
+</div>
+<div id="creating-graphs-in-r" class="section level2">
+<h2>Creating graphs in R</h2>
+<p>There are a variety of complex analyses that we can perform on a data frame using R’s built-in statistical functions and those available in additional packages and libraries. We will explore many of these techniques in later modules. However, an effective first step in getting to know a data set is to generate plots and graphs to represent visually the patterns in the data.</p>
 <div id="simple-plots---the-histogram" class="section level3">
 <h3>Simple plots - the histogram</h3>
-<p>First, let’s plot a histogram of the amounts collected, (ignoring the Puppy/Alone condition), to get a quick sense of how much people are donating. We generate this graph with function <code>hist</code>. The graph will be displayed in the Plots tab of RStudio’s lower-right pane.</p>
-<pre class="r"><code>hist(amount_only)</code></pre>
-<p><img src="figures/02-hist-1.png" width="672" /> Our data appear to be bimodal (i.e. they have two peaks). This pattern can indicate the presence of distinct groups in a data set, an informative result in this study.</p>
-</div>
-<div id="simple-numeric-descriptive-statistics" class="section level3">
-<h3>Simple numeric descriptive statistics</h3>
-<p>We can also generate some useful numeric summaries:</p>
-<pre class="r"><code># Compute the mathematical mean with function mean()
-mean(amount_only)
-#&gt; [1] 150.0458
-
-# Compute the standard deviation with function sd()
-sd(amount_only)
-#&gt; [1] 51.4649
-
-# Get a selection of distribution descriptors with function summary()
-summary(amount_only)
-#&gt;    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-#&gt;   67.32   99.34  160.41  150.05  194.90  232.98</code></pre>
-<p>There are, literally, hundreds of interesting functions in R for performing summary analyses. Sadly, we do not have time to cover them all, but we encourage you to explore R textbooks and online resources to learn more about them.</p>
+<p>A histogram shows the <strong>frequency distribution</strong> of a data set. That is, it shows counts of the different values of the dependent variable (or ranges of values, for continuous variables). We generate this graph with function <code>hist</code>. The graph will be displayed in the Plots tab of RStudio’s lower-right pane.</p>
+<pre class="r"><code># Histogram of life expectancy values from gapminder
+hist(gapminder_data$lifeExp)</code></pre>
+<p><img src="figures/02-hist-1.png" width="672" /></p>
+<p><br />
+</p>
+<p>We see that life expectancy is approximately bell-shaped, with many scores between 65 and 85, with a small number of extreme values greater than 80 or less than 30.</p>
 </div>
 <div id="boxplots" class="section level3">
 <h3>Boxplots</h3>
-<p>We can see that the mean amount is higher for collectors who had puppies than for those who did not ($197.79 vs. $102.30). We can illustrate this difference graphically using a boxplot.</p>
+<p>The boxplot allows us to compare distribution information between groups. For example, we can compare life expectancy for the different continents.</p>
 <p>The R function <code>boxplot</code> accepts two arguments.</p>
-<p>The first argument is the <strong>formula</strong>. This is a complex, yet very common, argument format for R statistical functions. The formula describes a linear model for a data set with the general structure: <strong>dependent or predicted variable ~ independent variables or predictors</strong>, using columns names from the data frame. The ~ (tilde) is read as “depends on” or “is predicted by”. For our example, we are interested in the way that Amount is dependent on the Puppy/Alone condition, so we specify our formula as <strong>Amount ~ Condition</strong>. We will see more complex examples of the formula argument later in the semester.</p>
+<p>The first argument is the <strong>formula</strong>. This is a complex, yet very common, argument format for R statistical functions. The formula describes a linear model for a data set with the general structure: <strong>dependent or predicted variable ~ independent variables or predictors</strong>, using columns names from the data frame. The ~ (tilde) is read as “depends on” or “is predicted by”. For our example, we are interested in the way that life expectancy is dependent on the continent, so we specify our formula as <strong>lifeExp ~ continent</strong>. We will see more complex examples of the formula argument later in the semester.</p>
 <p>The second argument to boxplot is the data frame.</p>
-<pre class="r"><code>boxplot(Amount ~ Condition, puppy_donations_data)</code></pre>
+<pre class="r"><code>boxplot(lifeExp ~ continent, gapminder_data)</code></pre>
 <p><img src="figures/02-boxplot01-1.png" width="672" /></p>
-<p>Boxplots efficiently illustrate both the central tendency and the variability of a data set. Each grey box extends from the first quartile to the third quartile of its input values. The dark line across the box is at the median. The two thin lines outside the qrey box show the values of the minimum and maximum scores, excluding extreme outliers. If extreme outliers are present, they are shown as asterisks.</p>
-<p>The <code>boxplot</code> function actually has many optional arguments for things like adding legends and formatting plot axes, and calls to this function can get quite elaborate. Because of this, it is common to see the function called with its arguments named (as with stringsAsFactors, above). For example:</p>
-<pre class="r"><code>boxplot(formula = Amount ~ Condition, data = puppy_donations_data)</code></pre>
-<p><img src="figures/02-boxplot02-1.png" width="672" /></p>
-</div>
-<div id="tidyverse---ggplot2" class="section level3">
-<h3>Tidyverse - ggplot2</h3>
-<p>There is a fantastic introduction to Data Visualisation using ggplot in “R for Data Science” (<a href="https://r4ds.had.co.nz/data-visualisation.html" class="uri">https://r4ds.had.co.nz/data-visualisation.html</a>). It’s highly recommended to have a read through this chapter as we’ll only touch on a very brief introduction of this framework in this module.</p>
-<p>The ggplot2 package is a popular data visualisation package for R. It was developed by Hadley Wickham to implement the ‘grammar of graphics’. In order to use it we need to first load it into R.</p>
-<pre class="r"><code>library(ggplot2)</code></pre>
-<p>ggplot tackles plotting reducing it into three components</p>
-<ul>
-<li>what is the data</li>
-<li>how the data is mapped to aesthetics (aes)</li>
-<li>how the data is represented geometrically (geom)</li>
-</ul>
-<p>So to create a plot using ggplot we need to specify these three components.</p>
-<p>Plots can then be made incrementally by adding on additional layers.</p>
-<p>We’ll now recreate the same plots as we did with the Base R plotting system.</p>
-<div id="scatter-plots" class="section level4">
-<h4>Scatter plots</h4>
-<p>Here you’ll see we’ve defined our data, we’ve mapped specific columns to our axes, and are using a ‘point’ as our geometric representation.</p>
-<pre class="r"><code>ggplot(data = puppy_donations_data, mapping = aes(x = CollectorNumber, y = Amount)) + 
-  geom_point()</code></pre>
-<p><img src="figures/02-gg_point1-1.png" width="672" /></p>
-<p>We can also store our plots in a variable to build upon</p>
-<pre class="r"><code>p &lt;- ggplot(data = puppy_donations_data, mapping = aes(x = CollectorNumber, y = Amount))</code></pre>
-<p>What does <code>p</code> actually contain?</p>
-<pre class="r"><code>p</code></pre>
-<p><img src="figures/02-gg-1.png" width="672" /></p>
-<pre class="r"><code>p + geom_point()</code></pre>
-<p><img src="figures/02-gg_point2-1.png" width="672" /></p>
-<div id="specifiying-colour" class="section level5">
-<h5>Specifiying colour</h5>
-<p>Remember <code>p</code> contains our initial specification of the data and mappings</p>
-<pre class="r"><code>p + geom_point(colour = &#39;red&#39;)</code></pre>
-<p><img src="figures/02-gg_point3-1.png" width="672" /></p>
-</div>
-<div id="mapping-colour-from-our-data" class="section level5">
-<h5>Mapping colour from our data</h5>
-<pre class="r"><code>p + geom_point(aes(colour = Condition))</code></pre>
-<p><img src="figures/02-gg_point4-1.png" width="672" /> Notice that we didn’t specify the colour for our points, instead we have told ggplot to use colours based on the values that were found in the “Condition” column using <code>aes</code>.</p>
 <p><br />
 </p>
+<p>Boxplots efficiently illustrate both the central tendency and the variability of a data set. Each grey box extends from the first quartile to the third quartile of its input values. The dark line across the box is at the median. The two thin lines outside the qrey box show the values of the minimum and maximum scores, excluding extreme outliers. If extreme outliers are present, they are shown as small circles. This figure clearly illustrates that, in the gapminder data, life expectancy – both central tendency and variablity – is not the same for all continents.</p>
+</div>
+<div id="plotting-with-ggplot2" class="section level3">
+<h3>Plotting with ggplot2</h3>
+<p>The <code>hist</code> and <code>boxplot</code> functions are part of Base R. They are useful, but for more elaborate, publication-quality graphs, we can use the third-party library <strong>ggplot</strong> contained in package <strong>ggplot2</strong>. ggplot is a very popular data visualisation package based on a very elaborate symbolic system called the ‘Grammar of Graphics’.</p>
+<p>The syntax of ggplot is complex, and we will concentrate on the foundations in this module. For additional detail, see the Data Visualisation chapter in the R for Data Science online text, at <a href="https://r4ds.had.co.nz/data-visualisation.html" class="uri">https://r4ds.had.co.nz/data-visualisation.html</a>.</p>
 </div>
 </div>
-<div id="line-plots" class="section level4">
-<h4>Line plots</h4>
-<p>In this case, we have the same data and mapping, but we want to have the data represented by a line so we choose <code>geom_line</code> as our “geom”.</p>
-<pre class="r"><code>p + geom_line()</code></pre>
-<p><img src="figures/02-gg_line1-1.png" width="672" /></p>
-<div id="adding-layers" class="section level5">
-<h5>Adding layers</h5>
-<pre class="r"><code>p + 
-  geom_line() + 
+<div id="semantics-of-ggplot" class="section level2">
+<h2>Semantics of ggplot</h2>
+<p>You can think of a ggplot graph as bring built as a sequence of layers. On the bottom is the base of the graph, with axes, then the data are layered on, then titles and notations and other features. A ggplot command reflects this layered structure.</p>
+</div>
+<div id="building-a-graph" class="section level1">
+<h1>Building a graph</h1>
+<p>To use the ggplot library, we must install the ggplot2 package (once on a computer) and invoke the library command (for every RStudio session).</p>
+<pre class="r"><code>
+# Once on any computer
+install.packages(ggplot2)
+
+# Once for any RStudio session
+library(ggplot2)</code></pre>
+<p>Every graph must represent a data frame. The base part of any ggplot command is a call to function <code>ggplot()</code> passing in the data frame assigned to function argument <code>data</code>.</p>
+<pre class="r"><code>
+# The ggplot base layer
+ggplot(data = gapminder_data)</code></pre>
+<p><img src="figures/ggplot%20base-1.png" width="672" /></p>
+<p><br />
+</p>
+<p>If you run this command from the RStudio console or an R script in Rstudio, the grey square shown above appears in the Plots pane. This indicates that ggplot is ready to draw a figure – this is the bottom layer of a ggplot graph.</p>
+<p>To add x and y axes to the graph, we need to define the relationship between an informational element in the data set and a visual element (the axes) in our graph. In ggplot this relationship is a <strong>mapping</strong>. To initialise a mapping, we identify a particular element of the graph (e.g. the x-axis) and assign a particular element of the data (e.g. a column in the data frame) to it. This assignment is called an <strong>aesthetic</strong> in the Grammar of Graphics, and in ggplot we use function <code>aes()</code> to specify aesthetics.</p>
+<p>Imagine that we wish to make a graph showing the relationship between per capita GDP and life expectancy (two columns in gapminder_data). We map the first variable to the x axis (argument x) of our graph and the second to the y axis (argument y). This will add a new layer. We add this information part of the command to the ggplot() base call. Note that we don’t need to use the <code>$</code> operator here, as all column names in a ggplot command apply to the supplied data frame.</p>
+<pre class="r"><code>
+ggplot(data = gapminder_data, mapping = aes(x = gdpPercap, y = lifeExp ))</code></pre>
+<p><img src="figures/mapping%20x%20and%20y-1.png" width="672" /></p>
+<p><br />
+</p>
+<p>We have added a new layer to our graph with axes and grid lines. Note that the axes’ tic values are correctly formatted for the associated data and the data frame column names are use as the axis labels (we will see how to format those labels later).</p>
+<p>To add points to our graph, we specify a <strong>geometry</strong> (another term from the Grammar of Graphics). There are many, many available geometries in ggplot, corresponding to all the different sorts of graphs – scatterplots, bar plots, pir charts, line graphs, etc. – that you might wish to make. For our current graph, we wish to place a point at the intersection of per capita GDP (our x axis) and life expectancy (out y axis) for each row in the input data frame. To add this geometry to ggplot append <code>geom_point()</code> to your current ggplot command using the <code>+</code> operator. It is conventional to place each chunk of the ggplot command on its own line in the code.</p>
+<pre class="r"><code>ggplot(data = gapminder_data, mapping = aes(x = gdpPercap, y = lifeExp )) +
   geom_point()</code></pre>
-<p><img src="figures/02-gg_line2-1.png" width="672" /></p>
-<pre class="r"><code>p + 
-  geom_line(colour = &#39;gold&#39;) + 
+<p><img src="figures/geom%20point-1.png" width="672" /></p>
+<p><br />
+</p>
+<p>This type of graph (usually called a <strong>scatterplot</strong>) illustrates the relationship between two dependent variables. Even from this very simple figure we can see that there is a <em>general tendency</em> for higher per capita GDP to be associated with higher life expectancy.</p>
+<p>Like most functions, <code>geom_point</code> can accept arguments that modify its behaviour. The argument <strong>colour</strong> determines the colour of the points to be drawn, and can be assigned any of ggplots built-in colour names (call function <code>colours()</code> to list all possible values) or a hexidecimal RGB code (see for example, <a href="https://r-charts.com/colors/" class="uri">https://r-charts.com/colors/</a>).</p>
+<pre class="r"><code>ggplot(data = gapminder_data, mapping = aes(x = gdpPercap, y = lifeExp )) +
   geom_point(colour = &#39;tomato&#39;)</code></pre>
-<p><img src="figures/02-gg_line3-1.png" width="672" /></p>
-</div>
-<div id="using-mappings" class="section level5">
-<h5>Using mappings</h5>
-<p>If you would like to plot individual lines based on a categorical variable you can used a ‘group’ mapping:</p>
-<pre class="r"><code>p + 
-  geom_line(aes(group = Condition))</code></pre>
-<p><img src="figures/02-gg_line4-1.png" width="672" /></p>
-<p>We can specify separate aesthestics for each layer</p>
-<pre class="r"><code>p + 
-  geom_line(aes(colour = Condition)) + 
-  geom_point(aes(colour = Condition))</code></pre>
-<p><img src="figures/02-gg_line5-1.png" width="672" /></p>
-<p>Note that colour will automatically imply a <em>group</em>.</p>
-<p>or if it is common to all layers, we can specify them in the initial setting up:</p>
-<pre class="r"><code>ggplot(data = puppy_donations_data, 
-       mapping = aes(x = CollectorNumber, 
-                     y = Amount, 
-                     colour = Condition)) + 
-  geom_line() + 
-  geom_point()</code></pre>
-<p><img src="figures/02-gg_line6-1.png" width="672" /></p>
+<p><img src="figures/colour-1.png" width="672" /></p>
 <p><br />
 </p>
-</div>
-</div>
-<div id="histogram" class="section level4">
-<h4>Histogram</h4>
-<p>A histogram is created from a single continuous variable.</p>
-<pre class="r"><code>ggplot(data = puppy_donations_data, aes(x = Amount)) + 
-  geom_histogram()
-#&gt; `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
-<p><img src="figures/02-gg_hist-1.png" width="672" /></p>
+<p>This livens up our plot, but it doesn’t acutally add any new information. It is better technique to use colour as, effectively, a third axis on our graph. That is, we can use colour to distinguish between another of our data columns. We might, for example, wish to apply a different colour to each continent, to see how the relationship between GDP and life expectancy varies across continents. This involves defining a mapping between a visual feature (colour) and a property of the data set (column continent) so we again initialise the <code>mapping</code> property with function <code>aes</code>.</p>
+<pre class="r"><code>ggplot(data = gapminder_data, mapping = aes(x = gdpPercap, y = lifeExp )) +
+  geom_point(mapping = aes(colour = continent))</code></pre>
+<p><img src="figures/mapping%20colour-1.png" width="672" /></p>
 <p><br />
 </p>
-</div>
-<div id="boxplot" class="section level4">
-<h4>Boxplot</h4>
-<p>In ggplot, to create a boxplot, we need to specify a continuous variable, and a categorical variable.</p>
-<pre class="r"><code>ggplot(data = puppy_donations_data, aes(x = Condition, y = Amount)) + 
+<p>This second graph illustrates clearly that, in the gapminder data, left expectancy and per capita GDP vary substantially between continents.</p>
+<p>You should carefully compare the two preceding graphs. In the first, we simply set the <strong>colour</strong> argument of function<code>geom_point</code>. In the second, we set the <strong>mapping</strong> argument of <code>geom_point</code> using function <code>aes</code>. In the former graph, all points are the same colour. In the latter graph, the colour of each point depends on its continent value. That is, we have <strong>mapped</strong> colour to continent.</p>
+<div id="choosing-geometries" class="section level2">
+<h2>Choosing geometries</h2>
+<p>It is essential to select the correct type of graph (the correct geometry in ggplot) for the data pattern you wish to illustrate. Assume, for example, that you wish to show the trend in life expectancy across years, for the country of Denmark. First, we must select out only the rows for Denmark. (We will consider selection in detail in next week’s module. For now, just note that between the square brackets we provide row and column criteria for selection, and an empty value for column means <strong>all</strong>.) We can then pass the data to ggplot as before. We will need to adjust the mapping of data to the x and y axes accordingly.</p>
+<p>This graph is illustrating a trend (change in a variable across time). Trend graphs are usually drawn with a continuous line between the plotted points. In ggplot, this is geometry <code>geom_line</code>.</p>
+<pre class="r"><code>
+# Select all rows where the country is equal to Denmark. Select all columns.
+denmark_data &lt;- gapminder_data[gapminder_data$country == &quot;Denmark&quot;, ]
+
+ggplot(data = denmark_data, mapping = aes(x = year, y = lifeExp)) +
+  geom_line()</code></pre>
+<p><img src="figures/points%20not%20right-1.png" width="672" /></p>
+<p><br />
+</p>
+<p>Using ggplot we can dpulicate the histogram for life expectance using <code>geom_histogram</code>. For histograms we only need to map the x axis, as the y axis is, by default, frequency. We can enhance the plot’s appearance by initialising <code>geom_histogram</code> arguments <code>colour</code> which sets the border around the bars on the graph, and <code>fill</code> which set the interior of the bars on the graph</p>
+<pre class="r"><code>ggplot(data = gapminder_data, mapping = aes(x = lifeExp)) +
+  geom_histogram(colour = &quot;white&quot;, fill = &quot;darkgreen&quot;)</code></pre>
+<p><img src="figures/histogram-1.png" width="672" /></p>
+<p><br />
+</p>
+<p>Similarly, we can reproduce the boxplot above with <code>geom_boxplot</code>. In Base R we used a <strong>formula</strong> to identify the dependent and independent variables for the boxplot. With ggplot, we use a mapping to assign the DV to the x axis and the IV to the y axis.</p>
+<pre class="r"><code>ggplot(data = gapminder_data, mapping = aes(x = continent, y = lifeExp)) +
   geom_boxplot()</code></pre>
-<p><img src="figures/02-gg_box1-1.png" width="672" /></p>
-<p>Or you could make it horizontal by switching the the x/y arguments.</p>
-<pre class="r"><code>ggplot(data = puppy_donations_data, aes(x = Amount, y = Condition)) + 
-  geom_boxplot()</code></pre>
-<p><img src="figures/02-gg_box2-1.png" width="672" /></p>
+<p><img src="figures/boxplot-1.png" width="672" /></p>
 <p><br />
 </p>
 </div>
+<div id="exercise" class="section level2">
+<h2>Exercise:</h2>
+<p>What would you predict to be the effect of swapping the values of x and y in the call to <code>aes</code> above? Test your prediction.</p>
 </div>
-<div id="customising" class="section level3">
-<h3>Customising</h3>
-<p>There are a multitude of customisations that can be done to plots such as titles, labels, colours, etc.</p>
-<p>A fantastic resource for looking at how to customise your plots made using the Base R plotting system is the <a href="https://r-graphics.org">R Graphics Cookbook</a>.</p>
-<div id="themes" class="section level4">
-<h4>Themes</h4>
-<p>For ggplot, the plots are made up of <em>elements</em> and can be customised using <code>theme()</code> or by picking one of the pre-defined themes - e.g. <code>theme_bw()</code> provides a black/white theme.</p>
-<p>The main elements are</p>
-<ul>
-<li><code>element_text</code> for text</li>
-<li><code>element_rect</code> for rectangular areas</li>
-<li><code>element_line</code> for lines</li>
-<li><code>element_blank</code> to remove/hide elements</li>
-</ul>
-<pre class="r"><code>ggplot(data = puppy_donations_data, aes(x = Condition, y = Amount)) + 
-  geom_boxplot() + 
-  theme(axis.title = element_text(size = 16), 
-        panel.grid = element_blank(), 
-        panel.background = element_rect(colour = &quot;blue&quot;, fill = &quot;light green&quot;))</code></pre>
-<p><img src="figures/02-gg_theme1-1.png" width="672" /></p>
-<pre class="r"><code>ggplot(data = puppy_donations_data, aes(x = Condition, y = Amount)) + 
-  geom_boxplot() + 
-  theme_bw()</code></pre>
-<p><img src="figures/02-gg_theme2-1.png" width="672" /></p>
-<p>There is also a fantastic cheat sheet available in RStudio under <code>Help</code> -&gt; <code>Cheat Sheats</code> -&gt; <code>Data Visualization with ggplot2</code></p>
+<div id="refining-the-appearance-of-a-plot" class="section level2">
+<h2>Refining the appearance of a plot</h2>
+<p>After we have built the foundation of our plot with data and geometry, we can add further layers to modify the other visual features of our plot. For example, we can use function <code>labs</code> to set the axis, legend and main titles of our plots. Consider the following enhancements to our figure illustrating the relationship between GDP and life expectancy by continent:</p>
+<pre class="r"><code>ggplot(data = gapminder_data, mapping = aes(x = gdpPercap, y = lifeExp )) +
+  geom_point(mapping = aes(colour = continent)) +
+  labs(x = &quot;GDP Per Capita&quot;, y = &quot;Life Expectancy&quot;, title = &quot;Gap Minder Data 1952 to 2007&quot;, colour = &quot;Continent&quot;)</code></pre>
+<p><img src="figures/fluffing-1.png" width="672" /></p>
 <p><br />
 </p>
-<p><br />
-</p>
+<p>The options for ggplot formatting can get extremely complex, and the full functionality is beyond the scope of this module. In addition, there are many, many more geometries available, each with appropriate arguments and mapping options.</p>
+<p>The formal documentation for ggplot can be found at <a href="https://ggplot2.tidyverse.org/index.html" class="uri">https://ggplot2.tidyverse.org/index.html</a>. If you prefer tutorials and galleries, there are many available online. Two good places to start are <a href="http://www.cookbook-r.com/Graphs/" class="uri">http://www.cookbook-r.com/Graphs/</a> and <a href="https://www.r-graph-gallery.com/" class="uri">https://www.r-graph-gallery.com/</a>.</p>
 </div>
-</div>
+<div id="saving-ggplots" class="section level2">
+<h2>Saving ggplots</h2>
+<p>You can save figures made with ggplot to image files, which can then be used in documents generated in MS Word or other text editors. We first save the output of our ggplot command into a named variable – to R a ggplot is a data object just like a number or a string. We then use function <code>ggsave</code> to export out plot as an image file. You specify the image format by supplying an outfile name. By default, the file is saved into the working folder (in our case, the folder containing our csv and script files).</p>
+<pre class="r"><code>
+# Save a ggplot to a variable. The syntax of the gpplot command is unaffected
+gdp_lifeExp_plot &lt;- ggplot(data = gapminder_data, mapping = aes(x = gdpPercap, y = lifeExp )) +
+  geom_point(mapping = aes(colour = continent)) +
+  xlab(&quot;GDP Per Capita&quot;) +
+  ylab(&quot;Life Expectancy&quot;) +
+  ggtitle(&quot;Gap Minder Data 1952 to 2007&quot;)
+
+# Save the variable. Provide the file name and the ggplot object
+ggsave(filename = &quot;gdp_lifeExp_plot.png&quot;, gdp_lifeExp_plot)
+#&gt; Saving 7 x 5 in image</code></pre>
 </div>
 <div id="conclusion" class="section level2">
 <h2>Conclusion</h2>
@@ -739,50 +671,8 @@ summary(amount_only)
 <div id="whats-next" class="section level3">
 <h3>What’s Next</h3>
 <p>Fill in the module feedback form <a href="https://tinyurl.com/r4ssp-module-fb">https://tinyurl.com/r4ssp-module-fb</a>.</p>
-<p>Ensure you have the <code>tidyverse</code> package installed. Refer to Appendix 2, or <a href="https://r4ds.had.co.nz/introduction.html">https://r4ds.had.co.nz/introduction.html</a> for how to do this.</p>
-<p><br />
-</p>
-<p><br />
-</p>
-</div>
-</div>
-<div id="appendix" class="section level2">
-<h2>Appendix</h2>
-<div id="manual-data-entry-in-r" class="section level3">
-<h3>Manual Data Entry in R</h3>
-<p>For extremely small data sets, you can manually enter tabular data into R. You create a vector for each data column using the combine function <code>c</code>, and then collect those vectors into a data frame:</p>
-<pre class="r"><code>countries &lt;- c(&quot;Austria&quot;, &quot;Brazil&quot;, &quot;Canada&quot;)
-capitals &lt;- c(&quot;Vienna&quot;, &quot;Brasilia&quot;, &quot;Ottawa&quot;)
-population_in_millions &lt;- c(9, 211, 38)
-
-geography_df &lt;- data.frame(Country = countries,
-                           Capital = capitals,
-                           PopulationMillions = population_in_millions)
-
-geography_df
-#&gt;   Country  Capital PopulationMillions
-#&gt; 1 Austria   Vienna                  9
-#&gt; 2  Brazil Brasilia                211
-#&gt; 3  Canada   Ottawa                 38</code></pre>
-</div>
-<div id="installing-packages" class="section level3">
-<h3>Installing Packages</h3>
-<p>When R is installed, it comes with a large set of commands, data structure, and functions which are together known as <strong>base R</strong>. Over the years, researchers and programmer have written thousands of additional functions and modules (called <strong>libraries</strong>) that you can use in your own R code. This <strong>third-party code</strong> is checked by moderators and, if it passes inspection, loaded onto an official R server in a file structure called a <strong>package</strong>. To use packages, you must first download them to your computer. They are placed in the same folders where base R was originally installed.</p>
-<p>To access the functions in a package in your R code, you load the package using the <code>library</code> command, as we saw above with <strong>readr</strong>. You only need to download a package one time on any machine, but the <code>library</code> command must be executed at the start of each RStudio session (i.e. every time you launch RStudio).</p>
-<p>To install a package, use the <code>install.packages</code> command passing the name of the package as the function argument. The name is a string <strong>so must be surrounded by double quotes</strong>. To use an installed package, use the <code>library</code> command, passing in the name of the package. Now that the package has been installed, R recognises it as an entity (like a variable) so you do not put double quotes around the package name in the library command.</p>
-<p>For example, when you want to use function <code>read_csv</code>, contained in library <strong>readr</strong>:</p>
-<pre class="r"><code>
-# Download the reshape2 code to your machine
-install.packages(&quot;readr&quot;)
-
-
-# Load the library for the current session
-library(readr)</code></pre>
-</div>
-<div id="tidyverse" class="section level3">
-<h3>Tidyverse</h3>
-<p>The tidyverse is a collection of packages (metapackage) that are an (opinionated) way of performing analysis in R and are all designed to operate nicely together. When <code>tidyverse</code> is installed it actually is a wrapper that installs the individual packages that make up the tidyverse core.</p>
-<p>The tidyverse consists of a core set of packages to perform common tasks in data analysis and are <code>ggplot2</code> (plotting), <code>dplyr</code> (data manipulation), <code>tidyr</code> (data tidying), <code>readr</code> (data importing), <code>purrr</code> (functional programming), <code>tibble</code> (a special type of data frame), <code>stringr</code> (common tasks for string manipulations), and <code>forcats</code> (dealing with factors)</p>
+<p>Ensure you have the <code>tidyverse</code> installed for the next module. The tidyverse is a collection of packages (a metapackage) that provide a succinct syntax for performing data manipulation and basic analysis in R. Running <code>install.packages(tidyverse)</code> installs all the individual packages to your machine.</p>
+<p>The tidyverse consists of <code>ggplot2</code> (plotting), <code>dplyr</code> (data manipulation), <code>tidyr</code> (data tidying), <code>readr</code> (data importing), <code>purrr</code> (functional programming), <code>tibble</code> (a special type of data frame), <code>stringr</code> (common tasks for string manipulations), and <code>forcats</code> (dealing with factors)</p>
 <pre class="r"><code># Download and install the packages of tidyverse
 install.packages(&quot;tidyverse&quot;)</code></pre>
 <pre class="r"><code># load the tidyverse packages for the current session
@@ -790,31 +680,22 @@ library(tidyverse)
 #&gt; -- Attaching packages --------------------------------------- tidyverse 1.3.1 --
 #&gt; v tibble  3.1.6     v dplyr   1.0.7
 #&gt; v tidyr   1.1.4     v stringr 1.4.0
-#&gt; v purrr   0.3.4     v forcats 0.5.1
+#&gt; v readr   2.1.1     v forcats 0.5.1
+#&gt; v purrr   0.3.4
 #&gt; -- Conflicts ------------------------------------------ tidyverse_conflicts() --
 #&gt; x dplyr::filter() masks stats::filter()
 #&gt; x dplyr::lag()    masks stats::lag()</code></pre>
 </div>
-<div id="r-for-data-science-extra-packages" class="section level3">
-<h3>R for Data science extra packages</h3>
-<p>If you are following along with R for Data Science make sure you have these packages installed:</p>
-<ul>
-<li>nycflights13</li>
-<li>gapminder</li>
-<li>Lahman</li>
-</ul>
-<pre class="r"><code>install.packages(c(&quot;nycflights13&quot;, &quot;gapminder&quot;, &quot;Lahman&quot;))</code></pre>
 </div>
 </div>
 <div class="footnotes">
 <hr />
 <ol>
 <li id="fn1"><p><a href="https://drive.google.com/drive/folders/1ttf1s8-vkJNOlHdphfi2zFyMq6gGEvCy?usp=sharing" class="uri">https://drive.google.com/drive/folders/1ttf1s8-vkJNOlHdphfi2zFyMq6gGEvCy?usp=sharing</a><a href="#fnref1" class="footnote-back">↩︎</a></p></li>
-<li id="fn2"><p> &gt; Or you can download the file directly using R: &gt; &gt; &gt; <code>r &gt; download.file(url = "https://raw.githubusercontent.com/rtis-training/2022-s1-r4ssp/main/data/r4ssp_donations_data.csv",  &gt;              destfile = "data/r4ssp_donations_data.csv") &gt;</code> &gt; &gt; Please note this assumes you are using the project and structure created in the last handout. Importantly if this doesn’t work for you check that the “data” folder exists and matches exactly.<a href="#fnref2" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIlZpc3VhbGlzaW5nIg0KZGF0ZTogIlNlbWVzdGVyIDEsIDIwMjIiDQpvdXRwdXQ6DQogIGh0bWxfZG9jdW1lbnQ6DQogICAgdG9jOiB0cnVlDQogICAgdG9jX2Zsb2F0OiB0cnVlDQogICAgdG9jX2RlcHRoOiAzDQogICAgY29kZV9kb3dubG9hZDogdHJ1ZQ0KICAgIGNvZGVfZm9sZGluZzogc2hvdw0KLS0tDQoNCmBgYHtyIHNldHVwLCBpbmNsdWRlPUZBTFNFfQ0KbGlicmFyeShrbml0cikNCg0Ka25pdHI6Om9wdHNfY2h1bmskc2V0KA0KICBjb21tZW50ID0gIiM+IiwNCiAgZmlnLnBhdGggPSAiZmlndXJlcy8iLCAjIHVzZSBvbmx5IGZvciBzaW5nbGUgUm1kIGZpbGVzDQogIGNvbGxhcHNlID0gVFJVRSwNCiAgZWNobyA9IFRSVUUNCikNCmBgYA0KDQo+ICMjIyMgRGF0YSBGb2N1cw0KPg0KPiBNb2R1bGVzIGFuZCBIYW5kb3V0cyAyLS02IGNvdmVyIHRvcGljcyB0aGF0IGFyZSBwYXJ0IG9mIHRoZSBkYXRhIGFuYWx5c2lzIGpvdXJuZXkgYW5kIGFyZSBhbGwgaW50ZXJyZWxhdGVkLiBFYWNoIG1vZHVsZSB3aWxsIGludHJvZHVjZSBuZXcgY29udGVudCBhbmQgZXhwYW5kIG9uIHRoZSBtYXRlcmlhbCBjb3ZlcmVkIGluIHByZXZpb3VzIG1vZHVsZXMuIEZvciBleGFtcGxlLCBpbiBNb2R1bGUgMiB3ZSBpbnRyb2R1Y2UgdGhlIGJhc2ljcyBvZiB0aGUgUiBwbG90dGluZyBzeXN0ZW1zLiBTdWJzZXF1ZW50IGhhbmRvdXRzIGluY2x1ZGUgbW9yZSBhZHZhbmNlZCBwbG90dGluZyBvcHRpb25zIGFuZCB0ZWNobmlxdWVzLg0KDQpcDQoNClwNCg0KDQpIYW5kb3V0OiBbSGFuZG91dCAwMiAtIFZpc3VhbGlzaW5nIERhdGFdKGhhbmRvdXQyLmh0bWwpDQoNCkFzc29jaWF0ZWQgUmVhZGluZ3M6DQoNCi0gW1IgZm9yIERhdGEgU2NpZW5jZSAtIENoYXB0ZXIgMTJdKGh0dHBzOi8vcjRkcy5oYWQuY28ubnovdGlkeS1kYXRhLmh0bWwpDQotIFtSIGZvciBEYXRhIFNjaWVuY2UgLSBDaGFwdGVyIDExXShodHRwczovL3I0ZHMuaGFkLmNvLm56L2RhdGEtaW1wb3J0Lmh0bWwpDQotIFtSIGZvciBEYXRhIFNjaWVuY2UgLSBDaGFwdGVyIDNdKGh0dHBzOi8vcjRkcy5oYWQuY28ubnovZGF0YS12aXN1YWxpc2F0aW9uLmh0bWwpDQoNCg0KDQojIyBUYWJ1bGFyIERhdGENCg0KSW4gdGhpcyBtb2R1bGUgd2UgYmVnaW4gdG8gd29yayB3aXRoIGNvbXBsZXRlIHRhYmxlcyBvZiBkYXRhLCBhbmQgbGVhcm4gaG93IHRvIG1ha2UgaW5mb3JtYXRpdmUgZ3JhcGhzLiANCg0KV2Ugd2lsbCBzdGFydCBieSBnZXR0aW5nIG91ciBzY2llbnRpZmljIHJlc2VhcmNoIGRhdGEgaW50byBSU3R1ZGlvLiBDb21tb25seSwgd2UgZmlyc3QgZW50ZXIgb3VyIGRhdGEgaW50byBFeGNlbCBmb3IgY2xlYW5pbmcgYW5kIG9yZ2FuaXNpbmcsIGFuZCBzYXZlIGl0IG91dCBhcyBhIGNzdiAoY29tbWEgc2VwYXJhdGVkIHZhbHVlcykgZmlsZS4gV2UgdGhlbiBpbXBvcnQgdGhlIGZpbGUgaW50byBSIGZvciBkYXRhIGFuYWx5c2lzLiBXZSB3aWxsIHByb3ZpZGUgdGhlIGNzdiBmaWxlIHRvIGJlIHVzZWQgd2l0aCB0aGlzIG1vZHVsZS4NCg0KTm90ZSB0aGF0IGluIHRoaXMgZG9jdW1lbnQgd2UgYXJlIHByaW1hcmlseSB1c2luZyBCYXNlIFIgKHRoZSBSIGZ1bmN0aW9ucyB0aGF0IGFyZSBhdXRvbWF0aWNhbGx5IGF2YWlsYWJsZSBpbiBSU3R1ZGlvKS4gVGhlc2UgQmFzZSBSIGZ1bmN0aW9ucyBhcmUgc2ltcGxlIHRvIHdvcmsgd2l0aCwgYW5kIGFyZSBhIGdvb2Qgd2F5IHRvIGdldCBmYW1pbGlhciB3aXRoIFIuIEluIGxhdGVyIG1vZHVsZXMsIHdlIHdpbGwgbWVldCBzb21lIG1vcmUgc29waGlzdGljYXRlZCBSIHRvb2xzIHdoaWNoLCB3aGlsZSBtb3JlIGNvbXBsaWNhdGVkLCBjYW4gYWxzbyBiZSBtb3JlIGVmZmljaWVudC4NCg0KV29yayBjYXJlZnVsbHkgdGhyb3VnaCBlYWNoIG9mIHRoZSBzZWN0aW9ucyBiZWxvdywgY29uZmlybWluZyB0aGF0IGFsbCB5b3VyIG91dHB1dHMgbWF0Y2ggb3Vycy4gV2hlbiB5b3UgZmVlbCBjb21wbGV0ZWx5IGNvbWZvcnRhYmxlIHdpdGggdGhlIGNvbnRlbnQsIHdlIHJlY29tbWVuZCBtb3Zpbmcgb24gdG8gU2VjdGlvbiAzIC0gRGF0YSBWaXN1YWxpc2F0aW9uIGluIHRoZSAgUiBmb3IgRGF0YSBTY2llbmNlIG9ubGluZSB0ZXh0IChodHRwczovL3I0ZHMuaGFkLmNvLm56L2RhdGEtdmlzdWFsaXNhdGlvbi5odG1sKSwgd2hpY2ggY292ZXJzIGFkdmFuY2VkIHBsb3R0aW5nIHdpdGggdGhlIGdncGxvdCBsaWJyYXJ5IGluIGRldGFpbC4NCg0KV2hlbiB5b3UgaGF2ZSBjb21wbGV0ZWQgdGhpcyBtb2R1bGUsIHlvdSBzaG91bGQgYmUgcmVhZHkgdG8gcHJvZHVjZSB0aGUgZ3JhcGhzIGFuZCBmaWd1cmVzIHlvdSB3aWxsIG5lZWQgZm9yIHlvdXIgaW4tY291cnNlIHJlc2VhcmNoIHByb2plY3RzLiBJZiB5b3UgcnVuIGludG8gYW55IHByb2JsZW1zIG9yIGhhdmUgYW55IHF1ZXN0aW9ucywgZW1haWwgdXMsIG9yIGRyb3AgdXMgYSBtZXNzYWdlIGluIHRoZSBSNFNTUCBjbGFzcyB0ZWFtIG9uIE1TIFRlYW1zLg0KDQoNCiMjIFByZXBhcmF0aW9uIC0gRG8gdGhpcyB2ZXJ5IGNhcmVmdWxseQ0KDQpEb2N1bWVudCBvcmdhbmlzYXRpb24gaXMgdml0YWxseSBpbXBvcnRhbnQuIFdlIHN1Z2dlc3QgdGhhdCB5b3Uga2VlcCBhIHNlcGFyYXRlIGZvbGRlciBmb3IgZWFjaCBSNFNTUCBtb2R1bGUuIFRvIGRvIHRoaXMsIHlvdSBjYW4gc2V0IHVwIGEgZm9ybWFsIFJTdHVkaW8gcHJvamVjdCAoc2VlIGZvciBleGFtcGxlIGh0dHBzOi8vc3VwcG9ydC5yc3R1ZGlvLmNvbS9oYy9lbi11cy9hcnRpY2xlcy8yMDA1MjYyMDctVXNpbmctUHJvamVjdHMpLiBCdXQgaWYgeW91IGRvbid0IGZlZWwgcXVpdGUgcmVhZHkgZm9yIHRoYXQsIHlvdSBjYW4ganVzdCBjb2xsZWN0IHlvdXIgc2NyaXB0IGZpbGUgYW5kIGRhdGEgZmlsZXMgdG9nZXRoZXIgaW4gYSBmb2xkZXIuIFByb2NlZWQgYXMgZm9sbG93czoNCg0KDQoxLiBMYXVuY2ggUiBTdHVkaW8NCg0KMi4gRm9sbG93aW5nIHRoZSBwcm9jZWR1cmUgZnJvbSAqKlVzaW5nIGEgU2NyaXB0IEZpbGUqKiBpbiBNb2R1bGUgMSAtIEludHJvIHRvIFIgYW5kIFJTdHVkaW8sIGNyZWF0ZSBhIHNjcmlwdCBmaWxlIGFuZCBzYXZlIGl0IHRvIHlvdXIgZGVza3RvcCBvciBvdGhlciBsb2NhdGlvbiB3aGVyZSB5b3Ugd2lsbCBiZSBhYmxlIHRvIGZpbmQgaXQuDQoNCjMuIFF1aXQgUiBTdHVkaW8NCg0KNC4gTG9jYXRlIHRoZSBzY3JpcHQgZmlsZSB5b3UganVzdCBtYWRlIChpdCB3aWxsIGhhdmUgYSAuUiBmaWxlIHN1ZmZpeCkuIA0KDQo1LiBDcmVhdGUgYSBuZXcgZm9sZGVyIChuYW1lIGl0IHNvbWV0aGluZyBzZW5zaWJsZSkgYW5kIHBsYWNlIHRoZSBzY3JpcHQgZmlsZSBpbiBpdC4NCg0KNi4gUmV0cmlldmUgdGhlIHNhbXBsZSBjc3YgZGF0YSBmaWxlIHVzZWQgaW4gdGhpcyBtb2R1bGUgZnJvbSB0aGUgY291cnNlIEdvb2dsZSBEcml2ZSBzaGFyZWQgZm9sZGVyIF5baHR0cHM6Ly9kcml2ZS5nb29nbGUuY29tL2RyaXZlL2ZvbGRlcnMvMXR0ZjFzOC12a0pOT2xIZHBoZmkyekZ5TXE2Z0dFdkN5P3VzcD1zaGFyaW5nXS4gUGxhY2UgdGhlIGNzdiBmaWxlIGludG8gdGhlIGZvbGRlciB3aXRoIHlvdXIgc2NyaXB0IGZpbGUuDQoNCl5bDQo+IE9yIHlvdSBjYW4gZG93bmxvYWQgdGhlIGZpbGUgZGlyZWN0bHkgdXNpbmcgUjoNCj4NCj4gYGBge3IsIGV2YWw9RkFMU0V9DQo+IGRvd25sb2FkLmZpbGUodXJsID0gImh0dHBzOi8vcmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbS9ydGlzLXRyYWluaW5nLzIwMjItczEtcjRzc3AvbWFpbi9kYXRhL3I0c3NwX2RvbmF0aW9uc19kYXRhLmNzdiIsIA0KPiAgICAgICAgICAgICAgZGVzdGZpbGUgPSAiZGF0YS9yNHNzcF9kb25hdGlvbnNfZGF0YS5jc3YiKQ0KPiBgYGANCj4NCj4gUGxlYXNlIG5vdGUgdGhpcyBhc3N1bWVzIHlvdSBhcmUgdXNpbmcgdGhlIHByb2plY3QgYW5kIHN0cnVjdHVyZSBjcmVhdGVkIGluIHRoZSBsYXN0IGhhbmRvdXQuIEltcG9ydGFudGx5IGlmIHRoaXMgZG9lc24ndCB3b3JrIGZvciB5b3UgY2hlY2sgdGhhdCB0aGUgImRhdGEiIGZvbGRlciBleGlzdHMgYW5kIG1hdGNoZXMgZXhhY3RseS4NCl0NCg0KNy4gT3BlbiB0aGUgZm9sZGVyIGFuZCBkb3VibGUtY2xpY2sgKipvbiB5b3VyIHNjcmlwdCBmaWxlKiogdG8gb3BlbiBpdCBpbiBSU3R1ZGlvLg0KDQpJZiB5b3Ugc2V0IHRoaW5ncyB1cCB0aGlzIHdheSwgUlN0dWRpbyB3aWxsIGJlIGFibGUgdG8gZmluZCB5b3VyIGRhdGEgZmlsZSBmb3IgdGhlIG5leHQgc3RlcCAtLSBpbXBvcnRpbmcgZGF0YS4NCg0KXA0KDQojIyBJbXBvcnRpbmcgYSBkYXRhIGZpbGUNCg0KVGhlIHByb3ZpZGVkIGZpbGUgKipyNHNzcF9kb25hdGlvbnNfZGF0YS5jc3YqKiBjb250YWlucyB0aGUgKGZpY3RpdGlvdXMpIHJlc3VsdHMgb2YgYSBzdHVkeSBkZXNpZ25lZCB0byBleHBsb3JlIHRoZSBmYWN0b3JzIHdoaWNoIGFmZmVjdCBkb25hdGlvbnMgdG8gc3RyZWV0LWNvcm5lciBjaGFyaXR5IGNvbGxlY3RvcnMuIEZpZnR5IHN0dWRlbnQgcmVzZWFyY2hlcnMgZWFjaCBzcGVudCBmb3VyIGhvdXJzIGF0IG9uZSBvZiA1MCByYW5kb21seSBzZWxlY3RlZCBwb3NpdGlvbnMgb24gR2VvcmdlIFN0cmVldCwgY29sbGVjdGluZyBkb25hdGlvbnMgZm9yICpCbGluZCBMb3cgVmlzaW9uIE5aIEd1aWRlIERvZ3MqLCBhbiBvcmdhbmlzYXRpb24gdGhhdCByYWlzZXMgYW5kIHRyYWlucyBzZXJ2aWNlIGRvZ3MuIFR3ZW50eS1maXZlIG9mIHRoZSBjb2xsZWN0b3JzIHdlcmUgYWNjb21wYW5pZWQgYnkgZ3VpZGUgZG9nIHB1cHBpZXM7IHRoZSBvdGhlciAyNSB3ZXJlIGFsb25lLiBBc3NpZ25tZW50IHRvIHRoZSBQdXBweSBvciBBbG9uZSBjb25kaXRpb25zIHdhcyBkb25lIHJhbmRvbWx5LiBFYWNoIHJlc2VhcmNoZXIgcmVjb3JkZWQgdGhlIHRvdGFsIGFtb3VudCBvZiBtb25leSBjb2xsZWN0ZWQgZHVyaW5nIHRoZWlyIGZvdXIgaG91ciBzaGlmdC4gVGhlIHN0YXJ0IG9mIHRoZSBkYXRhIGZpbGUgaXMgc2hvd24gYmVsb3cuDQoNCmBgYHtyLCBmaWcuYWxpZ249J2NlbnRlcicsIG91dC53aWR0aCA9ICI1MCUiLCBmaWcuY2FwID0gIkRvbmF0aW9ucyAtIFB1cHB5IG9yIEFsb25lIiwgZmlnLnBvcyA9ICJIIiwgZWNobyA9IEZBTFNFfQ0KaW5jbHVkZV9ncmFwaGljcygiaW1hZ2VzLzAyLWRvbmF0aW9uc19wdXBweS5wbmciKQ0KYGBgDQoNCg0KDQpXZSB3aWxsIGltcG9ydCB0aGlzIGZpbGUgaW50byBSIGZvciBzb21lIHByZWxpbWluYXJ5IGRhdGEgYW5hbHlzaXMuDQoNClRvIGltcG9ydCBhIGNzdiBmaWxlIGludG8gUiB3ZSBjYW4gdXNlIHRoZSBmdW5jdGlvbiBgcmVhZF9jc3ZgLiBMaWtlIHRoZSBSIGZ1bmN0aW9ucyB3ZSB1c2VkIGluIE1vZHVsZSAyLCBgcmVhZF9jc3ZgIGFjY2VwdHMgYW4gYXJndW1lbnQgYmV0d2VlbiBpdHMgcm91bmQgYnJhY2tldHMuIFRoZSBhcmd1bWVudCBpcyB0aGUgbmFtZSBvZiB0aGUgaW5wdXQgZmlsZS4gQmVjYXVzZSB0aGUgbmFtZSBvZiB0aGUgZmlsZSBpcyBhIHN0cmluZywgd2Ugc3Vycm91bmQgaXQgd2l0aCBkb3VibGUgcXVvdGVzLiBXZSB3aWxsIHRoZXJlZm9yZSBzYXk6DQoNCmByZWFkX2NzdigicjRzc3BfZG9uYXRpb25zX2RhdGEuY3N2IilgDQoNCkhvd2V2ZXIsIHdlIGFyZSBub3QgcXVpdGUgcmVhZHkgdG8gcnVuIHRoaXMgY29tbWFuZC4gVGhlIGZ1bmN0aW9uIGByZWFkX2NzdmAgaXMgbm90IHBhcnQgb2YgYmFzZSBSICh0aGUgUiBmdW5jdGlvbnMgdGhhdCBhcmUgYXV0b21hdGljYWxseSBhdmFpbGFibGUgaW4gUlN0dWRpbykuIEl0IGlzIHBhcnQgb2YgYSAqKmxpYnJhcnkqKiwgYSBzZXQgb2YgYWRkaXRpb25hbCBmdW5jdGlvbnMgdGhhdCBjYW4gYmUgbG9hZGVkIGludG8gUlN0dWRpby4gRnVuY3Rpb24gYHJlYWRfY3N2YCBpcyBwYXJ0IG9mIHRoZSAqKnJlYWRyKiogbGlicmFyeSwgYW5kIHdlIGxvYWQgaXQgd2l0aCB0aGUgYGxpYnJhcnlgIGNvbW1hbmQuIFdlIHdpbGwgdGhlcmVmb3JlIG5lZWQgdHdvIGxpbmVzIG9mIGNvZGU6DQoNCg0KYGxpYnJhcnkocmVhZHIpYA0KDQpgcmVhZF9jc3YoInI0c3NwX2RvbmF0aW9uc19kYXRhLmNzdiIpYA0KDQpOb3RlIHRoYXQgeW91IG9ubHkgaGF2ZSB0byBleGVjdXRlIGBsaWJyYXJ5YCBvbmNlIGVhY2ggdGltZSB5b3Ugb3BlbiBSU3R1ZGlvLiBBZnRlciBsb2FkaW5nIGEgbGlicmFyeSwgaXQgaXMgYXZhaWxhYmxlIGZvciB0aGUgcmVtYWluZGVyIG9mIHlvdXIgUiBzZXNzaW9uIChpLmUuIHVudGlsIHlvdSBxdWl0IFJTdHVkaW8pIGFuZCB5b3UgY2FuIGNhbGwgaXRzIGZ1bmN0aW9ucyBhcyBub3JtYWwuDQoNClwNCg0KIyMgSW1wb3J0IGFuZCBjaGVjayB5b3VyIGRhdGENCg0KVHlwZSB0aGUgZm9sbG93aW5nIGxpbmVzIGludG8geW91ciBzY3JpcHQgZmlsZS4gRXhlY3V0ZSB5b3VyIGNvbW1hbmRzIGFzIHlvdSBkaWQgaW4gdGhlIHByZXZpb3VzIG1vZHVsZS4NCg0KYGBge3IgcmVhZF9jc3Z9DQpsaWJyYXJ5KHJlYWRyKQ0KcmVhZF9jc3YoImRhdGEvcjRzc3BfZG9uYXRpb25zX2RhdGEuY3N2IikNCmBgYA0KDQpOQjogV2hlbiB5b3UgdHJ5IHRvIGV4ZWN1dGUgdGhpcyBjb2RlLCB5b3UgbWF5IHJlY2VpdmUgYW4gZXJyb3IgbWVzc2FnZTogKkVycm9yIGluIGxpYnJhcnkocmVhZHIpIDogdGhlcmUgaXMgbm8gcGFja2FnZSBjYWxsZWQg4oCYcmVhZHLigJkqLiBJZiB0aGlzIGhhcHBlbnMgaXQgbWVhbnMgdGhhdCB0aGUgZnVuY3Rpb25zIGluIGxpYnJhcnkgcmVhZHIgaGF2ZSBub3QgeWV0IGJlZW4gaW5zdGFsbGVkIG9uIHlvdXIgY29tcHV0ZXIuIFBsZWFzZSBzZWUgKipBcHBlbmRpeCAyIC0gSW5zdGFsbGluZyBQYWNrYWdlcyoqIGF0IHRoZSBlbmQgb2YgdGhpcyBoYW5kb3V0IGZvciBpbnN0cnVjdGlvbnMuDQoNCldoZW4gaW1wb3J0ZWQgaW50byBSLCB0aGUgZGF0YSBmcm9tIHRoZSBjc3YgZmlsZSBhcmUgc3RvcmVkIGluIGFuIFIgb2JqZWN0IGNhbGxlZCBhICoqdGliYmxlKiouIEEgdGliYmxlIGlzIGEgc2xpZ2h0bHkgZW5oYW5jZWQgdmVyc2lvbiBvZiBhIGNvcmUgUiBvYmplY3QgY2FsbGVkIGEgKipkYXRhIGZyYW1lKiouIFRpYmJsZXMgYW5kIGRhdGEgZnJhbWVzIGFyZSBzaW1wbHkgdGFibGVzLCBvcmdhbmlzZWQgaW50byByb3dzIGFuZCBjb2x1bW5zLiBUaGUgY29sdW1ucyBoYXZlIG5hbWVzLCBhbmQgZWFjaCByb3cgb2YgdGhlIGNzdiBmaWxlIGJlY29tZXMgYSByb3cgaW4gdGhlIGRhdGEgZnJhbWUuIA0KDQpXaGVuIHlvdSBjYWxsIGByZWFkX2NzdmAsIHBhc3NpbmcgaW4gYSBmaWxlIG5hbWUsIFIgcmVhZHMgaW4gdGhlIGZpbGUsIGNvbnZlcnRzIGl0IHRvIGEgdGliYmxlLCBhbmQgZGlzcGxheXMgaXQgaW4gdGhlIGNvbnNvbGUuIFRoZSBjb2x1bW5zIGhhdmUgdGhlIHNhbWUgbmFtZXMgYXMgaW4gdGhlIGNzdiBmaWxlLiBXZSB3aWxsIHNlZSBsYXRlciB0aGF0IHdlIGNhbiB1c2UgdGhlIGNvbHVtbiBuYW1lcyB0byBleHBsb3JlIHNwZWNpZmljIHByb3BlcnRpZXMgb2Ygb3VyIGRhdGEgc2V0Lg0KDQpSIGFsc28gZ2l2ZXMgeW91IHNvbWUgaW5mb3JtYXRpb24gYWJvdXQgaG93IGl0IHVuZGVyc3RhbmRzIHRoZSBjb250ZW50cyBvZiB0aGUgZmlsZSBpdCBoYXMgaW1wb3J0ZWQuIEluIHRoZSBjb25zb2xlIHlvdSB3aWxsIHNlZSB0aGUgd29yZHMgKipQYXJzZWQgd2l0aCBjb2x1bW4gc3BlY2lmaWNhdGlvbjoqKiBmb2xsb3dlZCBieSBhIGxpc3Qgb2YgdGhlIGltcG9ydGVkIGNvbHVtbnMuIA0KDQpFYWNoIGNvbHVtbiBoZWFkZXIgaXMgYXNzb2NpYXRlZCB3aXRoIGEgdmFsdWUgKipjb2xfZG91YmxlKCkqKiwgb3IgKipjb2xfY2hhcmFjdGVyKCkqKi4gVGhlc2UgaW5kaWNhdGUgd2hhdCBraW5kIG9mIGRhdGEgUiBpZGVudGlmaWVkIGluIHRoZSBpbnB1dCBmaWxlLiBDb2x1bW5zIHRoYXQgYXJlICoqY29sX2RvdWJsZSoqIGFyZSBudW1iZXJzOyBjb2x1bW5zIHRoYXQgYXJlICoqY29sX2NoYXJhY3RlcioqIGFyZSBzdHJpbmdzLiBUaGUgc2FtZSBpbmZvcm1hdGlvbiBpcyBzaG93biB3aGVyZSBSU3R1ZGlvIHByaW50cyB0aGUgaW1wb3J0ZWQgZGF0YS4gQmVuZWF0aCBlYWNoIGNvbHVtbiBoZWFkZXIgeW91IHdpbGwgc2VlICoqZGJsKiogZm9yIG51bWJlcnMgYW5kICoqY2hyKiogZm9yIHN0cmluZ3MuIA0KDQpUaGlzIGlzIGEgZ29vZCBtb21lbnQgdG8gcGF1c2UgYW5kIGNoZWNrIHRoYXQgeW91ciBkYXRhIGhhdmUgYmVlbiBpbXBvcnRlZCBjb3JyZWN0bHkuIERhdGEgZW50cnkgZXJyb3JzIGNhbiBjYXVzZSBSIHRvIG1ha2UgdGhlIHdyb25nIGFzc3VtcHRpb25zIGFib3V0IHlvdXIgZGF0YS4gSWYgeW91IGhhdmUgYSBjb2x1bW4gb2YgbnVtYmVycyB0aGF0IGNvbnRhaW5zIGV2ZW4gb25lIGFjY2lkZW50YWwgYWxwaGFiZXRpYyBjaGFyYWN0ZXIgKHR5cG9zIGRvIGhhcHBlbikgUiB3aWxsIGNvbnNpZGVyIHRoZSB3aG9sZSBjb2x1bW4gdG8gYmUgc3RyaW5ncy4gTGF0ZXIsIFIgd2lsbCBnaXZlIHRoZSB3cm9uZyByZXN1bHRzIHdoZW4geW91IHBlcmZvcm0gc3RhdGlzdGljYWwgYW5hbHlzZXMgb24gdGhlc2UgZGF0YSAob3IgaXQgd2lsbCByZWZ1c2UgdG8gcGVyZm9ybSB0aGVtIGF0IGFsbCkuICAgDQoNCllvdSB3aWxsIG9mdGVuIGFsc28gc2VlIGZpbGVzIGltcG9ydGVkIHdpdGggdGhlIGZ1bmN0aW9uIGByZWFkLmNzdmAgKG5vdGUgdGhlIC4gaW5zdGVhZCBvZiB0aGUgXyApLiBUaGlzIGlzIHRoZSBiYXNlIFIgZnVuY3Rpb24gZm9yIGltcG9ydGluZyBmaWxlcy4gVG8gdXNlIGByZWFkLmNzdmAgeW91IGRvbid0IG5lZWQgdG8gbG9hZCBhIGxpYnJhcnkgZmlyc3QsIGJ1dCBSIGRvZXNuJ3QgZ2VuZXJhdGUgYW55IGluZm9ybWF0aW9uIGFib3V0IGhvdyBpdCBoYXMgcGFyc2VkIHRoZSBkYXRhIGluIHRoZSBjb2x1bW5zLiBZb3UgY2FuIHVzZSB0aGUgZnVuY3Rpb24gYHN0cmAgdG8gZ2V0IHRoaXMgaW5mb3JtYXRpb24uIEdvb2dsZSBmb3IgZGV0YWlscy4NCg0KV2l0aCBib3RoIGByZWFkX2NzdmAgYW5kIGByZWFkLmNzdmAgUiB3aWxsIGltcG9ydCB0aGUgZmlsZSBhbmQgZGlzcGxheSBpdHMgY29udGVudHMgaW4gdGhlIGNvbnNvbGUsIGJ1dCB0aGlzIGlzIG5vdCBxdWl0ZSBlbm91Z2guIFdlIHdhbnQgUiB0byBzdG9yZSB0aGUgZGF0YSBpbiBhIG5hbWVkIHZhcmlhYmxlIHNvIHRoYXQgd2UgY2FuIHJlZmVyIHRvIGl0IGxhdGVyIChpLmUuLCBkbyBhbmFseXNlcyBvbiBpdCkuIFdlIGRvIHRoYXQgd2l0aCB0aGUgYXNzaWdubWVudCBvcGVyYXRvciwgYXMgd2UgZGlkIGluIG91ciBwcmV2aW91cyBtb2R1bGUuIEZvciBleGFtcGxlLCB3ZSBjYW4gc2F5Og0KDQpgcHVwcHlfZG9uYXRpb25zX2RhdGEgPC0gcmVhZF9jc3YoInI0c3NwX2RvbmF0aW9uc19kYXRhLmNzdiIpYA0KDQpUaGVuLCB3ZSBjYW4gcmVmZXIgdG8gdGhpcyB3aG9sZSBkYXRhc2V0IGFueSB0aW1lIHdpdGggYHB1cHB5X2RvbmF0aW9uc19kYXRhYC4NCg0KRW50ZXIgYW5kIHJ1biB0aGVzZSBjb21tYW5kczoNCg0KYGBge3IgbG9hZF9kYXRhfQ0KIyBMb2FkIHRoZSBsaWJyYXJ5IGJlZm9yZSB0aGUgZmlyc3QgdGltZSB5b3UgY2FsbCByZWFkX2Nzdg0KbGlicmFyeShyZWFkcikNCg0KIyBSZWFkIGEgY3N2IGZpbGUgaW50byBSLiBTdG9yZSB0aGUgcmVzdWx0IGluIGEgbmFtZWQgdmFyaWFibGUNCnB1cHB5X2RvbmF0aW9uc19kYXRhIDwtIHJlYWRfY3N2KCJkYXRhL3I0c3NwX2RvbmF0aW9uc19kYXRhLmNzdiIpDQoNCiMgQXMgYWx3YXlzIGluIFIsIHdlIGNhbiBkaXNwbGF5IHRoZSBjb250ZW50cyBvZiBhIHZhcmlhYmxlIGJ5IHNpbXBseSB0eXBpbmcgaXRzIG5hbWUuDQpwdXBweV9kb25hdGlvbnNfZGF0YQ0KDQpgYGANCg0KXA0KDQojIyBQZXJmb3JtIGRlc2NyaXB0aXZlIGFuYWx5c2VzIG9uIGNvbHVtbnMNCg0KSXQgaXMgYWx3YXlzIGluZm9ybWF0aXZlIHRvIGJlZ2luIGRhdGEgYW5hbHlzaXMgYnkgaW5zcGVjdGluZyB5b3VyIGRlcGVuZGVudCB2YXJpYWJsZSAoaW4gdGhpcyBjYXNlLCBhbW91bnQgb2YgbW9uZXkgY29sbGVjdGVkKS4gV29yayB0aHJvdWdoIGVhY2ggb2YgdGhlIGZvbGxvd2luZyBzdGVwcywgYWRkaW5nIHRoZSBjb2RlIHRvIHlvdXIgc2NyaXB0IGZpbGUgKGFuZCByZW1lbWJlciB0byAqKlNhdmUgT2Z0ZW4qKikuDQoNClRvIHNlbGVjdCBhIHNpbmdsZSBjb2x1bW4gZnJvbSBhIGRhdGEgZnJhbWUsIHdlIGFwcGx5IHRoZSAqKiQqKiBvcGVyYXRvciB0byB0aGUgZGF0YSBmcmFtZSwgYW5kIHNwZWNpZnkgdGhlIGNvbHVtbiBuYW1lLiBUaGUgb3V0cHV0IGlzIGEgKip2ZWN0b3IqKiBjb250YWluaW5nIHRoZSB2YWx1ZXMgaW4gdGhlIG5hbWVkIGNvbHVtbi4NCg0KYGBge3Igc2VsZWN0Q29sdW1ufQ0KDQojIFNlbGVjdCBhIHNpbmdsZSBjb2x1bW4gd2l0aCAkIGFuZCB0aGUgY29sdW1uIG5hbWUNCnB1cHB5X2RvbmF0aW9uc19kYXRhJEFtb3VudA0KYGBgDQoNClRvIHNpbXBsaWZ5IG91ciBsYXRlciB0eXBpbmcsIHdlIGNhbiB1c2UgdGhlIGFzc2lnbm1lbnQgb3BlcmF0b3IgdG8gc2F2ZSB0aGUgb3V0cHV0IGludG8gYSBuYW1lZCB2YXJpYWJsZS4NCg0KYGBge3Igc2F2ZUNvbHVtbn0NCiMgU2F2ZSBhIHNpbmdsZSBjb2x1bW4gaW50byBhIHZhcmlhYmxlDQphbW91bnRfb25seSA8LSBwdXBweV9kb25hdGlvbnNfZGF0YSRBbW91bnQNCg0KIyBEaXNwbGF5IHRoZSB2YXJpYWJsZQ0KYW1vdW50X29ubHkNCmBgYA0KDQoNCldlIGNhbiBub3cgYXBwbHkgUidzIG1hbnksIG1hbnkgc3RhdGlzdGljYWwgZnVuY3Rpb25zIHRvIG91ciB2YXJpYWJsZS4NCg0KDQojIyMgU2ltcGxlIHBsb3RzIC0gdGhlIGhpc3RvZ3JhbQ0KDQpGaXJzdCwgbGV0J3MgcGxvdCBhIGhpc3RvZ3JhbSBvZiB0aGUgYW1vdW50cyBjb2xsZWN0ZWQsIChpZ25vcmluZyB0aGUgUHVwcHkvQWxvbmUgY29uZGl0aW9uKSwgdG8gZ2V0IGEgcXVpY2sgc2Vuc2Ugb2YgaG93IG11Y2ggcGVvcGxlIGFyZSBkb25hdGluZy4gV2UgZ2VuZXJhdGUgdGhpcyBncmFwaCB3aXRoIGZ1bmN0aW9uIGBoaXN0YC4gVGhlIGdyYXBoIHdpbGwgYmUgZGlzcGxheWVkIGluIHRoZSBQbG90cyB0YWIgb2YgUlN0dWRpbydzIGxvd2VyLXJpZ2h0IHBhbmUuDQoNCmBgYHtyIDAyLWhpc3R9DQpoaXN0KGFtb3VudF9vbmx5KQ0KYGBgDQpPdXIgZGF0YSBhcHBlYXIgdG8gYmUgYmltb2RhbCAoaS5lLiB0aGV5IGhhdmUgdHdvIHBlYWtzKS4gVGhpcyBwYXR0ZXJuIGNhbiBpbmRpY2F0ZSB0aGUgcHJlc2VuY2Ugb2YgZGlzdGluY3QgZ3JvdXBzIGluIGEgZGF0YSBzZXQsIGFuIGluZm9ybWF0aXZlIHJlc3VsdCBpbiB0aGlzIHN0dWR5LiANCg0KDQojIyMgU2ltcGxlIG51bWVyaWMgZGVzY3JpcHRpdmUgc3RhdGlzdGljcw0KDQpXZSBjYW4gYWxzbyBnZW5lcmF0ZSBzb21lIHVzZWZ1bCBudW1lcmljIHN1bW1hcmllczoNCmBgYHtyIHNvbWVTdGF0c30NCiMgQ29tcHV0ZSB0aGUgbWF0aGVtYXRpY2FsIG1lYW4gd2l0aCBmdW5jdGlvbiBtZWFuKCkNCm1lYW4oYW1vdW50X29ubHkpDQoNCiMgQ29tcHV0ZSB0aGUgc3RhbmRhcmQgZGV2aWF0aW9uIHdpdGggZnVuY3Rpb24gc2QoKQ0Kc2QoYW1vdW50X29ubHkpDQoNCiMgR2V0IGEgc2VsZWN0aW9uIG9mIGRpc3RyaWJ1dGlvbiBkZXNjcmlwdG9ycyB3aXRoIGZ1bmN0aW9uIHN1bW1hcnkoKQ0Kc3VtbWFyeShhbW91bnRfb25seSkNCmBgYA0KDQpUaGVyZSBhcmUsIGxpdGVyYWxseSwgaHVuZHJlZHMgb2YgaW50ZXJlc3RpbmcgZnVuY3Rpb25zIGluIFIgZm9yIHBlcmZvcm1pbmcgc3VtbWFyeSBhbmFseXNlcy4gU2FkbHksIHdlIGRvIG5vdCBoYXZlIHRpbWUgdG8gY292ZXIgdGhlbSBhbGwsIGJ1dCB3ZSBlbmNvdXJhZ2UgeW91IHRvIGV4cGxvcmUgUiB0ZXh0Ym9va3MgYW5kIG9ubGluZSByZXNvdXJjZXMgdG8gbGVhcm4gbW9yZSBhYm91dCB0aGVtLg0KDQoNCg0KIyMjIEJveHBsb3RzDQpXZSBjYW4gc2VlIHRoYXQgdGhlIG1lYW4gYW1vdW50IGlzIGhpZ2hlciBmb3IgY29sbGVjdG9ycyB3aG8gaGFkIHB1cHBpZXMgdGhhbiBmb3IgdGhvc2Ugd2hvIGRpZCBub3QgKCQxOTcuNzkgdnMuICQxMDIuMzApLiBXZSBjYW4gaWxsdXN0cmF0ZSB0aGlzIGRpZmZlcmVuY2UgZ3JhcGhpY2FsbHkgdXNpbmcgYSBib3hwbG90LiANCg0KVGhlIFIgZnVuY3Rpb24gYGJveHBsb3RgIGFjY2VwdHMgdHdvIGFyZ3VtZW50cy4gDQoNClRoZSBmaXJzdCBhcmd1bWVudCBpcyB0aGUgKipmb3JtdWxhKiouIFRoaXMgaXMgYSBjb21wbGV4LCB5ZXQgdmVyeSBjb21tb24sIGFyZ3VtZW50IGZvcm1hdCBmb3IgUiBzdGF0aXN0aWNhbCBmdW5jdGlvbnMuIFRoZSBmb3JtdWxhIGRlc2NyaWJlcyBhIGxpbmVhciBtb2RlbCBmb3IgYSBkYXRhIHNldCB3aXRoIHRoZSBnZW5lcmFsIHN0cnVjdHVyZTogKipkZXBlbmRlbnQgb3IgcHJlZGljdGVkIHZhcmlhYmxlIH4gaW5kZXBlbmRlbnQgdmFyaWFibGVzIG9yIHByZWRpY3RvcnMqKiwgdXNpbmcgY29sdW1ucyBuYW1lcyBmcm9tIHRoZSBkYXRhIGZyYW1lLiBUaGUgfiAodGlsZGUpIGlzIHJlYWQgYXMgImRlcGVuZHMgb24iIG9yICJpcyBwcmVkaWN0ZWQgYnkiLiBGb3Igb3VyIGV4YW1wbGUsIHdlIGFyZSBpbnRlcmVzdGVkIGluIHRoZSB3YXkgdGhhdCBBbW91bnQgaXMgZGVwZW5kZW50IG9uIHRoZSBQdXBweS9BbG9uZSBjb25kaXRpb24sIHNvIHdlIHNwZWNpZnkgb3VyIGZvcm11bGEgYXMgKipBbW91bnQgfiBDb25kaXRpb24qKi4gIFdlIHdpbGwgc2VlIG1vcmUgY29tcGxleCBleGFtcGxlcyBvZiB0aGUgZm9ybXVsYSBhcmd1bWVudCBsYXRlciBpbiB0aGUgc2VtZXN0ZXIuDQoNCg0KVGhlIHNlY29uZCBhcmd1bWVudCB0byBib3hwbG90IGlzIHRoZSBkYXRhIGZyYW1lLg0KDQpgYGB7ciAwMi1ib3hwbG90MDF9DQpib3hwbG90KEFtb3VudCB+IENvbmRpdGlvbiwgcHVwcHlfZG9uYXRpb25zX2RhdGEpDQpgYGANCg0KDQpCb3hwbG90cyBlZmZpY2llbnRseSBpbGx1c3RyYXRlIGJvdGggdGhlIGNlbnRyYWwgdGVuZGVuY3kgYW5kIHRoZSB2YXJpYWJpbGl0eSBvZiBhIGRhdGEgc2V0LiBFYWNoIGdyZXkgYm94IGV4dGVuZHMgZnJvbSB0aGUgZmlyc3QgcXVhcnRpbGUgdG8gdGhlIHRoaXJkIHF1YXJ0aWxlIG9mIGl0cyBpbnB1dCB2YWx1ZXMuIFRoZSBkYXJrIGxpbmUgYWNyb3NzIHRoZSBib3ggaXMgYXQgdGhlIG1lZGlhbi4gVGhlIHR3byB0aGluIGxpbmVzIG91dHNpZGUgdGhlIHFyZXkgYm94IHNob3cgdGhlIHZhbHVlcyBvZiB0aGUgbWluaW11bSBhbmQgbWF4aW11bSBzY29yZXMsIGV4Y2x1ZGluZyBleHRyZW1lIG91dGxpZXJzLiBJZiBleHRyZW1lIG91dGxpZXJzIGFyZSBwcmVzZW50LCB0aGV5IGFyZSBzaG93biBhcyBhc3Rlcmlza3MuDQoNClRoZSBgYm94cGxvdGAgZnVuY3Rpb24gYWN0dWFsbHkgaGFzIG1hbnkgb3B0aW9uYWwgYXJndW1lbnRzIGZvciB0aGluZ3MgbGlrZSBhZGRpbmcgbGVnZW5kcyBhbmQgZm9ybWF0dGluZyBwbG90IGF4ZXMsIGFuZCBjYWxscyB0byB0aGlzIGZ1bmN0aW9uIGNhbiBnZXQgcXVpdGUgZWxhYm9yYXRlLiBCZWNhdXNlIG9mIHRoaXMsIGl0IGlzIGNvbW1vbiB0byBzZWUgdGhlIGZ1bmN0aW9uIGNhbGxlZCB3aXRoIGl0cyBhcmd1bWVudHMgbmFtZWQgKGFzIHdpdGggc3RyaW5nc0FzRmFjdG9ycywgYWJvdmUpLiBGb3IgZXhhbXBsZToNCg0KYGBge3IgMDItYm94cGxvdDAyfQ0KYm94cGxvdChmb3JtdWxhID0gQW1vdW50IH4gQ29uZGl0aW9uLCBkYXRhID0gcHVwcHlfZG9uYXRpb25zX2RhdGEpDQpgYGANCg0KIyMjIFRpZHl2ZXJzZSAtIGdncGxvdDINCg0KDQpUaGVyZSBpcyBhIGZhbnRhc3RpYyBpbnRyb2R1Y3Rpb24gdG8gRGF0YSBWaXN1YWxpc2F0aW9uIHVzaW5nIGdncGxvdCBpbiAiUiBmb3IgRGF0YSBTY2llbmNlIiAoaHR0cHM6Ly9yNGRzLmhhZC5jby5uei9kYXRhLXZpc3VhbGlzYXRpb24uaHRtbCkuIEl0J3MgaGlnaGx5IHJlY29tbWVuZGVkIHRvIGhhdmUgYSByZWFkIHRocm91Z2ggdGhpcyBjaGFwdGVyIGFzIHdlJ2xsIG9ubHkgdG91Y2ggb24gYSB2ZXJ5IGJyaWVmIGludHJvZHVjdGlvbiBvZiB0aGlzIGZyYW1ld29yayBpbiB0aGlzIG1vZHVsZS4NCg0KVGhlIGdncGxvdDIgcGFja2FnZSBpcyBhIHBvcHVsYXIgZGF0YSB2aXN1YWxpc2F0aW9uIHBhY2thZ2UgZm9yIFIuIEl0IHdhcyBkZXZlbG9wZWQgYnkgSGFkbGV5IFdpY2toYW0gdG8gaW1wbGVtZW50IHRoZSAnZ3JhbW1hciBvZiBncmFwaGljcycuIEluIG9yZGVyIHRvIHVzZSBpdCB3ZSBuZWVkIHRvIGZpcnN0IGxvYWQgaXQgaW50byBSLg0KDQoNCg0KYGBge3J9DQpsaWJyYXJ5KGdncGxvdDIpDQpgYGANCg0KZ2dwbG90IHRhY2tsZXMgcGxvdHRpbmcgcmVkdWNpbmcgaXQgaW50byB0aHJlZSBjb21wb25lbnRzDQoNCi0gd2hhdCBpcyB0aGUgZGF0YQ0KLSBob3cgdGhlIGRhdGEgaXMgbWFwcGVkIHRvIGFlc3RoZXRpY3MgKGFlcykNCi0gaG93IHRoZSBkYXRhIGlzIHJlcHJlc2VudGVkIGdlb21ldHJpY2FsbHkgKGdlb20pDQoNClNvIHRvIGNyZWF0ZSBhIHBsb3QgdXNpbmcgZ2dwbG90IHdlIG5lZWQgdG8gc3BlY2lmeSB0aGVzZSB0aHJlZSBjb21wb25lbnRzLg0KDQoNClBsb3RzIGNhbiB0aGVuIGJlIG1hZGUgaW5jcmVtZW50YWxseSBieSBhZGRpbmcgb24gYWRkaXRpb25hbCBsYXllcnMuDQoNCldlJ2xsIG5vdyByZWNyZWF0ZSB0aGUgc2FtZSBwbG90cyBhcyB3ZSBkaWQgd2l0aCB0aGUgQmFzZSBSIHBsb3R0aW5nIHN5c3RlbS4NCg0KIyMjIyBTY2F0dGVyIHBsb3RzDQoNCkhlcmUgeW91J2xsIHNlZSB3ZSd2ZSBkZWZpbmVkIG91ciBkYXRhLCB3ZSd2ZSBtYXBwZWQgc3BlY2lmaWMgY29sdW1ucyB0byBvdXIgYXhlcywgYW5kIGFyZSB1c2luZyBhICdwb2ludCcgYXMgb3VyIGdlb21ldHJpYyByZXByZXNlbnRhdGlvbi4NCg0KYGBge3IgMDItZ2dfcG9pbnQxfQ0KZ2dwbG90KGRhdGEgPSBwdXBweV9kb25hdGlvbnNfZGF0YSwgbWFwcGluZyA9IGFlcyh4ID0gQ29sbGVjdG9yTnVtYmVyLCB5ID0gQW1vdW50KSkgKyANCiAgZ2VvbV9wb2ludCgpDQpgYGANCg0KV2UgY2FuIGFsc28gc3RvcmUgb3VyIHBsb3RzIGluIGEgdmFyaWFibGUgdG8gYnVpbGQgdXBvbg0KDQpgYGB7cn0NCnAgPC0gZ2dwbG90KGRhdGEgPSBwdXBweV9kb25hdGlvbnNfZGF0YSwgbWFwcGluZyA9IGFlcyh4ID0gQ29sbGVjdG9yTnVtYmVyLCB5ID0gQW1vdW50KSkNCmBgYA0KDQpXaGF0IGRvZXMgYHBgIGFjdHVhbGx5IGNvbnRhaW4/DQpgYGB7ciAwMi1nZ30NCnANCmBgYA0KDQoNCmBgYHtyIDAyLWdnX3BvaW50Mn0NCnAgKyBnZW9tX3BvaW50KCkNCmBgYA0KDQoNCiMjIyMjIFNwZWNpZml5aW5nIGNvbG91cg0KDQpSZW1lbWJlciBgcGAgY29udGFpbnMgb3VyIGluaXRpYWwgc3BlY2lmaWNhdGlvbiBvZiB0aGUgZGF0YSBhbmQgbWFwcGluZ3MNCg0KYGBge3IgMDItZ2dfcG9pbnQzfQ0KcCArIGdlb21fcG9pbnQoY29sb3VyID0gJ3JlZCcpDQpgYGANCg0KIyMjIyMgTWFwcGluZyBjb2xvdXIgZnJvbSBvdXIgZGF0YQ0KDQpgYGB7ciAwMi1nZ19wb2ludDR9DQpwICsgZ2VvbV9wb2ludChhZXMoY29sb3VyID0gQ29uZGl0aW9uKSkNCmBgYA0KTm90aWNlIHRoYXQgd2UgZGlkbid0IHNwZWNpZnkgdGhlIGNvbG91ciBmb3Igb3VyIHBvaW50cywgaW5zdGVhZCB3ZSBoYXZlIHRvbGQgZ2dwbG90IHRvIHVzZSBjb2xvdXJzIGJhc2VkIG9uIHRoZSB2YWx1ZXMgdGhhdCB3ZXJlIGZvdW5kIGluIHRoZSAiQ29uZGl0aW9uIiBjb2x1bW4gdXNpbmcgYGFlc2AuDQoNClwNCg0KIyMjIyBMaW5lIHBsb3RzDQoNCkluIHRoaXMgY2FzZSwgd2UgaGF2ZSB0aGUgc2FtZSBkYXRhIGFuZCBtYXBwaW5nLCBidXQgd2Ugd2FudCB0byBoYXZlIHRoZSBkYXRhIHJlcHJlc2VudGVkIGJ5IGEgbGluZSBzbyB3ZSBjaG9vc2UgYGdlb21fbGluZWAgYXMgb3VyICJnZW9tIi4NCg0KYGBge3IgMDItZ2dfbGluZTF9DQpwICsgZ2VvbV9saW5lKCkNCmBgYA0KDQoNCg0KDQojIyMjIyBBZGRpbmcgbGF5ZXJzDQoNCmBgYHtyIDAyLWdnX2xpbmUyfQ0KcCArIA0KICBnZW9tX2xpbmUoKSArIA0KICBnZW9tX3BvaW50KCkNCmBgYA0KDQoNCg0KYGBge3IgMDItZ2dfbGluZTN9DQpwICsgDQogIGdlb21fbGluZShjb2xvdXIgPSAnZ29sZCcpICsgDQogIGdlb21fcG9pbnQoY29sb3VyID0gJ3RvbWF0bycpDQpgYGANCg0KIyMjIyMgVXNpbmcgbWFwcGluZ3MNCg0KSWYgeW91IHdvdWxkIGxpa2UgdG8gcGxvdCBpbmRpdmlkdWFsIGxpbmVzIGJhc2VkIG9uIGEgY2F0ZWdvcmljYWwgdmFyaWFibGUgeW91IGNhbiB1c2VkIGEgJ2dyb3VwJyBtYXBwaW5nOg0KDQpgYGB7ciAwMi1nZ19saW5lNH0NCnAgKyANCiAgZ2VvbV9saW5lKGFlcyhncm91cCA9IENvbmRpdGlvbikpDQpgYGANCg0KDQpXZSBjYW4gc3BlY2lmeSBzZXBhcmF0ZSBhZXN0aGVzdGljcyBmb3IgZWFjaCBsYXllcg0KDQpgYGB7ciAwMi1nZ19saW5lNX0NCnAgKyANCiAgZ2VvbV9saW5lKGFlcyhjb2xvdXIgPSBDb25kaXRpb24pKSArIA0KICBnZW9tX3BvaW50KGFlcyhjb2xvdXIgPSBDb25kaXRpb24pKQ0KYGBgDQoNCk5vdGUgdGhhdCBjb2xvdXIgd2lsbCBhdXRvbWF0aWNhbGx5IGltcGx5IGEgX2dyb3VwXy4NCg0Kb3IgaWYgaXQgaXMgY29tbW9uIHRvIGFsbCBsYXllcnMsIHdlIGNhbiBzcGVjaWZ5IHRoZW0gaW4gdGhlIGluaXRpYWwgc2V0dGluZyB1cDoNCg0KYGBge3IgMDItZ2dfbGluZTZ9DQpnZ3Bsb3QoZGF0YSA9IHB1cHB5X2RvbmF0aW9uc19kYXRhLCANCiAgICAgICBtYXBwaW5nID0gYWVzKHggPSBDb2xsZWN0b3JOdW1iZXIsIA0KICAgICAgICAgICAgICAgICAgICAgeSA9IEFtb3VudCwgDQogICAgICAgICAgICAgICAgICAgICBjb2xvdXIgPSBDb25kaXRpb24pKSArIA0KICBnZW9tX2xpbmUoKSArIA0KICBnZW9tX3BvaW50KCkNCmBgYA0KDQpcDQoNCiMjIyMgSGlzdG9ncmFtDQoNCkEgaGlzdG9ncmFtIGlzIGNyZWF0ZWQgZnJvbSBhIHNpbmdsZSBjb250aW51b3VzIHZhcmlhYmxlLg0KDQpgYGB7ciAwMi1nZ19oaXN0fQ0KZ2dwbG90KGRhdGEgPSBwdXBweV9kb25hdGlvbnNfZGF0YSwgYWVzKHggPSBBbW91bnQpKSArIA0KICBnZW9tX2hpc3RvZ3JhbSgpDQpgYGANCg0KXA0KDQojIyMjIEJveHBsb3QNCg0KSW4gZ2dwbG90LCB0byBjcmVhdGUgYSBib3hwbG90LCB3ZSBuZWVkIHRvIHNwZWNpZnkgYSBjb250aW51b3VzIHZhcmlhYmxlLCBhbmQgYSBjYXRlZ29yaWNhbCB2YXJpYWJsZS4NCg0KYGBge3IgMDItZ2dfYm94MX0NCmdncGxvdChkYXRhID0gcHVwcHlfZG9uYXRpb25zX2RhdGEsIGFlcyh4ID0gQ29uZGl0aW9uLCB5ID0gQW1vdW50KSkgKyANCiAgZ2VvbV9ib3hwbG90KCkNCmBgYA0KDQpPciB5b3UgY291bGQgbWFrZSBpdCBob3Jpem9udGFsIGJ5IHN3aXRjaGluZyB0aGUgdGhlIHgveSBhcmd1bWVudHMuDQoNCmBgYHtyIDAyLWdnX2JveDJ9DQpnZ3Bsb3QoZGF0YSA9IHB1cHB5X2RvbmF0aW9uc19kYXRhLCBhZXMoeCA9IEFtb3VudCwgeSA9IENvbmRpdGlvbikpICsgDQogIGdlb21fYm94cGxvdCgpDQpgYGANCg0KXA0KDQojIyMgQ3VzdG9taXNpbmcNCg0KVGhlcmUgYXJlIGEgbXVsdGl0dWRlIG9mIGN1c3RvbWlzYXRpb25zIHRoYXQgY2FuIGJlIGRvbmUgdG8gcGxvdHMgc3VjaCBhcyB0aXRsZXMsIGxhYmVscywgY29sb3VycywgZXRjLg0KDQpBIGZhbnRhc3RpYyByZXNvdXJjZSBmb3IgbG9va2luZyBhdCBob3cgdG8gY3VzdG9taXNlIHlvdXIgcGxvdHMgbWFkZSB1c2luZyB0aGUgQmFzZSBSIHBsb3R0aW5nIHN5c3RlbSBpcyB0aGUgW1IgR3JhcGhpY3MgQ29va2Jvb2tdKGh0dHBzOi8vci1ncmFwaGljcy5vcmcpLg0KDQojIyMjIFRoZW1lcw0KDQpGb3IgZ2dwbG90LCB0aGUgcGxvdHMgYXJlIG1hZGUgdXAgb2YgX2VsZW1lbnRzXyBhbmQgY2FuIGJlIGN1c3RvbWlzZWQgdXNpbmcgYHRoZW1lKClgIG9yIGJ5IHBpY2tpbmcgb25lIG9mIHRoZSBwcmUtZGVmaW5lZCB0aGVtZXMgLSBlLmcuIGB0aGVtZV9idygpYCBwcm92aWRlcyBhIGJsYWNrL3doaXRlIHRoZW1lLg0KDQpUaGUgbWFpbiBlbGVtZW50cyBhcmUNCg0KLSBgZWxlbWVudF90ZXh0YCBmb3IgdGV4dA0KLSBgZWxlbWVudF9yZWN0YCBmb3IgcmVjdGFuZ3VsYXIgYXJlYXMNCi0gYGVsZW1lbnRfbGluZWAgZm9yIGxpbmVzDQotIGBlbGVtZW50X2JsYW5rYCB0byByZW1vdmUvaGlkZSBlbGVtZW50cw0KDQpgYGB7ciAwMi1nZ190aGVtZTF9DQpnZ3Bsb3QoZGF0YSA9IHB1cHB5X2RvbmF0aW9uc19kYXRhLCBhZXMoeCA9IENvbmRpdGlvbiwgeSA9IEFtb3VudCkpICsgDQogIGdlb21fYm94cGxvdCgpICsgDQogIHRoZW1lKGF4aXMudGl0bGUgPSBlbGVtZW50X3RleHQoc2l6ZSA9IDE2KSwgDQogICAgICAgIHBhbmVsLmdyaWQgPSBlbGVtZW50X2JsYW5rKCksIA0KICAgICAgICBwYW5lbC5iYWNrZ3JvdW5kID0gZWxlbWVudF9yZWN0KGNvbG91ciA9ICJibHVlIiwgZmlsbCA9ICJsaWdodCBncmVlbiIpKQ0KDQpgYGANCg0KDQoNCmBgYHtyIDAyLWdnX3RoZW1lMn0NCmdncGxvdChkYXRhID0gcHVwcHlfZG9uYXRpb25zX2RhdGEsIGFlcyh4ID0gQ29uZGl0aW9uLCB5ID0gQW1vdW50KSkgKyANCiAgZ2VvbV9ib3hwbG90KCkgKyANCiAgdGhlbWVfYncoKQ0KYGBgDQoNCg0KDQpUaGVyZSBpcyBhbHNvIGEgZmFudGFzdGljIGNoZWF0IHNoZWV0IGF2YWlsYWJsZSBpbiBSU3R1ZGlvIHVuZGVyIGBIZWxwYCAtPiBgQ2hlYXQgU2hlYXRzYCAtPiBgRGF0YSBWaXN1YWxpemF0aW9uIHdpdGggZ2dwbG90MmANCg0KXA0KDQpcDQoNCiMjIENvbmNsdXNpb24NCg0KVGhpcyBkb2N1bWVudCBoYXMgcHJlc2VudGVkIGEgc2ltcGxlIGludHJvZHVjdGlvbiB0byB3b3JraW5nIHdpdGggY29tcGxldGUgdGFibGVzIG9mIGRhdGEgaW4gUi4gV2UgbGVhcm5lZCBob3cgdG8gaW1wb3J0IGEgY3N2IGZpbGUgaW50byBhIGRhdGEgZnJhbWUsIGhvdyB0byBzZWxlY3QgY29sdW1ucyBhbmQgcm93cyBvZiBpbnRlcmVzdCBmcm9tIHRoZSBkYXRhIGZyYW1lLCBhbmQgaG93IHRvIHBlcmZvcm0gc2ltcGxlLCB5ZXQgaWxsdXN0cmF0aXZlIHN1bW1hcmllcyBvbiB0aGVtLiBXZSBoYXZlIGNvdmVyZWQgb25seSBhIHRpbnkgZnJhY3Rpb24gb2YgdGhlIGRhdGEgYW5hbHlzZXMgeW91IGNhbiBwZXJmb3JtIHdpdGggUiBhbmQgUlN0dWRpby4gWW91IGNhbiBhbHNvIGRvIHZlcnkgY29tcGxleCBzdGF0aXN0aWNzIGxpa2UgQU5PVkEsIHJlZ3Jlc3Npb24sIGZhY3RvciBhbmFseXNpcywgYW5kIGNvbXBsZXggbW9kZWxsaW5nLiBUaGUgc3BlY2lmaWMgc3RhdGlzdGljYWwgYW5hbHlzZXMgeW91IHdpbGwgbmVlZCB0byBkbyBmb3IgeW91ciBpbi1jb3Vyc2UgYXNzaWdubWVudHMgd2lsbCBkZXBlbmQgb24gdGhlIHBhcGVycyB5b3UgYXJlIHRha2luZywgYnV0IHlvdSBjYW4gYmUgY29uZmlkZW50IHRoYXQgd2hhdGV2ZXIgeW91ciBsZWN0dXJlcnMgcmVxdWlyZSBjYW4gYWxtb3N0IGNlcnRhaW5seSBieSBkb25lIGVmZmljaWVudGx5IGluIFIuIEFzIHdlIHByb2NlZWQgdGhyb3VnaCB0aGUgc2VtZXN0ZXIsIGlmIHlvdSB3aXNoIHRvIGRpc2N1c3MgYSBwYXJ0aWN1bGFyIGRhdGEgYW5hbHlzaXMsIHByb2Nlc3NpbmcsIG9yIHByZXNlbnRhdGlvbiB0YXNrLCBwbGVhc2UgbGV0IHVzIGtub3cuDQoNCg0KIyMjIFdoYXQncyBOZXh0DQoNCkZpbGwgaW4gdGhlIG1vZHVsZSBmZWVkYmFjayBmb3JtIFtodHRwczovL3Rpbnl1cmwuY29tL3I0c3NwLW1vZHVsZS1mYl0oaHR0cHM6Ly90aW55dXJsLmNvbS9yNHNzcC1tb2R1bGUtZmIpLg0KDQpFbnN1cmUgeW91IGhhdmUgdGhlIGB0aWR5dmVyc2VgIHBhY2thZ2UgaW5zdGFsbGVkLiBSZWZlciB0byBBcHBlbmRpeCAyLCBvciBbaHR0cHM6Ly9yNGRzLmhhZC5jby5uei9pbnRyb2R1Y3Rpb24uaHRtbF0oaHR0cHM6Ly9yNGRzLmhhZC5jby5uei9pbnRyb2R1Y3Rpb24uaHRtbCkgZm9yIGhvdyB0byBkbyB0aGlzLg0KIA0KDQoNClwNCg0KXA0KDQojIyBBcHBlbmRpeA0KDQojIyMgTWFudWFsIERhdGEgRW50cnkgaW4gUg0KDQpGb3IgZXh0cmVtZWx5IHNtYWxsIGRhdGEgc2V0cywgeW91IGNhbiBtYW51YWxseSBlbnRlciB0YWJ1bGFyIGRhdGEgaW50byBSLiBZb3UgY3JlYXRlIGEgdmVjdG9yIGZvciBlYWNoIGRhdGEgY29sdW1uIHVzaW5nIHRoZSBjb21iaW5lIGZ1bmN0aW9uIGBjYCwgYW5kIHRoZW4gY29sbGVjdCB0aG9zZSB2ZWN0b3JzIGludG8gYSBkYXRhIGZyYW1lOg0KDQpgYGB7ciBtYW51YWwgZGF0YSAxfQ0KY291bnRyaWVzIDwtIGMoIkF1c3RyaWEiLCAiQnJhemlsIiwgIkNhbmFkYSIpDQpjYXBpdGFscyA8LSBjKCJWaWVubmEiLCAiQnJhc2lsaWEiLCAiT3R0YXdhIikNCnBvcHVsYXRpb25faW5fbWlsbGlvbnMgPC0gYyg5LCAyMTEsIDM4KQ0KDQpnZW9ncmFwaHlfZGYgPC0gZGF0YS5mcmFtZShDb3VudHJ5ID0gY291bnRyaWVzLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgQ2FwaXRhbCA9IGNhcGl0YWxzLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgUG9wdWxhdGlvbk1pbGxpb25zID0gcG9wdWxhdGlvbl9pbl9taWxsaW9ucykNCg0KZ2VvZ3JhcGh5X2RmDQpgYGANCg0KDQojIyMgSW5zdGFsbGluZyBQYWNrYWdlcw0KDQpXaGVuIFIgaXMgaW5zdGFsbGVkLCBpdCBjb21lcyB3aXRoIGEgbGFyZ2Ugc2V0IG9mIGNvbW1hbmRzLCBkYXRhIHN0cnVjdHVyZSwgYW5kIGZ1bmN0aW9ucyB3aGljaCBhcmUgdG9nZXRoZXIga25vd24gYXMgKipiYXNlIFIqKi4gT3ZlciB0aGUgeWVhcnMsIHJlc2VhcmNoZXJzIGFuZCBwcm9ncmFtbWVyIGhhdmUgd3JpdHRlbiB0aG91c2FuZHMgb2YgYWRkaXRpb25hbCBmdW5jdGlvbnMgYW5kIG1vZHVsZXMgKGNhbGxlZCAqKmxpYnJhcmllcyoqKSB0aGF0IHlvdSBjYW4gdXNlIGluIHlvdXIgb3duIFIgY29kZS4gVGhpcyAqKnRoaXJkLXBhcnR5IGNvZGUqKiBpcyBjaGVja2VkIGJ5IG1vZGVyYXRvcnMgYW5kLCBpZiBpdCBwYXNzZXMgaW5zcGVjdGlvbiwgbG9hZGVkIG9udG8gYW4gb2ZmaWNpYWwgUiBzZXJ2ZXIgaW4gYSBmaWxlIHN0cnVjdHVyZSBjYWxsZWQgYSAqKnBhY2thZ2UqKi4gVG8gdXNlIHBhY2thZ2VzLCB5b3UgbXVzdCBmaXJzdCBkb3dubG9hZCB0aGVtIHRvIHlvdXIgY29tcHV0ZXIuIFRoZXkgYXJlIHBsYWNlZCBpbiB0aGUgc2FtZSBmb2xkZXJzIHdoZXJlIGJhc2UgUiB3YXMgb3JpZ2luYWxseSBpbnN0YWxsZWQuIA0KDQpUbyBhY2Nlc3MgdGhlIGZ1bmN0aW9ucyBpbiBhIHBhY2thZ2UgaW4geW91ciBSIGNvZGUsIHlvdSBsb2FkIHRoZSBwYWNrYWdlIHVzaW5nIHRoZSBgbGlicmFyeWAgY29tbWFuZCwgYXMgd2Ugc2F3IGFib3ZlIHdpdGggKipyZWFkcioqLiBZb3Ugb25seSBuZWVkIHRvIGRvd25sb2FkIGEgcGFja2FnZSBvbmUgdGltZSBvbiBhbnkgbWFjaGluZSwgYnV0IHRoZSBgbGlicmFyeWAgY29tbWFuZCBtdXN0IGJlIGV4ZWN1dGVkIGF0IHRoZSBzdGFydCBvZiBlYWNoIFJTdHVkaW8gc2Vzc2lvbiAoaS5lLiBldmVyeSB0aW1lIHlvdSBsYXVuY2ggUlN0dWRpbykuDQoNClRvIGluc3RhbGwgYSBwYWNrYWdlLCB1c2UgdGhlIGBpbnN0YWxsLnBhY2thZ2VzYCBjb21tYW5kIHBhc3NpbmcgdGhlIG5hbWUgb2YgdGhlIHBhY2thZ2UgYXMgdGhlIGZ1bmN0aW9uIGFyZ3VtZW50LiBUaGUgbmFtZSBpcyBhIHN0cmluZyAqKnNvIG11c3QgYmUgc3Vycm91bmRlZCBieSBkb3VibGUgcXVvdGVzKiouIFRvIHVzZSBhbiBpbnN0YWxsZWQgcGFja2FnZSwgdXNlIHRoZSBgbGlicmFyeWAgY29tbWFuZCwgcGFzc2luZyBpbiB0aGUgbmFtZSBvZiB0aGUgcGFja2FnZS4gTm93IHRoYXQgdGhlIHBhY2thZ2UgaGFzIGJlZW4gaW5zdGFsbGVkLCBSIHJlY29nbmlzZXMgaXQgYXMgYW4gZW50aXR5IChsaWtlIGEgdmFyaWFibGUpIHNvIHlvdSBkbyBub3QgcHV0IGRvdWJsZSBxdW90ZXMgYXJvdW5kIHRoZSBwYWNrYWdlIG5hbWUgaW4gdGhlIGxpYnJhcnkgY29tbWFuZC4NCg0KRm9yIGV4YW1wbGUsIHdoZW4geW91IHdhbnQgdG8gdXNlIGZ1bmN0aW9uIGByZWFkX2NzdmAsIGNvbnRhaW5lZCBpbiBsaWJyYXJ5ICoqcmVhZHIqKjoNCg0KYGBge3IgZ2V0dGluZyByZWFkciwgZXZhbCA9IEZBTFNFfQ0KDQojIERvd25sb2FkIHRoZSByZXNoYXBlMiBjb2RlIHRvIHlvdXIgbWFjaGluZQ0KaW5zdGFsbC5wYWNrYWdlcygicmVhZHIiKQ0KDQoNCiMgTG9hZCB0aGUgbGlicmFyeSBmb3IgdGhlIGN1cnJlbnQgc2Vzc2lvbg0KbGlicmFyeShyZWFkcikNCmBgYA0KDQojIyMgVGlkeXZlcnNlDQoNClRoZSB0aWR5dmVyc2UgaXMgYSBjb2xsZWN0aW9uIG9mIHBhY2thZ2VzIChtZXRhcGFja2FnZSkgdGhhdCBhcmUgYW4gKG9waW5pb25hdGVkKSB3YXkgb2YgcGVyZm9ybWluZyBhbmFseXNpcyBpbiBSIGFuZCBhcmUgYWxsIGRlc2lnbmVkIHRvIG9wZXJhdGUgbmljZWx5IHRvZ2V0aGVyLiBXaGVuIGB0aWR5dmVyc2VgIGlzIGluc3RhbGxlZCBpdCBhY3R1YWxseSBpcyBhIHdyYXBwZXIgdGhhdCBpbnN0YWxscyB0aGUgaW5kaXZpZHVhbCBwYWNrYWdlcyB0aGF0IG1ha2UgdXAgdGhlIHRpZHl2ZXJzZSBjb3JlLg0KDQpUaGUgdGlkeXZlcnNlIGNvbnNpc3RzIG9mIGEgY29yZSBzZXQgb2YgcGFja2FnZXMgdG8gcGVyZm9ybSBjb21tb24gdGFza3MgaW4gZGF0YSBhbmFseXNpcyBhbmQgYXJlIGBnZ3Bsb3QyYCAocGxvdHRpbmcpLCBgZHBseXJgIChkYXRhIG1hbmlwdWxhdGlvbiksIGB0aWR5cmAgKGRhdGEgdGlkeWluZyksIGByZWFkcmAgKGRhdGEgaW1wb3J0aW5nKSwgYHB1cnJyYCAoZnVuY3Rpb25hbCBwcm9ncmFtbWluZyksIGB0aWJibGVgIChhIHNwZWNpYWwgdHlwZSBvZiBkYXRhIGZyYW1lKSwgYHN0cmluZ3JgIChjb21tb24gdGFza3MgZm9yIHN0cmluZyBtYW5pcHVsYXRpb25zKSwgYW5kICBgZm9yY2F0c2AgKGRlYWxpbmcgd2l0aCBmYWN0b3JzKQ0KDQoNCmBgYHtyIGluc3RhbGwgdGlkeXZlcnNlLCBldmFsID0gRkFMU0V9DQojIERvd25sb2FkIGFuZCBpbnN0YWxsIHRoZSBwYWNrYWdlcyBvZiB0aWR5dmVyc2UNCmluc3RhbGwucGFja2FnZXMoInRpZHl2ZXJzZSIpDQpgYGANCg0KDQpgYGB7cn0NCiMgbG9hZCB0aGUgdGlkeXZlcnNlIHBhY2thZ2VzIGZvciB0aGUgY3VycmVudCBzZXNzaW9uDQpsaWJyYXJ5KHRpZHl2ZXJzZSkNCmBgYA0KDQojIyMgUiBmb3IgRGF0YSBzY2llbmNlIGV4dHJhIHBhY2thZ2VzDQoNCklmIHlvdSBhcmUgZm9sbG93aW5nIGFsb25nIHdpdGggUiBmb3IgRGF0YSBTY2llbmNlIG1ha2Ugc3VyZSB5b3UgaGF2ZSB0aGVzZSBwYWNrYWdlcyBpbnN0YWxsZWQ6DQoNCi0gbnljZmxpZ2h0czEzDQotIGdhcG1pbmRlcg0KLSBMYWhtYW4NCg0KYGBge3IsIGV2YWwgPSBGQUxTRX0NCmluc3RhbGwucGFja2FnZXMoYygibnljZmxpZ2h0czEzIiwgImdhcG1pbmRlciIsICJMYWhtYW4iKSkNCmBgYA0KDQoNCg0KDQoNCg==</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIlZpc3VhbGlzaW5nIg0KZGF0ZTogIlNlbWVzdGVyIDEsIDIwMjIiDQpvdXRwdXQ6DQogIGh0bWxfZG9jdW1lbnQ6DQogICAgdG9jOiB0cnVlDQogICAgdG9jX2Zsb2F0OiB0cnVlDQogICAgdG9jX2RlcHRoOiAzDQogICAgY29kZV9kb3dubG9hZDogdHJ1ZQ0KICAgIGNvZGVfZm9sZGluZzogc2hvdw0KLS0tDQoNCmBgYHtyIHNldHVwLCBpbmNsdWRlPUZBTFNFfQ0KbGlicmFyeShnZ3Bsb3QyKQ0KDQpsaWJyYXJ5KGtuaXRyKQ0KDQprbml0cjo6b3B0c19jaHVuayRzZXQoDQogIGNvbW1lbnQgPSAiIz4iLA0KICBmaWcucGF0aCA9ICJmaWd1cmVzLyIsICMgdXNlIG9ubHkgZm9yIHNpbmdsZSBSbWQgZmlsZXMNCiAgY29sbGFwc2UgPSBUUlVFLA0KICBlY2hvID0gVFJVRQ0KKQ0KYGBgDQoNCj4gIyMjIyBEYXRhIEZvY3VzDQo+DQo+IE1vZHVsZXMgYW5kIEhhbmRvdXRzIDItLTYgY292ZXIgdG9waWNzIHRoYXQgYXJlIHBhcnQgb2YgdGhlIGRhdGEgYW5hbHlzaXMgam91cm5leSBhbmQgYXJlIGFsbCBpbnRlcnJlbGF0ZWQuIEVhY2ggbW9kdWxlIHdpbGwgaW50cm9kdWNlIG5ldyBjb250ZW50IGFuZCBleHBhbmQgb24gdGhlIG1hdGVyaWFsIGNvdmVyZWQgaW4gcHJldmlvdXMgbW9kdWxlcy4gRm9yIGV4YW1wbGUsIGluIE1vZHVsZSAyIHdlIGludHJvZHVjZSB0aGUgYmFzaWNzIG9mIHRoZSBSIHBsb3R0aW5nIHN5c3RlbXMuIFN1YnNlcXVlbnQgaGFuZG91dHMgaW5jbHVkZSBtb3JlIGFkdmFuY2VkIHBsb3R0aW5nIG9wdGlvbnMgYW5kIHRlY2huaXF1ZXMuDQoNClwNCg0KXA0KDQoNCkhhbmRvdXQ6IFtIYW5kb3V0IDAyIC0gVmlzdWFsaXNpbmcgRGF0YV0oaGFuZG91dDIuaHRtbCkNCg0KQXNzb2NpYXRlZCBSZWFkaW5nczoNCg0KLSBbUiBmb3IgRGF0YSBTY2llbmNlIC0gQ2hhcHRlciAxMl0oaHR0cHM6Ly9yNGRzLmhhZC5jby5uei90aWR5LWRhdGEuaHRtbCkNCi0gW1IgZm9yIERhdGEgU2NpZW5jZSAtIENoYXB0ZXIgMTFdKGh0dHBzOi8vcjRkcy5oYWQuY28ubnovZGF0YS1pbXBvcnQuaHRtbCkNCi0gW1IgZm9yIERhdGEgU2NpZW5jZSAtIENoYXB0ZXIgM10oaHR0cHM6Ly9yNGRzLmhhZC5jby5uei9kYXRhLXZpc3VhbGlzYXRpb24uaHRtbCkNCg0KDQoNCiMjIFRhYnVsYXIgRGF0YQ0KDQpJbiB0aGlzIG1vZHVsZSB3ZSBiZWdpbiB0byB3b3JrIHdpdGggY29tcGxldGUgdGFibGVzIG9mIGRhdGEsIGFuZCBsZWFybiBob3cgdG8gbWFrZSBpbmZvcm1hdGl2ZSBncmFwaHMuIA0KDQpXZSB3aWxsIHN0YXJ0IGJ5IGdldHRpbmcgb3VyIHNjaWVudGlmaWMgcmVzZWFyY2ggZGF0YSBpbnRvIFJTdHVkaW8uIENvbW1vbmx5LCB3ZSBmaXJzdCBlbnRlciBvdXIgZGF0YSBpbnRvIEV4Y2VsIGZvciBjbGVhbmluZyBhbmQgb3JnYW5pc2luZywgYW5kIHNhdmUgaXQgb3V0IGFzIGEgY3N2IChjb21tYSBzZXBhcmF0ZWQgdmFsdWVzKSBmaWxlLiBXZSB0aGVuIGltcG9ydCB0aGUgZmlsZSBpbnRvIFIgZm9yIGRhdGEgYW5hbHlzaXMuIFdlIHdpbGwgcHJvdmlkZSB0aGUgY3N2IGZpbGUgdG8gYmUgdXNlZCB3aXRoIHRoaXMgbW9kdWxlLg0KDQpXaGVuIHlvdSBoYXZlIGNvbXBsZXRlZCB0aGlzIG1vZHVsZSwgeW91IHNob3VsZCBiZSByZWFkeSB0byBwcm9kdWNlIHRoZSBncmFwaHMgYW5kIGZpZ3VyZXMgeW91IHdpbGwgbmVlZCBmb3IgeW91ciBpbi1jb3Vyc2UgcmVzZWFyY2ggcHJvamVjdHMuIElmIHlvdSBydW4gaW50byBhbnkgcHJvYmxlbXMgb3IgaGF2ZSBhbnkgcXVlc3Rpb25zLCBlbWFpbCB1cywgb3IgZHJvcCB1cyBhIG1lc3NhZ2UgaW4gdGhlIFI0U1NQIGNsYXNzIHRlYW0gb24gTVMgVGVhbXMuDQoNCg0KIyMgUHJlcGFyYXRpb24gLSBEbyB0aGlzIHZlcnkgY2FyZWZ1bGx5DQoNCkRvY3VtZW50IG9yZ2FuaXNhdGlvbiBpcyB2aXRhbGx5IGltcG9ydGFudC4gV2Ugc3VnZ2VzdCB0aGF0IHlvdSBrZWVwIGEgc2VwYXJhdGUgZm9sZGVyIGZvciBlYWNoIFI0U1NQIG1vZHVsZS4gVG8gZG8gdGhpcywgeW91IGNhbiBzZXQgdXAgYSBmb3JtYWwgUlN0dWRpbyBwcm9qZWN0IChzZWUgZm9yIGV4YW1wbGUgaHR0cHM6Ly9zdXBwb3J0LnJzdHVkaW8uY29tL2hjL2VuLXVzL2FydGljbGVzLzIwMDUyNjIwNy1Vc2luZy1Qcm9qZWN0cykuIEJ1dCBpZiB5b3UgZG9uJ3QgZmVlbCBxdWl0ZSByZWFkeSBmb3IgdGhhdCwgeW91IGNhbiBqdXN0IGNvbGxlY3QgeW91ciBzY3JpcHQgZmlsZSBhbmQgZGF0YSBmaWxlcyB0b2dldGhlciBpbiBhIGZvbGRlci4gUHJvY2VlZCBhcyBmb2xsb3dzOg0KDQoNCjEuIExhdW5jaCBSIFN0dWRpbw0KDQoyLiBGb2xsb3dpbmcgdGhlIHByb2NlZHVyZSBmcm9tICoqVXNpbmcgYSBTY3JpcHQgRmlsZSoqIGluIE1vZHVsZSAxIC0gSW50cm8gdG8gUiBhbmQgUlN0dWRpbywgY3JlYXRlIGEgc2NyaXB0IGZpbGUgYW5kIHNhdmUgaXQgdG8geW91ciBkZXNrdG9wIG9yIG90aGVyIGxvY2F0aW9uIHdoZXJlIHlvdSB3aWxsIGJlIGFibGUgdG8gZmluZCBpdC4NCg0KMy4gUXVpdCBSIFN0dWRpbw0KDQo0LiBMb2NhdGUgdGhlIHNjcmlwdCBmaWxlIHlvdSBqdXN0IG1hZGUgKGl0IHdpbGwgaGF2ZSBhIC5SIGZpbGUgc3VmZml4KS4gDQoNCjUuIENyZWF0ZSBhIG5ldyBmb2xkZXIgKG5hbWUgaXQgc29tZXRoaW5nIHNlbnNpYmxlKSBhbmQgcGxhY2UgdGhlIHNjcmlwdCBmaWxlIGluIGl0Lg0KDQo2LiBUaGUgc2FtcGxlIGNzdiBkYXRhIGZpbGUgdXNlZCBpbiB0aGlzIG1vZHVsZSBpcyBjYWxsZWQgKipnYXBtaW5kZXJfZGF0YV8yMDA3LmNzdioqLiBUaGlzIGZpbGUgY29udGFpbnMgbGlmZSBleHBlY3RhbmN5LCBwb3B1bGF0aW9uLCBhbmQgR0RQIHZhbHVlcyBmb3IgMTQyIGRpZmZlcmVudCBjb3VudHJpZXMuIFRoZSBkYXRhIGZvciBlYWNoIGNvdW50cnkgd2VyZSBtZWFzdXJlZCAxMiB0aW1lcyBiZXR3ZWVuIDE5NTIgYW5kIDIwMDcuIFRoZXNlIGRhdGEgYXJlIHNvdXJjZWQgZnJvbSB0aGUgR2FwTWluZGVyIGZvdW5kYXRpb24gKGh0dHBzOi8vd3d3LmdhcG1pbmRlci5vcmcvKS4NCg0KUmV0cmlldmUgdGhlIHNhbXBsZSBjc3YgZGF0YSBmaWxlIGZyb20gdGhlIGNvdXJzZSBHb29nbGUgRHJpdmUgc2hhcmVkIGZvbGRlciBeW2h0dHBzOi8vZHJpdmUuZ29vZ2xlLmNvbS9kcml2ZS9mb2xkZXJzLzF0dGYxczgtdmtKTk9sSGRwaGZpMnpGeU1xNmdHRXZDeT91c3A9c2hhcmluZ10uIFBsYWNlIHRoZSBjc3YgZmlsZSBpbnRvIHRoZSBmb2xkZXIgd2l0aCB5b3VyIHNjcmlwdCBmaWxlLg0KDQo3LiBPcGVuIHRoZSBmb2xkZXIgYW5kIGRvdWJsZS1jbGljayAqKm9uIHlvdXIgc2NyaXB0IGZpbGUqKiB0byBvcGVuIGl0IGluIFJTdHVkaW8uDQoNCklmIHlvdSBzZXQgdGhpbmdzIHVwIHRoaXMgd2F5LCBSU3R1ZGlvIHdpbGwgYmUgYWJsZSB0byBmaW5kIHlvdXIgZGF0YSBmaWxlIGZvciB0aGUgbmV4dCBzdGVwIC0tIGltcG9ydGluZyBkYXRhLg0KDQpcDQoNCiMjIEltcG9ydGluZyBhIGRhdGEgZmlsZQ0KDQpUaGUgZmlyc3QgZmV3IGxpbmVzIG9mIG91ciBkYXRhIGZpbGUgKipnYXBtaW5kZXJfZGF0YV8yMDA3LmNzdioqIGFzIGl0IGFwcGVhcnMgd2hlbiBvcGVuZWQgaW4gRXhjZWwsIGFyZSBzaG93biBiZWxvdzoNCg0KYGBge3IgZmlnMDEsIGZpZy5hbGlnbj0nY2VudGVyJywgb3V0LndpZHRoID0gIjUwJSIsIGZpZy5jYXAgPSAiR2FwTWluZGVyIERhdGEiLCBmaWcucG9zID0gIkgiLCBlY2hvID0gRkFMU0V9DQppbmNsdWRlX2dyYXBoaWNzKCJpbWFnZXMvZ2FwbWluZGVyX2RhdGFfMjAwNy5wbmciKQ0KYGBgDQoNCg0KDQpXZSB3aWxsIGltcG9ydCB0aGlzIGZpbGUgaW50byBSIGZvciBzb21lIHByZWxpbWluYXJ5IGRhdGEgYW5hbHlzaXMuDQoNClRvIGltcG9ydCBhIGNzdiBmaWxlIGludG8gUiB3ZSBjYW4gdXNlIHRoZSBmdW5jdGlvbiBgcmVhZC5jc3ZgLiBMaWtlIHRoZSBSIGZ1bmN0aW9ucyB3ZSB1c2VkIGluIE1vZHVsZSAxLCBgcmVhZC5jc3ZgIGFjY2VwdHMgYW4gYXJndW1lbnQgYmV0d2VlbiBpdHMgcm91bmQgYnJhY2tldHMuIFRoZSBhcmd1bWVudCBpcyB0aGUgbmFtZSBvZiB0aGUgaW5wdXQgZmlsZS4gQmVjYXVzZSB0aGUgbmFtZSBvZiB0aGUgZmlsZSBpcyBhIHN0cmluZywgd2Ugc3Vycm91bmQgaXQgd2l0aCBkb3VibGUgcXVvdGVzLiBGb3IgdGhpcyBkYXRhIHNldCB3ZSB3YW50IHRoZSBjb2x1bW5zIHRoYXQgY29udGFpbiB3b3JkcyAoY291bnRyeSBhbmQgY29udGluZW50KSB0byBiZSBpbXBvcnRlZCBhcyBjYXRlZ29yaWNhbCB2YXJpYWJsZXMuIFRvIGFjaGlldmUgdGhpcywgd2Ugd2lsbCBzZXQgdGhlIGBzdHJpbmdzQXNGYWN0b3JzYCBhcmd1bWVudCB0byBUUlVFIHdoZW4gd2UgY2FsbCBgcmVhZC5jc3ZgLiBUaGUgY29tcGxldGUgY29tbWFuZCBpcyBzaG93biBiZWxvdy4NCg0KXA0KDQojIyBJbXBvcnQgYW5kIGNoZWNrIHlvdXIgZGF0YQ0KDQpUeXBlIHRoZSBmb2xsb3dpbmcgbGluZSBpbnRvIHlvdXIgc2NyaXB0IGZpbGUuIEV4ZWN1dGUgdGhlIGNvbW1hbmQgYXMgeW91IGRpZCBpbiB0aGUgcHJldmlvdXMgbW9kdWxlIGJ5IHBsYWNpbmcgdGhlIGN1cnNvciBhbnl3aGVyZSBvbiB0aGUgbGluZSBhbmQgdHlwaW5nIGN0cmwtRW50ZXIgKFdpbmRvd3MpIG9yIGNtZC1FbnRlciAoTWFjKS4NCg0KYGBge3IgcmVhZC5jc3Z9DQoNCiMgU2F2ZSBhbiBpbXBvcnRlZCBkYXRhIGZyYW1lIGludG8gYSBuYW1lZCB2YXJpYWJsZQ0KZ2FwbWluZGVyX2RhdGEgPC0gcmVhZC5jc3YoImdhcG1pbmRlcl9kYXRhXzIwMDcuY3N2Iiwgc3RyaW5nc0FzRmFjdG9ycyA9IFRSVUUpDQpgYGANCg0KV2hlbiBpbXBvcnRlZCBpbnRvIFIsIHRoZSBkYXRhIGZyb20gdGhlIGNzdiBmaWxlIGFyZSB0cmFuc2xhdGVkIGludG8gYW4gUiBvYmplY3QgY2FsbGVkIGEgKipkYXRhIGZyYW1lKiouIERhdGEgZnJhbWVzIGFyZSBzaW1wbHkgdGFibGVzLCBvcmdhbmlzZWQgaW50byByb3dzIGFuZCBjb2x1bW5zLiBUaGUgY29sdW1ucyBoYXZlIG5hbWVzIHRha2VuIGZyb20gdGhlIGZpcnN0IHJvdyBvZiB0aGUgY3N2IGZpbGUsIGFuZCBlYWNoIHN1YnNlcXVlbnQgcm93IG9mIHRoZSBjc3YgZmlsZSBiZWNvbWVzIGEgcm93IGluIHRoZSBkYXRhIGZyYW1lLiANCg0KV2Ugc3RvcmUgdGhlIGRhdGEgZnJhbWUgaW4gYSBuYW1lZCB2YXJpYWJsZSBzbyB0aGF0IHdlIGNhbiByZWZlciB0byBpdCBsYXRlciAoaS5lLiwgcGVyZm9ybSBhbmFseXNlcyBvbiBpdCkuIFdlIHVzZSB0aGUgYXNzaWdubWVudCBvcGVyYXRvciwgYXMgd2UgZGlkIGluIG91ciBwcmV2aW91cyBtb2R1bGUuIA0KDQpBZnRlciBzdG9yaW5nIG91ciBpbXBvcnRlZCBkYXRhIGludG8gYSB2YXJpYWJsZSwgeW91IHNob3VsZCBhbHdheXMgY2hlY2sgdGhhdCB0aGUgZGF0YSBoYXZlIGJlZW4gaW1wb3J0ZWQgY29ycmVjdGx5LiBEYXRhIGVudHJ5IGVycm9ycyBjYW4gY2F1c2UgUiB0byBtYWtlIHRoZSB3cm9uZyBhc3N1bXB0aW9ucyBhYm91dCB5b3VyIGRhdGEuIElmIHlvdSBoYXZlIGEgY29sdW1uIG9mIG51bWJlcnMgdGhhdCBjb250YWlucyBldmVuIG9uZSBhY2NpZGVudGFsIGFscGhhYmV0aWMgY2hhcmFjdGVyICh0eXBvcyBkbyBoYXBwZW4pIFIgd2lsbCBjb25zaWRlciB0aGUgd2hvbGUgY29sdW1uIHRvIGJlIHN0cmluZ3MuIExhdGVyLCBSIHdpbGwgZ2l2ZSB0aGUgd3JvbmcgcmVzdWx0cyB3aGVuIHlvdSBwZXJmb3JtIHN0YXRpc3RpY2FsIGFuYWx5c2VzIG9uIHRoZXNlIGRhdGEgKG9yIGl0IHdpbGwgcmVmdXNlIHRvIHBlcmZvcm0gdGhlbSBhdCBhbGwpLiANCg0KVXNlIHRoZSBmb2xsb3dpbmcgY29tbWFuZHMgdG8gdmlzdWFsbHkgaW5zcGVjdCB5b3VyIGltcG9ydGVkIGRhdGE6DQoNCmBgYHtyIGNoZWNrIDF9DQojIFdyaXRlIHRoZSBmaXJzdCBmZXcgbGluZXMgb2YgYSBkYXRhIGZyYW1lIHRvIHRoZSBjb25zb2xlIHdpdGggZnVuY3Rpb24gaGVhZA0KaGVhZChnYXBtaW5kZXJfZGF0YSkNCg0KDQojIFdyaXRlIHRoZSBsYXN0IGZldyBsaW5lcyBvZiBhIGRhdGEgZnJhbWUgdG8gdGhlIGNvbnNvbGUgd2l0aCBmdW5jdGlvbiB0YWlsDQp0YWlsKGdhcG1pbmRlcl9kYXRhKQ0KYGBgDQoNCmBgYHtyIGNoZWNrIDJ9DQojIERpc3BsYXkgdGhlIG51bWJlciBvZiBsaW5lcywgdGhlIGNvbHVtbiBuYW1lcywgYW5kIHRoZSBkYXRhIHR5cGUgb2YgZWFjaCANCiMgY29sdW1uLCB3aXRoIGZ1bmN0aW9uIHN0cg0Kc3RyKGdhcG1pbmRlcl9kYXRhKQ0KYGBgDQoNCkVhY2ggY29sdW1uIGhlYWRlciBpcyBhc3NvY2lhdGVkIHdpdGggYSBkYXRhIHR5cGUgKipjaHIqKiwgKippbnQqKiwgb3IgKipudW0qKi4gVGhlc2UgaW5kaWNhdGUgd2hhdCBraW5kIG9mIGRhdGEgUiBpZGVudGlmaWVkIGluIHRoZSBpbnB1dCBmaWxlLiBDb2x1bW5zIHRoYXQgYXJlICoqY2hyKiogY29udGFpbiBzdHJpbmdzIChjaGFyYWN0ZXJzKSwgY29sdW1ucyB0aGF0IGFyZSAqKmludCoqIGNvbnRhaW4gaW50ZWdlcnMgKHdob2xlIG51bWJlcnMpIGFuZCBjb2x1bW5zIHRoYXQgYXJlIG51bSBjb250YWluIG51bWJlcnMgd2l0aCBhIGRlY2ltYWwgcGFydC4gDQoNCllvdSBjYW4gc2VlIHRoZSBzYW1lIGluZm9ybWF0aW9uIGFib3V0IHRoZSBzdHJ1Y3R1cmUgb2YgYSBkYXRhIGZyYW1lIGluIHRoZSBFbnZpcm9ubWVudCBwYW5lbCBvZiBSU3R1ZGlvICh1cHBlci1yaWdodCBvZiBzY3JlZW47IEVudmlyb25tZW50IHRhYikuIFdoZW4geW91IHN1Y2Nlc3NmdWxseSBpbXBvcnQgYSBjc3YgaW50byBhIHZhcmlhYmxlIHdpdGggYHJlYWQuY3N2YCwgdGhlIHJlc3VsdGluZyBkYXRhIGZyYW1lIGFwcGVhcnMgaW4gdGhlIEVudmlyb25tZW50IHBhbmUuIENsaWNrIHRoZSBibHVlIGFycm93IGJlc2lkZSB0aGUgb2JqZWN0IHRvIGRpc3BsYXkgdGhlIGRldGFpbHMgb2YgaXRzIHN0cnVjdHVyZS4NCg0KYGBge3IgZmlnMDIsIGZpZy5hbGlnbj0nY2VudGVyJywgb3V0LndpZHRoID0gIjUwJSIsIGZpZy5jYXAgPSAiRGF0YSBGcmFtZSBpbiBFbnZpcm9ubWVudCBQYW5lIiwgZmlnLnBvcyA9ICJIIiwgZWNobyA9IEZBTFNFfQ0KaW5jbHVkZV9ncmFwaGljcygiaW1hZ2VzL2RmX2luX2Vudl9wYW5lLlBORyIpDQpgYGANCg0KXA0KDQoNCiMjIFNlbGVjdGluZyBhbmQgdXNpbmcgY29sdW1ucyBvZiBkYXRhDQoNCkluIGJvdGggb2YgdGhlIGFib3ZlIGRpc3BsYXlzLCBlYWNoIGNvbHVtbiBuYW1lIGlzIHByZWZhY2VkIHdpdGggYCRgLiBXZSB1c2UgdGhlIGAkYCBvcGVyYXRvciB0byBzZWxlY3QgaW5kaXZpZHVhbCBjb2x1bW5zIG9mIGRhdGEgZnJvbSBhIGRhdGEgZnJhbWUuIEZvciBleGFtcGxlLCB0byBzZWxlY3QganVzdCB0aGUgbGlmZSBleHBlY3RhbmN5IHZhbHVlcyBmcm9tIG91ciBkYXRhLCB3ZSBzYXkgYGdhcG1pbmRlcl9kYXRhJGxpZmVFeHBgLiAoQmUgc3VyZSB0byB0eXBlIHRoZSBjb2x1bW4gbmFtZSBleGFjdGx5IGFzIGl0IGFwcGVhcnMgaW4gdGhlIG91dHB1dCBvZiBgc3RyYCBhbmQgaW4gdGhlIEVudmlyb25tZW50IHBhbmUuKSBXZSBjYW4gdXNlIHRoaXMgZGlyZWN0bHkgYXMgdGhlIGFyZ3VtZW50IHRvIGEgZnVuY3Rpb24sIG9yIHdlIGNhbiBzdG9yZSB0aGUgc2VsZWN0ZWQgY29sdW1uIGluIGEgdmFyaWFibGUgKHdoaWNoIHdpbGwgYmUgYSB2ZWN0b3IpIGZvciBsYXRlciBwcm9jZXNzaW5nLiANCg0KRm9yIGV4YW1wbGU6DQoNCmBgYCB7ciBzaW5nbGUgY29sdW1uIGV4YW1wbGVzfQ0KDQojIFByaW50IHRoZSBmaXJzdCBmZXcgdmFsdWVzIG9mIGNvbHVtbiB5ZWFyDQpoZWFkKGdhcG1pbmRlcl9kYXRhJHllYXIpDQoNCg0KIyBTdG9yZSBjb2x1bW4gY29udGluZW50IGluIGEgbmV3IHZhcmlhYmxlDQpjb250aW5lbnRzIDwtIGdhcG1pbmRlcl9kYXRhJGNvbnRpbmVudA0KDQojIFBhc3MgdGhlIHZhcmlhYmxlIHRvIGZ1bmN0aW9uIGxldmVscyB3aGljaCByZXR1cm5zIHRoZSB2YWx1ZXMNCiMgb2YgYSBjYXRlZ29yaWNhbCB2YXJpYWJsZQ0KbGV2ZWxzKGNvbnRpbmVudHMpDQoNCmBgYA0KDQojIyBDcmVhdGluZyBncmFwaHMgaW4gUg0KDQpUaGVyZSBhcmUgYSB2YXJpZXR5IG9mIGNvbXBsZXggYW5hbHlzZXMgdGhhdCB3ZSBjYW4gcGVyZm9ybSBvbiBhIGRhdGEgZnJhbWUgdXNpbmcgUidzIGJ1aWx0LWluIHN0YXRpc3RpY2FsIGZ1bmN0aW9ucyBhbmQgdGhvc2UgYXZhaWxhYmxlIGluIGFkZGl0aW9uYWwgcGFja2FnZXMgYW5kIGxpYnJhcmllcy4gV2Ugd2lsbCBleHBsb3JlIG1hbnkgb2YgdGhlc2UgdGVjaG5pcXVlcyBpbiBsYXRlciBtb2R1bGVzLiBIb3dldmVyLCBhbiBlZmZlY3RpdmUgZmlyc3Qgc3RlcCBpbiBnZXR0aW5nIHRvIGtub3cgYSBkYXRhIHNldCBpcyB0byBnZW5lcmF0ZSBwbG90cyBhbmQgZ3JhcGhzIHRvIHJlcHJlc2VudCB2aXN1YWxseSB0aGUgcGF0dGVybnMgaW4gdGhlIGRhdGEuDQoNCg0KIyMjIFNpbXBsZSBwbG90cyAtIHRoZSBoaXN0b2dyYW0NCg0KQSBoaXN0b2dyYW0gc2hvd3MgdGhlICoqZnJlcXVlbmN5IGRpc3RyaWJ1dGlvbioqIG9mIGEgZGF0YSBzZXQuIFRoYXQgaXMsIGl0IHNob3dzIGNvdW50cyBvZiB0aGUgIGRpZmZlcmVudCB2YWx1ZXMgb2YgdGhlIGRlcGVuZGVudCB2YXJpYWJsZSAob3IgcmFuZ2VzIG9mIHZhbHVlcywgZm9yIGNvbnRpbnVvdXMgdmFyaWFibGVzKS4gV2UgZ2VuZXJhdGUgdGhpcyBncmFwaCB3aXRoIGZ1bmN0aW9uIGBoaXN0YC4gVGhlIGdyYXBoIHdpbGwgYmUgZGlzcGxheWVkIGluIHRoZSBQbG90cyB0YWIgb2YgUlN0dWRpbydzIGxvd2VyLXJpZ2h0IHBhbmUuDQoNCmBgYHtyIDAyLWhpc3R9DQojIEhpc3RvZ3JhbSBvZiBsaWZlIGV4cGVjdGFuY3kgdmFsdWVzIGZyb20gZ2FwbWluZGVyDQpoaXN0KGdhcG1pbmRlcl9kYXRhJGxpZmVFeHApDQpgYGANCg0KXA0KDQpXZSBzZWUgdGhhdCBsaWZlIGV4cGVjdGFuY3kgaXMgYXBwcm94aW1hdGVseSBiZWxsLXNoYXBlZCwgd2l0aCBtYW55IHNjb3JlcyBiZXR3ZWVuIDY1IGFuZCA4NSwgd2l0aCBhIHNtYWxsIG51bWJlciBvZiBleHRyZW1lIHZhbHVlcyBncmVhdGVyIHRoYW4gODAgb3IgbGVzcyB0aGFuIDMwLiANCg0KDQojIyMgQm94cGxvdHMNClRoZSBib3hwbG90IGFsbG93cyB1cyB0byBjb21wYXJlIGRpc3RyaWJ1dGlvbiBpbmZvcm1hdGlvbiBiZXR3ZWVuIGdyb3Vwcy4gRm9yIGV4YW1wbGUsIHdlIGNhbiBjb21wYXJlIGxpZmUgZXhwZWN0YW5jeSBmb3IgdGhlIGRpZmZlcmVudCBjb250aW5lbnRzLiANCg0KVGhlIFIgZnVuY3Rpb24gYGJveHBsb3RgIGFjY2VwdHMgdHdvIGFyZ3VtZW50cy4gDQoNClRoZSBmaXJzdCBhcmd1bWVudCBpcyB0aGUgKipmb3JtdWxhKiouIFRoaXMgaXMgYSBjb21wbGV4LCB5ZXQgdmVyeSBjb21tb24sIGFyZ3VtZW50IGZvcm1hdCBmb3IgUiBzdGF0aXN0aWNhbCBmdW5jdGlvbnMuIFRoZSBmb3JtdWxhIGRlc2NyaWJlcyBhIGxpbmVhciBtb2RlbCBmb3IgYSBkYXRhIHNldCB3aXRoIHRoZSBnZW5lcmFsIHN0cnVjdHVyZTogKipkZXBlbmRlbnQgb3IgcHJlZGljdGVkIHZhcmlhYmxlIH4gaW5kZXBlbmRlbnQgdmFyaWFibGVzIG9yIHByZWRpY3RvcnMqKiwgdXNpbmcgY29sdW1ucyBuYW1lcyBmcm9tIHRoZSBkYXRhIGZyYW1lLiBUaGUgfiAodGlsZGUpIGlzIHJlYWQgYXMgImRlcGVuZHMgb24iIG9yICJpcyBwcmVkaWN0ZWQgYnkiLiBGb3Igb3VyIGV4YW1wbGUsIHdlIGFyZSBpbnRlcmVzdGVkIGluIHRoZSB3YXkgdGhhdCBsaWZlIGV4cGVjdGFuY3kgaXMgZGVwZW5kZW50IG9uIHRoZSBjb250aW5lbnQsIHNvIHdlIHNwZWNpZnkgb3VyIGZvcm11bGEgYXMgKipsaWZlRXhwIH4gY29udGluZW50KiouICBXZSB3aWxsIHNlZSBtb3JlIGNvbXBsZXggZXhhbXBsZXMgb2YgdGhlIGZvcm11bGEgYXJndW1lbnQgbGF0ZXIgaW4gdGhlIHNlbWVzdGVyLg0KDQpUaGUgc2Vjb25kIGFyZ3VtZW50IHRvIGJveHBsb3QgaXMgdGhlIGRhdGEgZnJhbWUuDQoNCmBgYHtyIDAyLWJveHBsb3QwMX0NCmJveHBsb3QobGlmZUV4cCB+IGNvbnRpbmVudCwgZ2FwbWluZGVyX2RhdGEpDQpgYGANCg0KXA0KDQpCb3hwbG90cyBlZmZpY2llbnRseSBpbGx1c3RyYXRlIGJvdGggdGhlIGNlbnRyYWwgdGVuZGVuY3kgYW5kIHRoZSB2YXJpYWJpbGl0eSBvZiBhIGRhdGEgc2V0LiBFYWNoIGdyZXkgYm94IGV4dGVuZHMgZnJvbSB0aGUgZmlyc3QgcXVhcnRpbGUgdG8gdGhlIHRoaXJkIHF1YXJ0aWxlIG9mIGl0cyBpbnB1dCB2YWx1ZXMuIFRoZSBkYXJrIGxpbmUgYWNyb3NzIHRoZSBib3ggaXMgYXQgdGhlIG1lZGlhbi4gVGhlIHR3byB0aGluIGxpbmVzIG91dHNpZGUgdGhlIHFyZXkgYm94IHNob3cgdGhlIHZhbHVlcyBvZiB0aGUgbWluaW11bSBhbmQgbWF4aW11bSBzY29yZXMsIGV4Y2x1ZGluZyBleHRyZW1lIG91dGxpZXJzLiBJZiBleHRyZW1lIG91dGxpZXJzIGFyZSBwcmVzZW50LCB0aGV5IGFyZSBzaG93biBhcyBzbWFsbCBjaXJjbGVzLiBUaGlzIGZpZ3VyZSBjbGVhcmx5IGlsbHVzdHJhdGVzIHRoYXQsIGluIHRoZSBnYXBtaW5kZXIgZGF0YSwgbGlmZSBleHBlY3RhbmN5IC0tIGJvdGggY2VudHJhbCB0ZW5kZW5jeSBhbmQgdmFyaWFibGl0eSAtLSBpcyBub3QgdGhlIHNhbWUgZm9yIGFsbCBjb250aW5lbnRzLg0KDQoNCiMjIyBQbG90dGluZyB3aXRoIGdncGxvdDINCg0KVGhlIGBoaXN0YCBhbmQgYGJveHBsb3RgIGZ1bmN0aW9ucyBhcmUgcGFydCBvZiBCYXNlIFIuIFRoZXkgYXJlIHVzZWZ1bCwgYnV0IGZvciBtb3JlIGVsYWJvcmF0ZSwgcHVibGljYXRpb24tcXVhbGl0eSBncmFwaHMsIHdlIGNhbiB1c2UgdGhlIHRoaXJkLXBhcnR5IGxpYnJhcnkgKipnZ3Bsb3QqKiBjb250YWluZWQgaW4gcGFja2FnZSAqKmdncGxvdDIqKi4gZ2dwbG90IGlzIGEgdmVyeSBwb3B1bGFyIGRhdGEgdmlzdWFsaXNhdGlvbiBwYWNrYWdlIGJhc2VkIG9uIGEgdmVyeSBlbGFib3JhdGUgc3ltYm9saWMgc3lzdGVtIGNhbGxlZCB0aGUgJ0dyYW1tYXIgb2YgR3JhcGhpY3MnLiANCg0KVGhlIHN5bnRheCBvZiBnZ3Bsb3QgaXMgY29tcGxleCwgYW5kIHdlIHdpbGwgY29uY2VudHJhdGUgb24gdGhlIGZvdW5kYXRpb25zIGluIHRoaXMgbW9kdWxlLiBGb3IgYWRkaXRpb25hbCBkZXRhaWwsIHNlZSB0aGUgRGF0YSBWaXN1YWxpc2F0aW9uIGNoYXB0ZXIgaW4gdGhlIFIgZm9yIERhdGEgU2NpZW5jZSBvbmxpbmUgdGV4dCwgYXQgIGh0dHBzOi8vcjRkcy5oYWQuY28ubnovZGF0YS12aXN1YWxpc2F0aW9uLmh0bWwuDQoNCg0KIyMgU2VtYW50aWNzIG9mIGdncGxvdA0KWW91IGNhbiB0aGluayBvZiBhIGdncGxvdCBncmFwaCBhcyBicmluZyBidWlsdCBhcyBhIHNlcXVlbmNlIG9mIGxheWVycy4gT24gdGhlIGJvdHRvbSBpcyB0aGUgYmFzZSBvZiB0aGUgZ3JhcGgsIHdpdGggYXhlcywgdGhlbiB0aGUgZGF0YSBhcmUgbGF5ZXJlZCBvbiwgdGhlbiB0aXRsZXMgYW5kIG5vdGF0aW9ucyBhbmQgb3RoZXIgZmVhdHVyZXMuIEEgZ2dwbG90IGNvbW1hbmQgcmVmbGVjdHMgdGhpcyBsYXllcmVkIHN0cnVjdHVyZS4NCg0KIyBCdWlsZGluZyBhIGdyYXBoDQoNClRvIHVzZSB0aGUgZ2dwbG90IGxpYnJhcnksIHdlIG11c3QgaW5zdGFsbCB0aGUgZ2dwbG90MiBwYWNrYWdlIChvbmNlIG9uIGEgY29tcHV0ZXIpIGFuZCBpbnZva2UgdGhlIGxpYnJhcnkgY29tbWFuZCAoZm9yIGV2ZXJ5IFJTdHVkaW8gc2Vzc2lvbikuDQoNCmBgYHtyIGluc3RhbGwgYW5kIGxvYWQsIGV2YWwgPSBGQUxTRX0NCg0KIyBPbmNlIG9uIGFueSBjb21wdXRlcg0KaW5zdGFsbC5wYWNrYWdlcyhnZ3Bsb3QyKQ0KDQojIE9uY2UgZm9yIGFueSBSU3R1ZGlvIHNlc3Npb24NCmxpYnJhcnkoZ2dwbG90MikNCmBgYA0KDQpFdmVyeSBncmFwaCBtdXN0IHJlcHJlc2VudCBhIGRhdGEgZnJhbWUuIFRoZSBiYXNlIHBhcnQgb2YgYW55IGdncGxvdCBjb21tYW5kIGlzIGEgY2FsbCB0byBmdW5jdGlvbiBgZ2dwbG90KClgIHBhc3NpbmcgaW4gdGhlIGRhdGEgZnJhbWUgYXNzaWduZWQgdG8gZnVuY3Rpb24gYXJndW1lbnQgYGRhdGFgLg0KDQpgYGB7ciBnZ3Bsb3QgYmFzZX0NCg0KIyBUaGUgZ2dwbG90IGJhc2UgbGF5ZXINCmdncGxvdChkYXRhID0gZ2FwbWluZGVyX2RhdGEpDQoNCmBgYA0KDQpcDQoNCklmIHlvdSBydW4gdGhpcyBjb21tYW5kIGZyb20gdGhlIFJTdHVkaW8gY29uc29sZSBvciBhbiBSIHNjcmlwdCBpbiBSc3R1ZGlvLCB0aGUgZ3JleSBzcXVhcmUgc2hvd24gYWJvdmUgYXBwZWFycyBpbiB0aGUgUGxvdHMgcGFuZS4gVGhpcyBpbmRpY2F0ZXMgdGhhdCBnZ3Bsb3QgaXMgcmVhZHkgdG8gZHJhdyBhIGZpZ3VyZSAtLSB0aGlzIGlzIHRoZSAgYm90dG9tIGxheWVyIG9mIGEgZ2dwbG90IGdyYXBoLg0KDQpUbyBhZGQgeCBhbmQgeSBheGVzIHRvIHRoZSBncmFwaCwgd2UgbmVlZCB0byBkZWZpbmUgdGhlIHJlbGF0aW9uc2hpcCBiZXR3ZWVuIGFuIGluZm9ybWF0aW9uYWwgZWxlbWVudCBpbiB0aGUgZGF0YSBzZXQgYW5kIGEgdmlzdWFsIGVsZW1lbnQgKHRoZSBheGVzKSBpbiBvdXIgZ3JhcGguIEluIGdncGxvdCB0aGlzIHJlbGF0aW9uc2hpcCBpcyBhICoqbWFwcGluZyoqLiBUbyBpbml0aWFsaXNlIGEgbWFwcGluZywgd2UgaWRlbnRpZnkgYSBwYXJ0aWN1bGFyIGVsZW1lbnQgb2YgdGhlIGdyYXBoIChlLmcuIHRoZSB4LWF4aXMpIGFuZCBhc3NpZ24gYSBwYXJ0aWN1bGFyIGVsZW1lbnQgb2YgdGhlIGRhdGEgKGUuZy4gYSBjb2x1bW4gaW4gdGhlIGRhdGEgZnJhbWUpIHRvIGl0LiBUaGlzIGFzc2lnbm1lbnQgaXMgY2FsbGVkIGFuICoqYWVzdGhldGljKiogaW4gdGhlIEdyYW1tYXIgb2YgR3JhcGhpY3MsIGFuZCBpbiBnZ3Bsb3Qgd2UgdXNlIGZ1bmN0aW9uIGBhZXMoKWAgdG8gc3BlY2lmeSBhZXN0aGV0aWNzLiANCg0KSW1hZ2luZSB0aGF0IHdlIHdpc2ggdG8gbWFrZSBhIGdyYXBoIHNob3dpbmcgdGhlIHJlbGF0aW9uc2hpcCBiZXR3ZWVuIHBlciBjYXBpdGEgR0RQIGFuZCBsaWZlIGV4cGVjdGFuY3kgKHR3byBjb2x1bW5zIGluIGdhcG1pbmRlcl9kYXRhKS4gV2UgbWFwIHRoZSBmaXJzdCB2YXJpYWJsZSB0byB0aGUgeCBheGlzIChhcmd1bWVudCB4KSBvZiBvdXIgZ3JhcGggYW5kIHRoZSBzZWNvbmQgdG8gdGhlIHkgYXhpcyAoYXJndW1lbnQgeSkuIFRoaXMgd2lsbCBhZGQgYSBuZXcgbGF5ZXIuIFdlIGFkZCB0aGlzIGluZm9ybWF0aW9uIHBhcnQgb2YgdGhlIGNvbW1hbmQgdG8gdGhlIGdncGxvdCgpIGJhc2UgY2FsbC4gTm90ZSB0aGF0IHdlIGRvbid0IG5lZWQgdG8gdXNlIHRoZSBgJGAgb3BlcmF0b3IgaGVyZSwgYXMgYWxsIGNvbHVtbiBuYW1lcyBpbiBhIGdncGxvdCBjb21tYW5kIGFwcGx5IHRvIHRoZSBzdXBwbGllZCBkYXRhIGZyYW1lLg0KDQpgYGB7ciBtYXBwaW5nIHggYW5kIHl9DQoNCmdncGxvdChkYXRhID0gZ2FwbWluZGVyX2RhdGEsIG1hcHBpbmcgPSBhZXMoeCA9IGdkcFBlcmNhcCwgeSA9IGxpZmVFeHAgKSkNCg0KDQpgYGANCg0KXA0KDQpXZSBoYXZlIGFkZGVkIGEgbmV3IGxheWVyIHRvIG91ciBncmFwaCB3aXRoIGF4ZXMgYW5kIGdyaWQgbGluZXMuIE5vdGUgdGhhdCB0aGUgYXhlcycgdGljIHZhbHVlcyBhcmUgY29ycmVjdGx5IGZvcm1hdHRlZCBmb3IgdGhlIGFzc29jaWF0ZWQgZGF0YSBhbmQgdGhlIGRhdGEgZnJhbWUgY29sdW1uIG5hbWVzIGFyZSB1c2UgYXMgdGhlIGF4aXMgbGFiZWxzICh3ZSB3aWxsIHNlZSBob3cgdG8gZm9ybWF0IHRob3NlIGxhYmVscyBsYXRlcikuDQoNClRvIGFkZCBwb2ludHMgdG8gb3VyIGdyYXBoLCB3ZSBzcGVjaWZ5IGEgKipnZW9tZXRyeSoqIChhbm90aGVyIHRlcm0gZnJvbSB0aGUgR3JhbW1hciBvZiBHcmFwaGljcykuIFRoZXJlIGFyZSBtYW55LCBtYW55IGF2YWlsYWJsZSBnZW9tZXRyaWVzIGluIGdncGxvdCwgY29ycmVzcG9uZGluZyB0byBhbGwgdGhlIGRpZmZlcmVudCBzb3J0cyBvZiBncmFwaHMgLS0gc2NhdHRlcnBsb3RzLCBiYXIgcGxvdHMsIHBpciBjaGFydHMsIGxpbmUgZ3JhcGhzLCBldGMuIC0tIHRoYXQgeW91IG1pZ2h0IHdpc2ggdG8gbWFrZS4gRm9yIG91ciBjdXJyZW50IGdyYXBoLCB3ZSB3aXNoIHRvIHBsYWNlIGEgcG9pbnQgYXQgdGhlIGludGVyc2VjdGlvbiBvZiBwZXIgY2FwaXRhIEdEUCAob3VyIHggYXhpcykgYW5kIGxpZmUgZXhwZWN0YW5jeSAob3V0IHkgYXhpcykgZm9yIGVhY2ggcm93IGluIHRoZSBpbnB1dCBkYXRhIGZyYW1lLiBUbyBhZGQgdGhpcyBnZW9tZXRyeSB0byBnZ3Bsb3QgYXBwZW5kIGBnZW9tX3BvaW50KClgIHRvIHlvdXIgY3VycmVudCBnZ3Bsb3QgY29tbWFuZCB1c2luZyB0aGUgYCtgIG9wZXJhdG9yLiBJdCBpcyBjb252ZW50aW9uYWwgdG8gcGxhY2UgZWFjaCBjaHVuayBvZiB0aGUgZ2dwbG90IGNvbW1hbmQgb24gaXRzIG93biBsaW5lIGluIHRoZSBjb2RlLg0KDQpgYGB7ciBnZW9tIHBvaW50fQ0KZ2dwbG90KGRhdGEgPSBnYXBtaW5kZXJfZGF0YSwgbWFwcGluZyA9IGFlcyh4ID0gZ2RwUGVyY2FwLCB5ID0gbGlmZUV4cCApKSArDQogIGdlb21fcG9pbnQoKQ0KYGBgDQoNClwNCg0KVGhpcyB0eXBlIG9mIGdyYXBoICh1c3VhbGx5IGNhbGxlZCBhICoqc2NhdHRlcnBsb3QqKikgaWxsdXN0cmF0ZXMgdGhlIHJlbGF0aW9uc2hpcCBiZXR3ZWVuIHR3byBkZXBlbmRlbnQgdmFyaWFibGVzLiBFdmVuIGZyb20gdGhpcyB2ZXJ5IHNpbXBsZSBmaWd1cmUgd2UgY2FuIHNlZSB0aGF0IHRoZXJlIGlzIGEgKmdlbmVyYWwgdGVuZGVuY3kqIGZvciBoaWdoZXIgcGVyIGNhcGl0YSBHRFAgdG8gYmUgYXNzb2NpYXRlZCB3aXRoIGhpZ2hlciBsaWZlIGV4cGVjdGFuY3kuDQoNCkxpa2UgbW9zdCBmdW5jdGlvbnMsIGBnZW9tX3BvaW50YCBjYW4gYWNjZXB0IGFyZ3VtZW50cyB0aGF0IG1vZGlmeSBpdHMgYmVoYXZpb3VyLiBUaGUgYXJndW1lbnQgKipjb2xvdXIqKiBkZXRlcm1pbmVzIHRoZSBjb2xvdXIgb2YgdGhlIHBvaW50cyB0byBiZSBkcmF3biwgYW5kIGNhbiBiZSBhc3NpZ25lZCBhbnkgb2YgZ2dwbG90cyBidWlsdC1pbiBjb2xvdXIgbmFtZXMgKGNhbGwgZnVuY3Rpb24gYGNvbG91cnMoKWAgdG8gbGlzdCBhbGwgcG9zc2libGUgdmFsdWVzKSBvciBhIGhleGlkZWNpbWFsIFJHQiBjb2RlIChzZWUgZm9yIGV4YW1wbGUsIGh0dHBzOi8vci1jaGFydHMuY29tL2NvbG9ycy8pLg0KDQpgYGAge3IgY29sb3VyfQ0KZ2dwbG90KGRhdGEgPSBnYXBtaW5kZXJfZGF0YSwgbWFwcGluZyA9IGFlcyh4ID0gZ2RwUGVyY2FwLCB5ID0gbGlmZUV4cCApKSArDQogIGdlb21fcG9pbnQoY29sb3VyID0gJ3RvbWF0bycpDQpgYGANCg0KXA0KDQpUaGlzIGxpdmVucyB1cCBvdXIgcGxvdCwgYnV0IGl0IGRvZXNuJ3QgYWN1dGFsbHkgYWRkIGFueSBuZXcgaW5mb3JtYXRpb24uIEl0IGlzIGJldHRlciB0ZWNobmlxdWUgdG8gdXNlIGNvbG91ciBhcywgZWZmZWN0aXZlbHksIGEgdGhpcmQgYXhpcyBvbiBvdXIgZ3JhcGguIFRoYXQgaXMsIHdlIGNhbiB1c2UgY29sb3VyIHRvIGRpc3Rpbmd1aXNoIGJldHdlZW4gYW5vdGhlciBvZiBvdXIgZGF0YSBjb2x1bW5zLiBXZSBtaWdodCwgZm9yIGV4YW1wbGUsIHdpc2ggdG8gYXBwbHkgYSBkaWZmZXJlbnQgY29sb3VyIHRvIGVhY2ggY29udGluZW50LCB0byBzZWUgaG93IHRoZSByZWxhdGlvbnNoaXAgYmV0d2VlbiBHRFAgYW5kIGxpZmUgZXhwZWN0YW5jeSB2YXJpZXMgYWNyb3NzIGNvbnRpbmVudHMuIFRoaXMgaW52b2x2ZXMgZGVmaW5pbmcgYSBtYXBwaW5nIGJldHdlZW4gYSB2aXN1YWwgZmVhdHVyZSAoY29sb3VyKSBhbmQgYSBwcm9wZXJ0eSBvZiB0aGUgZGF0YSBzZXQgKGNvbHVtbiBjb250aW5lbnQpIHNvIHdlIGFnYWluIGluaXRpYWxpc2UgdGhlIGBtYXBwaW5nYCBwcm9wZXJ0eSB3aXRoIGZ1bmN0aW9uIGBhZXNgLg0KDQpgYGB7ciBtYXBwaW5nIGNvbG91cn0NCmdncGxvdChkYXRhID0gZ2FwbWluZGVyX2RhdGEsIG1hcHBpbmcgPSBhZXMoeCA9IGdkcFBlcmNhcCwgeSA9IGxpZmVFeHAgKSkgKw0KICBnZW9tX3BvaW50KG1hcHBpbmcgPSBhZXMoY29sb3VyID0gY29udGluZW50KSkNCmBgYA0KDQpcDQoNClRoaXMgc2Vjb25kIGdyYXBoIGlsbHVzdHJhdGVzIGNsZWFybHkgdGhhdCwgaW4gdGhlIGdhcG1pbmRlciBkYXRhLCBsZWZ0IGV4cGVjdGFuY3kgYW5kIHBlciBjYXBpdGEgR0RQIHZhcnkgc3Vic3RhbnRpYWxseSBiZXR3ZWVuIGNvbnRpbmVudHMuDQoNCllvdSBzaG91bGQgY2FyZWZ1bGx5IGNvbXBhcmUgdGhlIHR3byBwcmVjZWRpbmcgZ3JhcGhzLiBJbiB0aGUgZmlyc3QsIHdlIHNpbXBseSBzZXQgdGhlICoqY29sb3VyKiogYXJndW1lbnQgb2YgZnVuY3Rpb25gZ2VvbV9wb2ludGAuIEluIHRoZSBzZWNvbmQsIHdlIHNldCB0aGUgKiptYXBwaW5nKiogYXJndW1lbnQgb2YgYGdlb21fcG9pbnRgIHVzaW5nIGZ1bmN0aW9uIGBhZXNgLiBJbiB0aGUgZm9ybWVyIGdyYXBoLCBhbGwgcG9pbnRzIGFyZSB0aGUgc2FtZSBjb2xvdXIuIEluIHRoZSBsYXR0ZXIgZ3JhcGgsIHRoZSBjb2xvdXIgb2YgZWFjaCBwb2ludCBkZXBlbmRzIG9uIGl0cyBjb250aW5lbnQgdmFsdWUuIFRoYXQgaXMsIHdlIGhhdmUgKiptYXBwZWQqKiBjb2xvdXIgdG8gY29udGluZW50LiANCg0KDQojIyBDaG9vc2luZyBnZW9tZXRyaWVzDQoNCkl0IGlzIGVzc2VudGlhbCB0byBzZWxlY3QgdGhlIGNvcnJlY3QgdHlwZSBvZiBncmFwaCAodGhlIGNvcnJlY3QgZ2VvbWV0cnkgaW4gZ2dwbG90KSBmb3IgdGhlIGRhdGEgcGF0dGVybiB5b3Ugd2lzaCB0byBpbGx1c3RyYXRlLiBBc3N1bWUsIGZvciBleGFtcGxlLCB0aGF0IHlvdSB3aXNoIHRvIHNob3cgdGhlIHRyZW5kIGluIGxpZmUgZXhwZWN0YW5jeSBhY3Jvc3MgeWVhcnMsIGZvciB0aGUgY291bnRyeSBvZiBEZW5tYXJrLiBGaXJzdCwgd2UgbXVzdCBzZWxlY3Qgb3V0IG9ubHkgdGhlIHJvd3MgZm9yIERlbm1hcmsuIChXZSB3aWxsIGNvbnNpZGVyIHNlbGVjdGlvbiBpbiBkZXRhaWwgaW4gbmV4dCB3ZWVrJ3MgbW9kdWxlLiBGb3Igbm93LCBqdXN0IG5vdGUgdGhhdCBiZXR3ZWVuIHRoZSBzcXVhcmUgYnJhY2tldHMgd2UgcHJvdmlkZSByb3cgYW5kIGNvbHVtbiBjcml0ZXJpYSBmb3Igc2VsZWN0aW9uLCBhbmQgYW4gZW1wdHkgdmFsdWUgZm9yIGNvbHVtbiBtZWFucyAqKmFsbCoqLikgV2UgY2FuIHRoZW4gcGFzcyB0aGUgZGF0YSB0byBnZ3Bsb3QgYXMgYmVmb3JlLiBXZSB3aWxsIG5lZWQgdG8gYWRqdXN0IHRoZSBtYXBwaW5nIG9mIGRhdGEgdG8gdGhlIHggYW5kIHkgYXhlcyBhY2NvcmRpbmdseS4NCg0KVGhpcyBncmFwaCBpcyBpbGx1c3RyYXRpbmcgYSB0cmVuZCAoY2hhbmdlIGluIGEgdmFyaWFibGUgYWNyb3NzIHRpbWUpLiBUcmVuZCBncmFwaHMgYXJlIHVzdWFsbHkgZHJhd24gd2l0aCBhIGNvbnRpbnVvdXMgbGluZSBiZXR3ZWVuIHRoZSBwbG90dGVkIHBvaW50cy4gSW4gZ2dwbG90LCB0aGlzIGlzIGdlb21ldHJ5IGBnZW9tX2xpbmVgLg0KDQpgYGB7ciBwb2ludHMgbm90IHJpZ2h0fQ0KDQojIFNlbGVjdCBhbGwgcm93cyB3aGVyZSB0aGUgY291bnRyeSBpcyBlcXVhbCB0byBEZW5tYXJrLiBTZWxlY3QgYWxsIGNvbHVtbnMuDQpkZW5tYXJrX2RhdGEgPC0gZ2FwbWluZGVyX2RhdGFbZ2FwbWluZGVyX2RhdGEkY291bnRyeSA9PSAiRGVubWFyayIsIF0NCg0KZ2dwbG90KGRhdGEgPSBkZW5tYXJrX2RhdGEsIG1hcHBpbmcgPSBhZXMoeCA9IHllYXIsIHkgPSBsaWZlRXhwKSkgKw0KICBnZW9tX2xpbmUoKQ0KYGBgDQoNClwNCg0KVXNpbmcgZ2dwbG90IHdlIGNhbiBkcHVsaWNhdGUgdGhlIGhpc3RvZ3JhbSBmb3IgbGlmZSBleHBlY3RhbmNlIHVzaW5nIGBnZW9tX2hpc3RvZ3JhbWAuIEZvciBoaXN0b2dyYW1zIHdlIG9ubHkgbmVlZCB0byBtYXAgdGhlIHggYXhpcywgYXMgdGhlIHkgYXhpcyBpcywgYnkgZGVmYXVsdCwgZnJlcXVlbmN5LiBXZSBjYW4gZW5oYW5jZSB0aGUgcGxvdCdzIGFwcGVhcmFuY2UgYnkgaW5pdGlhbGlzaW5nIGBnZW9tX2hpc3RvZ3JhbWAgYXJndW1lbnRzIGBjb2xvdXJgIHdoaWNoIHNldHMgdGhlIGJvcmRlciBhcm91bmQgdGhlIGJhcnMgb24gdGhlIGdyYXBoLCBhbmQgYGZpbGxgIHdoaWNoIHNldCB0aGUgaW50ZXJpb3Igb2YgdGhlIGJhcnMgb24gdGhlIGdyYXBoDQoNCmBgYHtyIGhpc3RvZ3JhbSwgd2FybmluZyA9IEZBTFNFLCBtZXNzYWdlPUZBTFNFfQ0KZ2dwbG90KGRhdGEgPSBnYXBtaW5kZXJfZGF0YSwgbWFwcGluZyA9IGFlcyh4ID0gbGlmZUV4cCkpICsNCiAgZ2VvbV9oaXN0b2dyYW0oY29sb3VyID0gIndoaXRlIiwgZmlsbCA9ICJkYXJrZ3JlZW4iKQ0KYGBgDQoNClwNCg0KU2ltaWxhcmx5LCB3ZSBjYW4gcmVwcm9kdWNlIHRoZSBib3hwbG90IGFib3ZlIHdpdGggYGdlb21fYm94cGxvdGAuIEluIEJhc2UgUiB3ZSB1c2VkIGEgKipmb3JtdWxhKiogdG8gaWRlbnRpZnkgdGhlIGRlcGVuZGVudCBhbmQgaW5kZXBlbmRlbnQgdmFyaWFibGVzIGZvciB0aGUgYm94cGxvdC4gV2l0aCBnZ3Bsb3QsIHdlIHVzZSBhIG1hcHBpbmcgdG8gYXNzaWduIHRoZSBEViB0byB0aGUgeCBheGlzIGFuZCB0aGUgSVYgdG8gdGhlIHkgYXhpcy4NCg0KYGBge3IgYm94cGxvdH0NCmdncGxvdChkYXRhID0gZ2FwbWluZGVyX2RhdGEsIG1hcHBpbmcgPSBhZXMoeCA9IGNvbnRpbmVudCwgeSA9IGxpZmVFeHApKSArDQogIGdlb21fYm94cGxvdCgpDQoNCg0KYGBgDQoNClwNCg0KIyMgRXhlcmNpc2U6DQpXaGF0IHdvdWxkIHlvdSBwcmVkaWN0IHRvIGJlIHRoZSBlZmZlY3Qgb2Ygc3dhcHBpbmcgdGhlIHZhbHVlcyBvZiB4IGFuZCB5IGluIHRoZSBjYWxsIHRvIGBhZXNgIGFib3ZlPyBUZXN0IHlvdXIgcHJlZGljdGlvbi4NCg0KDQojIyBSZWZpbmluZyB0aGUgYXBwZWFyYW5jZSBvZiBhIHBsb3QNCkFmdGVyIHdlIGhhdmUgYnVpbHQgdGhlIGZvdW5kYXRpb24gb2Ygb3VyIHBsb3Qgd2l0aCBkYXRhIGFuZCBnZW9tZXRyeSwgd2UgY2FuIGFkZCBmdXJ0aGVyIGxheWVycyB0byBtb2RpZnkgdGhlIG90aGVyIHZpc3VhbCBmZWF0dXJlcyBvZiBvdXIgcGxvdC4gRm9yIGV4YW1wbGUsIHdlIGNhbiB1c2UgZnVuY3Rpb24gYGxhYnNgIHRvIHNldCB0aGUgYXhpcywgbGVnZW5kIGFuZCBtYWluIHRpdGxlcyBvZiBvdXIgcGxvdHMuIENvbnNpZGVyIHRoZSBmb2xsb3dpbmcgZW5oYW5jZW1lbnRzIHRvIG91ciBmaWd1cmUgaWxsdXN0cmF0aW5nIHRoZSByZWxhdGlvbnNoaXAgYmV0d2VlbiBHRFAgYW5kIGxpZmUgZXhwZWN0YW5jeSBieSBjb250aW5lbnQ6DQoNCmBgYCB7ciBmbHVmZmluZ30NCmdncGxvdChkYXRhID0gZ2FwbWluZGVyX2RhdGEsIG1hcHBpbmcgPSBhZXMoeCA9IGdkcFBlcmNhcCwgeSA9IGxpZmVFeHAgKSkgKw0KICBnZW9tX3BvaW50KG1hcHBpbmcgPSBhZXMoY29sb3VyID0gY29udGluZW50KSkgKw0KICBsYWJzKHggPSAiR0RQIFBlciBDYXBpdGEiLCB5ID0gIkxpZmUgRXhwZWN0YW5jeSIsIHRpdGxlID0gIkdhcCBNaW5kZXIgRGF0YSAxOTUyIHRvIDIwMDciLCBjb2xvdXIgPSAiQ29udGluZW50IikNCmBgYA0KDQpcDQoNCg0KVGhlIG9wdGlvbnMgZm9yIGdncGxvdCBmb3JtYXR0aW5nIGNhbiBnZXQgZXh0cmVtZWx5IGNvbXBsZXgsIGFuZCB0aGUgZnVsbCBmdW5jdGlvbmFsaXR5IGlzIGJleW9uZCB0aGUgc2NvcGUgb2YgdGhpcyBtb2R1bGUuIEluIGFkZGl0aW9uLCB0aGVyZSBhcmUgbWFueSwgbWFueSBtb3JlIGdlb21ldHJpZXMgYXZhaWxhYmxlLCBlYWNoIHdpdGggYXBwcm9wcmlhdGUgYXJndW1lbnRzIGFuZCBtYXBwaW5nIG9wdGlvbnMuDQoNClRoZSBmb3JtYWwgZG9jdW1lbnRhdGlvbiBmb3IgZ2dwbG90IGNhbiBiZSBmb3VuZCBhdCBodHRwczovL2dncGxvdDIudGlkeXZlcnNlLm9yZy9pbmRleC5odG1sLiBJZiB5b3UgcHJlZmVyIHR1dG9yaWFscyBhbmQgZ2FsbGVyaWVzLCB0aGVyZSBhcmUgbWFueSBhdmFpbGFibGUgb25saW5lLiBUd28gZ29vZCBwbGFjZXMgdG8gc3RhcnQgYXJlIGh0dHA6Ly93d3cuY29va2Jvb2stci5jb20vR3JhcGhzLyBhbmQgaHR0cHM6Ly93d3cuci1ncmFwaC1nYWxsZXJ5LmNvbS8uDQoNCg0KIyMgU2F2aW5nIGdncGxvdHMNCllvdSBjYW4gc2F2ZSBmaWd1cmVzIG1hZGUgd2l0aCBnZ3Bsb3QgdG8gaW1hZ2UgZmlsZXMsIHdoaWNoIGNhbiB0aGVuIGJlIHVzZWQgaW4gZG9jdW1lbnRzIGdlbmVyYXRlZCBpbiBNUyBXb3JkIG9yIG90aGVyIHRleHQgZWRpdG9ycy4gV2UgZmlyc3Qgc2F2ZSB0aGUgb3V0cHV0IG9mIG91ciBnZ3Bsb3QgY29tbWFuZCBpbnRvIGEgbmFtZWQgdmFyaWFibGUgLS0gdG8gUiBhIGdncGxvdCBpcyBhIGRhdGEgb2JqZWN0IGp1c3QgbGlrZSBhIG51bWJlciBvciBhIHN0cmluZy4gV2UgdGhlbiB1c2UgZnVuY3Rpb24gYGdnc2F2ZWAgdG8gZXhwb3J0IG91dCBwbG90IGFzIGFuIGltYWdlIGZpbGUuIFlvdSBzcGVjaWZ5IHRoZSBpbWFnZSBmb3JtYXQgYnkgc3VwcGx5aW5nIGFuIG91dGZpbGUgbmFtZS4gQnkgZGVmYXVsdCwgdGhlIGZpbGUgaXMgc2F2ZWQgaW50byB0aGUgd29ya2luZyBmb2xkZXIgKGluIG91ciBjYXNlLCB0aGUgZm9sZGVyIGNvbnRhaW5pbmcgb3VyIGNzdiBhbmQgc2NyaXB0IGZpbGVzKS4NCg0KYGBge3IgZ2dzYXZlfQ0KDQojIFNhdmUgYSBnZ3Bsb3QgdG8gYSB2YXJpYWJsZS4gVGhlIHN5bnRheCBvZiB0aGUgZ3BwbG90IGNvbW1hbmQgaXMgdW5hZmZlY3RlZA0KZ2RwX2xpZmVFeHBfcGxvdCA8LSBnZ3Bsb3QoZGF0YSA9IGdhcG1pbmRlcl9kYXRhLCBtYXBwaW5nID0gYWVzKHggPSBnZHBQZXJjYXAsIHkgPSBsaWZlRXhwICkpICsNCiAgZ2VvbV9wb2ludChtYXBwaW5nID0gYWVzKGNvbG91ciA9IGNvbnRpbmVudCkpICsNCiAgeGxhYigiR0RQIFBlciBDYXBpdGEiKSArDQogIHlsYWIoIkxpZmUgRXhwZWN0YW5jeSIpICsNCiAgZ2d0aXRsZSgiR2FwIE1pbmRlciBEYXRhIDE5NTIgdG8gMjAwNyIpDQoNCiMgU2F2ZSB0aGUgdmFyaWFibGUuIFByb3ZpZGUgdGhlIGZpbGUgbmFtZSBhbmQgdGhlIGdncGxvdCBvYmplY3QNCmdnc2F2ZShmaWxlbmFtZSA9ICJnZHBfbGlmZUV4cF9wbG90LnBuZyIsIGdkcF9saWZlRXhwX3Bsb3QpDQpgYGANCg0KIyMgQ29uY2x1c2lvbg0KDQpUaGlzIGRvY3VtZW50IGhhcyBwcmVzZW50ZWQgYSBzaW1wbGUgaW50cm9kdWN0aW9uIHRvIHdvcmtpbmcgd2l0aCBjb21wbGV0ZSB0YWJsZXMgb2YgZGF0YSBpbiBSLiBXZSBsZWFybmVkIGhvdyB0byBpbXBvcnQgYSBjc3YgZmlsZSBpbnRvIGEgZGF0YSBmcmFtZSwgaG93IHRvIHNlbGVjdCBjb2x1bW5zIGFuZCByb3dzIG9mIGludGVyZXN0IGZyb20gdGhlIGRhdGEgZnJhbWUsIGFuZCBob3cgdG8gcGVyZm9ybSBzaW1wbGUsIHlldCBpbGx1c3RyYXRpdmUgc3VtbWFyaWVzIG9uIHRoZW0uIFdlIGhhdmUgY292ZXJlZCBvbmx5IGEgdGlueSBmcmFjdGlvbiBvZiB0aGUgZGF0YSBhbmFseXNlcyB5b3UgY2FuIHBlcmZvcm0gd2l0aCBSIGFuZCBSU3R1ZGlvLiBZb3UgY2FuIGFsc28gZG8gdmVyeSBjb21wbGV4IHN0YXRpc3RpY3MgbGlrZSBBTk9WQSwgcmVncmVzc2lvbiwgZmFjdG9yIGFuYWx5c2lzLCBhbmQgY29tcGxleCBtb2RlbGxpbmcuIFRoZSBzcGVjaWZpYyBzdGF0aXN0aWNhbCBhbmFseXNlcyB5b3Ugd2lsbCBuZWVkIHRvIGRvIGZvciB5b3VyIGluLWNvdXJzZSBhc3NpZ25tZW50cyB3aWxsIGRlcGVuZCBvbiB0aGUgcGFwZXJzIHlvdSBhcmUgdGFraW5nLCBidXQgeW91IGNhbiBiZSBjb25maWRlbnQgdGhhdCB3aGF0ZXZlciB5b3VyIGxlY3R1cmVycyByZXF1aXJlIGNhbiBhbG1vc3QgY2VydGFpbmx5IGJ5IGRvbmUgZWZmaWNpZW50bHkgaW4gUi4gQXMgd2UgcHJvY2VlZCB0aHJvdWdoIHRoZSBzZW1lc3RlciwgaWYgeW91IHdpc2ggdG8gZGlzY3VzcyBhIHBhcnRpY3VsYXIgZGF0YSBhbmFseXNpcywgcHJvY2Vzc2luZywgb3IgcHJlc2VudGF0aW9uIHRhc2ssIHBsZWFzZSBsZXQgdXMga25vdy4NCg0KDQojIyMgV2hhdCdzIE5leHQNCg0KRmlsbCBpbiB0aGUgbW9kdWxlIGZlZWRiYWNrIGZvcm0gW2h0dHBzOi8vdGlueXVybC5jb20vcjRzc3AtbW9kdWxlLWZiXShodHRwczovL3Rpbnl1cmwuY29tL3I0c3NwLW1vZHVsZS1mYikuDQoNCkVuc3VyZSB5b3UgaGF2ZSB0aGUgYHRpZHl2ZXJzZWAgaW5zdGFsbGVkIGZvciB0aGUgbmV4dCBtb2R1bGUuIFRoZSB0aWR5dmVyc2UgaXMgYSBjb2xsZWN0aW9uIG9mIHBhY2thZ2VzIChhIG1ldGFwYWNrYWdlKSB0aGF0IHByb3ZpZGUgYSBzdWNjaW5jdCBzeW50YXggZm9yIHBlcmZvcm1pbmcgZGF0YSBtYW5pcHVsYXRpb24gYW5kIGJhc2ljIGFuYWx5c2lzIGluIFIuICBSdW5uaW5nIGBpbnN0YWxsLnBhY2thZ2VzKHRpZHl2ZXJzZSlgIGluc3RhbGxzIGFsbCB0aGUgaW5kaXZpZHVhbCBwYWNrYWdlcyB0byB5b3VyIG1hY2hpbmUuDQoNClRoZSB0aWR5dmVyc2UgY29uc2lzdHMgb2YgYGdncGxvdDJgIChwbG90dGluZyksIGBkcGx5cmAgKGRhdGEgbWFuaXB1bGF0aW9uKSwgYHRpZHlyYCAoZGF0YSB0aWR5aW5nKSwgYHJlYWRyYCAoZGF0YSBpbXBvcnRpbmcpLCBgcHVycnJgIChmdW5jdGlvbmFsIHByb2dyYW1taW5nKSwgYHRpYmJsZWAgKGEgc3BlY2lhbCB0eXBlIG9mIGRhdGEgZnJhbWUpLCBgc3RyaW5ncmAgKGNvbW1vbiB0YXNrcyBmb3Igc3RyaW5nIG1hbmlwdWxhdGlvbnMpLCBhbmQgIGBmb3JjYXRzYCAoZGVhbGluZyB3aXRoIGZhY3RvcnMpDQogDQoNCmBgYHtyIGluc3RhbGwgdGlkeXZlcnNlLCBldmFsID0gRkFMU0V9DQojIERvd25sb2FkIGFuZCBpbnN0YWxsIHRoZSBwYWNrYWdlcyBvZiB0aWR5dmVyc2UNCmluc3RhbGwucGFja2FnZXMoInRpZHl2ZXJzZSIpDQpgYGANCg0KDQpgYGB7cn0NCiMgbG9hZCB0aGUgdGlkeXZlcnNlIHBhY2thZ2VzIGZvciB0aGUgY3VycmVudCBzZXNzaW9uDQpsaWJyYXJ5KHRpZHl2ZXJzZSkNCmBgYA0KDQoNCg0KDQo=</div>
 
 
 </div>

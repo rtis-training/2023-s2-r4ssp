@@ -66,7 +66,7 @@ Document organisation is vitally important. We suggest that you keep a separate 
 
 5. Create a new folder (name it something sensible) and place the script file in it.
 
-6. The sample csv data file used in this module is called **gapminder_data_2007.csv**. This file contains life expectancy, population and GDP values for 142 different countries. The data for each country were measured 12 times between 1952 and 2007. These data are sourced from the GapMinder foundation (https://www.gapminder.org/).
+6. The sample csv data file used in this module is called **gapminder_data_2007.csv**. This file contains life expectancy, population, and GDP values for 142 different countries. The data for each country were measured 12 times between 1952 and 2007. These data are sourced from the GapMinder foundation (https://www.gapminder.org/).
 
 Retrieve the sample csv data file from the course Google Drive shared folder ^[https://drive.google.com/drive/folders/1ttf1s8-vkJNOlHdphfi2zFyMq6gGEvCy?usp=sharing]. Place the csv file into the folder with your script file.
 
@@ -88,9 +88,7 @@ include_graphics("images/gapminder_data_2007.png")
 
 We will import this file into R for some preliminary data analysis.
 
-To import a csv file into R we can use the function `read.csv`. Like the R functions we used in Module 1, `read.csv` accepts an argument between its round brackets. The argument is the name of the input file. Because the name of the file is a string, we surround it with double quotes. We will therefore say:
-
-`read.csv("gapminder_data_2007.csv")`
+To import a csv file into R we can use the function `read.csv`. Like the R functions we used in Module 1, `read.csv` accepts an argument between its round brackets. The argument is the name of the input file. Because the name of the file is a string, we surround it with double quotes. For this data set we want the columns that contain words (country and continent) to be imported as categorical variables. To achieve this, we will set the `stringsAsFactors` argument to TRUE when we call `read.csv`. The complete command is shown below.
 
 \
 
@@ -99,24 +97,16 @@ To import a csv file into R we can use the function `read.csv`. Like the R funct
 Type the following line into your script file. Execute the command as you did in the previous module by placing the cursor anywhere on the line and typing ctrl-Enter (Windows) or cmd-Enter (Mac).
 
 ```{r read.csv}
-read.csv("gapminder_data_2007.csv")
-```
-
-
-When imported into R, the data from the csv file are stored in an R object called a **data frame**.Data frames are simply tables, organised into rows and columns. The columns have names taken from the first row of the csv file, and each subsequent row of the csv file becomes a row in the data frame. 
-
-When you call `read.csv`, passing in a file name, R reads in the file, converts it to a data frame, and displays it in the console. The columns have the same names as in the csv file. We will see later that we can use the column names to explore specific properties of our data set.
-
-Our call to function `read.csv` will import the file and display its contents in the console, but this is not quite enough. We want R to store the data in a named variable so that we can refer to it later (i.e., perform analyses on it). We do that with the assignment operator, as we did in our previous module. For example, we can say:
-
-```{r import into variable}
 
 # Save an imported data frame into a named variable
-gapminder_data <- read.csv("gapminder_data_2007.csv")
-
+gapminder_data <- read.csv("gapminder_data_2007.csv", stringsAsFactors = TRUE)
 ```
 
-After storing our imported data into a variable, you should always check that your data have been imported correctly. Data entry errors can cause R to make the wrong assumptions about your data. If you have a column of numbers that contains even one accidental alphabetic character (typos do happen) R will consider the whole column to be strings. Later, R will give the wrong results when you perform statistical analyses on these data (or it will refuse to perform them at all). 
+When imported into R, the data from the csv file are translated into an R object called a **data frame**. Data frames are simply tables, organised into rows and columns. The columns have names taken from the first row of the csv file, and each subsequent row of the csv file becomes a row in the data frame. 
+
+We store the data frame in a named variable so that we can refer to it later (i.e., perform analyses on it). We use the assignment operator, as we did in our previous module. 
+
+After storing our imported data into a variable, you should always check that the data have been imported correctly. Data entry errors can cause R to make the wrong assumptions about your data. If you have a column of numbers that contains even one accidental alphabetic character (typos do happen) R will consider the whole column to be strings. Later, R will give the wrong results when you perform statistical analyses on these data (or it will refuse to perform them at all). 
 
 Use the following commands to visually inspect your imported data:
 
@@ -148,7 +138,7 @@ include_graphics("images/df_in_env_pane.PNG")
 
 ## Selecting and using columns of data
 
-In both of the above displays, each column name is prefaced with `$`. We can use the `$` operator to select individual columns of data from a data frame. For example, to select just the life expectancy values from our data, we say `gapminder_data$lifeExp`. (Be sure to type the column name exactly as it appears in the output of `str` and in the Environment pane.) We can use this directly as the argument to a function, or we can store the selected column in a variable (which will be a vector) for later processing. 
+In both of the above displays, each column name is prefaced with `$`. We use the `$` operator to select individual columns of data from a data frame. For example, to select just the life expectancy values from our data, we say `gapminder_data$lifeExp`. (Be sure to type the column name exactly as it appears in the output of `str` and in the Environment pane.) We can use this directly as the argument to a function, or we can store the selected column in a variable (which will be a vector) for later processing. 
 
 For example:
 
@@ -159,7 +149,7 @@ head(gapminder_data$year)
 
 
 # Store column continent in a new variable
-continents <- gapminder$continent
+continents <- gapminder_data$continent
 
 # Pass the variable to function levels which returns the values
 # of a categorical variable
@@ -181,6 +171,8 @@ A histogram shows the **frequency distribution** of a data set. That is, it show
 hist(gapminder_data$lifeExp)
 ```
 
+\
+
 We see that life expectancy is approximately bell-shaped, with many scores between 65 and 85, with a small number of extreme values greater than 80 or less than 30. 
 
 
@@ -196,6 +188,8 @@ The second argument to boxplot is the data frame.
 ```{r 02-boxplot01}
 boxplot(lifeExp ~ continent, gapminder_data)
 ```
+
+\
 
 Boxplots efficiently illustrate both the central tendency and the variability of a data set. Each grey box extends from the first quartile to the third quartile of its input values. The dark line across the box is at the median. The two thin lines outside the qrey box show the values of the minimum and maximum scores, excluding extreme outliers. If extreme outliers are present, they are shown as small circles. This figure clearly illustrates that, in the gapminder data, life expectancy -- both central tendency and variablity -- is not the same for all continents.
 
@@ -232,6 +226,8 @@ ggplot(data = gapminder_data)
 
 ```
 
+\
+
 If you run this command from the RStudio console or an R script in Rstudio, the grey square shown above appears in the Plots pane. This indicates that ggplot is ready to draw a figure -- this is the  bottom layer of a ggplot graph.
 
 To add x and y axes to the graph, we need to define the relationship between an informational element in the data set and a visual element (the axes) in our graph. In ggplot this relationship is a **mapping**. To initialise a mapping, we identify a particular element of the graph (e.g. the x-axis) and assign a particular element of the data (e.g. a column in the data frame) to it. This assignment is called an **aesthetic** in the Grammar of Graphics, and in ggplot we use function `aes()` to specify aesthetics. 
@@ -245,6 +241,8 @@ ggplot(data = gapminder_data, mapping = aes(x = gdpPercap, y = lifeExp ))
 
 ```
 
+\
+
 We have added a new layer to our graph with axes and grid lines. Note that the axes' tic values are correctly formatted for the associated data and the data frame column names are use as the axis labels (we will see how to format those labels later).
 
 To add points to our graph, we specify a **geometry** (another term from the Grammar of Graphics). There are many, many available geometries in ggplot, corresponding to all the different sorts of graphs -- scatterplots, bar plots, pir charts, line graphs, etc. -- that you might wish to make. For our current graph, we wish to place a point at the intersection of per capita GDP (our x axis) and life expectancy (out y axis) for each row in the input data frame. To add this geometry to ggplot append `geom_point()` to your current ggplot command using the `+` operator. It is conventional to place each chunk of the ggplot command on its own line in the code.
@@ -253,7 +251,10 @@ To add points to our graph, we specify a **geometry** (another term from the Gra
 ggplot(data = gapminder_data, mapping = aes(x = gdpPercap, y = lifeExp )) +
   geom_point()
 ```
-This figure This type of graph (usually called a **scatterplot**) illustrates the relationship between two dependent variables. Even from this very simple figure we can see that there is a *general tendency* for higher per capita GDP to be associated with higher life expectancy.
+
+\
+
+This type of graph (usually called a **scatterplot**) illustrates the relationship between two dependent variables. Even from this very simple figure we can see that there is a *general tendency* for higher per capita GDP to be associated with higher life expectancy.
 
 Like most functions, `geom_point` can accept arguments that modify its behaviour. The argument **colour** determines the colour of the points to be drawn, and can be assigned any of ggplots built-in colour names (call function `colours()` to list all possible values) or a hexidecimal RGB code (see for example, https://r-charts.com/colors/).
 
@@ -262,12 +263,17 @@ ggplot(data = gapminder_data, mapping = aes(x = gdpPercap, y = lifeExp )) +
   geom_point(colour = 'tomato')
 ```
 
+\
+
 This livens up our plot, but it doesn't acutally add any new information. It is better technique to use colour as, effectively, a third axis on our graph. That is, we can use colour to distinguish between another of our data columns. We might, for example, wish to apply a different colour to each continent, to see how the relationship between GDP and life expectancy varies across continents. This involves defining a mapping between a visual feature (colour) and a property of the data set (column continent) so we again initialise the `mapping` property with function `aes`.
 
 ```{r mapping colour}
 ggplot(data = gapminder_data, mapping = aes(x = gdpPercap, y = lifeExp )) +
   geom_point(mapping = aes(colour = continent))
 ```
+
+\
+
 This second graph illustrates clearly that, in the gapminder data, left expectancy and per capita GDP vary substantially between continents.
 
 You should carefully compare the two preceding graphs. In the first, we simply set the **colour** argument of function`geom_point`. In the second, we set the **mapping** argument of `geom_point` using function `aes`. In the former graph, all points are the same colour. In the latter graph, the colour of each point depends on its continent value. That is, we have **mapped** colour to continent. 
@@ -287,12 +293,17 @@ denmark_data <- gapminder_data[gapminder_data$country == "Denmark", ]
 ggplot(data = denmark_data, mapping = aes(x = year, y = lifeExp)) +
   geom_line()
 ```
+
+\
+
 Using ggplot we can dpulicate the histogram for life expectance using `geom_histogram`. For histograms we only need to map the x axis, as the y axis is, by default, frequency. We can enhance the plot's appearance by initialising `geom_histogram` arguments `colour` which sets the border around the bars on the graph, and `fill` which set the interior of the bars on the graph
 
 ```{r histogram, warning = FALSE, message=FALSE}
 ggplot(data = gapminder_data, mapping = aes(x = lifeExp)) +
   geom_histogram(colour = "white", fill = "darkgreen")
 ```
+
+\
 
 Similarly, we can reproduce the boxplot above with `geom_boxplot`. In Base R we used a **formula** to identify the dependent and independent variables for the boxplot. With ggplot, we use a mapping to assign the DV to the x axis and the IV to the y axis.
 
@@ -302,22 +313,28 @@ ggplot(data = gapminder_data, mapping = aes(x = continent, y = lifeExp)) +
 
 
 ```
+
+\
+
 ## Exercise:
 What would you predict to be the effect of swapping the values of x and y in the call to `aes` above? Test your prediction.
 
 
 ## Refining the appearance of a plot
-After we have built the foundation of our plot with data and geometry, we can add further layers to modify the other visual features of our plot. For example, we can use `xlab()` and `ylab()` to change the axis titles. We can use `ggtitle()` to add a main title to the graph. Consider the following enhancements to our figure illustrating the relationship between GDP and life expectancy by continent:
+After we have built the foundation of our plot with data and geometry, we can add further layers to modify the other visual features of our plot. For example, we can use function `labs` to set the axis, legend and main titles of our plots. Consider the following enhancements to our figure illustrating the relationship between GDP and life expectancy by continent:
 
 ``` {r fluffing}
 ggplot(data = gapminder_data, mapping = aes(x = gdpPercap, y = lifeExp )) +
   geom_point(mapping = aes(colour = continent)) +
-  xlab("GDP Per Capita") +
-  ylab("Life Expectancy") +
-  ggtitle("Gap Minder Data 1952 to 2007")
+  labs(x = "GDP Per Capita", y = "Life Expectancy", title = "Gap Minder Data 1952 to 2007", colour = "Continent")
 ```
 
-The options for ggplot formatting can get extremely complex, and the full functionality is beyond the scope of this module. The formal documentation for ggplot can be found at https://ggplot2.tidyverse.org/index.html. If you prefer tutorials and galleries, there are many, many available online. Two good places to start are http://www.cookbook-r.com/Graphs/ and https://www.r-graph-gallery.com/.
+\
+
+
+The options for ggplot formatting can get extremely complex, and the full functionality is beyond the scope of this module. In addition, there are many, many more geometries available, each with appropriate arguments and mapping options.
+
+The formal documentation for ggplot can be found at https://ggplot2.tidyverse.org/index.html. If you prefer tutorials and galleries, there are many available online. Two good places to start are http://www.cookbook-r.com/Graphs/ and https://www.r-graph-gallery.com/.
 
 
 ## Saving ggplots
