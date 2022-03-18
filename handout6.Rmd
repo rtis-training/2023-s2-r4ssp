@@ -27,6 +27,20 @@ Scripts
 
 Rmarkdown
 
-Bookdown
+- yaml
+- markdown
+- code chunks
+  - eval
+  - include
+  - warning
+  - message
+  - fig
+  - results
+- images
+  - include_graphics
+  - `![]()`
+- tables
+  - kable
+  - {kableExtra}
 
-Websites
+- {here}
