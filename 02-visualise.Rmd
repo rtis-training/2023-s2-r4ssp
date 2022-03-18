@@ -273,144 +273,51 @@ This second graph illustrates clearly that, in the gapminder data, left expectan
 You should carefully compare the two preceding graphs. In the first, we simply set the **colour** argument of function`geom_point`. In the second, we set the **mapping** argument of `geom_point` using function `aes`. In the former graph, all points are the same colour. In the latter graph, the colour of each point depends on its continent value. That is, we have **mapped** colour to continent. 
 
 
+## Choosing geometries
 
+It is essential to select the correct type of graph (the correct geometry in ggplot) for the data pattern you wish to illustrate. Assume, for example, that you wish to show the trend in life expectancy across years, for the country of Denmark. First, we must select out only the rows for Denmark. (We will consider selection in detail in next week's module. For now, just note that between the square brackets we provide row and column criteria for selection, and an empty value for column means **all**.) We can then pass the data to ggplot as before. We will need to adjust the mapping of data to the x and y axes accordingly.
 
+This graph is illustrating a trend (change in a variable across time). Trend graphs are usually drawn with a continuous line between the plotted points. In ggplot, this is geometry `geom_line`.
 
-We'll now recreate the same plots as we did with the Base R plotting system.
+```{r points not right}
 
-# PH Not appropriate for this type of data set
+# Select all rows where the country is equal to Denmark. Select all columns.
+denmark_data <- gapminder_data[gapminder_data$country == "Denmark", ]
 
-#### Scatter plots
+ggplot(data = denmark_data, mapping = aes(x = year, y = lifeExp)) +
+  geom_line()
+```
+Using ggplot we can dpulicate the histogram for life expectance using `geom_histogram`. For histograms we only need to map the x axis, as the y axis is, by default, frequency. We can enhance the plot's appearance by initialising `geom_histogram` arguments `colour` which sets the border around the bars on the graph, and `fill` which set the interior of the bars on the graph
 
-Here you'll see we've defined our data, we've mapped specific columns to our axes, and are using a 'point' as our geometric representation.
-
-```{r 02-gg_point1}
-ggplot(data = puppy_donations_data, mapping = aes(x = CollectorID, y = Amount)) + 
-  geom_point()
+```{r histogram, warning = FALSE, message=FALSE}
+ggplot(data = gapminder_data, mapping = aes(x = lifeExp)) +
+  geom_histogram(colour = "white", fill = "darkgreen")
 ```
 
-We can also store our plots in a variable to build upon
+Similarly, we can reproduce the boxplot above with `geom_boxplot`. In Base R we used a **formula** to identify the dependent and independent variables for the boxplot. With ggplot, we use a mapping to assign the DV to the x axis and the IV to the y axis.
 
-```{r}
-p <- ggplot(data = puppy_donations_data, mapping = aes(x = CollectorID, y = Amount))
-```
-
-What does `p` actually contain?
-```{r 02-gg}
-p
-```
-
-
-```{r 02-gg_point2}
-p + geom_point()
-```
-
-
-##### Specifiying colour
-
-Remember `p` contains our initial specification of the data and mappings
-
-```{r 02-gg_point3}
-p + geom_point(colour = 'red')
-```
-
-##### Mapping colour from our data
-
-```{r 02-gg_point4}
-p + geom_point(aes(colour = Condition))
-```
-Notice that we didn't specify the colour for our points, instead we have told ggplot to use colours based on the values that were found in the "Condition" column using `aes`.
-
-\
-
-#### Line plots
-
-In this case, we have the same data and mapping, but we want to have the data represented by a line so we choose `geom_line` as our "geom".
-
-```{r 02-gg_line1}
-p + geom_line()
-```
-
-
-
-
-##### Adding layers
-
-```{r 02-gg_line2}
-p + 
-  geom_line() + 
-  geom_point()
-```
-
-
-
-```{r 02-gg_line3}
-p + 
-  geom_line(colour = 'gold') + 
-  geom_point(colour = 'tomato')
-```
-
-##### Using mappings
-
-If you would like to plot individual lines based on a categorical variable you can used a 'group' mapping:
-
-```{r 02-gg_line4}
-p + 
-  geom_line(aes(group = Condition))
-```
-
-
-We can specify separate aesthestics for each layer
-
-```{r 02-gg_line5}
-p + 
-  geom_line(aes(colour = Condition)) + 
-  geom_point(aes(colour = Condition))
-```
-
-Note that colour will automatically imply a _group_.
-
-or if it is common to all layers, we can specify them in the initial setting up:
-
-```{r 02-gg_line6}
-ggplot(data = puppy_donations_data, 
-       mapping = aes(x = CollectorNumber, 
-                     y = Amount, 
-                     colour = Condition)) + 
-  geom_line() + 
-  geom_point()
-```
-
-\
-
-#### Histogram
-
-A histogram is created from a single continuous variable.
-
-```{r 02-gg_hist}
-ggplot(data = puppy_donations_data, aes(x = Amount)) + 
-  geom_histogram()
-```
-
-\
-
-#### Boxplot
-
-In ggplot, to create a boxplot, we need to specify a continuous variable, and a categorical variable.
-
-```{r 02-gg_box1}
-ggplot(data = puppy_donations_data, aes(x = Condition, y = Amount)) + 
+```{r boxplot}
+ggplot(data = gapminder_data, mapping = aes(x = continent, y = lifeExp)) +
   geom_boxplot()
+
+
+```
+## Exercise:
+What would you predict to be the effect of swapping the values of x and y in the call to `aes` above? Test your prediction.
+
+
+## Refining the appearance of a plot
+After we have built the foundation of our plot with data and geometry, we can add further layers to modify the other visual features of our plot. For example, we can use `xlab()` and `ylab()` to change the axis titles. We can use `ggtitle()` to add a main title to the graph. Consider the following enhancements to our figure illustrating the relationship between GDP and life expectancy by continent:
+
+``` {r fluffing}
+ggplot(data = gapminder_data, mapping = aes(x = gdpPercap, y = lifeExp )) +
+  geom_point(mapping = aes(colour = continent)) +
+  xlab("GDP Per Capita") +
+  ylab("Life Expectancy") +
+  ggtitle("Gap Minder Data 1952 to 2007")
 ```
 
-Or you could make it horizontal by switching the the x/y arguments.
-
-```{r 02-gg_box2}
-ggplot(data = puppy_donations_data, aes(x = Amount, y = Condition)) + 
-  geom_boxplot()
-```
-
-\
+The options for ggplot formatting can get extremely complex, and the full functionality is beyond the scope of this module. The formal documentation for ggplot can be found at https://ggplot2.tidyverse.org/index.html. If you prefer tutorials and galleries, there are many, many available online. Two good places to start are http://www.cookbook-r.com/Graphs/ and https://www.r-graph-gallery.com/.
 
 ### Customising
 
