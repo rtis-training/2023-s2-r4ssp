@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Visualising</title>
+
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">R4SSP Semester 1 2022</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Modules
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Intro</li>
+    <li>
+      <a href="01-intro.html">Intro to R and RStudio</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Data Focus</li>
+    <li>
+      <a href="02-visualise.html">Part 1: Visualising</a>
+    </li>
+    <li class="dropdown-header">Part 2: Subsetting</li>
+    <li class="dropdown-header">Part 3: Transforming</li>
+    <li class="dropdown-header">Part 4: Summarising</li>
+    <li class="dropdown-header">Part 5: Communicating</li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Programming focus</li>
+    <li class="dropdown-header">Functions and Choices</li>
+    <li class="dropdown-header">Repeating Code</li>
+    <li class="dropdown-header">Workflows</li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Handouts
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="handout1.html">Handout 1</a>
+    </li>
+    <li>
+      <a href="handout2.html">Handout 2</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+<li role="separator" class="divider"></li>
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Visualising</h1>
+<h4 class="date">Semester 1, 2022</h4>
+
+</div>
+
+
+<blockquote>
+<h4 id="data-focus">Data Focus</h4>
+<p>Modules and Handouts 2–6 cover topics that are part of the data analysis journey and are all interrelated. Each module will introduce new content and expand on the material covered in previous modules. For example, in Module 2 we introduce the basics of the R plotting systems. Subsequent handouts include more advanced plotting options and techniques.</p>
+</blockquote>
+<p><br />
+</p>
+<p><br />
+</p>
+<p>Zoom Notes: <a href="zoom_notes_02.html">Zoom Notes 02 - Visualising Data</a></p>
+<p>Associated Readings:</p>
+<ul>
+<li><a href="https://r4ds.had.co.nz/tidy-data.html">R for Data Science - Chapter 12</a></li>
+<li><a href="https://r4ds.had.co.nz/data-import.html">R for Data Science - Chapter 11</a></li>
+<li><a href="https://r4ds.had.co.nz/data-visualisation.html">R for Data Science - Chapter 3</a></li>
+</ul>
+<div id="topics" class="section level1">
+<h1>Topics</h1>
+<div id="tabular-data" class="section level2">
+<h2>Tabular Data</h2>
+<ul>
+<li>Edit in Excel</li>
+<li>Export to plain csv (not UTF-8)</li>
+<li>Column headers in first row for every column</li>
+<li>One row for each data record</li>
+</ul>
+</div>
+<div id="folder-setup" class="section level2">
+<h2>Folder setup</h2>
+<ul>
+<li>Eventually, use Projects to allow RStudio to manage metadata</li>
+<li>Separate folders for data files, images, scripts, Rmd, etc.</li>
+</ul>
+</div>
+<div id="importing-a-data-file" class="section level2">
+<h2>Importing a data file</h2>
+<ul>
+<li>read.csv</li>
+<li>Set stringsAsFactors = TRUE to import categorical variables correctly</li>
+<li>After we meet the tidyverse, can also use read_csv</li>
+</ul>
+</div>
+<div id="checking-your-imported-data" class="section level2">
+<h2>Checking your imported data</h2>
+<ul>
+<li>head</li>
+<li>tail</li>
+<li>str</li>
+<li>Confirm that each column is of the correct type</li>
+</ul>
+</div>
+<div id="selecting-and-using-columns-of-data" class="section level2">
+<h2>Selecting and using columns of data</h2>
+<ul>
+<li>Select an individual column with the $ operator</li>
+</ul>
+</div>
+<div id="base-r-plots" class="section level2">
+<h2>Base R plots</h2>
+<ul>
+<li>hist for frequency distributions</li>
+<li>boxplots show central tendency and variability</li>
+<li>formulas have the form <em>dependent variable</em> <strong>~</strong> <em>linear model of independent variables</em></li>
+</ul>
+</div>
+<div id="plotting-with-ggplot" class="section level2">
+<h2>Plotting with ggplot</h2>
+<ul>
+<li>Use function <code>ggplot</code> contained in library (and package) ggplot2</li>
+<li>Complex syntax based on Grammar of Graphics (from computer science)</li>
+<li>Plots built in layers</li>
+</ul>
+</div>
+<div id="building-a-graph" class="section level2">
+<h2>Building a graph</h2>
+<ul>
+<li>All plots begin with call to ggplot, passing in a data frame</li>
+<li>Mappings define relationships between elements of the data and visual features on the plot</li>
+<li>Use function <code>aes</code> to define a mapping</li>
+<li>Assign column names to <code>aes</code> arguments <code>x</code> and <code>y</code> to define graph axes</li>
+<li>Many available arguments to <code>aes</code>; part of the ggplot syntax</li>
+<li>Select a <strong>geometry</strong> to determine the kind of plot (e.g. bar graph, scatterplot, line graph, etc.)</li>
+<li>Additional layers define axes labels, title, legends, and fonts</li>
+<li>Combine ggplot layer sub-commands with <code>+</code></li>
+</ul>
+</div>
+</div>
+<div id="practice-exercises" class="section level1">
+<h1>Practice Exercises</h1>
+<p>To practice what we have learned in Module 02, we will use “Palmer’s Penguins”, a real data set from the Palmer Station Long Term Ecological Research program (<a href="https://allisonhorst.github.io/palmerpenguins/articles/intro.html" class="uri">https://allisonhorst.github.io/palmerpenguins/articles/intro.html</a>). These data are size measurements for three penguin species – Chinstrap, Gentoo and Adelie – on three islands in Antarctica.</p>
+<p>You will need to install the package that contains the data frame (code shown below). Then work through each of the exercises. If you have any questions, email us or send us a message in MS Teams.</p>
+<div id="get-the-penguin-data" class="section level2">
+<h2>Get the Penguin Data</h2>
+<p>Access the data as shown below. These commands initialise an object called <strong>penguins</strong>, which is a <strong>tibble</strong>. A tibble is an enhanced data frame. The additional features will be discussed during the next module. For these exercises you can simply treat object <strong>penguins</strong> as a normal data frame.</p>
+<pre class="r"><code>
+# Install the package (do once on any computer)
+install.packages(&quot;palmerpenguins&quot;)</code></pre>
+<pre class="r"><code># Load the library (do at the start of every RStudio session)
+library(palmerpenguins)
+#&gt; Warning: package &#39;palmerpenguins&#39; was built under R version 4.1.3
+
+# Check the data - the data frame name is penguins
+str(penguins)
+#&gt; tibble [344 x 8] (S3: tbl_df/tbl/data.frame)
+#&gt;  $ species          : Factor w/ 3 levels &quot;Adelie&quot;,&quot;Chinstrap&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...
+#&gt;  $ island           : Factor w/ 3 levels &quot;Biscoe&quot;,&quot;Dream&quot;,..: 3 3 3 3 3 3 3 3 3 3 ...
+#&gt;  $ bill_length_mm   : num [1:344] 39.1 39.5 40.3 NA 36.7 39.3 38.9 39.2 34.1 42 ...
+#&gt;  $ bill_depth_mm    : num [1:344] 18.7 17.4 18 NA 19.3 20.6 17.8 19.6 18.1 20.2 ...
+#&gt;  $ flipper_length_mm: int [1:344] 181 186 195 NA 193 190 181 195 193 190 ...
+#&gt;  $ body_mass_g      : int [1:344] 3750 3800 3250 NA 3450 3650 3625 4675 3475 4250 ...
+#&gt;  $ sex              : Factor w/ 2 levels &quot;female&quot;,&quot;male&quot;: 2 1 1 NA 1 2 1 2 NA NA ...
+#&gt;  $ year             : int [1:344] 2007 2007 2007 2007 2007 2007 2007 2007 2007 2007 ...</code></pre>
+<p>The output from <code>str(penguins</code>) indicates that three of the columns in the data frame are <strong>Factors</strong>. In R, a factor is a categorical variable, usually corresponding to an experimental factor. Although factors look like strings, a factor is restricted to a specific set of legal values, which R infers when the data are loaded. The legal values are called <strong>levels</strong>, and correspond to the different groups or conditions represented by the factor. For example, column <code>penguins$sex</code> is a factor with levels “female” and “male”.</p>
+<p>When our data sets have factors, we often use functions <code>levels</code> and <code>table</code>. Use Google or your favourite text book to explore these functions. Use them to solve the next two exercises.</p>
+<ol style="list-style-type: decimal">
+<li><p>What are the three different levels of the <strong>species</strong> factor? What are the three different levels of the <strong>island</strong> factor?</p></li>
+<li><p>How many observations are there in the data frame for each of the three species? How many observations are there in the data frame for each of the three islands?</p></li>
+<li><p>Using base R, generate a histogram showing the distribution of body mass, collapsed across island, species and sex. How would you describe the distribution?</p></li>
+<li><p>Using ggplot, generate a scatterplot illustrating the relationship between bill length and body mass, collapsed across species, island and sex. Remember to load the library with <code>library(ggplot2)</code> before first use. How would you describe the pattern?</p></li>
+<li><p>Modify your plot from Exercise 3 so that penguins from the different islands are drawn in different colours. Which island seems to have the heaviest penguins? Without looking any further at the data, formulate at least two possible explanations for the pattern.</p></li>
+<li><p>Using ggplot, generate a boxplot comparing body mass for the three different species of penguin, and having each of the three boxes drawn in a different colour. What information is missing from this figure that was provided Exercise 4? What information is easier to see in this figure than in Exercise 4?</p></li>
+<li><p>Using ggplot, duplicate this figure. You will need to research geometry function <code>geom_bar</code>.</p></li>
+</ol>
+<p><img src="figures/barplot%20with%20fill%20and%20dodge-1.png" width="672" /></p>
+</div>
+</div>
+
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIlZpc3VhbGlzaW5nIg0KZGF0ZTogIlNlbWVzdGVyIDEsIDIwMjIiDQpvdXRwdXQ6DQogIGh0bWxfZG9jdW1lbnQ6DQogICAgdG9jOiB0cnVlDQogICAgdG9jX2Zsb2F0OiB0cnVlDQogICAgdG9jX2RlcHRoOiAzDQogICAgY29kZV9kb3dubG9hZDogdHJ1ZQ0KICAgIGNvZGVfZm9sZGluZzogc2hvdw0KLS0tDQogIA0KYGBge3Igc2V0dXAsIGluY2x1ZGU9RkFMU0V9DQpsaWJyYXJ5KGdncGxvdDIpDQoNCmxpYnJhcnkoa25pdHIpDQoNCmtuaXRyOjpvcHRzX2NodW5rJHNldCgNCiAgY29tbWVudCA9ICIjPiIsDQogIGZpZy5wYXRoID0gImZpZ3VyZXMvIiwgIyB1c2Ugb25seSBmb3Igc2luZ2xlIFJtZCBmaWxlcw0KICBjb2xsYXBzZSA9IFRSVUUsDQogIGVjaG8gPSBUUlVFDQopDQpgYGANCg0KPiAjIyMjIERhdGEgRm9jdXMNCiAgPg0KICA+IE1vZHVsZXMgYW5kIEhhbmRvdXRzIDItLTYgY292ZXIgdG9waWNzIHRoYXQgYXJlIHBhcnQgb2YgdGhlIGRhdGEgYW5hbHlzaXMgam91cm5leSBhbmQgYXJlIGFsbCBpbnRlcnJlbGF0ZWQuIEVhY2ggbW9kdWxlIHdpbGwgaW50cm9kdWNlIG5ldyBjb250ZW50IGFuZCBleHBhbmQgb24gdGhlIG1hdGVyaWFsIGNvdmVyZWQgaW4gcHJldmlvdXMgbW9kdWxlcy4gRm9yIGV4YW1wbGUsIGluIE1vZHVsZSAyIHdlIGludHJvZHVjZSB0aGUgYmFzaWNzIG9mIHRoZSBSIHBsb3R0aW5nIHN5c3RlbXMuIFN1YnNlcXVlbnQgaGFuZG91dHMgaW5jbHVkZSBtb3JlIGFkdmFuY2VkIHBsb3R0aW5nIG9wdGlvbnMgYW5kIHRlY2huaXF1ZXMuDQoNClwNCg0KXA0KDQoNClpvb20gTm90ZXM6IFtab29tIE5vdGVzIDAyIC0gVmlzdWFsaXNpbmcgRGF0YV0oem9vbV9ub3Rlc18wMi5odG1sKQ0KDQpBc3NvY2lhdGVkIFJlYWRpbmdzOg0KICANCi0gW1IgZm9yIERhdGEgU2NpZW5jZSAtIENoYXB0ZXIgMTJdKGh0dHBzOi8vcjRkcy5oYWQuY28ubnovdGlkeS1kYXRhLmh0bWwpDQotIFtSIGZvciBEYXRhIFNjaWVuY2UgLSBDaGFwdGVyIDExXShodHRwczovL3I0ZHMuaGFkLmNvLm56L2RhdGEtaW1wb3J0Lmh0bWwpDQotIFtSIGZvciBEYXRhIFNjaWVuY2UgLSBDaGFwdGVyIDNdKGh0dHBzOi8vcjRkcy5oYWQuY28ubnovZGF0YS12aXN1YWxpc2F0aW9uLmh0bWwpDQoNCg0KIyBUb3BpY3MNCg0KIyMgVGFidWxhciBEYXRhDQoNCi0gRWRpdCBpbiBFeGNlbA0KLSBFeHBvcnQgdG8gcGxhaW4gY3N2IChub3QgVVRGLTgpDQotIENvbHVtbiBoZWFkZXJzIGluIGZpcnN0IHJvdyBmb3IgZXZlcnkgY29sdW1uDQotIE9uZSByb3cgZm9yIGVhY2ggZGF0YSByZWNvcmQNCg0KIyMgRm9sZGVyIHNldHVwDQoNCi0gRXZlbnR1YWxseSwgdXNlIFByb2plY3RzIHRvIGFsbG93IFJTdHVkaW8gdG8gbWFuYWdlIG1ldGFkYXRhDQotIFNlcGFyYXRlIGZvbGRlcnMgZm9yIGRhdGEgZmlsZXMsIGltYWdlcywgc2NyaXB0cywgUm1kLCBldGMuDQoNCiMjIEltcG9ydGluZyBhIGRhdGEgZmlsZQ0KDQotIHJlYWQuY3N2DQotIFNldCBzdHJpbmdzQXNGYWN0b3JzID0gVFJVRSB0byBpbXBvcnQgY2F0ZWdvcmljYWwgdmFyaWFibGVzIGNvcnJlY3RseQ0KLSBBZnRlciB3ZSBtZWV0IHRoZSB0aWR5dmVyc2UsIGNhbiBhbHNvIHVzZSByZWFkX2Nzdg0KDQojIyBDaGVja2luZyB5b3VyIGltcG9ydGVkIGRhdGENCg0KLSBoZWFkDQotIHRhaWwNCi0gc3RyDQotIENvbmZpcm0gdGhhdCBlYWNoIGNvbHVtbiBpcyBvZiB0aGUgY29ycmVjdCB0eXBlDQoNCg0KIyMgU2VsZWN0aW5nIGFuZCB1c2luZyBjb2x1bW5zIG9mIGRhdGENCg0KLSBTZWxlY3QgYW4gaW5kaXZpZHVhbCBjb2x1bW4gd2l0aCB0aGUgJCBvcGVyYXRvcg0KDQoNCiMjIEJhc2UgUiBwbG90cw0KDQotIGhpc3QgZm9yIGZyZXF1ZW5jeSBkaXN0cmlidXRpb25zDQotIGJveHBsb3RzIHNob3cgY2VudHJhbCB0ZW5kZW5jeSBhbmQgdmFyaWFiaWxpdHkNCi0gZm9ybXVsYXMgaGF2ZSB0aGUgZm9ybSAqZGVwZW5kZW50IHZhcmlhYmxlKiAqKn4qKiAqbGluZWFyIG1vZGVsIG9mIGluZGVwZW5kZW50IHZhcmlhYmxlcyoNCg0KDQojIyBQbG90dGluZyB3aXRoIGdncGxvdA0KDQotIFVzZSBmdW5jdGlvbiBgZ2dwbG90YCBjb250YWluZWQgaW4gbGlicmFyeSAoYW5kIHBhY2thZ2UpIGdncGxvdDINCi0gQ29tcGxleCBzeW50YXggYmFzZWQgb24gR3JhbW1hciBvZiBHcmFwaGljcyAoZnJvbSBjb21wdXRlciBzY2llbmNlKQ0KLSBQbG90cyBidWlsdCBpbiBsYXllcnMNCg0KDQojIyBCdWlsZGluZyBhIGdyYXBoDQoNCi0gQWxsIHBsb3RzIGJlZ2luIHdpdGggY2FsbCB0byBnZ3Bsb3QsIHBhc3NpbmcgaW4gYSBkYXRhIGZyYW1lDQotIE1hcHBpbmdzIGRlZmluZSByZWxhdGlvbnNoaXBzIGJldHdlZW4gZWxlbWVudHMgb2YgdGhlIGRhdGEgYW5kIHZpc3VhbCBmZWF0dXJlcyBvbiB0aGUgcGxvdA0KLSBVc2UgZnVuY3Rpb24gYGFlc2AgdG8gZGVmaW5lIGEgbWFwcGluZw0KLSBBc3NpZ24gY29sdW1uIG5hbWVzIHRvIGBhZXNgIGFyZ3VtZW50cyBgeGAgYW5kIGB5YCB0byBkZWZpbmUgZ3JhcGggYXhlcw0KLSBNYW55IGF2YWlsYWJsZSBhcmd1bWVudHMgdG8gYGFlc2A7IHBhcnQgb2YgdGhlIGdncGxvdCBzeW50YXgNCi0gU2VsZWN0IGEgKipnZW9tZXRyeSoqIHRvIGRldGVybWluZSB0aGUga2luZCBvZiBwbG90IChlLmcuIGJhciBncmFwaCwgc2NhdHRlcnBsb3QsIGxpbmUgZ3JhcGgsIGV0Yy4pDQotIEFkZGl0aW9uYWwgbGF5ZXJzIGRlZmluZSBheGVzIGxhYmVscywgdGl0bGUsIGxlZ2VuZHMsIGFuZCBmb250cw0KLSBDb21iaW5lIGdncGxvdCBsYXllciBzdWItY29tbWFuZHMgd2l0aCBgK2ANCg0KIyBQcmFjdGljZSBFeGVyY2lzZXMNCg0KVG8gcHJhY3RpY2Ugd2hhdCB3ZSBoYXZlIGxlYXJuZWQgaW4gTW9kdWxlIDAyLCB3ZSB3aWxsIHVzZSAiUGFsbWVyJ3MgUGVuZ3VpbnMiLCBhIHJlYWwgZGF0YSBzZXQgZnJvbSB0aGUgUGFsbWVyIFN0YXRpb24gTG9uZyBUZXJtIEVjb2xvZ2ljYWwgUmVzZWFyY2ggcHJvZ3JhbSAoaHR0cHM6Ly9hbGxpc29uaG9yc3QuZ2l0aHViLmlvL3BhbG1lcnBlbmd1aW5zL2FydGljbGVzL2ludHJvLmh0bWwpLiBUaGVzZSBkYXRhIGFyZSBzaXplIG1lYXN1cmVtZW50cyBmb3IgdGhyZWUgcGVuZ3VpbiBzcGVjaWVzIC0tIENoaW5zdHJhcCwgR2VudG9vIGFuZCBBZGVsaWUgLS0gb24gdGhyZWUgaXNsYW5kcyBpbiBBbnRhcmN0aWNhLg0KDQpZb3Ugd2lsbCBuZWVkIHRvIGluc3RhbGwgdGhlIHBhY2thZ2UgdGhhdCBjb250YWlucyB0aGUgZGF0YSBmcmFtZSAoY29kZSBzaG93biBiZWxvdykuIFRoZW4gd29yayB0aHJvdWdoIGVhY2ggb2YgdGhlIGV4ZXJjaXNlcy4gSWYgeW91IGhhdmUgYW55IHF1ZXN0aW9ucywgZW1haWwgdXMgb3Igc2VuZCB1cyBhIG1lc3NhZ2UgaW4gTVMgVGVhbXMuDQoNCiMjIEdldCB0aGUgUGVuZ3VpbiBEYXRhDQoNCkFjY2VzcyB0aGUgZGF0YSBhcyBzaG93biBiZWxvdy4gVGhlc2UgY29tbWFuZHMgaW5pdGlhbGlzZSBhbiBvYmplY3QgY2FsbGVkICoqcGVuZ3VpbnMqKiwgd2hpY2ggaXMgYSAqKnRpYmJsZSoqLiBBIHRpYmJsZSBpcyBhbiBlbmhhbmNlZCBkYXRhIGZyYW1lLiBUaGUgYWRkaXRpb25hbCBmZWF0dXJlcyB3aWxsIGJlIGRpc2N1c3NlZCBkdXJpbmcgdGhlIG5leHQgbW9kdWxlLiBGb3IgdGhlc2UgZXhlcmNpc2VzIHlvdSBjYW4gc2ltcGx5IHRyZWF0IG9iamVjdCAqKnBlbmd1aW5zKiogYXMgYSBub3JtYWwgZGF0YSBmcmFtZS4NCg0KYGBge3IgaW5zdGFsbCwgZXZhbD1GQUxTRX0NCg0KIyBJbnN0YWxsIHRoZSBwYWNrYWdlIChkbyBvbmNlIG9uIGFueSBjb21wdXRlcikNCmluc3RhbGwucGFja2FnZXMoInBhbG1lcnBlbmd1aW5zIikNCmBgYA0KDQpgYGB7ciBsb2FkfQ0KIyBMb2FkIHRoZSBsaWJyYXJ5IChkbyBhdCB0aGUgc3RhcnQgb2YgZXZlcnkgUlN0dWRpbyBzZXNzaW9uKQ0KbGlicmFyeShwYWxtZXJwZW5ndWlucykNCg0KIyBDaGVjayB0aGUgZGF0YSAtIHRoZSBkYXRhIGZyYW1lIG5hbWUgaXMgcGVuZ3VpbnMNCnN0cihwZW5ndWlucykNCmBgYA0KDQpUaGUgb3V0cHV0IGZyb20gYHN0cihwZW5ndWluc2ApIGluZGljYXRlcyB0aGF0IHRocmVlIG9mIHRoZSBjb2x1bW5zIGluIHRoZSBkYXRhIGZyYW1lIGFyZSAqKkZhY3RvcnMqKi4gSW4gUiwgYSBmYWN0b3IgaXMgYSBjYXRlZ29yaWNhbCB2YXJpYWJsZSwgdXN1YWxseSBjb3JyZXNwb25kaW5nIHRvIGFuIGV4cGVyaW1lbnRhbCBmYWN0b3IuIEFsdGhvdWdoIGZhY3RvcnMgbG9vayBsaWtlIHN0cmluZ3MsIGEgZmFjdG9yIGlzIHJlc3RyaWN0ZWQgdG8gYSBzcGVjaWZpYyBzZXQgb2YgbGVnYWwgdmFsdWVzLCB3aGljaCBSIGluZmVycyB3aGVuIHRoZSBkYXRhIGFyZSBsb2FkZWQuIFRoZSBsZWdhbCB2YWx1ZXMgYXJlIGNhbGxlZCAqKmxldmVscyoqLCBhbmQgY29ycmVzcG9uZCB0byB0aGUgZGlmZmVyZW50IGdyb3VwcyBvciBjb25kaXRpb25zIHJlcHJlc2VudGVkIGJ5IHRoZSBmYWN0b3IuIEZvciBleGFtcGxlLCBjb2x1bW4gYHBlbmd1aW5zJHNleGAgaXMgYSBmYWN0b3Igd2l0aCBsZXZlbHMgImZlbWFsZSIgYW5kICJtYWxlIi4gDQoNCldoZW4gb3VyIGRhdGEgc2V0cyBoYXZlIGZhY3RvcnMsIHdlIG9mdGVuIHVzZSBmdW5jdGlvbnMgYGxldmVsc2AgYW5kIGB0YWJsZWAuIFVzZSBHb29nbGUgb3IgeW91ciBmYXZvdXJpdGUgdGV4dCBib29rIHRvIGV4cGxvcmUgdGhlc2UgZnVuY3Rpb25zLiBVc2UgdGhlbSB0byBzb2x2ZSB0aGUgbmV4dCB0d28gZXhlcmNpc2VzLg0KDQoxLiBXaGF0IGFyZSB0aGUgdGhyZWUgZGlmZmVyZW50IGxldmVscyBvZiB0aGUgKipzcGVjaWVzKiogZmFjdG9yPyBXaGF0IGFyZSB0aGUgdGhyZWUgZGlmZmVyZW50IGxldmVscyBvZiB0aGUgKippc2xhbmQqKiBmYWN0b3I/DQoNCmBgYHtyIGxldmVscywgZWNobz1GQUxTRSwgZXZhbD1GQUxTRX0NCmxldmVscyhwZW5ndWlucyRzcGVjaWVzKQ0KbGV2ZWxzKHBlbmd1aW5zJGlzbGFuZCkNCmBgYA0KDQoNCjIuICBIb3cgbWFueSBvYnNlcnZhdGlvbnMgYXJlIHRoZXJlIGluIHRoZSBkYXRhIGZyYW1lIGZvciBlYWNoIG9mIHRoZSB0aHJlZSBzcGVjaWVzPyBIb3cgbWFueSBvYnNlcnZhdGlvbnMgYXJlIHRoZXJlIGluIHRoZSBkYXRhIGZyYW1lIGZvciBlYWNoIG9mIHRoZSB0aHJlZSBpc2xhbmRzPw0KDQpgYGB7ciB0YWJsZSwgZWNobz1GQUxTRSwgZXZhbD1GQUxTRX0NCnRhYmxlKHBlbmd1aW5zJHNwZWNpZXMpDQp0YWJsZShwZW5ndWlucyRpc2xhbmQpDQpgYGANCg0KMi4gVXNpbmcgYmFzZSBSLCBnZW5lcmF0ZSBhIGhpc3RvZ3JhbSBzaG93aW5nIHRoZSBkaXN0cmlidXRpb24gb2YgYm9keSBtYXNzLCBjb2xsYXBzZWQgYWNyb3NzIGlzbGFuZCwgc3BlY2llcyBhbmQgc2V4LiBIb3cgd291bGQgeW91IGRlc2NyaWJlIHRoZSBkaXN0cmlidXRpb24/DQoNCmBgYHtyIGhpc3QsIGVjaG89RkFMU0UsIGV2YWw9RkFMU0V9DQpoaXN0KHBlbmd1aW5zJGJvZHlfbWFzc19nKQ0KYGBgDQoNCjMuIFVzaW5nIGdncGxvdCwgZ2VuZXJhdGUgYSBzY2F0dGVycGxvdCBpbGx1c3RyYXRpbmcgdGhlIHJlbGF0aW9uc2hpcCBiZXR3ZWVuIGJpbGwgbGVuZ3RoIGFuZCBib2R5IG1hc3MsIGNvbGxhcHNlZCBhY3Jvc3Mgc3BlY2llcywgaXNsYW5kIGFuZCBzZXguIFJlbWVtYmVyIHRvIGxvYWQgdGhlIGxpYnJhcnkgd2l0aCBgbGlicmFyeShnZ3Bsb3QyKWAgYmVmb3JlIGZpcnN0IHVzZS4gSG93IHdvdWxkIHlvdSBkZXNjcmliZSB0aGUgcGF0dGVybj8NCg0KYGBge3Igc2NhdHRlcnBsb3QsIGVjaG89RkFMU0UsIGluY2x1ZGU9RkFMU0V9DQoNCmxpYnJhcnkoZ2dwbG90MikNCg0KZ2dwbG90KGRhdGEgPSBwZW5ndWlucykgKw0KICBnZW9tX3BvaW50KG1hcHBpbmcgPSBhZXMoeCA9IGJpbGxfbGVuZ3RoX21tLCB5ID0gYm9keV9tYXNzX2cpKQ0KDQpgYGANCg0KDQo0LiBNb2RpZnkgeW91ciBwbG90IGZyb20gRXhlcmNpc2UgMyBzbyB0aGF0IHBlbmd1aW5zIGZyb20gdGhlIGRpZmZlcmVudCBpc2xhbmRzIGFyZSBkcmF3biBpbiBkaWZmZXJlbnQgY29sb3Vycy4gV2hpY2ggaXNsYW5kIHNlZW1zIHRvIGhhdmUgdGhlIGhlYXZpZXN0IHBlbmd1aW5zPyBXaXRob3V0IGxvb2tpbmcgYW55IGZ1cnRoZXIgYXQgdGhlIGRhdGEsIGZvcm11bGF0ZSBhdCBsZWFzdCB0d28gcG9zc2libGUgZXhwbGFuYXRpb25zIGZvciB0aGUgcGF0dGVybi4NCg0KYGBge3IgY29sb3IsIGVjaG89RkFMU0UsIGV2YWw9RkFMU0V9DQpnZ3Bsb3QoZGF0YSA9IHBlbmd1aW5zKSArDQogIGdlb21fcG9pbnQobWFwcGluZyA9IGFlcyh4ID0gYmlsbF9sZW5ndGhfbW0sIHkgPSBib2R5X21hc3NfZywgY29sb3IgPSBpc2xhbmQpKQ0KDQojIFBvc3NpYmxlIGV4cGxhbmF0aW9uczogMSkgTW9yZSBmb29kIG9uIHRoYXQgaXNsYW5kIDIpIEJpZ2dlciBzcGVjaWVzIG9mIHBlbmd1aW4gb24gdGhhdCBpc2xhbmQNCg0KYGBgDQoNCjUuIFVzaW5nIGdncGxvdCwgZ2VuZXJhdGUgYSBib3hwbG90IGNvbXBhcmluZyBib2R5IG1hc3MgZm9yIHRoZSB0aHJlZSBkaWZmZXJlbnQgc3BlY2llcyBvZiBwZW5ndWluLCBhbmQgaGF2aW5nIGVhY2ggb2YgdGhlIHRocmVlIGJveGVzIGRyYXduIGluIGEgZGlmZmVyZW50IGNvbG91ci4gV2hhdCBpbmZvcm1hdGlvbiBpcyBtaXNzaW5nIGZyb20gdGhpcyBmaWd1cmUgdGhhdCB3YXMgcHJvdmlkZWQgRXhlcmNpc2UgND8gV2hhdCBpbmZvcm1hdGlvbiBpcyBlYXNpZXIgdG8gc2VlIGluIHRoaXMgZmlndXJlIHRoYW4gaW4gRXhlcmNpc2UgND8NCg0KYGBge3IgZ2dwbG90IGJveHBsb3QsIGVjaG89RkFMU0UsIGV2YWw9RkFMU0V9DQpnZ3Bsb3QoZGF0YSA9IHBlbmd1aW5zKSArDQogIGdlb21fYm94cGxvdChtYXBwaW5nID0gYWVzKHggPSBpc2xhbmQgLCB5ID0gYm9keV9tYXNzX2csIGNvbG91ciA9IGlzbGFuZCkpDQoNCmBgYA0KDQo2LiBVc2luZyBnZ3Bsb3QsIGR1cGxpY2F0ZSB0aGlzIGZpZ3VyZS4gWW91IHdpbGwgbmVlZCB0byByZXNlYXJjaCBnZW9tZXRyeSBmdW5jdGlvbiBgZ2VvbV9iYXJgLg0KDQpgYGB7ciBiYXJwbG90IHdpdGggZmlsbCBhbmQgZG9kZ2UsIGVjaG89RkFMU0V9DQpnZ3Bsb3QoZGF0YSA9IHBlbmd1aW5zKSArDQogIGdlb21fYmFyKG1hcHBpbmcgPSBhZXMoeCA9IGlzbGFuZCwgZmlsbD1zcGVjaWVzKSwgcG9zaXRpb249ImRvZGdlIikNCmBgYA0KDQoNCg==</div>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("zoom_notes_02.Rmd");
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
