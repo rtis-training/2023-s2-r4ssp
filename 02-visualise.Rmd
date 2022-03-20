@@ -29,14 +29,15 @@ knitr::opts_chunk$set(
 
 \
 
-
-Handout: [Handout 02 - Visualising Data](handout2.html)
-
-Associated Readings:
-
-- [R for Data Science - Chapter 12](https://r4ds.had.co.nz/tidy-data.html)
-- [R for Data Science - Chapter 11](https://r4ds.had.co.nz/data-import.html)
-- [R for Data Science - Chapter 3](https://r4ds.had.co.nz/data-visualisation.html)
+> #### Associated Material
+>
+> Handout: [Handout 02 - Visualising Data](handout2.html)
+> 
+> Associated Readings:
+>
+> - [R for Data Science - Chapter 12](https://r4ds.had.co.nz/tidy-data.html)
+> - [R for Data Science - Chapter 11](https://r4ds.had.co.nz/data-import.html)
+> - [R for Data Science - Chapter 3](https://r4ds.had.co.nz/data-visualisation.html)
 
 
 
