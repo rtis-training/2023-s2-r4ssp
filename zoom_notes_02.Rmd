@@ -17,7 +17,7 @@ library(knitr)
 
 knitr::opts_chunk$set(
   comment = "#>",
-  fig.path = "figures/", # use only for single Rmd files
+  fig.path = "figures/02/", # use only for single Rmd files
   collapse = TRUE,
   echo = TRUE
 )
@@ -31,13 +31,14 @@ knitr::opts_chunk$set(
 
 \
 
-Zoom Notes: [Zoom Notes 02 - Visualising Data](zoom_notes_02.html)
-
-Associated Readings:
-  
-- [R for Data Science - Chapter 12](https://r4ds.had.co.nz/tidy-data.html)
-- [R for Data Science - Chapter 11](https://r4ds.had.co.nz/data-import.html)
-- [R for Data Science - Chapter 3](https://r4ds.had.co.nz/data-visualisation.html)
+> #### Associated material:
+> Module: [Module 02 - Visualising Data](02-visualise.html)
+> 
+> Readings:
+>   
+> - [R for Data Science - Chapter 12](https://r4ds.had.co.nz/tidy-data.html)
+> - [R for Data Science - Chapter 11](https://r4ds.had.co.nz/data-import.html)
+> - [R for Data Science - Chapter 3](https://r4ds.had.co.nz/data-visualisation.html)
 
 
 # Topics
@@ -163,7 +164,7 @@ ggplot(data = penguins) +
 
 6. Using ggplot, generate a boxplot comparing body mass for the three different species of penguin, and having each of the three boxes drawn in a different colour. What information is missing from this figure that was provided in  Exercise 5? What information is easier to see in this figure than in Exercise 5?
 
-```{r ggplot boxplot, echo=FALSE, eval=FALSE}
+```{r ggplot_boxplot, echo=FALSE, eval=FALSE}
 ggplot(data = penguins) +
   geom_boxplot(mapping = aes(x = island , y = body_mass_g, colour = island))
 
@@ -171,7 +172,7 @@ ggplot(data = penguins) +
 
 7. Using ggplot, duplicate this figure. You will need to research geometry function `geom_bar`.
 
-```{r barplot with fill and dodge, echo=FALSE}
+```{r barplot_with_fill_and_dodge, echo=FALSE}
 ggplot(data = penguins) +
   geom_bar(mapping = aes(x = island, fill=species), position="dodge")
 ```
