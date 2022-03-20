@@ -1,5 +1,5 @@
 ---
-title: "Handout 01 - Introducing R and RStudio"
+title: "Zoom notes 01 - Introducing R and RStudio"
 author: "Murray Cadzow & Patricia Haden"
 date: "Semester 1, 2022"
 output:
@@ -29,7 +29,7 @@ knitr::opts_chunk$set(
 > #### Associated material
 > Module: [Module 01 - Introducing R and Rstudio](01-intro.html)
 > 
-> Associated Readings:
+> Readings:
 >
 > - [R for Data Science - Chapter 1](https://r4ds.had.co.nz/introduction.html)
 > - [R for Data Science - Chapter 4](https://r4ds.had.co.nz/workflow-basics.htm)
@@ -37,9 +37,9 @@ knitr::opts_chunk$set(
 
 #### Before we start
 
-This course is designed with two components - the module and the handout. The module content provides more explanation and background so that you can work through it on your own if you wish. The handout content provides the structure for the content that will be delivered in the online sessions. Both sets of content are complementary to each other.
+This course is designed with two components - the module and the zoom notes. The module content provides more explanation and background so that you can work through it on your own if you wish. The zoom notes content provides the structure for the content that will be delivered in the online sessions. Both sets of content are complementary to each other.
 
-At the top right hand corner of both the module and handout pages is a "code" button. This can be used to toggle seeing/hiding the code or to download the code that that created the page as an Rmarkdown file (we cover Rmarkdown more in-depth in [module](06-communicate.html)/[handout](handout6.html) 6).
+At the top right hand corner of both the module and zoom notes pages is a "code" button. This can be used to toggle seeing/hiding the code or to download the code that that created the page as an Rmarkdown file (we cover Rmarkdown more in-depth in [module](06-communicate.html)/[zoom notes](zoom_notes_06.html) 6).
 
 
 
@@ -275,7 +275,7 @@ Logical operators
 - or: `|`
 - and: `&`
 
-We'll cover these in more depth in the Selecting and Filtering [Module](03-subset.html)/[Handout](handout3.html).
+We'll cover these in more depth in the Selecting and Filtering [Module](03-subset.html)/[Handout](zoom_notes_03.html).
 
 \
 
@@ -324,7 +324,7 @@ some_letters
 some_letters[c(1,3)]
 ```
 
-In the Selecting and Filtering Data module/handout we will cover this more and expand to 2 dimensions.
+In the Selecting and Filtering Data module we will cover this more and expand to 2 dimensions.
 
 \
 

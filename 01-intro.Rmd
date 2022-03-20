@@ -25,18 +25,18 @@ knitr::opts_chunk$set(
 
 
 > #### Associated material
-> Handout: [Handout 01 - Introducing R and Rstudio](handout1.html)
+> Zoom notes: [Zoom notes 01 - Introducing R and RStudio](zoom_notes_01.html)
 > 
-> Associated Readings:
+> Readings:
 >
 > - [R for Data Science - Chapter 1](https://r4ds.had.co.nz/introduction.html)
 > - [R for Data Science - Chapter 4](https://r4ds.had.co.nz/workflow-basics.htm)
 
 #### Before we start
 
-This course is designed with two components - the module and the handout. The module content provides more explanation and background so that you can work through it on your own if you wish. The handout content provides the structure for the content that will be delivered in the online sessions. Both sets of content are complementary to each other.
+This course is designed with two components - the module and the zoom notes. The module content provides more explanation and background so that you can work through it on your own if you wish. The zoom notes content provides the structure for the content that will be delivered in the online sessions. Both sets of content are complementary to each other.
 
-At the top right hand corner of both the module and handout pages is a "code" button. This can be used to toggle seeing/hiding the code or to download the code that that created the page as an Rmarkdown file (we cover Rmarkdown more in-depth in [module](06-communicate.html)/[handout](handout6.html) 6).
+At the top right hand corner of both the module and zoom notes pages is a "code" button. This can be used to toggle seeing/hiding the code or to download the code that that created the page as an Rmarkdown file (we cover Rmarkdown more in-depth in [module](06-communicate.html)/[zoom notes](zoom_notes_06.html) 6).
 
 
 
@@ -460,6 +460,8 @@ include_graphics("images/01-new_script.png")
 \
 
 ## An Even Better Script File
+
+We will cover RMarkdown in more depth in Module 6.
 
 A basic script file (of type .R) will store and preserve your code. RStudio also provides **R Markdown** files (of type .Rmd) that can do much more. R Markdown is an extended script format that allows you to embed R commands in formatted text. RStudio processes R Markdown files, producing HTML, Word or pdf formats. During processing (which is called *knitting*) RStudio runs any embedded R commands and **inserts the results into the output document**. You don't need to process your data in RStudio and then copy/paste the results into a separate Word document. You can insert the code directly into your text in an R Markdown file, and it will be executed when RStudio knits. Let's give it a try:
 
