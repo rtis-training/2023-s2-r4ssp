@@ -11,6 +11,8 @@ output:
 ---
 
 ```{r setup, include=FALSE}
+library(ggplot2)
+
 library(knitr)
 
 knitr::opts_chunk$set(
@@ -23,7 +25,7 @@ knitr::opts_chunk$set(
 
 > #### Data Focus
 >
-> Modules and Handouts 2--6 cover topics that are part of the data analysis journey and are all interrelated to one another. The way that it has been separated is to introduce main topic but then each subsequent topic will add in additional content for previous topics. E.g. we start with data visualisation to introduce the basics of the plotting systems but then each other handout will include extra options and customisations.
+> Modules and Handouts 2--6 cover topics that are part of the data analysis journey and are all interrelated. Each module will introduce new content and expand on the material covered in previous modules. For example, in Module 2 we introduce the basics of the R plotting systems. Subsequent handouts include more advanced plotting options and techniques.
 
 \
 
@@ -43,13 +45,10 @@ Associated Readings:
 ## Tabular Data
 
 In this module we begin to work with complete tables of data, and learn how to make informative graphs. 
-We begin by getting our scientific research data into RStudio. Commonly, we first enter our data into Excel for cleaning and organising, and save it out as a csv (comma separated values) file. We then import the file into R for data analysis.   We will provide the csv file to be used with this document.
 
-Note that in this document we are using Base R (the R functions that are automatically available in RStudio). These Base R functions are simple to work with, and are a good way to get familiar with R. In later modules, we will meet some more sophisticated R tools which, while more complicated, can also be more efficient.
+We will start by getting our scientific research data into RStudio. Commonly, we first enter our data into Excel for cleaning and organising, and save it out as a csv (comma separated values) file. We then import the file into R for data analysis. We will provide the csv file to be used with this module.
 
-Work carefully through each of the sections below, confirming that all your outputs match ours. When you feel completely comfortable with the content, move on to R for Data Science: Data Visualisation (https://r4ds.had.co.nz/data-visualisation.html) which covers advanced plotting with the ggplot library.
-
-When you have completed this module, you should be ready to produce the graphs and figures you will need for your in-course research projects. If you run into any problems or have any questions, email us, and/or come to the drop-in session Monday 10.00 to 12.00 in the Science Library Seminar Room.
+When you have completed this module, you should be ready to produce the graphs and figures you will need for your in-course research projects. If you run into any problems or have any questions, email us, or drop us a message in the R4SSP class team on MS Teams.
 
 
 ## Preparation - Do this very carefully
@@ -59,7 +58,7 @@ Document organisation is vitally important. We suggest that you keep a separate 
 
 1. Launch R Studio
 
-2. Following the procedure from **Using a Script File** in Module 2 - Get Started with R, create a script file and save it to your desktop or other location where you will be able to find it.
+2. Following the procedure from **Using a Script File** in Module 1 - Intro to R and RStudio, create a script file and save it to your desktop or other location where you will be able to find it.
 
 3. Quit R Studio
 
@@ -67,16 +66,9 @@ Document organisation is vitally important. We suggest that you keep a separate 
 
 5. Create a new folder (name it something sensible) and place the script file in it.
 
-6. Retrieve the sample csv data file used in this module from the course github repository ^[https://raw.githubusercontent.com/rtis-training/2022-s1-r4ssp/main/data/r4ssp_donations_data.csv]. Place the csv file into your data folder.
+6. The sample csv data file used in this module is called **gapminder_data_2007.csv**. This file contains life expectancy, population, and GDP values for 142 different countries. The data for each country were measured 12 times between 1952 and 2007. These data are sourced from the GapMinder foundation (https://www.gapminder.org/).
 
-> Or you can download the file directly using R:
->
-> ```{r, eval=FALSE}
-> download.file(url = "https://raw.githubusercontent.com/rtis-training/2022-s1-r4ssp/main/data/r4ssp_donations_data.csv", 
->              destfile = "data/r4ssp_donations_data.csv")
-> ```
->
-> Please note this assumes you are using the project and structure created in the last handout. Importantly if this doesn't work for you check that the "data" folder exists and matches exactly.
+Retrieve the sample csv data file from the course Google Drive shared folder ^[https://drive.google.com/drive/folders/1ttf1s8-vkJNOlHdphfi2zFyMq6gGEvCy?usp=sharing]. Place the csv file into the folder with your script file.
 
 7. Open the folder and double-click **on your script file** to open it in RStudio.
 
@@ -86,415 +78,298 @@ If you set things up this way, RStudio will be able to find your data file for t
 
 ## Importing a data file
 
-The provided file **r4ssp_donations_data.csv** contains the (fictitious) results of a study designed to explore the factors which affect donations to street-corner charity collectors. Fifty student researchers each spent four hours at one of 50 randomly selected positions on George Street, collecting donations for *Blind Low Vision NZ Guide Dogs*, an organisation that raises and trains service dogs. Twenty-five of the collectors were accompanied by guide dog puppies; the other 25 were alone. Assignment to the Puppy or Alone conditions was done randomly. Each researcher recorded the total amount of money collected during their four hour shift. The start of the data file is shown below.
+The first few lines of our data file **gapminder_data_2007.csv** as it appears when opened in Excel, are shown below:
 
-```{r, fig.align='center', out.width = "50%", fig.cap = "Donations - Puppy or Alone", fig.pos = "H", echo = FALSE}
-include_graphics("images/02-donations_puppy.png")
+```{r fig01, fig.align='center', out.width = "50%", fig.cap = "GapMinder Data", fig.pos = "H", echo = FALSE}
+include_graphics("images/gapminder_data_2007.png")
 ```
 
 
 
 We will import this file into R for some preliminary data analysis.
 
-To import a csv file into R we can use the function `read_csv`. Like the R functions we used in Module 2, `read_csv` accepts an argument between its round brackets. The argument is the name of the input file. Because the name of the file is a string, we surround it with double quotes. We will therefore say:
-
-`read_csv("r4ssp_donations_data.csv")`
-
-However, we are not quite ready to run this command. The function `read_csv` is not part of base R (the R functions that are automatically available in RStudio). It is part of a **library**, a set of additional functions that can be loaded into RStudio. Function `read_csv` is part of the **readr** library, and we load it with the `library` command. We will therefore need two lines of code:
-
-
-`library(readr)`
-
-`read_csv("r4ssp_donations_data.csv")`
-
-Note that you only have to execute `library` once each time you open RStudio. After loading a library, it is available for the remainder of your R session (i.e. until you quit RStudio) and you can call its functions as normal.
+To import a csv file into R we can use the function `read.csv`. Like the R functions we used in Module 1, `read.csv` accepts an argument between its round brackets. The argument is the name of the input file. Because the name of the file is a string, we surround it with double quotes. For this data set we want the columns that contain words (country and continent) to be imported as categorical variables. To achieve this, we will set the `stringsAsFactors` argument to TRUE when we call `read.csv`. The complete command is shown below.
 
 \
 
 ## Import and check your data
 
-Type the following lines into your script file. Execute your commands as you did in the previous module.
+Type the following line into your script file. Execute the command as you did in the previous module by placing the cursor anywhere on the line and typing ctrl-Enter (Windows) or cmd-Enter (Mac).
 
-```{r read_csv}
-library(readr)
-read_csv("data/r4ssp_donations_data.csv")
+```{r read.csv}
+# Save an imported data frame into a named variable
+gapminder_data <- read.csv("gapminder_data_2007.csv", stringsAsFactors = TRUE)
 ```
 
-NB: When you try to execute this code, you may receive an error message: *Error in library(readr) : there is no package called ‘readr’*. If this happens it means that the functions in library readr have not yet been installed on your computer. Please see **Appendix 2 - Installing Packages** at the end of this handout for instructions.
+When imported into R, the data from the csv file are translated into an R object called a **data frame**. Data frames are simply tables, organised into rows and columns. The columns have names taken from the first row of the csv file, and each subsequent row of the csv file becomes a row in the data frame. 
 
-When imported into R, the data from the csv file are stored in an R object called a **tibble**. A tibble is a slightly enhanced version of a core R object called a **data frame**. Tibbles and data frames are simply tables, organised into rows and columns. The columns have names, and each row of the csv file becomes a row in the data frame. 
+We store the data frame in a named variable so that we can refer to it later (i.e., perform analyses on it). We use the assignment operator, as we did in our previous module. 
 
-When you call `read_csv`, passing in a file name, R reads in the file, converts it to a tibble, and displays it in the console. The columns have the same names as in the csv file. We will see later that we can use the column names to explore specific properties of our data set.
+After storing our data frame into a variable, you should always check that the data have been imported correctly. Data entry errors can cause R to make the wrong assumptions about your data. If you have a column of numbers that contains even one accidental alphabetic character (typos do happen) R will consider the whole column to be strings. Later, R will give the wrong results when you perform statistical analyses on these data (or it will refuse to perform them at all). 
 
-R also gives you some information about how it understands the contents of the file it has imported. In the console you will see the words **Parsed with column specification:** followed by a list of the imported columns. 
+Use the following commands to inspect your imported data:
 
-Each column header is associated with a value **col_double()**, or **col_character()**. These indicate what kind of data R identified in the input file. Columns that are **col_double** are numbers; columns that are **col_character** are strings. The same information is shown where RStudio prints the imported data. Beneath each column header you will see **dbl** for numbers and **chr** for strings. 
+```{r check 1}
+# Write the first few lines of a data frame to the console with function head
+head(gapminder_data)
 
-This is a good moment to pause and check that your data have been imported correctly. Data entry errors can cause R to make the wrong assumptions about your data. If you have a column of numbers that contains even one accidental alphabetic character (typos do happen) R will consider the whole column to be strings. Later, R will give the wrong results when you perform statistical analyses on these data (or it will refuse to perform them at all).   
 
-You will often also see files imported with the function `read.csv` (note the . instead of the _ ). This is the base R function for importing files. To use `read.csv` you don't need to load a library first, but R doesn't generate any information about how it has parsed the data in the columns. You can use the function `str` to get this information. Google for details.
+# Write the last few lines of a data frame to the console with function tail
+tail(gapminder_data)
+```
 
-With both `read_csv` and `read.csv` R will import the file and display its contents in the console, but this is not quite enough. We want R to store the data in a named variable so that we can refer to it later (i.e., do analyses on it). We do that with the assignment operator, as we did in our previous module. For example, we can say:
+```{r check 2}
+# Display the number of lines, the column names, and the data type of each 
+# column, with function str (short for 'structure')
+str(gapminder_data)
+```
 
-`puppy_donations_data <- read_csv("r4ssp_donations_data.csv")`
+Each column in a data frame is either a Factor (i.e. a categorical variable) or is associated with a data type **chr**, **int**, or **num**. These indicate what kind of data R identified in the input file. Columns that are **chr** contain strings (characters), columns that are **int** contain integers (whole numbers) and columns that are num contain numbers with a decimal part. Always check that these properties of the imported columns are correct for your data set. If they are not, you must locate and correct any errors in your csv file.
 
-Then, we can refer to this whole dataset any time with `puppy_donations_data`.
+You can see the same information about the structure of a data frame in the Environment panel of RStudio (upper-right of screen; Environment tab). When you successfully import a csv file into a variable with `read.csv`, the resulting data frame appears in the Environment pane. Click the blue arrow beside the object to display the details of its structure.
 
-Enter and run these commands:
-
-```{r load_data}
-# Load the library before the first time you call read_csv
-library(readr)
-
-# Read a csv file into R. Store the result in a named variable
-puppy_donations_data <- read_csv("data/r4ssp_donations_data.csv")
-
-# As always in R, we can display the contents of a variable by simply typing its name.
-puppy_donations_data
-
+```{r fig02, fig.align='center', out.width = "50%", fig.cap = "Data Frame in Environment Pane", fig.pos = "H", echo = FALSE}
+include_graphics("images/df_in_env_pane.PNG")
 ```
 
 \
 
-## Perform descriptive analyses on columns
 
-It is always informative to begin data analysis by inspecting your dependent variable (in this case, amount of money collected). Work through each of the following steps, adding the code to your script file (and remember to **Save Often**).
+## Selecting and using columns of data
 
-To select a single column from a data frame, we apply the **$** operator to the data frame, and specify the column name. The output is a **vector** containing the values in the named column.
+In both of the above displays, each column name is prefaced with `$`. We use the `$` operator to select individual columns of data from a data frame. For example, to select just the life expectancy values from our data, we say `gapminder_data$lifeExp`. (Be sure to type the column name exactly as it appears in the output of `str` and in the Environment pane.) We can use this expression directly as the argument to a function, or we can store the selected column in a variable (which will be a vector) for later processing. 
 
-```{r selectColumn}
+For example:
 
-# Select a single column with $ and the column name
-puppy_donations_data$Amount
+``` {r single column examples}
+# Print the first few values of column year
+head(gapminder_data$year)
+
+# Store column continent in a new variable
+continents <- gapminder_data$continent
+
+# Pass the variable to function levels which returns the values
+# of a categorical variable
+levels(continents)
 ```
 
-To simplify our later typing, we can use the assignment operator to save the output into a named variable.
+\
 
-```{r saveColumn}
-# Save a single column into a variable
-amount_only <- puppy_donations_data$Amount
+## Creating graphs in R
 
-# Display the variable
-amount_only
-```
-
-
-We can now apply R's many, many statistical functions to our variable.
+There are a variety of complex analyses that we can perform on a data frame using R's built-in statistical functions and those available in additional packages and libraries. We will explore many of these techniques in later modules. However, an effective first step in getting to know a data set is to generate plots and graphs to represent visually the patterns in the data.
 
 
 ### Simple plots - the histogram
 
-First, let's plot a histogram of the amounts collected, (ignoring the Puppy/Alone condition), to get a quick sense of how much people are donating. We generate this graph with function `hist`. The graph will be displayed in the Plots tab of RStudio's lower-right pane.
+A histogram shows the **frequency distribution** of a data set. That is, it shows counts of the  different values of the dependent variable (or ranges of values, for continuous variables). We generate this graph with function `hist`. The graph will be displayed in the Plots tab of RStudio's lower-right pane.
 
 ```{r 02-hist}
-hist(amount_only)
-```
-Our data appear to be bimodal (i.e. they have two peaks). This pattern can indicate the presence of distinct groups in a data set, an informative result in this study. 
-
-
-### Simple numeric descriptive statistics
-
-We can also generate some useful numeric summaries:
-```{r someStats}
-# Compute the mathematical mean with function mean()
-mean(amount_only)
-
-# Compute the standard deviation with function sd()
-sd(amount_only)
-
-# Get a selection of distribution descriptors with function summary()
-summary(amount_only)
+# Histogram of life expectancy values from gapminder
+hist(gapminder_data$lifeExp)
 ```
 
-There are, literally, hundreds of interesting functions in R for performing summary analyses. Sadly, we do not have time to cover them all, but we encourage you to explore R textbooks and online resources to learn more about them.
+\
 
+We see that the distribution of life expectancy is approximately bell-shaped, with many scores between 65 and 85, and a small number of extreme values greater than 80 or less than 30. 
 
 
 ### Boxplots
-We can see that the mean amount is higher for collectors who had puppies than for those who did not ($197.79 vs. $102.30). We can illustrate this difference graphically using a boxplot. 
+The boxplot allows us to compare distribution information between groups. For example, we can compare life expectancy for the different continents. 
 
 The R function `boxplot` accepts two arguments. 
 
-The first argument is the **formula**. This is a complex, yet very common, argument format for R statistical functions. The formula describes a linear model for a data set with the general structure: **dependent or predicted variable ~ independent variables or predictors**, using columns names from the data frame. The ~ (tilde) is read as "depends on" or "is predicted by". For our example, we are interested in the way that Amount is dependent on the Puppy/Alone condition, so we specify our formula as **Amount ~ Condition**.  We will see more complex examples of the formula argument later in the semester.
-
+The first argument is the **formula**. This is a complex, yet very common, argument format for R statistical functions. The formula describes a linear model for a data set with the general structure: **dependent or predicted variable ~ independent variables or predictors**, using columns names from the data frame. The ~ (tilde) is read as "depends on" or "is predicted by". For our example, we are interested in the way that life expectancy is dependent on the continent, so we specify our formula as **lifeExp ~ continent**.  We will see more complex examples of the formula argument later in the semester.
 
 The second argument to boxplot is the data frame.
 
 ```{r 02-boxplot01}
-boxplot(Amount ~ Condition, puppy_donations_data)
+boxplot(lifeExp ~ continent, gapminder_data)
 ```
 
+\
 
-Boxplots efficiently illustrate both the central tendency and the variability of a data set. Each grey box extends from the first quartile to the third quartile of its input values. The dark line across the box is at the median. The two thin lines outside the qrey box show the values of the minimum and maximum scores, excluding extreme outliers. If extreme outliers are present, they are shown as asterisks.
-
-The `boxplot` function actually has many optional arguments for things like adding legends and formatting plot axes, and calls to this function can get quite elaborate. Because of this, it is common to see the function called with its arguments named (as with stringsAsFactors, above). For example:
-
-```{r 02-boxplot02}
-boxplot(formula = Amount ~ Condition, data = puppy_donations_data)
-```
-
-### Tidyverse - ggplot2
+Boxplots efficiently illustrate both the central tendency and the variability of a data set. Each grey box extends from the first quartile to the third quartile of its input values. The dark line across the box is at the median. The two thin lines outside the qrey box show the values of the minimum and maximum scores, excluding extreme outliers. If extreme outliers are present, they are shown as small circles. This figure clearly illustrates that, in the gapminder data, life expectancy -- both central tendency and variablity -- is not the same for all continents.
 
 
-There is a fantastic introduction to Data Visualisation using ggplot in "R for Data Science" (https://r4ds.had.co.nz/data-visualisation.html). It's highly recommended to have a read through this chapter as we'll only touch on a very brief introduction of this framework in this module.
+## Plotting with ggplot2
 
-The ggplot2 package is a popular data visualisation package for R. It was developed by Hadley Wickham to implement the 'grammar of graphics'. In order to use it we need to first load it into R.
+The `hist` and `boxplot` functions are part of Base R. They are useful, but for more elaborate, publication-quality graphs, we can use the third-party library **ggplot** contained in package **ggplot2**. The ggplot library is a very popular data visualisation tool based on an elaborate symbolic system called the 'Grammar of Graphics'. 
+
+The syntax of ggplot is complex, and we will concentrate on the foundations in this module. For additional detail, see the Data Visualisation chapter in the R for Data Science online text, at  https://r4ds.had.co.nz/data-visualisation.html.
 
 
+### Semantics of ggplot
+You can think of a ggplot graph as being built as a sequence of layers. On the bottom is the base of the graph, then the axes and the data are layered on, then titles and notations and other features. A ggplot command reflects this layered structure.
 
-```{r}
+### Building a graph
+
+To use the ggplot library, we must install the ggplot2 package (once on a computer) and invoke the library command (for every RStudio session).
+
+```{r install and load, eval = FALSE}
+# Once on any computer
+install.packages(ggplot2)
+
+# Once for any RStudio session
 library(ggplot2)
 ```
 
-ggplot tackles plotting reducing it into three components
+Every graph represents a data frame. The base part of any ggplot command is a call to function `ggplot()` passing in the data frame, assigned to function argument `data`.
 
-- what is the data
-- how the data is mapped to aesthetics (aes)
-- how the data is represented geometrically (geom)
-
-So to create a plot using ggplot we need to specify these three components.
-
-
-Plots can then be made incrementally by adding on additional layers.
-
-We'll now recreate the same plots as we did with the Base R plotting system.
-
-#### Scatter plots
-
-Here you'll see we've defined our data, we've mapped specific columns to our axes, and are using a 'point' as our geometric representation.
-
-```{r 02-gg_point1}
-ggplot(data = puppy_donations_data, mapping = aes(x = CollectorNumber, y = Amount)) + 
-  geom_point()
+```{r ggplot base}
+# The ggplot base layer
+ggplot(data = gapminder_data)
 ```
-
-We can also store our plots in a variable to build upon
-
-```{r}
-p <- ggplot(data = puppy_donations_data, mapping = aes(x = CollectorNumber, y = Amount))
-```
-
-What does `p` actually contain?
-```{r 02-gg}
-p
-```
-
-
-```{r 02-gg_point2}
-p + geom_point()
-```
-
-
-##### Specifiying colour
-
-Remember `p` contains our initial specification of the data and mappings
-
-```{r 02-gg_point3}
-p + geom_point(colour = 'red')
-```
-
-##### Mapping colour from our data
-
-```{r 02-gg_point4}
-p + geom_point(aes(colour = Condition))
-```
-Notice that we didn't specify the colour for our points, instead we have told ggplot to use colours based on the values that were found in the "Condition" column using `aes`.
 
 \
 
-#### Line plots
+If you run this command from the RStudio console or an R script, the grey square shown above appears in the Plots pane. This indicates that ggplot is ready to draw a figure -- this is the  bottom layer of a ggplot graph.
 
-In this case, we have the same data and mapping, but we want to have the data represented by a line so we choose `geom_line` as our "geom".
+To add x and y axes to the graph, we need to define the relationship between informational elements in the data set (the variables we want to plot) and visual elements in our graph (the axes). In ggplot this relationship is a **mapping**. To initialise a mapping, we identify a particular element of the graph (e.g. the x-axis) and assign a particular element of the data (e.g. a column in the data frame) to it. This assignment is called an **aesthetic** in the Grammar of Graphics, and in ggplot we use function `aes()` to specify aesthetics. 
 
-```{r 02-gg_line1}
-p + geom_line()
+Imagine that we wish to make a graph showing the relationship between per capita GDP and life expectancy (two columns in gapminder_data). We map the first variable to the x axis (argument x) of our graph and the second to the y axis (argument y). This will add a new layer. We add this new information to the ggplot() base call as shown below. Note that we don't need to use the `$` operator here, as all column names in a ggplot command apply to the supplied data frame.
+
+```{r mapping x and y}
+ggplot(data = gapminder_data, mapping = aes(x = gdpPercap, y = lifeExp ))
+
+
 ```
 
+\
 
+We have added a new layer to our graph with axes and grid lines. Note that the axes' tic values are correctly formatted for the associated data and the data frame column names are used as the axis labels (we will see how to improve those labels later).
 
+To add points to our graph, we specify a **geometry** (another term from the Grammar of Graphics). There are many, many available geometries in ggplot, corresponding to all the different sorts of graphs -- scatterplots, bar plots, pie charts, line graphs, etc. -- that you might wish to make. For our current graph, we wish to place a point at the intersection of per capita GDP (our x axis) and life expectancy (our y axis) for each row in the input data frame. To add this geometry to ggplot append `geom_point()` to your current ggplot command using the `+` operator. It is conventional to place each chunk of the ggplot command on its own line in the code.
 
-##### Adding layers
-
-```{r 02-gg_line2}
-p + 
-  geom_line() + 
+```{r geom point}
+# Add points (a 'geometry') to the graph
+ggplot(data = gapminder_data, mapping = aes(x = gdpPercap, y = lifeExp )) +
   geom_point()
 ```
 
+\
 
+This type of graph (usually called a **scatterplot**) illustrates the relationship between two dependent variables. Even from this very simple figure we can see that there is a general tendency for higher per capita GDP to be associated with higher life expectancy in the gapminder data.
 
-```{r 02-gg_line3}
-p + 
-  geom_line(colour = 'gold') + 
+Like most functions, `geom_point` can accept arguments that modify its behaviour. The argument **colour** determines the colour of the points to be drawn, and can be assigned any of R's built-in colour names (call function `colours()` to list all possible values) or a hexidecimal RGB code (see for example, https://r-charts.com/colors/).
+
+``` {r colour}
+ggplot(data = gapminder_data, mapping = aes(x = gdpPercap, y = lifeExp )) +
   geom_point(colour = 'tomato')
 ```
 
-##### Using mappings
+\
 
-If you would like to plot individual lines based on a categorical variable you can used a 'group' mapping:
+This livens up our plot, but it doesn't acutally add any new information. It is better technique to use colour to represent another of our data variables. We might, for example, wish to use a different colour for each continent, to see how the relationship between GDP and life expectancy differs between continents. This requires defining a mapping between a visual feature (colour) and an element of the data set (column continent), so we initialise the `mapping` property with function `aes`, in our call to `geom_point`.
 
-```{r 02-gg_line4}
-p + 
-  geom_line(aes(group = Condition))
-```
-
-
-We can specify separate aesthestics for each layer
-
-```{r 02-gg_line5}
-p + 
-  geom_line(aes(colour = Condition)) + 
-  geom_point(aes(colour = Condition))
-```
-
-Note that colour will automatically imply a _group_.
-
-or if it is common to all layers, we can specify them in the initial setting up:
-
-```{r 02-gg_line6}
-ggplot(data = puppy_donations_data, 
-       mapping = aes(x = CollectorNumber, 
-                     y = Amount, 
-                     colour = Condition)) + 
-  geom_line() + 
-  geom_point()
+```{r mapping colour}
+ggplot(data = gapminder_data, mapping = aes(x = gdpPercap, y = lifeExp )) +
+  geom_point(mapping = aes(colour = continent))
 ```
 
 \
 
-#### Histogram
+This graph illustrates clearly that, in the gapminder data, life expectancy and per capita GDP vary substantially between continents.
 
-A histogram is created from a single continuous variable.
+You should carefully compare the two preceding graphs. In the first, we simply set the **colour** argument of function`geom_point`. In the second, we set the **mapping** argument of `geom_point` using function `aes`. In the former graph, all points are the same colour. In the latter graph, the colour of each point depends on its continent value. That is, we have **mapped** colour to continent. 
 
-```{r 02-gg_hist}
-ggplot(data = puppy_donations_data, aes(x = Amount)) + 
-  geom_histogram()
+
+### Choosing geometries
+
+It is essential to select the correct type of graph (the correct geometry in ggplot) for the data pattern you wish to illustrate.
+
+Assume, for example, that you wish to show the change in life expectancy across years, for the country of Denmark. First, we must select out only the rows for Denmark from our data frame. (We will consider selection in detail in next week's module. For now, just note that between the square brackets we provide row and column criteria for selection, and an empty value for column means **all**.) 
+
+We will then pass the selected data to ggplot as before, specifying the mapping of the data to the x and y axes.
+
+The graph will be illustrating a trend (change in a variable across time). Trend graphs are usually drawn with a continuous line between the plotted points. In ggplot, this is geometry `geom_line`.
+
+The complete code is:
+
+```{r line graph}
+# Select all rows where the country is equal to Denmark. Select all columns.
+denmark_data <- gapminder_data[gapminder_data$country == "Denmark", ]
+
+ggplot(data = denmark_data, mapping = aes(x = year, y = lifeExp)) +
+  geom_line()
 ```
 
 \
 
-#### Boxplot
+We can use ggplot to produce a histogram for life expectancy (as we did in Base R above) with `geom_histogram`. For histograms we only need to map the x axis, as the y axis represents, by default, frequency. We can enhance the plot's appearance by initialising `geom_histogram` arguments `colour` which sets the border around the bars on the graph, and `fill` which sets the interior of the bars on the graph.
 
-In ggplot, to create a boxplot, we need to specify a continuous variable, and a categorical variable.
+```{r histogram, warning = FALSE, message=FALSE}
+ggplot(data = gapminder_data, mapping = aes(x = lifeExp)) +
+  geom_histogram(colour = "white", fill = "darkgreen")
+```
 
-```{r 02-gg_box1}
-ggplot(data = puppy_donations_data, aes(x = Condition, y = Amount)) + 
+\
+
+Similarly, we can reproduce the boxplot above with `geom_boxplot`. In Base R we used a **formula** to identify the dependent and independent variables for the boxplot. With ggplot, we use a mapping to assign the DV to the x axis and the IV to the y axis.
+
+```{r boxplot}
+ggplot(data = gapminder_data, mapping = aes(x = continent, y = lifeExp)) +
   geom_boxplot()
-```
 
-Or you could make it horizontal by switching the the x/y arguments.
 
-```{r 02-gg_box2}
-ggplot(data = puppy_donations_data, aes(x = Amount, y = Condition)) + 
-  geom_boxplot()
 ```
 
 \
 
-### Customising
+### Exercise:
+What would you predict to be the effect of swapping the values of x and y in the call to `aes` above? Test your prediction.
 
-There are a multitude of customisations that can be done to plots such as titles, labels, colours, etc.
 
-A fantastic resource for looking at how to customise your plots made using the Base R plotting system is the [R Graphics Cookbook](https://r-graphics.org).
+### Refining the appearance of a plot
+After we have built the foundation of our plot with data and geometry, we can add further layers to modify other visual features. For example, we can use function `labs` to set the axis, legend, and main titles of our plots. Consider the following enhancements to our figure illustrating the relationship between GDP and life expectancy by continent:
 
-#### Themes
+``` {r labels}
+# NB: Multiple function arguments (as in labs below) can
+# be placed on separate lines to improve readability
 
-For ggplot, the plots are made up of _elements_ and can be customised using `theme()` or by picking one of the pre-defined themes - e.g. `theme_bw()` provides a black/white theme.
-
-The main elements are
-
-- `element_text` for text
-- `element_rect` for rectangular areas
-- `element_line` for lines
-- `element_blank` to remove/hide elements
-
-```{r 02-gg_theme1}
-ggplot(data = puppy_donations_data, aes(x = Condition, y = Amount)) + 
-  geom_boxplot() + 
-  theme(axis.title = element_text(size = 16), 
-        panel.grid = element_blank(), 
-        panel.background = element_rect(colour = "blue", fill = "light green"))
-
+ggplot(data = gapminder_data, mapping = aes(x = gdpPercap, y = lifeExp )) +
+  geom_point(mapping = aes(colour = continent)) +
+  labs(x = "GDP Per Capita", 
+       y = "Life Expectancy", 
+       title = "Gap Minder Data 1952 to 2007", 
+       colour = "Continent")
 ```
-
-
-
-```{r 02-gg_theme2}
-ggplot(data = puppy_donations_data, aes(x = Condition, y = Amount)) + 
-  geom_boxplot() + 
-  theme_bw()
-```
-
-
-
-There is also a fantastic cheat sheet available in RStudio under `Help` -> `Cheat Sheats` -> `Data Visualization with ggplot2`
 
 \
 
-\
+
+The code for ggplot formatting can get extremely complex, and the full functionality is beyond the scope of this module. In addition, there are many, many more geometries available, each with appropriate arguments and mapping options.
+
+The formal documentation for ggplot can be found at https://ggplot2.tidyverse.org/index.html. If you prefer tutorials and galleries, there are many available online. Two good places to start are http://www.cookbook-r.com/Graphs/ and https://www.r-graph-gallery.com/.
+
+
+### Saving ggplots
+You can save figures made with ggplot to image files, which can then be used in documents generated in MS Word or other text editors. We first save the output of our ggplot command into a named variable (to R a ggplot is a data object just like a number or a string). We then use function `ggsave` to export out plot as an image file. You specify the image format by supplying an outfile name with the corresponding file suffix (e.g. .jpg or .png). By default, the file is saved into the working folder (in our case, the folder containing our csv and script files).
+
+```{r ggsave}
+# Save a ggplot to a variable. The syntax of the gpplot command is unaffected
+gdp_lifeExp_plot <- ggplot(data = gapminder_data, mapping = aes(x = gdpPercap, y = lifeExp )) +
+  geom_point(mapping = aes(colour = continent)) +
+  xlab("GDP Per Capita") +
+  ylab("Life Expectancy") +
+  ggtitle("Gap Minder Data 1952 to 2007")
+
+# Export the variable as an image file. Provide the file name and the ggplot object
+ggsave(filename = "gdp_lifeExp_plot.png", gdp_lifeExp_plot)
+```
 
 ## Conclusion
 
-This document has presented a simple introduction to working with complete tables of data in R. We learned how to import a csv file into a data frame, how to select columns and rows of interest from the data frame, and how to perform simple, yet illustrative summaries on them. We have covered only a tiny fraction of the data analyses you can perform with R and RStudio. You can also do very complex statistics like ANOVA, regression, factor analysis, and complex modelling. The specific statistical analyses you will need to do for your in-course assignments will depend on the papers you are taking, but you can be confident that whatever your lecturers require can almost certainly by done efficiently in R. As we proceed through the semester, if you wish to discuss a particular data analysis, processing, or presentation task, please let us know.
-
+This document has presented a simple introduction to working with complete tables of data in R. We learned how to import a csv file into a data frame, and how to use Base R or library `ggplot` to generate graphs to illustrate important patterns in our data.
 
 ### What's Next
 
-Fill in the module feedback form [https://tinyurl.com/r4ssp-module-fb](https://tinyurl.com/r4ssp-module-fb).
+Please fill in the module feedback form [https://tinyurl.com/r4ssp-module-fb](https://tinyurl.com/r4ssp-module-fb).
 
-Ensure you have the `tidyverse` package installed. Refer to Appendix 2, or [https://r4ds.had.co.nz/introduction.html](https://r4ds.had.co.nz/introduction.html) for how to do this.
+Ensure you have the `tidyverse` installed for the next module. The tidyverse is a collection of packages (a metapackage) that provide a succinct syntax for performing data manipulation and basic analysis in R.  Running `install.packages(tidyverse)` installs all the individual packages to your machine.
+
+The tidyverse consists of `ggplot2` (plotting), `dplyr` (data manipulation), `tidyr` (data tidying), `readr` (data importing), `purrr` (functional programming), `tibble` (a special type of data frame), `stringr` (common tasks for string manipulations), and  `forcats` (dealing with factors)
  
-
-
-\
-
-\
-
-## Appendix
-
-### Manual Data Entry in R
-
-For extremely small data sets, you can manually enter tabular data into R. You create a vector for each data column using the combine function `c`, and then collect those vectors into a data frame:
-
-```{r manual data 1}
-countries <- c("Austria", "Brazil", "Canada")
-capitals <- c("Vienna", "Brasilia", "Ottawa")
-population_in_millions <- c(9, 211, 38)
-
-geography_df <- data.frame(Country = countries,
-                           Capital = capitals,
-                           PopulationMillions = population_in_millions)
-
-geography_df
-```
-
-
-### Installing Packages
-
-When R is installed, it comes with a large set of commands, data structure, and functions which are together known as **base R**. Over the years, researchers and programmer have written thousands of additional functions and modules (called **libraries**) that you can use in your own R code. This **third-party code** is checked by moderators and, if it passes inspection, loaded onto an official R server in a file structure called a **package**. To use packages, you must first download them to your computer. They are placed in the same folders where base R was originally installed. 
-
-To access the functions in a package in your R code, you load the package using the `library` command, as we saw above with **readr**. You only need to download a package one time on any machine, but the `library` command must be executed at the start of each RStudio session (i.e. every time you launch RStudio).
-
-To install a package, use the `install.packages` command passing the name of the package as the function argument. The name is a string **so must be surrounded by double quotes**. To use an installed package, use the `library` command, passing in the name of the package. Now that the package has been installed, R recognises it as an entity (like a variable) so you do not put double quotes around the package name in the library command.
-
-For example, when you want to use function `read_csv`, contained in library **readr**:
-
-```{r getting readr, eval = FALSE}
-
-# Download the reshape2 code to your machine
-install.packages("readr")
-
-
-# Load the library for the current session
-library(readr)
-```
-
-### Tidyverse
-
-The tidyverse is a collection of packages (metapackage) that are an (opinionated) way of performing analysis in R and are all designed to operate nicely together. When `tidyverse` is installed it actually is a wrapper that installs the individual packages that make up the tidyverse core.
-
-The tidyverse consists of a core set of packages to perform common tasks in data analysis and are `ggplot2` (plotting), `dplyr` (data manipulation), `tidyr` (data tidying), `readr` (data importing), `purrr` (functional programming), `tibble` (a special type of data frame), `stringr` (common tasks for string manipulations), and  `forcats` (dealing with factors)
-
 
 ```{r install tidyverse, eval = FALSE}
 # Download and install the packages of tidyverse
@@ -506,19 +381,6 @@ install.packages("tidyverse")
 # load the tidyverse packages for the current session
 library(tidyverse)
 ```
-
-### R for Data science extra packages
-
-If you are following along with R for Data Science make sure you have these packages installed:
-
-- nycflights13
-- gapminder
-- Lahman
-
-```{r, eval = FALSE}
-install.packages(c("nycflights13", "gapminder", "Lahman"))
-```
-
 
 
 
