@@ -1,6 +1,5 @@
 ---
-title: "Handout 03 - Selecting and Filtering Data"
-author: "Patricia Haden & Murray Cadzow"
+title: "Zoom Notes: Selecting and Filtering Data"
 date: "Semester 1, 2022"
 output:
   html_document:
@@ -22,6 +21,60 @@ knitr::opts_chunk$set(
 )
 ```
 
+> #### Associated Material
+>
+> Module: [Module 03 - Subsetting](03-subset.html)
+>
+> Reading:
+>
+> - [R for Data Science - Chapter 5](https://r4ds.had.co.nz/transform.html)
+
+
+----
+
+planning to cover:
+
+
+
+### Base R
+
+- `$`
+- `[,]`
+- nrow/ncol
+- class
+
+subsetting using
+
+  - names
+  - index
+  - conditional
+  - %in%
+
+missing data
+
+### dplyr
+
+pipes %>% 
+
+- select
+  - select helpers (possibly)
+
+- filter
+  - between
+
+
+## Modifying
+
+- mutate
+- arrange
+- group_by
+- summarise
+
+
+dplyr %>% ggplot
+----
+
+
 
 ## Vector subsetting
 
@@ -29,6 +82,8 @@ In the [first week](handout1.html) we touched on vectors and using the `[]` to e
 
 Often it's fairly laborious to work out exactly which index corresponds to the data you're interested in. Usually we're more interested in data that meets certain _conditions_. Instead of sub-setting by indices, we can do conditional sub-setting.
 
+
+### Conditional subsetting
 
 Lets create an example vector to work use
 ```{r}
@@ -58,40 +113,18 @@ nums[nums < 4]
 ```
 
 
-## Dataframe subsetting {.tabset}
+## Dataframe subsetting 
 
-### Base R
+Data frame subsetting is extremely similar to vector subsetting, but instead of 1-dimension, we now provide 2 arguments to `[]`, one for the rows, and one for the columns e.g. `my_dataframe[rows, cols]`. If you leave the rows argument blank, R will give you back all rows (`my_dataframe[, cols]`), and similarly leaving the columns argument blank will return all columns (`my_dataframe[rows,]`)
 
-- `$`
-- `[,]`
-  - names
-  - index
-  - conditional
+It's important to note, that using `[]` will may not return the data back in a structure you were expecting - you will get a data frame back unless you subset to a single column in which case you will get back a vector.
 
-
-
-
-### dplyr
-
-pipes %>% 
-
-- select
-  - starts_with
-  - ends_with
-  - contains
-  - anyof
-
-
-- filter
-- slice
+```{r}
+# example of subsetting using [,]
+```
 
 
 
 
 
-## Plotting
 
-base R and ggplot2
-
-- 
-- line plot
