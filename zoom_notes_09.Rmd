@@ -1,6 +1,5 @@
 ---
-title: "R for Successful Student Projects - Module 9 Inferential Statistics"
-author: "Patricia Haden & Murray Cadzow"
+title: "Zoom Notes: Workflows"
 date: "Semester 1, 2022"
 output:
   html_document:
@@ -16,7 +15,7 @@ library(knitr)
 
 knitr::opts_chunk$set(
   comment = "#>",
-  fig.path = "figures/", # use only for single Rmd files
+  fig.path = "figures/09/", # use only for single Rmd files
   collapse = TRUE,
   echo = TRUE
 )
@@ -25,6 +24,28 @@ library(ggplot2)
 library(palmerpenguins)
 
 ```
+
+
+> 
+>
+> Potential topics:
+> 
+> - infrential stats
+>   - formula syntax
+>   - formala syntax in context of loop and/or custom function for running through many models
+> - projects
+> - organisation
+> - scripts
+> - rmd driven dev
+> - packages
+> - debugging
+> - complex data structures (lists)
+> - git
+
+
+# Original module 6 (inferential stats) content below here
+
+----------
 
 
 ## Introduction
@@ -295,4 +316,6 @@ chisq.test(student_preference_df$StudentLevel, student_preference_df$Preference)
 Discussion:
 
 * p < 0.001 We reject the null hypothesis that the two factors are independent. Based on o ur observed data, we conclude that for post-grad students, a greater proportion prefer online teaching than ftf teaching. For undergraduate students this pattern is reversed.
+
+
 

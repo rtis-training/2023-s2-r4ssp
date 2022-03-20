@@ -25,6 +25,7 @@ knitr::opts_chunk$set(
 
 
 > #### Associated material
+>
 > Zoom notes: [Zoom notes 01 - Introducing R and RStudio](zoom_notes_01.html)
 > 
 > Readings:

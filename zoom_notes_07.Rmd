@@ -1,5 +1,5 @@
 ---
-title: "Handout 07 - Functions and Choices"
+title: "Zoom Notes: Functions and Choices"
 date: "Semester 1, 2022"
 output:
   html_document:
@@ -15,7 +15,7 @@ library(knitr)
 
 knitr::opts_chunk$set(
   comment = "#>",
-  fig.path = "figures/", # use only for single Rmd files
+  fig.path = "figures/07/", # use only for single Rmd files
   collapse = TRUE,
   echo = TRUE
 )

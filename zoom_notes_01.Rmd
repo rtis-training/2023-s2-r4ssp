@@ -1,6 +1,5 @@
 ---
-title: "Zoom notes 01 - Introducing R and RStudio"
-author: "Murray Cadzow & Patricia Haden"
+title: "Zoom notes: Introducing R and RStudio"
 date: "Semester 1, 2022"
 output:
   html_document:

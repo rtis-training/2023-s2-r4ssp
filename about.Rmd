@@ -14,7 +14,7 @@ There is no course credit or summative assessment associated with this course.
 
 ## Course Delivery
 
-This course uses a hybrid delivery model where teaching sessions combine succinct presentations of new content with hands-on, focused coding practice in the classroom. Facilitator support is tailored to individual student need. The course comprises eight modules, delivered over nine weekly sessions. However, support is provided for any module at any time, to accommodate each student's rate of work.
+This course uses a hybrid delivery model where teaching sessions combine succinct presentations of new content with hands-on, focused coding practice in the classroom. Facilitator support is tailored to individual student need. The course comprises nine modules, delivered over 10 weeks (no session during mid-semester break). However, support is provided for any module at any time, to accommodate each student's rate of work.
 
 
 \

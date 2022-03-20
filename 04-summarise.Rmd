@@ -15,7 +15,7 @@ library(knitr)
 
 knitr::opts_chunk$set(
   comment = "#>",
-  fig.path = "figures/", # use only for single Rmd files
+  fig.path = "figures/04/", # use only for single Rmd files
   collapse = TRUE,
   echo = TRUE
 )
@@ -23,10 +23,15 @@ knitr::opts_chunk$set(
 
 ```
 
-[Link to the Handout](handout4.html)
+> #### Associated Material
+>
+> Zoom notes: [Zoom Notes 04 - Summarising data](zoom_notes_04.html)
+>
+> Readings
+>
+> - [R for Data Science - Chapter 7](https://r4ds.had.co.nz/exploratory-data-analysis.html)
 
-Associated readings
-- [R for Data Science - Chapter 7](https://r4ds.had.co.nz/exploratory-data-analysis.html)
+\
 
 ## Introduction
 
