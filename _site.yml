@@ -32,24 +32,24 @@ navbar:
           #href: 09-workflows.html
     - text: "Zoom Notes"
       menu:
-        - text: "Handout 1"
-          href: handout1.html
-        - text: "Handout 2"
-          href: handout2.html
-        - text: "Handout 3"
-          href: handout3.html
-        - text: "Handout 4"
-          href: handout4.html
-        - text: "Handout 5"
-          href: handout5.html
+        - text: "01 - Introducing R and RStudio"
+          href: zoom_notes_01.html
+        - text: "02 - Visualising data"
+          href: zoom_notes_02.html
+        - text: "03 - Subsetting data"
+          href: zoom_notes_03.html
+        - text: "04 - Summarising data"
+          href: zoom_notes_04.html
+        - text: "05 - Transforming data"
+          href: zoom_notes_05.html
     #     - text: "Handout 6"
-    #       href: handout6.html
+    #       href: zoom_notes_06.html
     #     - text: "Handout 7"
-    #       href: handout7.html
+    #       href: zoom_notes_07.html
     #     - text: "Handout 8"
-    #       href: handout8.html
+    #       href: zoom_notes_08.html
     #     - text: "Handout 9"
-    #       href: handout9.html
+    #       href: zoom_notes_09.html
     - text: "About"
       href: about.html
   type: "inverse"
