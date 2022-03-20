@@ -42,13 +42,13 @@ navbar:
           href: zoom_notes_04.html
         - text: "05 - Transforming data"
           href: zoom_notes_05.html
-        - text: "Handout 6"
+        - text: "06 - Communicating data"
           href: zoom_notes_06.html
-        - text: "Handout 7"
+        - text: "07 - Functions and choices"
           href: zoom_notes_07.html
-        - text: "Handout 8"
+        - text: "08 - Repeating code"
           href: zoom_notes_08.html
-        - text: "Handout 9"
+        - text: "09 - Workflows"
           href: zoom_notes_09.html
     - text: "About"
       href: about.html
