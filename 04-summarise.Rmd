@@ -220,7 +220,7 @@ summarise(by_lake, Mean_ChlA = mean(ChlA))
 
 However, not only do the central points of the three lakes' distributions differ, so do the amounts of "spread". Lake Taupo's distribution is very "skinny"; all its readings are similar. Lake Ellesmere is squashed and spread out; its readings vary a lot. Lake Rotorua is intermediate. To illustrate this more clearly, we can use ggplot to make separate graphs for each lake, adjusting the y-axes to make comparison easier (note the arguments to `facet_grid`).
 
-```{r facet graphs, warning=FALSE, message=FALSE}
+```{r facet_graphs, warning=FALSE, message=FALSE}
 ggplot(data = lakes) +
   geom_histogram(aes(x = ChlA, fill=LakeName), color="black") +
   facet_grid(rows = vars(LakeName), scales="free_y")
