@@ -11,7 +11,7 @@
 
 
 
-<title>About R4SSP</title>
+<title>Zoom Notes 04 - Summarising Data</title>
 
 <script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -29,7 +29,12 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 
@@ -55,6 +60,11 @@ if (window.hljs) {
 
 
 
+<style type="text/css">
+#rmd-source-code {
+  display: none;
+}
+</style>
 
 
 <link rel="stylesheet" href="style.css" type="text/css" />
@@ -216,7 +226,73 @@ $(document).ready(function () {
 </style>
 
 <!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
 
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
 
 
 
@@ -226,6 +302,16 @@ $(document).ready(function () {
 
 
 <div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -335,106 +421,40 @@ $(document).ready(function () {
 
 <div id="header">
 
-
-
-<h1 class="title toc-ignore">About R4SSP</h1>
-
-</div>
-
-
-<p><br />
-</p>
-<div id="description" class="section level2">
-<h2>Description</h2>
-<p>Advances in scientific technologies from remote sensors to genetic
-sequencers mean scientists are now working with huge data sets, and must
-be expert in the computer tools that can analyse those data. Many
-undergraduate science papers now require students to process and analyse
-real data using special programming languages like R. In this
-mini-course, we will help you to learn exactly those parts of R that
-science students need for their in-course research assignments. Class
-sessions combine structured presentation of new material, and hands-on
-coding practice with support from experienced R programmers, scientists,
-and educators.</p>
-<p>There is no course credit or summative assessment associated with
-this course.</p>
-<p><br />
-</p>
-</div>
-<div id="course-delivery" class="section level2">
-<h2>Course Delivery</h2>
-<p>This course uses a hybrid delivery model where teaching sessions
-combine succinct presentations of new content with hands-on, focused
-coding practice in the classroom. Facilitator support is tailored to
-individual student need. The course comprises nine modules, delivered
-over 10 weeks (no session during mid-semester break). However, support
-is provided for any module at any time, to accommodate each student’s
-rate of work.</p>
-<p><br />
-</p>
-</div>
-<div id="learning-outcomes" class="section level2">
-<h2>Learning Outcomes</h2>
-<p>At the completion of this paper, students will be able to:</p>
-<ol style="list-style-type: decimal">
-<li>Prepare a scientific data set for digital processing</li>
-<li>Use the programming language R and the programming environment
-RStudio to:
-<ol style="list-style-type: lower-alpha">
-<li>explore scientific data sets</li>
-<li>perform basic data summaries and statistical analyses</li>
-<li>produce graphs and tables appropriate for inclusion in student
-research assignments</li>
-</ol></li>
-<li>Demonstrate efficient workflow for digital data processing</li>
-<li>Independently explore resources and materials to develop more
-advanced R skills</li>
-</ol>
-<p><br />
-</p>
-</div>
-<div id="indicative-content" class="section level2">
-<h2>Indicative Content</h2>
-<ol style="list-style-type: decimal">
-<li>Relationship between programming language and programming
-environment</li>
-<li>RStudio elements and interface</li>
-<li>Preparing research data for analysis</li>
-<li>Importing data files into RStudio</li>
-<li>Manipulating and transforming data in RStudio</li>
-<li>Producing plots and graphs</li>
-<li>Performing simple statistical summaries and tests in Rstudio</li>
-<li>Basic flow of control in R</li>
-<li>Exporting results from RStudio for inclusion in research
-reports</li>
-</ol>
-<p><br />
-</p>
-</div>
-<div id="resources" class="section level2">
-<h2>Resources</h2>
-<div id="software" class="section level3">
-<h3>Software</h3>
-<p>R, RStudio, and assorted RStudio packages. All required software is
-open source, is available online for download at no cost, and is
-included in the current University of Otago student computer image.</p>
-<p><br />
-</p>
-</div>
-<div id="readings-practicals-materials" class="section level3">
-<h3>Readings, Practicals, &amp; Materials</h3>
-<p>Content materials consist of digital documents (provided), online
-texts, online videos, and online interactive exercises (suggested), all
-at publicly accessible websites. Modules have associated practical
-exercises (provided). Students will be able to choose exemplar data sets
-to use in the performance of later practical exercises, ensuring that
-the work will be largely contextualised in each student’s preferred
-field of study.</p>
-</div>
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+<li role="separator" class="divider"></li>
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
 </div>
 
 
 
+<h1 class="title toc-ignore">Zoom Notes 04 - Summarising Data</h1>
+
+</div>
+
+
+<blockquote>
+<h4 id="associated-material">Associated Material</h4>
+<p>Module: <a href="04-summarising.html">Module 04 - Summarising
+data</a></p>
+<p>Readings</p>
+<ul>
+<li><a href="https://r4ds.had.co.nz/exploratory-data-analysis.html">R
+for Data Science - Chapter 7</a></li>
+</ul>
+</blockquote>
+<!-- Patricia to populate -->
+
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiWm9vbSBOb3RlcyAwNCAtIFN1bW1hcmlzaW5nIERhdGEiCm91dHB1dDoKICBodG1sX2RvY3VtZW50OgogICAgdG9jOiB0cnVlCiAgICB0b2NfZmxvYXQ6IHRydWUKICAgIHRvY19kZXB0aDogMwogICAgY29kZV9kb3dubG9hZDogdHJ1ZQogICAgY29kZV9mb2xkaW5nOiBzaG93Ci0tLQoKYGBge3Igc2V0dXAsIGluY2x1ZGU9RkFMU0V9CmxpYnJhcnkoa25pdHIpCgprbml0cjo6b3B0c19jaHVuayRzZXQoCiAgY29tbWVudCA9ICIjPiIsCiAgZmlnLnBhdGggPSAiZmlndXJlcy8wNC8iLCAjIHVzZSBvbmx5IGZvciBzaW5nbGUgUm1kIGZpbGVzCiAgY29sbGFwc2UgPSBUUlVFLAogIGVjaG8gPSBUUlVFCikKCgpgYGAKCgo+ICMjIyMgQXNzb2NpYXRlZCBNYXRlcmlhbAo+Cj4gTW9kdWxlOiBbTW9kdWxlIDA0IC0gU3VtbWFyaXNpbmcgZGF0YV0oMDQtc3VtbWFyaXNpbmcuaHRtbCkKPgo+IFJlYWRpbmdzCj4KPiAtIFtSIGZvciBEYXRhIFNjaWVuY2UgLSBDaGFwdGVyIDddKGh0dHBzOi8vcjRkcy5oYWQuY28ubnovZXhwbG9yYXRvcnktZGF0YS1hbmFseXNpcy5odG1sKQoKPCEtLSBQYXRyaWNpYSB0byBwb3B1bGF0ZSAtLT4K</div>
+
+
+</div>
+</div>
 
 </div>
 
@@ -466,7 +486,42 @@ $(document).ready(function () {
 </script>
 
 <!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("zoom_notes_04.Rmd");
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
 
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

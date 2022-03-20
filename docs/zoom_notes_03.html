@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Zoom Notes: Selecting and Filtering Data</title>
+
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">R4SSP Semester 1 2022</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Modules
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Intro</li>
+    <li>
+      <a href="01-intro.html">Intro to R and RStudio</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Data Focus</li>
+    <li>
+      <a href="02-visualise.html">Part 1: Visualising</a>
+    </li>
+    <li>
+      <a href="03-subset.html">Part 2: Subsetting</a>
+    </li>
+    <li>
+      <a href="04-summarise.html">Part 3: Summarising</a>
+    </li>
+    <li>
+      <a href="05-transform.html">Part 4: Transforming</a>
+    </li>
+    <li>
+      <a href="06-communicate.html">Part 5: Communicating</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Programming focus</li>
+    <li>
+      <a href="07-functions.html">Functions and Choices</a>
+    </li>
+    <li>
+      <a href="08-iterate.html">Repeating Code</a>
+    </li>
+    <li>
+      <a href="09-workflows.html">Workflows</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Zoom Notes
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="zoom_notes_01.html">01 - Introducing R and RStudio</a>
+    </li>
+    <li>
+      <a href="zoom_notes_02.html">02 - Visualising data</a>
+    </li>
+    <li>
+      <a href="zoom_notes_03.html">03 - Subsetting data</a>
+    </li>
+    <li>
+      <a href="zoom_notes_04.html">04 - Summarising data</a>
+    </li>
+    <li>
+      <a href="zoom_notes_05.html">05 - Transforming data</a>
+    </li>
+    <li>
+      <a href="zoom_notes_06.html">Handout 6</a>
+    </li>
+    <li>
+      <a href="zoom_notes_07.html">Handout 7</a>
+    </li>
+    <li>
+      <a href="zoom_notes_08.html">Handout 8</a>
+    </li>
+    <li>
+      <a href="zoom_notes_09.html">Handout 9</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+<li role="separator" class="divider"></li>
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Zoom Notes: Selecting and Filtering
+Data</h1>
+<h4 class="date">Semester 1, 2022</h4>
+
+</div>
+
+
+<blockquote>
+<h4 id="associated-material">Associated Material</h4>
+<p>Module: <a href="03-subset.html">Module 03 - Subsetting</a></p>
+<p>Reading:</p>
+<ul>
+<li><a href="https://r4ds.had.co.nz/transform.html">R for Data Science -
+Chapter 5</a></li>
+</ul>
+</blockquote>
+<hr />
+<p>planning to cover:</p>
+<div id="base-r" class="section level3">
+<h3>Base R</h3>
+<ul>
+<li><code>$</code></li>
+<li><code>[,]</code></li>
+<li>nrow/ncol</li>
+<li>class</li>
+</ul>
+<p>subsetting using</p>
+<ul>
+<li>names</li>
+<li>index</li>
+<li>conditional</li>
+<li>%in%</li>
+</ul>
+<p>missing data</p>
+</div>
+<div id="dplyr" class="section level3">
+<h3>dplyr</h3>
+<p>pipes %&gt;%</p>
+<ul>
+<li>select
+<ul>
+<li>select helpers (possibly)</li>
+</ul></li>
+<li>filter
+<ul>
+<li>between</li>
+</ul></li>
+</ul>
+</div>
+<div id="modifying" class="section level2">
+<h2>Modifying</h2>
+<ul>
+<li>mutate</li>
+<li>arrange</li>
+<li>group_by</li>
+<li>summarise</li>
+</ul>
+</div>
+<div id="dplyr-ggplot" class="section level2">
+<h2>dplyr %&gt;% ggplot</h2>
+</div>
+<div id="vector-subsetting" class="section level2">
+<h2>Vector subsetting</h2>
+<p>In the <a href="handout1.html">first week</a> we touched on vectors
+and using the <code>[]</code> to extract items out based on an index.
+We’re now going to expand on this idea but for our dataframes.</p>
+<p>Often it’s fairly laborious to work out exactly which index
+corresponds to the data you’re interested in. Usually we’re more
+interested in data that meets certain <em>conditions</em>. Instead of
+sub-setting by indices, we can do conditional sub-setting.</p>
+<div id="conditional-subsetting" class="section level3">
+<h3>Conditional subsetting</h3>
+<p>Lets create an example vector to work use</p>
+<pre class="r"><code>nums &lt;- c(1, 2, 3, 4, 5, 6)
+
+nums
+#&gt; [1] 1 2 3 4 5 6</code></pre>
+<p>Similar to sub-setting by index, we can provide a vector of booleans
+(<code>TRUE</code>/<code>FALSE</code>) to <code>[]</code> to specify
+which elements to keep.</p>
+<pre class="r"><code>nums[c(TRUE, FALSE, TRUE, FALSE, TRUE, FALSE)]
+#&gt; [1] 1 3 5</code></pre>
+<p>We can apply mathematical operators and our comparative operators to
+entire vectors. When using a comparator we get back a vector of equal
+length of booleans.</p>
+<pre class="r"><code>nums &lt; 4
+#&gt; [1]  TRUE  TRUE  TRUE FALSE FALSE FALSE</code></pre>
+<p>We can use this vector to filter our vectors to keep only the values
+that returned <code>TRUE</code>.</p>
+<pre class="r"><code>nums[nums &lt; 4]
+#&gt; [1] 1 2 3</code></pre>
+</div>
+</div>
+<div id="dataframe-subsetting" class="section level2">
+<h2>Dataframe subsetting</h2>
+<p>Data frame subsetting is extremely similar to vector subsetting, but
+instead of 1-dimension, we now provide 2 arguments to <code>[]</code>,
+one for the rows, and one for the columns
+e.g. <code>my_dataframe[rows, cols]</code>. If you leave the rows
+argument blank, R will give you back all rows
+(<code>my_dataframe[, cols]</code>), and similarly leaving the columns
+argument blank will return all columns
+(<code>my_dataframe[rows,]</code>)</p>
+<p>It’s important to note, that using <code>[]</code> will may not
+return the data back in a structure you were expecting - you will get a
+data frame back unless you subset to a single column in which case you
+will get back a vector.</p>
+<pre class="r"><code># example of subsetting using [,]</code></pre>
+</div>
+
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiWm9vbSBOb3RlczogU2VsZWN0aW5nIGFuZCBGaWx0ZXJpbmcgRGF0YSIKZGF0ZTogIlNlbWVzdGVyIDEsIDIwMjIiCm91dHB1dDoKICBodG1sX2RvY3VtZW50OgogICAgdG9jOiB0cnVlCiAgICB0b2NfZmxvYXQ6IHRydWUKICAgIHRvY19kZXB0aDogMwogICAgY29kZV9kb3dubG9hZDogdHJ1ZQogICAgY29kZV9mb2xkaW5nOiBzaG93Ci0tLQoKYGBge3Igc2V0dXAsIGluY2x1ZGU9RkFMU0V9CmxpYnJhcnkoa25pdHIpCgprbml0cjo6b3B0c19jaHVuayRzZXQoCiAgY29tbWVudCA9ICIjPiIsCiAgZmlnLnBhdGggPSAiZmlndXJlcy8iLCAjIHVzZSBvbmx5IGZvciBzaW5nbGUgUm1kIGZpbGVzCiAgY29sbGFwc2UgPSBUUlVFLAogIGVjaG8gPSBUUlVFCikKYGBgCgo+ICMjIyMgQXNzb2NpYXRlZCBNYXRlcmlhbAo+Cj4gTW9kdWxlOiBbTW9kdWxlIDAzIC0gU3Vic2V0dGluZ10oMDMtc3Vic2V0Lmh0bWwpCj4KPiBSZWFkaW5nOgo+Cj4gLSBbUiBmb3IgRGF0YSBTY2llbmNlIC0gQ2hhcHRlciA1XShodHRwczovL3I0ZHMuaGFkLmNvLm56L3RyYW5zZm9ybS5odG1sKQoKCi0tLS0KCnBsYW5uaW5nIHRvIGNvdmVyOgoKCgojIyMgQmFzZSBSCgotIGAkYAotIGBbLF1gCi0gbnJvdy9uY29sCi0gY2xhc3MKCnN1YnNldHRpbmcgdXNpbmcKCiAgLSBuYW1lcwogIC0gaW5kZXgKICAtIGNvbmRpdGlvbmFsCiAgLSAlaW4lCgptaXNzaW5nIGRhdGEKCiMjIyBkcGx5cgoKcGlwZXMgJT4lIAoKLSBzZWxlY3QKICAtIHNlbGVjdCBoZWxwZXJzIChwb3NzaWJseSkKCi0gZmlsdGVyCiAgLSBiZXR3ZWVuCgoKIyMgTW9kaWZ5aW5nCgotIG11dGF0ZQotIGFycmFuZ2UKLSBncm91cF9ieQotIHN1bW1hcmlzZQoKCmRwbHlyICU+JSBnZ3Bsb3QKLS0tLQoKCgojIyBWZWN0b3Igc3Vic2V0dGluZwoKSW4gdGhlIFtmaXJzdCB3ZWVrXShoYW5kb3V0MS5odG1sKSB3ZSB0b3VjaGVkIG9uIHZlY3RvcnMgYW5kIHVzaW5nIHRoZSBgW11gIHRvIGV4dHJhY3QgaXRlbXMgb3V0IGJhc2VkIG9uIGFuIGluZGV4LiBXZSdyZSBub3cgZ29pbmcgdG8gZXhwYW5kIG9uIHRoaXMgaWRlYSBidXQgZm9yIG91ciBkYXRhZnJhbWVzLgoKT2Z0ZW4gaXQncyBmYWlybHkgbGFib3Jpb3VzIHRvIHdvcmsgb3V0IGV4YWN0bHkgd2hpY2ggaW5kZXggY29ycmVzcG9uZHMgdG8gdGhlIGRhdGEgeW91J3JlIGludGVyZXN0ZWQgaW4uIFVzdWFsbHkgd2UncmUgbW9yZSBpbnRlcmVzdGVkIGluIGRhdGEgdGhhdCBtZWV0cyBjZXJ0YWluIF9jb25kaXRpb25zXy4gSW5zdGVhZCBvZiBzdWItc2V0dGluZyBieSBpbmRpY2VzLCB3ZSBjYW4gZG8gY29uZGl0aW9uYWwgc3ViLXNldHRpbmcuCgoKIyMjIENvbmRpdGlvbmFsIHN1YnNldHRpbmcKCkxldHMgY3JlYXRlIGFuIGV4YW1wbGUgdmVjdG9yIHRvIHdvcmsgdXNlCmBgYHtyfQpudW1zIDwtIGMoMSwgMiwgMywgNCwgNSwgNikKCm51bXMKYGBgCgpTaW1pbGFyIHRvIHN1Yi1zZXR0aW5nIGJ5IGluZGV4LCB3ZSBjYW4gcHJvdmlkZSBhIHZlY3RvciBvZiBib29sZWFucyAoYFRSVUVgL2BGQUxTRWApIHRvIGBbXWAgdG8gc3BlY2lmeSB3aGljaCBlbGVtZW50cyB0byBrZWVwLgoKYGBge3J9Cm51bXNbYyhUUlVFLCBGQUxTRSwgVFJVRSwgRkFMU0UsIFRSVUUsIEZBTFNFKV0KYGBgCgoKCldlIGNhbiBhcHBseSBtYXRoZW1hdGljYWwgb3BlcmF0b3JzIGFuZCBvdXIgY29tcGFyYXRpdmUgb3BlcmF0b3JzIHRvIGVudGlyZSB2ZWN0b3JzLiBXaGVuIHVzaW5nIGEgY29tcGFyYXRvciB3ZSBnZXQgYmFjayBhIHZlY3RvciBvZiBlcXVhbCBsZW5ndGggb2YgYm9vbGVhbnMuCgpgYGB7cn0KbnVtcyA8IDQKYGBgCgpXZSBjYW4gdXNlIHRoaXMgdmVjdG9yIHRvIGZpbHRlciBvdXIgdmVjdG9ycyB0byBrZWVwIG9ubHkgdGhlIHZhbHVlcyB0aGF0IHJldHVybmVkIGBUUlVFYC4KCmBgYHtyfQpudW1zW251bXMgPCA0XQpgYGAKCgojIyBEYXRhZnJhbWUgc3Vic2V0dGluZyAKCkRhdGEgZnJhbWUgc3Vic2V0dGluZyBpcyBleHRyZW1lbHkgc2ltaWxhciB0byB2ZWN0b3Igc3Vic2V0dGluZywgYnV0IGluc3RlYWQgb2YgMS1kaW1lbnNpb24sIHdlIG5vdyBwcm92aWRlIDIgYXJndW1lbnRzIHRvIGBbXWAsIG9uZSBmb3IgdGhlIHJvd3MsIGFuZCBvbmUgZm9yIHRoZSBjb2x1bW5zIGUuZy4gYG15X2RhdGFmcmFtZVtyb3dzLCBjb2xzXWAuIElmIHlvdSBsZWF2ZSB0aGUgcm93cyBhcmd1bWVudCBibGFuaywgUiB3aWxsIGdpdmUgeW91IGJhY2sgYWxsIHJvd3MgKGBteV9kYXRhZnJhbWVbLCBjb2xzXWApLCBhbmQgc2ltaWxhcmx5IGxlYXZpbmcgdGhlIGNvbHVtbnMgYXJndW1lbnQgYmxhbmsgd2lsbCByZXR1cm4gYWxsIGNvbHVtbnMgKGBteV9kYXRhZnJhbWVbcm93cyxdYCkKCkl0J3MgaW1wb3J0YW50IHRvIG5vdGUsIHRoYXQgdXNpbmcgYFtdYCB3aWxsIG1heSBub3QgcmV0dXJuIHRoZSBkYXRhIGJhY2sgaW4gYSBzdHJ1Y3R1cmUgeW91IHdlcmUgZXhwZWN0aW5nIC0geW91IHdpbGwgZ2V0IGEgZGF0YSBmcmFtZSBiYWNrIHVubGVzcyB5b3Ugc3Vic2V0IHRvIGEgc2luZ2xlIGNvbHVtbiBpbiB3aGljaCBjYXNlIHlvdSB3aWxsIGdldCBiYWNrIGEgdmVjdG9yLgoKYGBge3J9CiMgZXhhbXBsZSBvZiBzdWJzZXR0aW5nIHVzaW5nIFssXQpgYGAKCgoKCgoK</div>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("zoom_notes_03.Rmd");
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

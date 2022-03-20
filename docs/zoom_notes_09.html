@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Zoom Notes: Workflows</title>
+
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">R4SSP Semester 1 2022</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Modules
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Intro</li>
+    <li>
+      <a href="01-intro.html">Intro to R and RStudio</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Data Focus</li>
+    <li>
+      <a href="02-visualise.html">Part 1: Visualising</a>
+    </li>
+    <li>
+      <a href="03-subset.html">Part 2: Subsetting</a>
+    </li>
+    <li>
+      <a href="04-summarise.html">Part 3: Summarising</a>
+    </li>
+    <li>
+      <a href="05-transform.html">Part 4: Transforming</a>
+    </li>
+    <li>
+      <a href="06-communicate.html">Part 5: Communicating</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Programming focus</li>
+    <li>
+      <a href="07-functions.html">Functions and Choices</a>
+    </li>
+    <li>
+      <a href="08-iterate.html">Repeating Code</a>
+    </li>
+    <li>
+      <a href="09-workflows.html">Workflows</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Zoom Notes
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="zoom_notes_01.html">01 - Introducing R and RStudio</a>
+    </li>
+    <li>
+      <a href="zoom_notes_02.html">02 - Visualising data</a>
+    </li>
+    <li>
+      <a href="zoom_notes_03.html">03 - Subsetting data</a>
+    </li>
+    <li>
+      <a href="zoom_notes_04.html">04 - Summarising data</a>
+    </li>
+    <li>
+      <a href="zoom_notes_05.html">05 - Transforming data</a>
+    </li>
+    <li>
+      <a href="zoom_notes_06.html">Handout 6</a>
+    </li>
+    <li>
+      <a href="zoom_notes_07.html">Handout 7</a>
+    </li>
+    <li>
+      <a href="zoom_notes_08.html">Handout 8</a>
+    </li>
+    <li>
+      <a href="zoom_notes_09.html">Handout 9</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+<li role="separator" class="divider"></li>
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Zoom Notes: Workflows</h1>
+<h4 class="date">Semester 1, 2022</h4>
+
+</div>
+
+
+<blockquote>
+<p>Potential topics:</p>
+<ul>
+<li>infrential stats
+<ul>
+<li>formula syntax</li>
+<li>formala syntax in context of loop and/or custom function for running
+through many models</li>
+</ul></li>
+<li>projects</li>
+<li>organisation</li>
+<li>scripts</li>
+<li>rmd driven dev</li>
+<li>packages</li>
+<li>debugging</li>
+<li>complex data structures (lists)</li>
+<li>git</li>
+</ul>
+</blockquote>
+<div id="original-module-6-inferential-stats-content-below-here"
+class="section level1">
+<h1>Original module 6 (inferential stats) content below here</h1>
+<hr />
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<p>In Module 05, we saw that descriptive statistical tests are used to
+summarise and describe our data, illustrating the effects of
+experimental manipulations or factors. However, those tests apply only
+to our observed data. If we wish to claim that the patterns in our data
+would also be observed in the larger (possibly infinite) population, we
+must use inferential statistical techniques.</p>
+<p>In this module, we will consider standard
+<strong>frequentist</strong> statistical tests, which are all examples
+of <strong>Null Hypothesis Significance Testing</strong> (NHST). We
+assume that you have covered the relevant statistical theory in class.
+To summarise very briefly, when using these tests, the researcher has an
+<strong>experimental hypothesis</strong> (e.g. “there is a difference
+between my experimental groups in the population”). The mechanics of the
+test specify a <strong>null hypothesis</strong>, which is a special null
+opposite of the experimental hypothesis (e.g. “there is no difference in
+the experimental groups in the population”). NHST tests use the observed
+group difference and the observed variability in the data to determine
+the chance that the observed difference would have occurred just by
+chance, if the null hypothesis were true (e.g. the chance that your
+observed group difference is only due to random noise, not to any real
+effect of the experimental treatment). If this chance is very small
+(traditionally less than 5%), the researcher <strong>rejects</strong>
+the null hypothesis and concludes that the experimental hypothesis is
+likely to be true.</p>
+<p>Inferential tests output this “chance” in a term called the
+<strong>p-value</strong>. Our inferential testing process in R is 1)
+tidy the data 2) call the appropriate function 3) inspect the output,
+with particular focus on the p-value and 4) interpret the results in
+context of your experiment.</p>
+<p>There are hundreds of NHST inferential tests. Fortunately, the bulk
+of published analyses use only a small subset of them. In this module we
+will look only at these common tests. Also fortunately, if you ever do
+need to perform one of the more esoteric inferential tests, there is
+probably an existing R library that supports it.</p>
+<p>As always, we concentrate in this module on how to use R to perform
+statistical anlayses, not on the underlying statistical theory, which we
+assume you are learning in class.</p>
+</div>
+<div id="the-common-inferential-tests" class="section level2">
+<h2>The Common Inferential Tests</h2>
+<p>In this module we will cover:</p>
+<ul>
+<li>t-test (two-sample or paired)</li>
+<li>Analysis of Variance (with and without repeated measures)</li>
+<li>Correlation</li>
+<li>Chi-square (test for frequency independence)</li>
+</ul>
+<p>The ANOVA and t-test are used when comparing group/condition means
+and comprise a large portion of data analysis in the sciences. In Rm the
+functions used to perform these tests have similar syntax. They accept
+two main arguments: <code>data</code> which should be assigned the name
+of the input data frame, and <code>formula</code> which is a specially
+formatted text description of the analysis to be performed. The
+<code>formula</code> argument is extremely common in R. For example,
+most of R’s powerful linear modeling and machine learning libraries (not
+covered in this module) also use <code>formula</code>. Although the
+syntax of <code>formula</code> can initially be confusing, it is well
+worth learning. Once you can correctly state <code>formula</code>, you
+can use most of R’s statistical functions.</p>
+</div>
+<div id="the-formula-argument" class="section level2">
+<h2>The <code>formula</code> Argument</h2>
+<p>The general format for an R formula argument is:</p>
+<p><strong>predicted ~ predictors</strong></p>
+<p>The <strong>predicted</strong> term is the data measure in whose
+behaviour you are interested – the <strong>dependent
+variable</strong>.</p>
+<p>The <em>~</em> is the <strong>tilda</strong> character. On most
+keyboards, ~ is on the key left of the numeral 1.</p>
+<p>The <strong>predictors</strong> are the experimental conditions or
+factors whose effect you wish to observe. In factorial designs
+(i.e. experiments with discrete conditions), these are often called
+<strong>independent variables</strong>.</p>
+<p>We identify the predicted and predictor variables by their columns
+names in the input data frame.</p>
+<p>The <strong>predicted</strong> and <strong>~</strong> part of a
+formula are usually straight-forward; the complexity arises when
+specifying the <strong>predictors</strong>. To illustrate, we will use
+the experimental design from the “Palmer Penguin” data set. You will
+recall that this study had several dependent variables (e.g. body mass,
+flipper length, etc.) and three independent variables (species, island
+and sex). Assume that we are analysing body mass, looking for effects of
+these three predictors.</p>
+</div>
+<div id="examples-of-formula" class="section level2">
+<h2>Examples of <code>formula</code></h2>
+<p><strong>A single predictor</strong>: To analyse whether there is an
+effect of island on body mass use formula:</p>
+<p><code>body_mass_g ~ island</code></p>
+<p><strong>Multiple predictors</strong>: To analyse the effect of
+multiple predictors, combine them with <code>+</code></p>
+<p><code>body_mass_g ~ island + species</code></p>
+<p><strong>Multiple predictors including interaction terms</strong>:
+Factors in an interaction term are combined with <code>*</code></p>
+<p>`body_mass_g ~ island + species + (island * species)’</p>
+<p>As the number of experimental factors increases it become tedious to
+specify all the possible interaction terms in a fully-crossed
+experimental design. As a short-hand, you can combine all factors with
+<code>*</code>. This means that the formula should contain all main
+effect terms and all possible interaction terms. For example, if your
+design has factors A, B, and C, you can say:</p>
+<p><code>DV ~ A * B * C</code></p>
+<p>This formula means “DV is predicted by the main effect of A, the main
+effect of B, the main effect of C, the AB, BC, and AC two-way
+interactions, and the ABC three-way interaction.</p>
+<p><strong>Repeated measures designs (ANOVA only)</strong> In the Palmer
+Penguin data set, there are three islands. Each penguin lives on only
+one island, so there are different penguins in the different island
+groups – each penguin contributes a data point to only one of the three
+island groups. We say that <strong>island</strong> is a
+<strong>between-subjects factor</strong>. Imagine however, that the
+researchers had wanted to explore how penguin body weight varied by
+<strong>season</strong>, so they measured each penguin twice – once in
+summer and once in winter. Now each penguin would contribute a data
+point to both the summer and winter groups of experimental factor
+<strong>season</strong>. We say that <strong>season</strong> is a
+<strong>within-subjects factor</strong>, and that the experiment is a
+<strong>repeated-measures design</strong>. In ANOVA, the computation of
+p-values is different for between and within subjects factors.
+Specifically, the way that <em>noise</em> or <em>error</em> in the data
+is computed changes for the two types of predictor. Thus when building
+an R formula argument, we must specify our within-subjects factors. This
+is done by adding a special term to the formula using the following
+pattern:</p>
+<p>Error(<em>name of subject identifier column</em>/<em>name of within
+subjects factor</em>)</p>
+<p>Assume that we have in our data frame a column called PenguinID which
+holds a unique identifier for each penguin (essential with
+within-subjects factors, of course, so you can correctly pair up the two
+scores from the same individual). Assume that we want to use ANOVA to
+test whether body mass depends on island and season. Since season is a
+within-subject variable, our complete formula is:</p>
+<p><code>body_mass_g ~ island + season + (island * season) + Error(PenguinID/season)</code></p>
+</div>
+<div id="syntax-of-the-common-inferential-tests" class="section level2">
+<h2>Syntax of the Common Inferential Tests</h2>
+<table>
+<colgroup>
+<col width="11%" />
+<col width="23%" />
+<col width="41%" />
+<col width="23%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Test</th>
+<th>Function</th>
+<th>Main Arguments</th>
+<th>Comments</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>t-test</td>
+<td>t.test</td>
+<td>formula and data</td>
+<td>For a paired t-test (i.e. the same participants in both groups) add
+argument <code>paired=true</code></td>
+</tr>
+<tr class="even">
+<td>ANOVA</td>
+<td>aov</td>
+<td>formula and data</td>
+<td>To see the output table, pass the result of the function call to
+<code>summary</code>.</td>
+</tr>
+<tr class="odd">
+<td>Correlation</td>
+<td>cor</td>
+<td>The two variables whose correlation is being tested</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Chi-square</td>
+<td>chisq.test</td>
+<td>The two variables whose independence is being tested</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="exercises" class="section level2">
+<h2>Exercises</h2>
+<p>Solve each of these exercises using an inferential test in R. In each
+case, state the null hypothesis, the p-value produced by your test and a
+statistically correct interpretation of the result. Our solutions can be
+found at the bottom of the handout.</p>
+<ol style="list-style-type: decimal">
+<li><p>Parks, Derocher &amp; Lunn 2006 used GPS tracking collars to
+monitor the movements of a group of polar bears in 1991 and a different
+group in 2004. For each monitored bear, they computed the total habitat
+range in square meters for the year. A data set based on their results
+can be found in file polar_bear_range_following_park_2006.csv. Use a
+t-test to analyse the change in size of polar bear habitat range between
+1992 and 2004.</p></li>
+<li><p>Use the Palmer Penguin data to explore the change in average body
+mass of penguins across the years of the study. Data were collected in
+2007, 2008 and 2009. Since there are three groups (three levels of
+experimental factor <strong>year</strong>) you cannot perform a t-test;
+you must perform ANOVA. <strong>NB:Be sure to cast the year column to a
+factor so that R will recognise it as categorical.</strong></p></li>
+<li><p>The analysis below indicates that mean population bill length
+differs between penguin species (p &lt; 0.001).</p></li>
+</ol>
+<pre class="r"><code>
+# Graphical display of the effect
+boxplot(bill_length_mm ~ species, data = penguins)</code></pre>
+<p><img src="figures/09/single%20factor%20species-1.png" width="672" /></p>
+<pre class="r"><code>aov_bill_length_species &lt;- aov(bill_length_mm ~ species, data = penguins)
+summary(aov_bill_length_species) # Use summary to generate the ANOVA table
+#&gt;              Df Sum Sq Mean Sq F value Pr(&gt;F)    
+#&gt; species       2   7194    3597   410.6 &lt;2e-16 ***
+#&gt; Residuals   339   2970       9                   
+#&gt; ---
+#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+#&gt; 2 observations deleted due to missingness</code></pre>
+<p>3.a) The null hypothesis in ANOVA is that <strong>all population
+group means are equal</strong>. A significant main effect tells us only
+that this statement is violated <strong>somewhere</strong>. It does not
+tell us specifically which population means are different, and which are
+not. From the boxplot, it appears that Adelie penguins have shorter
+bills that the other two species, but it is not clear whether Chinstrap
+and Gentoo penguins have truly different population averages.
+Determining this requires another test.</p>
+<p>Use Google or your favourite R textbook to explore function
+<code>TukeyHSD</code>. This function computes <strong>Tukey’s Honestly
+Significant Difference</strong>, comparing all possible pairs of
+population means. Perform Tukey and describe, in statistically correct
+language, the results of your analysis.</p>
+<p>3.b) Use an ANOVA to determine if this bill length pattern is the
+same across all species. Reminder: In an ANOVA model, the interaction
+term between two factors tests whether the pattern of effect of one
+factor is the same at all levels of the second factor.</p>
+<ol start="4" style="list-style-type: decimal">
+<li>A significance test for correlation between two variables tests the
+null hypothesis that <em>rho</em> (the population correlation) is 0. If
+we reject the null hypothesis we conclude that the factors are truly
+correlated in the population. The function <code>cor.test</code>
+performs a significance test for correlation. It does not require a
+<code>formula</code> argument – just pass in the two data columns of
+interest.</li>
+</ol>
+<p>4.a) The file BeechSeedBirdAbundance.csv contains (simulated but
+realistic) abundance counts for beech tree seeds (an important food
+source) and native birds measured weekly for five consecutive years. Use
+inferential testing to decide whether there is a true correlation
+between seed abundance and bird population in this ecosystem. Describe
+your results.</p>
+<p>4.b) Our analysis shows that higher density of beech seeds is
+associated with <em>lower</em> bird abundance. This result is
+surprising, as we would have expected that more food would result in
+higher bird populations (as is the common pattern). Propose an
+explanation for these data. What additional metric might you need to
+test your hypothesis?</p>
+<ol start="5" style="list-style-type: decimal">
+<li>Chi-square is an inferential test for categorical frequency data
+which tests for <strong>independence</strong> of factors. That is, a
+chi-square on two factors tests whether the frequency pattern on one
+factor is the same at all levels of the other factor (logically similar
+to the interaction term in an ANOVA for continuous data).</li>
+</ol>
+<p>The file TeachingModePreferences.csv contains (simulated) results
+from a survey of 100 randomly selected University students. Each student
+was asked whether they preferred online for face-to-face teaching. Each
+student was coded as either post-graduate or undergraduate depending on
+their current enrollment.</p>
+<p>5.a) What proportion of students are post-grads?</p>
+<p>5.b) Ignoring level of study, do the students in the sample
+<em>overall</em> prefer online or face-to-face teaching?</p>
+<p>5.c) Using chi-square, test the null hypothesis that the pattern or
+preference for the different teaching modes is the same for both
+post-grad and undergraduate students. Like <code>cor.test</code> the
+function <code>chisq.test</code> simply takes the two data columns as
+arguments; no formula is required. Describe the results of your
+analysis.</p>
+</div>
+<div id="solutions" class="section level2">
+<h2>Solutions</h2>
+<ol style="list-style-type: decimal">
+<li></li>
+</ol>
+<pre class="r"><code>
+polar_bear_df &lt;- read.csv(&quot;data/polar_bear_range_following_park_2006.csv&quot;)
+head(polar_bear_df)
+#&gt;   X Year     Range
+#&gt; 1 1 1992 212871.30
+#&gt; 2 2 1992  91593.83
+#&gt; 3 3 1992 116492.37
+#&gt; 4 4 1992 173151.63
+#&gt; 5 5 1992 205525.34
+#&gt; 6 6 1992 125294.50
+
+boxplot(Range ~ Year, data = polar_bear_df)</code></pre>
+<p><img src="figures/09/polar%20bear%20soln-1.png" width="672" /></p>
+<pre class="r"><code>
+library(ggplot2)
+ggplot(data = polar_bear_df) +
+  geom_histogram(mapping = aes(x = Range, fill = Year), color = &quot;black&quot;, binwidth = 10000, position=&quot;dodge&quot;)</code></pre>
+<p><img src="figures/09/polar%20bear%20soln-2.png" width="672" /></p>
+<pre class="r"><code>
+t.test(Range ~ Year, data = polar_bear_df)
+#&gt; 
+#&gt;  Welch Two Sample t-test
+#&gt; 
+#&gt; data:  Range by Year
+#&gt; t = 5.0137, df = 30.302, p-value = 2.185e-05
+#&gt; alternative hypothesis: true difference in means between group 1992 and group 2004 is not equal to 0
+#&gt; 95 percent confidence interval:
+#&gt;  38986.82 92539.94
+#&gt; sample estimates:
+#&gt; mean in group 1992 mean in group 2004 
+#&gt;          136425.44           70662.06</code></pre>
+<p>Discussion: * H0: Mean habitat range across the population of polar
+bears is the same in 1992 and 2004. * Population mean habitat range for
+polar bears is smaller in 2004 than in 1992 (p &lt; 0.001).</p>
+<ol start="2" style="list-style-type: decimal">
+<li></li>
+</ol>
+<pre class="r"><code>library(palmerpenguins) # load the penguins
+
+penguins$year &lt;- as.factor(penguins$year) # Cast year to a factor
+
+boxplot(body_mass_g ~ year, data = penguins) # It looks like 2008 might have been a heavy year....</code></pre>
+<p><img src="figures/09/anova%20penguins-1.png" width="672" /></p>
+<pre class="r"><code>
+aov_penguin_species &lt;- aov(body_mass_g ~ year, data = penguins)
+
+summary(aov_penguin_species) # Use summary to generate the ANOVA table
+#&gt;              Df    Sum Sq Mean Sq F value Pr(&gt;F)
+#&gt; year          2   1138872  569436   0.885  0.414
+#&gt; Residuals   339 218168825  643566               
+#&gt; 2 observations deleted due to missingness</code></pre>
+<p>Discussion:</p>
+<ul>
+<li>H0: There is no difference between population means for the three
+years</li>
+<li>p = 0.414. Fail to reject H0. We find no evidence that average
+population body mass is different between 2007, 2008 and 2009. That is,
+given the noise in our data, our observed differences were likely to
+occur just by chance (41.4% probability).</li>
+</ul>
+<p>3.a)</p>
+<pre class="r"><code>TukeyHSD(aov_bill_length_species)
+#&gt;   Tukey multiple comparisons of means
+#&gt;     95% family-wise confidence level
+#&gt; 
+#&gt; Fit: aov(formula = bill_length_mm ~ species, data = penguins)
+#&gt; 
+#&gt; $species
+#&gt;                       diff       lwr        upr     p adj
+#&gt; Chinstrap-Adelie 10.042433  9.024859 11.0600064 0.0000000
+#&gt; Gentoo-Adelie     8.713487  7.867194  9.5597807 0.0000000
+#&gt; Gentoo-Chinstrap -1.328945 -2.381868 -0.2760231 0.0088993</code></pre>
+<p>Discussion:</p>
+<ul>
+<li>All p-values &lt; 0.05, so all paired comparisons are different. We
+conclude with &gt; 95% confidence that the population mean bill lengths
+of all species are different. Based on the confidence intervals,
+Chinstrap have the longest mean bill length, Adelie have the shortest,
+and Gentoo are intermediate.</li>
+</ul>
+<p>3.b)</p>
+<pre class="r"><code>
+# Visualise the data. Because the lines for male and female are close to parallel we expect that the effect of species is the same
+# for both sexes.
+interaction.plot(penguins$species, penguins$sex, penguins$bill_length_mm)</code></pre>
+<p><img src="figures/09/two%20way-1.png" width="672" /></p>
+<pre class="r"><code>
+# Perform the ANOVA. Note the changes to the model from the one-factor analysis above.
+aov_bill_length_species_sex &lt;- aov(bill_length_mm ~ species + sex + (species * sex), data = penguins)
+
+# Display the ANOVA table
+summary(aov_bill_length_species_sex)
+#&gt;              Df Sum Sq Mean Sq F value Pr(&gt;F)    
+#&gt; species       2   7015    3508 654.189 &lt;2e-16 ***
+#&gt; sex           1   1136    1136 211.807 &lt;2e-16 ***
+#&gt; species:sex   2     24      12   2.284  0.103    
+#&gt; Residuals   327   1753       5                   
+#&gt; ---
+#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+#&gt; 11 observations deleted due to missingness</code></pre>
+<p>Discussion:</p>
+<ul>
+<li>For the species:sex interaction term, the p-value is 0.103 (greater
+than 0.05) so we fail to reject the null hypothesis and state that we
+have no evidence for an interaction between these two factors. Our
+expectation based on the interaction plot is supported.</li>
+</ul>
+<p>4.a)</p>
+<pre class="r"><code># Load the data
+beech_seed_bird_abundance_df &lt;- read.csv(&quot;data/BeechSeedBirdAbundance.csv&quot;)
+
+# Visualise the data
+library(ggplot2)
+ggplot(data = beech_seed_bird_abundance_df) +
+  geom_point(mapping = aes(x = SeedPerSqM, y=BirdAbundance))</code></pre>
+<p><img src="figures/09/cor-1.png" width="672" /></p>
+<pre class="r"><code>
+# Compute the observed correlation
+cor(beech_seed_bird_abundance_df$SeedPerSqM, beech_seed_bird_abundance_df$BirdAbundance)
+#&gt; [1] -0.5984044
+
+# Test for significance
+cor.test(beech_seed_bird_abundance_df$BirdAbundance, beech_seed_bird_abundance_df$SeedPerSqM)
+#&gt; 
+#&gt;  Pearson&#39;s product-moment correlation
+#&gt; 
+#&gt; data:  beech_seed_bird_abundance_df$BirdAbundance and beech_seed_bird_abundance_df$SeedPerSqM
+#&gt; t = -11.997, df = 258, p-value &lt; 2.2e-16
+#&gt; alternative hypothesis: true correlation is not equal to 0
+#&gt; 95 percent confidence interval:
+#&gt;  -0.6711963 -0.5141822
+#&gt; sample estimates:
+#&gt;        cor 
+#&gt; -0.5984044</code></pre>
+<p>Discussion: * p &lt; 0.001. We reject H0: rho = 0 and conclude that
+these two measures are correlated in the population. The correlation is
+negative (r-observed = -0.6). Thus, higher density of beech seeds is
+associated with fewer birds.</p>
+<p>4.b) A possible explanation is that more seed also means more
+predators (rats like beech seeds too) and the negative effect of
+predation on bird populations is greater than the positive effect of
+greater food availability. To test this you should count abundance of
+seed-eating predators (e.g. rats).</p>
+<p>5.a)</p>
+<pre class="r"><code>
+# Load the data
+student_preference_df &lt;- read.csv(&quot;data/TeachingModePreferences.csv&quot;)
+
+# Generate the frequency table for one factor
+table(student_preference_df$StudentLevel)
+#&gt; 
+#&gt; PG UG 
+#&gt; 21 79</code></pre>
+<p>5.b)</p>
+<pre class="r"><code>
+# Generate the frequency table for one factor
+# Preference appears to be approximately evenly split between online and ftf
+table(student_preference_df$Preference)
+#&gt; 
+#&gt;    FtF Online 
+#&gt;     51     49</code></pre>
+<p>5.c)</p>
+<pre class="r"><code>
+# Visualise the data -- preference doesn&#39;t look so evenly split now....
+ggplot(data = student_preference_df) +
+  geom_bar(aes(x = StudentLevel, fill=Preference), position = &quot;dodge&quot;)</code></pre>
+<p><img src="figures/09/chi%20sq-1.png" width="672" /></p>
+<pre class="r"><code>
+
+# Run the inferential test
+chisq.test(student_preference_df$StudentLevel, student_preference_df$Preference)
+#&gt; 
+#&gt;  Pearson&#39;s Chi-squared test with Yates&#39; continuity correction
+#&gt; 
+#&gt; data:  student_preference_df$StudentLevel and student_preference_df$Preference
+#&gt; X-squared = 12.539, df = 1, p-value = 0.0003986</code></pre>
+<p>Discussion:</p>
+<ul>
+<li>p &lt; 0.001 We reject the null hypothesis that the two factors are
+independent. Based on o ur observed data, we conclude that for post-grad
+students, a greater proportion prefer online teaching than ftf teaching.
+For undergraduate students this pattern is reversed.</li>
+</ul>
+</div>
+</div>
+
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiWm9vbSBOb3RlczogV29ya2Zsb3dzIgpkYXRlOiAiU2VtZXN0ZXIgMSwgMjAyMiIKb3V0cHV0OgogIGh0bWxfZG9jdW1lbnQ6CiAgICB0b2M6IHRydWUKICAgIHRvY19mbG9hdDogdHJ1ZQogICAgdG9jX2RlcHRoOiAzCiAgICBjb2RlX2Rvd25sb2FkOiB0cnVlCiAgICBjb2RlX2ZvbGRpbmc6IHNob3cKLS0tCgpgYGB7ciBzZXR1cCwgaW5jbHVkZT1GQUxTRX0KbGlicmFyeShrbml0cikKCmtuaXRyOjpvcHRzX2NodW5rJHNldCgKICBjb21tZW50ID0gIiM+IiwKICBmaWcucGF0aCA9ICJmaWd1cmVzLzA5LyIsICMgdXNlIG9ubHkgZm9yIHNpbmdsZSBSbWQgZmlsZXMKICBjb2xsYXBzZSA9IFRSVUUsCiAgZWNobyA9IFRSVUUKKQoKbGlicmFyeShnZ3Bsb3QyKQpsaWJyYXJ5KHBhbG1lcnBlbmd1aW5zKQoKYGBgCgoKPiAKPgo+IFBvdGVudGlhbCB0b3BpY3M6Cj4gCj4gLSBpbmZyZW50aWFsIHN0YXRzCj4gICAtIGZvcm11bGEgc3ludGF4Cj4gICAtIGZvcm1hbGEgc3ludGF4IGluIGNvbnRleHQgb2YgbG9vcCBhbmQvb3IgY3VzdG9tIGZ1bmN0aW9uIGZvciBydW5uaW5nIHRocm91Z2ggbWFueSBtb2RlbHMKPiAtIHByb2plY3RzCj4gLSBvcmdhbmlzYXRpb24KPiAtIHNjcmlwdHMKPiAtIHJtZCBkcml2ZW4gZGV2Cj4gLSBwYWNrYWdlcwo+IC0gZGVidWdnaW5nCj4gLSBjb21wbGV4IGRhdGEgc3RydWN0dXJlcyAobGlzdHMpCj4gLSBnaXQKCgojIE9yaWdpbmFsIG1vZHVsZSA2IChpbmZlcmVudGlhbCBzdGF0cykgY29udGVudCBiZWxvdyBoZXJlCgotLS0tLS0tLS0tCgoKIyMgSW50cm9kdWN0aW9uCkluIE1vZHVsZSAwNSwgd2Ugc2F3IHRoYXQgZGVzY3JpcHRpdmUgc3RhdGlzdGljYWwgdGVzdHMgYXJlIHVzZWQgdG8gc3VtbWFyaXNlIGFuZCBkZXNjcmliZSBvdXIgZGF0YSwgaWxsdXN0cmF0aW5nIHRoZSBlZmZlY3RzIG9mIGV4cGVyaW1lbnRhbCBtYW5pcHVsYXRpb25zIG9yIGZhY3RvcnMuIEhvd2V2ZXIsIHRob3NlIHRlc3RzIGFwcGx5IG9ubHkgdG8gb3VyIG9ic2VydmVkIGRhdGEuIElmIHdlIHdpc2ggdG8gY2xhaW0gdGhhdCB0aGUgcGF0dGVybnMgaW4gb3VyIGRhdGEgd291bGQgYWxzbyBiZSBvYnNlcnZlZCBpbiB0aGUgbGFyZ2VyIChwb3NzaWJseSBpbmZpbml0ZSkgcG9wdWxhdGlvbiwgd2UgbXVzdCB1c2UgaW5mZXJlbnRpYWwgc3RhdGlzdGljYWwgdGVjaG5pcXVlcy4KCkluIHRoaXMgbW9kdWxlLCB3ZSB3aWxsIGNvbnNpZGVyIHN0YW5kYXJkICoqZnJlcXVlbnRpc3QqKiBzdGF0aXN0aWNhbCB0ZXN0cywgd2hpY2ggYXJlIGFsbCBleGFtcGxlcyBvZiAqKk51bGwgSHlwb3RoZXNpcyBTaWduaWZpY2FuY2UgVGVzdGluZyoqIChOSFNUKS4gV2UgYXNzdW1lIHRoYXQgeW91IGhhdmUgY292ZXJlZCB0aGUgcmVsZXZhbnQgc3RhdGlzdGljYWwgdGhlb3J5IGluIGNsYXNzLiBUbyBzdW1tYXJpc2UgdmVyeSBicmllZmx5LCB3aGVuIHVzaW5nIHRoZXNlIHRlc3RzLCB0aGUgcmVzZWFyY2hlciBoYXMgYW4gKipleHBlcmltZW50YWwgaHlwb3RoZXNpcyoqIChlLmcuICJ0aGVyZSBpcyBhIGRpZmZlcmVuY2UgYmV0d2VlbiBteSBleHBlcmltZW50YWwgZ3JvdXBzIGluIHRoZSBwb3B1bGF0aW9uIikuIFRoZSBtZWNoYW5pY3Mgb2YgdGhlIHRlc3Qgc3BlY2lmeSBhICoqbnVsbCBoeXBvdGhlc2lzKiosIHdoaWNoIGlzIGEgc3BlY2lhbCBudWxsIG9wcG9zaXRlIG9mIHRoZSBleHBlcmltZW50YWwgaHlwb3RoZXNpcyAoZS5nLiAidGhlcmUgaXMgbm8gZGlmZmVyZW5jZSBpbiB0aGUgZXhwZXJpbWVudGFsIGdyb3VwcyBpbiB0aGUgcG9wdWxhdGlvbiIpLiBOSFNUIHRlc3RzIHVzZSB0aGUgb2JzZXJ2ZWQgZ3JvdXAgZGlmZmVyZW5jZSBhbmQgdGhlIG9ic2VydmVkIHZhcmlhYmlsaXR5IGluIHRoZSBkYXRhIHRvIGRldGVybWluZSB0aGUgY2hhbmNlIHRoYXQgdGhlIG9ic2VydmVkIGRpZmZlcmVuY2Ugd291bGQgaGF2ZSBvY2N1cnJlZCBqdXN0IGJ5IGNoYW5jZSwgaWYgdGhlIG51bGwgaHlwb3RoZXNpcyB3ZXJlIHRydWUgKGUuZy4gdGhlIGNoYW5jZSB0aGF0IHlvdXIgb2JzZXJ2ZWQgZ3JvdXAgZGlmZmVyZW5jZSBpcyBvbmx5IGR1ZSB0byByYW5kb20gbm9pc2UsIG5vdCB0byBhbnkgcmVhbCBlZmZlY3Qgb2YgdGhlIGV4cGVyaW1lbnRhbCB0cmVhdG1lbnQpLiBJZiB0aGlzIGNoYW5jZSBpcyB2ZXJ5IHNtYWxsICh0cmFkaXRpb25hbGx5IGxlc3MgdGhhbiA1JSksIHRoZSByZXNlYXJjaGVyICoqcmVqZWN0cyoqIHRoZSBudWxsIGh5cG90aGVzaXMgYW5kIGNvbmNsdWRlcyB0aGF0IHRoZSBleHBlcmltZW50YWwgaHlwb3RoZXNpcyBpcyBsaWtlbHkgdG8gYmUgdHJ1ZS4gCgpJbmZlcmVudGlhbCB0ZXN0cyBvdXRwdXQgdGhpcyAiY2hhbmNlIiBpbiBhIHRlcm0gY2FsbGVkIHRoZSAqKnAtdmFsdWUqKi4gT3VyIGluZmVyZW50aWFsIHRlc3RpbmcgcHJvY2VzcyBpbiBSIGlzIDEpIHRpZHkgdGhlIGRhdGEgMikgY2FsbCB0aGUgYXBwcm9wcmlhdGUgZnVuY3Rpb24gMykgaW5zcGVjdCB0aGUgb3V0cHV0LCB3aXRoIHBhcnRpY3VsYXIgZm9jdXMgb24gdGhlIHAtdmFsdWUgYW5kIDQpIGludGVycHJldCB0aGUgcmVzdWx0cyBpbiBjb250ZXh0IG9mIHlvdXIgZXhwZXJpbWVudC4KClRoZXJlIGFyZSBodW5kcmVkcyBvZiBOSFNUIGluZmVyZW50aWFsIHRlc3RzLiBGb3J0dW5hdGVseSwgdGhlIGJ1bGsgb2YgcHVibGlzaGVkIGFuYWx5c2VzIHVzZSBvbmx5IGEgc21hbGwgc3Vic2V0IG9mIHRoZW0uIEluIHRoaXMgbW9kdWxlIHdlIHdpbGwgbG9vayBvbmx5IGF0IHRoZXNlIGNvbW1vbiB0ZXN0cy4gQWxzbyBmb3J0dW5hdGVseSwgaWYgeW91IGV2ZXIgZG8gbmVlZCB0byBwZXJmb3JtIG9uZSBvZiB0aGUgbW9yZSBlc290ZXJpYyBpbmZlcmVudGlhbCB0ZXN0cywgdGhlcmUgaXMgcHJvYmFibHkgYW4gZXhpc3RpbmcgUiBsaWJyYXJ5IHRoYXQgc3VwcG9ydHMgaXQuIAoKQXMgYWx3YXlzLCB3ZSBjb25jZW50cmF0ZSBpbiB0aGlzIG1vZHVsZSBvbiBob3cgdG8gdXNlIFIgdG8gcGVyZm9ybSBzdGF0aXN0aWNhbCBhbmxheXNlcywgbm90IG9uIHRoZSB1bmRlcmx5aW5nIHN0YXRpc3RpY2FsIHRoZW9yeSwgd2hpY2ggd2UgYXNzdW1lIHlvdSBhcmUgbGVhcm5pbmcgaW4gY2xhc3MuCgojIyBUaGUgQ29tbW9uIEluZmVyZW50aWFsIFRlc3RzCkluIHRoaXMgbW9kdWxlIHdlIHdpbGwgY292ZXI6CgoKKiB0LXRlc3QgKHR3by1zYW1wbGUgb3IgcGFpcmVkKSAKKiBBbmFseXNpcyBvZiBWYXJpYW5jZSAod2l0aCBhbmQgd2l0aG91dCByZXBlYXRlZCBtZWFzdXJlcykKKiBDb3JyZWxhdGlvbgoqIENoaS1zcXVhcmUgKHRlc3QgZm9yIGZyZXF1ZW5jeSBpbmRlcGVuZGVuY2UpCgpUaGUgQU5PVkEgYW5kIHQtdGVzdCBhcmUgdXNlZCB3aGVuIGNvbXBhcmluZyBncm91cC9jb25kaXRpb24gbWVhbnMgYW5kIGNvbXByaXNlIGEgbGFyZ2UgcG9ydGlvbiBvZiBkYXRhIGFuYWx5c2lzIGluIHRoZSBzY2llbmNlcy4gSW4gUm0gdGhlIGZ1bmN0aW9ucyB1c2VkIHRvIHBlcmZvcm0gdGhlc2UgdGVzdHMgaGF2ZSBzaW1pbGFyIHN5bnRheC4gVGhleSBhY2NlcHQgdHdvIG1haW4gYXJndW1lbnRzOiBgZGF0YWAgd2hpY2ggc2hvdWxkIGJlIGFzc2lnbmVkIHRoZSBuYW1lIG9mIHRoZSBpbnB1dCBkYXRhIGZyYW1lLCBhbmQgYGZvcm11bGFgIHdoaWNoIGlzIGEgc3BlY2lhbGx5IGZvcm1hdHRlZCB0ZXh0IGRlc2NyaXB0aW9uIG9mIHRoZSBhbmFseXNpcyB0byBiZSBwZXJmb3JtZWQuIFRoZSBgZm9ybXVsYWAgYXJndW1lbnQgaXMgZXh0cmVtZWx5IGNvbW1vbiBpbiBSLiBGb3IgZXhhbXBsZSwgbW9zdCBvZiBSJ3MgcG93ZXJmdWwgbGluZWFyIG1vZGVsaW5nIGFuZCBtYWNoaW5lIGxlYXJuaW5nIGxpYnJhcmllcyAobm90IGNvdmVyZWQgaW4gdGhpcyBtb2R1bGUpIGFsc28gdXNlIGBmb3JtdWxhYC4gQWx0aG91Z2ggdGhlIHN5bnRheCBvZiBgZm9ybXVsYWAgY2FuIGluaXRpYWxseSBiZSBjb25mdXNpbmcsIGl0IGlzIHdlbGwgd29ydGggbGVhcm5pbmcuIE9uY2UgeW91IGNhbiBjb3JyZWN0bHkgc3RhdGUgYGZvcm11bGFgLCB5b3UgY2FuIHVzZSBtb3N0IG9mIFIncyBzdGF0aXN0aWNhbCBmdW5jdGlvbnMuCgojIyBUaGUgYGZvcm11bGFgIEFyZ3VtZW50CgpUaGUgZ2VuZXJhbCBmb3JtYXQgZm9yIGFuIFIgZm9ybXVsYSBhcmd1bWVudCBpczoKCioqcHJlZGljdGVkIH4gcHJlZGljdG9ycyoqCgpUaGUgKipwcmVkaWN0ZWQqKiB0ZXJtIGlzIHRoZSBkYXRhIG1lYXN1cmUgaW4gd2hvc2UgYmVoYXZpb3VyIHlvdSBhcmUgaW50ZXJlc3RlZCAtLSB0aGUgKipkZXBlbmRlbnQgdmFyaWFibGUqKi4KClRoZSAqfiogaXMgdGhlICoqdGlsZGEqKiBjaGFyYWN0ZXIuIE9uIG1vc3Qga2V5Ym9hcmRzLCB+IGlzIG9uIHRoZSBrZXkgbGVmdCBvZiB0aGUgbnVtZXJhbCAxLgoKVGhlICoqcHJlZGljdG9ycyoqIGFyZSB0aGUgZXhwZXJpbWVudGFsIGNvbmRpdGlvbnMgb3IgZmFjdG9ycyB3aG9zZSBlZmZlY3QgeW91IHdpc2ggdG8gb2JzZXJ2ZS4gSW4gZmFjdG9yaWFsIGRlc2lnbnMgKGkuZS4gZXhwZXJpbWVudHMgd2l0aCBkaXNjcmV0ZSBjb25kaXRpb25zKSwgdGhlc2UgYXJlIG9mdGVuIGNhbGxlZCAqKmluZGVwZW5kZW50IHZhcmlhYmxlcyoqLgoKV2UgaWRlbnRpZnkgdGhlIHByZWRpY3RlZCBhbmQgcHJlZGljdG9yIHZhcmlhYmxlcyBieSB0aGVpciBjb2x1bW5zIG5hbWVzIGluIHRoZSBpbnB1dCBkYXRhIGZyYW1lLgoKVGhlICoqcHJlZGljdGVkKiogYW5kICoqfioqIHBhcnQgb2YgYSBmb3JtdWxhIGFyZSB1c3VhbGx5IHN0cmFpZ2h0LWZvcndhcmQ7IHRoZSBjb21wbGV4aXR5IGFyaXNlcyB3aGVuIHNwZWNpZnlpbmcgdGhlICoqcHJlZGljdG9ycyoqLiBUbyBpbGx1c3RyYXRlLCB3ZSB3aWxsIHVzZSB0aGUgZXhwZXJpbWVudGFsIGRlc2lnbiBmcm9tIHRoZSAiUGFsbWVyIFBlbmd1aW4iIGRhdGEgc2V0LiBZb3Ugd2lsbCByZWNhbGwgdGhhdCB0aGlzIHN0dWR5IGhhZCBzZXZlcmFsIGRlcGVuZGVudCB2YXJpYWJsZXMgKGUuZy4gYm9keSBtYXNzLCBmbGlwcGVyIGxlbmd0aCwgZXRjLikgYW5kIHRocmVlIGluZGVwZW5kZW50IHZhcmlhYmxlcyAoc3BlY2llcywgaXNsYW5kIGFuZCBzZXgpLiBBc3N1bWUgdGhhdCB3ZSBhcmUgYW5hbHlzaW5nIGJvZHkgbWFzcywgbG9va2luZyBmb3IgZWZmZWN0cyBvZiB0aGVzZSB0aHJlZSBwcmVkaWN0b3JzLiAKCiMjIEV4YW1wbGVzIG9mIGBmb3JtdWxhYAoKKipBIHNpbmdsZSBwcmVkaWN0b3IqKjogVG8gYW5hbHlzZSB3aGV0aGVyIHRoZXJlIGlzIGFuIGVmZmVjdCBvZiBpc2xhbmQgb24gYm9keSBtYXNzIHVzZSBmb3JtdWxhOgoKYGJvZHlfbWFzc19nIH4gaXNsYW5kYCAKCgoqKk11bHRpcGxlIHByZWRpY3RvcnMqKjogVG8gYW5hbHlzZSB0aGUgZWZmZWN0IG9mIG11bHRpcGxlIHByZWRpY3RvcnMsIGNvbWJpbmUgdGhlbSB3aXRoIGArYAoKYGJvZHlfbWFzc19nIH4gaXNsYW5kICsgc3BlY2llc2AKCgoqKk11bHRpcGxlIHByZWRpY3RvcnMgaW5jbHVkaW5nIGludGVyYWN0aW9uIHRlcm1zKio6IEZhY3RvcnMgaW4gYW4gaW50ZXJhY3Rpb24gdGVybSBhcmUgY29tYmluZWQgd2l0aCBgKmAKCgpgYm9keV9tYXNzX2cgfiBpc2xhbmQgKyBzcGVjaWVzICsgKGlzbGFuZCAqIHNwZWNpZXMpJwoKCkFzIHRoZSBudW1iZXIgb2YgZXhwZXJpbWVudGFsIGZhY3RvcnMgaW5jcmVhc2VzIGl0IGJlY29tZSB0ZWRpb3VzIHRvIHNwZWNpZnkgYWxsIHRoZSBwb3NzaWJsZSBpbnRlcmFjdGlvbiB0ZXJtcyBpbiBhIGZ1bGx5LWNyb3NzZWQgZXhwZXJpbWVudGFsIGRlc2lnbi4gQXMgYSBzaG9ydC1oYW5kLCB5b3UgY2FuIGNvbWJpbmUgYWxsIGZhY3RvcnMgd2l0aCBgKmAuIFRoaXMgbWVhbnMgdGhhdCB0aGUgZm9ybXVsYSBzaG91bGQgY29udGFpbiBhbGwgbWFpbiBlZmZlY3QgdGVybXMgYW5kIGFsbCBwb3NzaWJsZSBpbnRlcmFjdGlvbiB0ZXJtcy4gRm9yIGV4YW1wbGUsIGlmIHlvdXIgZGVzaWduIGhhcyBmYWN0b3JzIEEsIEIsIGFuZCBDLCB5b3UgY2FuIHNheToKCmBEViB+IEEgKiBCICogQ2AKClRoaXMgZm9ybXVsYSBtZWFucyAiRFYgaXMgcHJlZGljdGVkIGJ5IHRoZSBtYWluIGVmZmVjdCBvZiBBLCB0aGUgbWFpbiBlZmZlY3Qgb2YgQiwgdGhlIG1haW4gZWZmZWN0IG9mIEMsIHRoZSBBQiwgQkMsIGFuZCBBQyB0d28td2F5IGludGVyYWN0aW9ucywgYW5kIHRoZSBBQkMgdGhyZWUtd2F5IGludGVyYWN0aW9uLgoKCioqUmVwZWF0ZWQgbWVhc3VyZXMgZGVzaWducyAoQU5PVkEgb25seSkqKgpJbiB0aGUgUGFsbWVyIFBlbmd1aW4gZGF0YSBzZXQsIHRoZXJlIGFyZSB0aHJlZSBpc2xhbmRzLiBFYWNoIHBlbmd1aW4gbGl2ZXMgb24gb25seSBvbmUgaXNsYW5kLCBzbyB0aGVyZSBhcmUgZGlmZmVyZW50IHBlbmd1aW5zIGluIHRoZSBkaWZmZXJlbnQgaXNsYW5kIGdyb3VwcyAtLSBlYWNoIHBlbmd1aW4gY29udHJpYnV0ZXMgYSBkYXRhIHBvaW50IHRvIG9ubHkgb25lIG9mIHRoZSB0aHJlZSBpc2xhbmQgZ3JvdXBzLiBXZSBzYXkgdGhhdCAqKmlzbGFuZCoqIGlzIGEgKipiZXR3ZWVuLXN1YmplY3RzIGZhY3RvcioqLiBJbWFnaW5lIGhvd2V2ZXIsIHRoYXQgdGhlIHJlc2VhcmNoZXJzIGhhZCB3YW50ZWQgdG8gZXhwbG9yZSBob3cgcGVuZ3VpbiBib2R5IHdlaWdodCB2YXJpZWQgYnkgKipzZWFzb24qKiwgc28gdGhleSBtZWFzdXJlZCBlYWNoIHBlbmd1aW4gdHdpY2UgLS0gb25jZSBpbiBzdW1tZXIgYW5kIG9uY2UgaW4gd2ludGVyLiBOb3cgZWFjaCBwZW5ndWluIHdvdWxkIGNvbnRyaWJ1dGUgYSBkYXRhIHBvaW50IHRvIGJvdGggdGhlIHN1bW1lciBhbmQgd2ludGVyIGdyb3VwcyBvZiBleHBlcmltZW50YWwgZmFjdG9yICoqc2Vhc29uKiouIFdlIHNheSB0aGF0ICoqc2Vhc29uKiogaXMgYSAqKndpdGhpbi1zdWJqZWN0cyBmYWN0b3IqKiwgYW5kIHRoYXQgdGhlIGV4cGVyaW1lbnQgaXMgYSAqKnJlcGVhdGVkLW1lYXN1cmVzIGRlc2lnbioqLiBJbiBBTk9WQSwgdGhlIGNvbXB1dGF0aW9uIG9mIHAtdmFsdWVzIGlzIGRpZmZlcmVudCBmb3IgYmV0d2VlbiBhbmQgd2l0aGluIHN1YmplY3RzIGZhY3RvcnMuIFNwZWNpZmljYWxseSwgdGhlIHdheSB0aGF0ICpub2lzZSogb3IgKmVycm9yKiBpbiB0aGUgZGF0YSBpcyBjb21wdXRlZCBjaGFuZ2VzIGZvciB0aGUgdHdvIHR5cGVzIG9mIHByZWRpY3Rvci4gVGh1cyB3aGVuIGJ1aWxkaW5nIGFuIFIgZm9ybXVsYSBhcmd1bWVudCwgd2UgbXVzdCBzcGVjaWZ5IG91ciB3aXRoaW4tc3ViamVjdHMgZmFjdG9ycy4gVGhpcyBpcyBkb25lIGJ5IGFkZGluZyBhIHNwZWNpYWwgdGVybSB0byB0aGUgZm9ybXVsYSB1c2luZyB0aGUgZm9sbG93aW5nIHBhdHRlcm46CgpFcnJvcigqbmFtZSBvZiBzdWJqZWN0IGlkZW50aWZpZXIgY29sdW1uKi8qbmFtZSBvZiB3aXRoaW4gc3ViamVjdHMgZmFjdG9yKikKCkFzc3VtZSB0aGF0IHdlIGhhdmUgaW4gb3VyIGRhdGEgZnJhbWUgYSBjb2x1bW4gY2FsbGVkIFBlbmd1aW5JRCB3aGljaCBob2xkcyBhIHVuaXF1ZSBpZGVudGlmaWVyIGZvciBlYWNoIHBlbmd1aW4gKGVzc2VudGlhbCB3aXRoIHdpdGhpbi1zdWJqZWN0cyBmYWN0b3JzLCBvZiBjb3Vyc2UsIHNvIHlvdSBjYW4gY29ycmVjdGx5IHBhaXIgdXAgdGhlIHR3byBzY29yZXMgZnJvbSB0aGUgc2FtZSBpbmRpdmlkdWFsKS4gQXNzdW1lIHRoYXQgd2Ugd2FudCB0byB1c2UgQU5PVkEgdG8gdGVzdCB3aGV0aGVyIGJvZHkgbWFzcyBkZXBlbmRzIG9uIGlzbGFuZCBhbmQgc2Vhc29uLiBTaW5jZSBzZWFzb24gaXMgYSB3aXRoaW4tc3ViamVjdCB2YXJpYWJsZSwgb3VyIGNvbXBsZXRlIGZvcm11bGEgaXM6CgpgYm9keV9tYXNzX2cgfiBpc2xhbmQgKyBzZWFzb24gKyAoaXNsYW5kICogc2Vhc29uKSArIEVycm9yKFBlbmd1aW5JRC9zZWFzb24pYAoKCiMjIFN5bnRheCBvZiB0aGUgQ29tbW9uIEluZmVyZW50aWFsIFRlc3RzCgpUZXN0fEZ1bmN0aW9ufE1haW4gQXJndW1lbnRzfENvbW1lbnRzCi0tLS18LS0tLS0tLS18LS0tLS0tLS0tLS0tLS18LS0tLS0tLS0KdC10ZXN0fHQudGVzdHxmb3JtdWxhIGFuZCBkYXRhfEZvciBhIHBhaXJlZCB0LXRlc3QgKGkuZS4gdGhlIHNhbWUgcGFydGljaXBhbnRzIGluIGJvdGggZ3JvdXBzKSBhZGQgYXJndW1lbnQgYHBhaXJlZD10cnVlYApBTk9WQXxhb3Z8Zm9ybXVsYSBhbmQgZGF0YXwgVG8gc2VlIHRoZSBvdXRwdXQgdGFibGUsIHBhc3MgdGhlIHJlc3VsdCBvZiB0aGUgZnVuY3Rpb24gY2FsbCB0byBgc3VtbWFyeWAuCkNvcnJlbGF0aW9ufGNvcnxUaGUgdHdvIHZhcmlhYmxlcyB3aG9zZSBjb3JyZWxhdGlvbiBpcyBiZWluZyB0ZXN0ZWQKQ2hpLXNxdWFyZXxjaGlzcS50ZXN0fFRoZSB0d28gdmFyaWFibGVzIHdob3NlIGluZGVwZW5kZW5jZSBpcyBiZWluZyB0ZXN0ZWQKCgojIyBFeGVyY2lzZXMKU29sdmUgZWFjaCBvZiB0aGVzZSBleGVyY2lzZXMgdXNpbmcgYW4gaW5mZXJlbnRpYWwgdGVzdCBpbiBSLiBJbiBlYWNoIGNhc2UsIHN0YXRlIHRoZSBudWxsIGh5cG90aGVzaXMsIHRoZSBwLXZhbHVlIHByb2R1Y2VkIGJ5IHlvdXIgdGVzdCBhbmQgYSBzdGF0aXN0aWNhbGx5IGNvcnJlY3QgaW50ZXJwcmV0YXRpb24gb2YgdGhlIHJlc3VsdC4gT3VyIHNvbHV0aW9ucyBjYW4gYmUgZm91bmQgYXQgdGhlIGJvdHRvbSBvZiB0aGUgaGFuZG91dC4KCgoxLiBQYXJrcywgRGVyb2NoZXIgJiBMdW5uIDIwMDYgdXNlZCBHUFMgdHJhY2tpbmcgY29sbGFycyB0byBtb25pdG9yIHRoZSBtb3ZlbWVudHMgb2YgYSBncm91cCBvZiBwb2xhciBiZWFycyBpbiAxOTkxIGFuZCBhIGRpZmZlcmVudCBncm91cCBpbiAyMDA0LiBGb3IgZWFjaCBtb25pdG9yZWQgYmVhciwgdGhleSBjb21wdXRlZCB0aGUgdG90YWwgaGFiaXRhdCByYW5nZSBpbiBzcXVhcmUgbWV0ZXJzIGZvciB0aGUgeWVhci4gQSBkYXRhIHNldCBiYXNlZCBvbiB0aGVpciByZXN1bHRzIGNhbiBiZSBmb3VuZCBpbiBmaWxlIHBvbGFyX2JlYXJfcmFuZ2VfZm9sbG93aW5nX3BhcmtfMjAwNi5jc3YuIFVzZSBhIHQtdGVzdCB0byBhbmFseXNlIHRoZSBjaGFuZ2UgaW4gc2l6ZSBvZiBwb2xhciBiZWFyIGhhYml0YXQgcmFuZ2UgYmV0d2VlbiAxOTkyIGFuZCAyMDA0LgoKMi4gVXNlIHRoZSBQYWxtZXIgUGVuZ3VpbiBkYXRhIHRvIGV4cGxvcmUgdGhlIGNoYW5nZSBpbiBhdmVyYWdlIGJvZHkgbWFzcyBvZiBwZW5ndWlucyBhY3Jvc3MgdGhlIHllYXJzIG9mIHRoZSBzdHVkeS4gRGF0YSB3ZXJlIGNvbGxlY3RlZCBpbiAyMDA3LCAyMDA4IGFuZCAyMDA5LiBTaW5jZSB0aGVyZSBhcmUgdGhyZWUgZ3JvdXBzICh0aHJlZSBsZXZlbHMgb2YgZXhwZXJpbWVudGFsIGZhY3RvciAqKnllYXIqKikgeW91IGNhbm5vdCBwZXJmb3JtIGEgdC10ZXN0OyB5b3UgbXVzdCBwZXJmb3JtIEFOT1ZBLiAqKk5COkJlIHN1cmUgdG8gY2FzdCB0aGUgeWVhciBjb2x1bW4gdG8gYSBmYWN0b3Igc28gdGhhdCBSIHdpbGwgcmVjb2duaXNlIGl0IGFzIGNhdGVnb3JpY2FsLioqIAoKMy4gVGhlIGFuYWx5c2lzIGJlbG93IGluZGljYXRlcyB0aGF0IG1lYW4gcG9wdWxhdGlvbiBiaWxsIGxlbmd0aCBkaWZmZXJzIGJldHdlZW4gcGVuZ3VpbiBzcGVjaWVzIChwIDwgMC4wMDEpLiAKCmBgYHtyIHNpbmdsZSBmYWN0b3Igc3BlY2llc30KCiMgR3JhcGhpY2FsIGRpc3BsYXkgb2YgdGhlIGVmZmVjdApib3hwbG90KGJpbGxfbGVuZ3RoX21tIH4gc3BlY2llcywgZGF0YSA9IHBlbmd1aW5zKQphb3ZfYmlsbF9sZW5ndGhfc3BlY2llcyA8LSBhb3YoYmlsbF9sZW5ndGhfbW0gfiBzcGVjaWVzLCBkYXRhID0gcGVuZ3VpbnMpCnN1bW1hcnkoYW92X2JpbGxfbGVuZ3RoX3NwZWNpZXMpICMgVXNlIHN1bW1hcnkgdG8gZ2VuZXJhdGUgdGhlIEFOT1ZBIHRhYmxlCmBgYAoKMy5hKSBUaGUgbnVsbCBoeXBvdGhlc2lzIGluIEFOT1ZBIGlzIHRoYXQgKiphbGwgcG9wdWxhdGlvbiBncm91cCBtZWFucyBhcmUgZXF1YWwqKi4gQSBzaWduaWZpY2FudCBtYWluIGVmZmVjdCB0ZWxscyB1cyBvbmx5IHRoYXQgdGhpcyBzdGF0ZW1lbnQgaXMgdmlvbGF0ZWQgKipzb21ld2hlcmUqKi4gSXQgZG9lcyBub3QgdGVsbCB1cyBzcGVjaWZpY2FsbHkgd2hpY2ggcG9wdWxhdGlvbiBtZWFucyBhcmUgZGlmZmVyZW50LCBhbmQgd2hpY2ggYXJlIG5vdC4gRnJvbSB0aGUgYm94cGxvdCwgaXQgYXBwZWFycyB0aGF0IEFkZWxpZSBwZW5ndWlucyBoYXZlIHNob3J0ZXIgYmlsbHMgdGhhdCB0aGUgb3RoZXIgdHdvIHNwZWNpZXMsIGJ1dCBpdCBpcyBub3QgY2xlYXIgd2hldGhlciBDaGluc3RyYXAgYW5kIEdlbnRvbyBwZW5ndWlucyBoYXZlIHRydWx5IGRpZmZlcmVudCBwb3B1bGF0aW9uIGF2ZXJhZ2VzLiBEZXRlcm1pbmluZyB0aGlzIHJlcXVpcmVzIGFub3RoZXIgdGVzdC4KClVzZSBHb29nbGUgb3IgeW91ciBmYXZvdXJpdGUgUiB0ZXh0Ym9vayB0byBleHBsb3JlIGZ1bmN0aW9uIGBUdWtleUhTRGAuIFRoaXMgZnVuY3Rpb24gY29tcHV0ZXMgKipUdWtleSdzIEhvbmVzdGx5IFNpZ25pZmljYW50IERpZmZlcmVuY2UqKiwgY29tcGFyaW5nIGFsbCBwb3NzaWJsZSBwYWlycyBvZiBwb3B1bGF0aW9uIG1lYW5zLiBQZXJmb3JtIFR1a2V5IGFuZCBkZXNjcmliZSwgaW4gc3RhdGlzdGljYWxseSBjb3JyZWN0IGxhbmd1YWdlLCB0aGUgcmVzdWx0cyBvZiB5b3VyIGFuYWx5c2lzLgoKMy5iKSBVc2UgYW4gQU5PVkEgdG8gZGV0ZXJtaW5lIGlmIHRoaXMgYmlsbCBsZW5ndGggcGF0dGVybiBpcyB0aGUgc2FtZSBhY3Jvc3MgYWxsIHNwZWNpZXMuIFJlbWluZGVyOiBJbiBhbiBBTk9WQSBtb2RlbCwgdGhlIGludGVyYWN0aW9uIHRlcm0gYmV0d2VlbiB0d28gZmFjdG9ycyB0ZXN0cyB3aGV0aGVyIHRoZSBwYXR0ZXJuIG9mIGVmZmVjdCBvZiBvbmUgZmFjdG9yIGlzIHRoZSBzYW1lIGF0IGFsbCBsZXZlbHMgb2YgdGhlIHNlY29uZCBmYWN0b3IuCgo0KSBBIHNpZ25pZmljYW5jZSB0ZXN0IGZvciBjb3JyZWxhdGlvbiBiZXR3ZWVuIHR3byB2YXJpYWJsZXMgdGVzdHMgdGhlIG51bGwgaHlwb3RoZXNpcyB0aGF0ICpyaG8qICh0aGUgcG9wdWxhdGlvbiBjb3JyZWxhdGlvbikgaXMgMC4gSWYgd2UgcmVqZWN0IHRoZSBudWxsIGh5cG90aGVzaXMgd2UgY29uY2x1ZGUgdGhhdCB0aGUgZmFjdG9ycyBhcmUgdHJ1bHkgY29ycmVsYXRlZCBpbiB0aGUgcG9wdWxhdGlvbi4gVGhlIGZ1bmN0aW9uIGBjb3IudGVzdGAgcGVyZm9ybXMgYSBzaWduaWZpY2FuY2UgdGVzdCBmb3IgY29ycmVsYXRpb24uIEl0IGRvZXMgbm90IHJlcXVpcmUgYSBgZm9ybXVsYWAgYXJndW1lbnQgLS0ganVzdCBwYXNzIGluIHRoZSB0d28gZGF0YSBjb2x1bW5zIG9mIGludGVyZXN0LgoKNC5hKSBUaGUgZmlsZSBCZWVjaFNlZWRCaXJkQWJ1bmRhbmNlLmNzdiBjb250YWlucyAoc2ltdWxhdGVkIGJ1dCByZWFsaXN0aWMpIGFidW5kYW5jZSBjb3VudHMgZm9yIGJlZWNoIHRyZWUgc2VlZHMgKGFuIGltcG9ydGFudCBmb29kIHNvdXJjZSkgYW5kIG5hdGl2ZSBiaXJkcyBtZWFzdXJlZCB3ZWVrbHkgZm9yIGZpdmUgY29uc2VjdXRpdmUgeWVhcnMuIFVzZSBpbmZlcmVudGlhbCB0ZXN0aW5nIHRvIGRlY2lkZSB3aGV0aGVyIHRoZXJlIGlzIGEgdHJ1ZSBjb3JyZWxhdGlvbiBiZXR3ZWVuIHNlZWQgYWJ1bmRhbmNlIGFuZCBiaXJkIHBvcHVsYXRpb24gaW4gdGhpcyBlY29zeXN0ZW0uIERlc2NyaWJlIHlvdXIgcmVzdWx0cy4KCjQuYikgT3VyIGFuYWx5c2lzIHNob3dzIHRoYXQgaGlnaGVyIGRlbnNpdHkgb2YgYmVlY2ggc2VlZHMgaXMgYXNzb2NpYXRlZCB3aXRoICpsb3dlciogYmlyZCBhYnVuZGFuY2UuIFRoaXMgcmVzdWx0IGlzIHN1cnByaXNpbmcsIGFzIHdlIHdvdWxkIGhhdmUgZXhwZWN0ZWQgdGhhdCBtb3JlIGZvb2Qgd291bGQgcmVzdWx0IGluIGhpZ2hlciBiaXJkIHBvcHVsYXRpb25zIChhcyBpcyB0aGUgY29tbW9uIHBhdHRlcm4pLiBQcm9wb3NlIGFuIGV4cGxhbmF0aW9uIGZvciB0aGVzZSBkYXRhLiBXaGF0IGFkZGl0aW9uYWwgbWV0cmljIG1pZ2h0IHlvdSBuZWVkIHRvIHRlc3QgeW91ciBoeXBvdGhlc2lzPwoKNSkgQ2hpLXNxdWFyZSBpcyBhbiBpbmZlcmVudGlhbCB0ZXN0IGZvciBjYXRlZ29yaWNhbCBmcmVxdWVuY3kgZGF0YSB3aGljaCB0ZXN0cyBmb3IgKippbmRlcGVuZGVuY2UqKiBvZiBmYWN0b3JzLiBUaGF0IGlzLCBhIGNoaS1zcXVhcmUgb24gdHdvIGZhY3RvcnMgdGVzdHMgd2hldGhlciB0aGUgZnJlcXVlbmN5IHBhdHRlcm4gb24gb25lIGZhY3RvciBpcyB0aGUgc2FtZSBhdCBhbGwgbGV2ZWxzIG9mIHRoZSBvdGhlciBmYWN0b3IgKGxvZ2ljYWxseSBzaW1pbGFyIHRvIHRoZSBpbnRlcmFjdGlvbiB0ZXJtIGluIGFuIEFOT1ZBIGZvciBjb250aW51b3VzIGRhdGEpLgoKVGhlIGZpbGUgVGVhY2hpbmdNb2RlUHJlZmVyZW5jZXMuY3N2IGNvbnRhaW5zIChzaW11bGF0ZWQpIHJlc3VsdHMgZnJvbSBhIHN1cnZleSBvZiAxMDAgcmFuZG9tbHkgc2VsZWN0ZWQgVW5pdmVyc2l0eSBzdHVkZW50cy4gRWFjaCBzdHVkZW50IHdhcyBhc2tlZCB3aGV0aGVyIHRoZXkgcHJlZmVycmVkIG9ubGluZSBmb3IgZmFjZS10by1mYWNlIHRlYWNoaW5nLiBFYWNoIHN0dWRlbnQgd2FzIGNvZGVkIGFzIGVpdGhlciBwb3N0LWdyYWR1YXRlIG9yIHVuZGVyZ3JhZHVhdGUgZGVwZW5kaW5nIG9uIHRoZWlyIGN1cnJlbnQgZW5yb2xsbWVudC4KCjUuYSkgV2hhdCBwcm9wb3J0aW9uIG9mIHN0dWRlbnRzIGFyZSBwb3N0LWdyYWRzPwoKNS5iKSBJZ25vcmluZyBsZXZlbCBvZiBzdHVkeSwgZG8gdGhlIHN0dWRlbnRzIGluIHRoZSBzYW1wbGUgKm92ZXJhbGwqIHByZWZlciBvbmxpbmUgb3IgZmFjZS10by1mYWNlIHRlYWNoaW5nPwoKNS5jKSBVc2luZyBjaGktc3F1YXJlLCB0ZXN0IHRoZSBudWxsIGh5cG90aGVzaXMgdGhhdCB0aGUgcGF0dGVybiBvciBwcmVmZXJlbmNlIGZvciB0aGUgZGlmZmVyZW50IHRlYWNoaW5nIG1vZGVzIGlzIHRoZSBzYW1lIGZvciBib3RoIHBvc3QtZ3JhZCBhbmQgdW5kZXJncmFkdWF0ZSBzdHVkZW50cy4gTGlrZSBgY29yLnRlc3RgIHRoZSBmdW5jdGlvbiBgY2hpc3EudGVzdGAgc2ltcGx5IHRha2VzIHRoZSB0d28gZGF0YSBjb2x1bW5zIGFzIGFyZ3VtZW50czsgbm8gZm9ybXVsYSBpcyByZXF1aXJlZC4gRGVzY3JpYmUgdGhlIHJlc3VsdHMgb2YgeW91ciBhbmFseXNpcy4KCgojIyBTb2x1dGlvbnMKMS4gCgpgYGB7ciBwb2xhciBiZWFyIHNvbG59Cgpwb2xhcl9iZWFyX2RmIDwtIHJlYWQuY3N2KCJkYXRhL3BvbGFyX2JlYXJfcmFuZ2VfZm9sbG93aW5nX3BhcmtfMjAwNi5jc3YiKQpoZWFkKHBvbGFyX2JlYXJfZGYpCgpib3hwbG90KFJhbmdlIH4gWWVhciwgZGF0YSA9IHBvbGFyX2JlYXJfZGYpCgpsaWJyYXJ5KGdncGxvdDIpCmdncGxvdChkYXRhID0gcG9sYXJfYmVhcl9kZikgKwogIGdlb21faGlzdG9ncmFtKG1hcHBpbmcgPSBhZXMoeCA9IFJhbmdlLCBmaWxsID0gWWVhciksIGNvbG9yID0gImJsYWNrIiwgYmlud2lkdGggPSAxMDAwMCwgcG9zaXRpb249ImRvZGdlIikKCnQudGVzdChSYW5nZSB+IFllYXIsIGRhdGEgPSBwb2xhcl9iZWFyX2RmKQoKYGBgCgpEaXNjdXNzaW9uOgoqIEgwOiBNZWFuIGhhYml0YXQgcmFuZ2UgYWNyb3NzIHRoZSBwb3B1bGF0aW9uIG9mIHBvbGFyIGJlYXJzIGlzIHRoZSBzYW1lIGluIDE5OTIgYW5kIDIwMDQuCiogUG9wdWxhdGlvbiBtZWFuIGhhYml0YXQgcmFuZ2UgZm9yIHBvbGFyIGJlYXJzIGlzIHNtYWxsZXIgaW4gMjAwNCB0aGFuIGluIDE5OTIgKHAgPCAwLjAwMSkuIAoKCjIuIAoKYGBge3IgYW5vdmEgcGVuZ3VpbnN9CmxpYnJhcnkocGFsbWVycGVuZ3VpbnMpICMgbG9hZCB0aGUgcGVuZ3VpbnMKCnBlbmd1aW5zJHllYXIgPC0gYXMuZmFjdG9yKHBlbmd1aW5zJHllYXIpICMgQ2FzdCB5ZWFyIHRvIGEgZmFjdG9yCgpib3hwbG90KGJvZHlfbWFzc19nIH4geWVhciwgZGF0YSA9IHBlbmd1aW5zKSAjIEl0IGxvb2tzIGxpa2UgMjAwOCBtaWdodCBoYXZlIGJlZW4gYSBoZWF2eSB5ZWFyLi4uLgoKYW92X3Blbmd1aW5fc3BlY2llcyA8LSBhb3YoYm9keV9tYXNzX2cgfiB5ZWFyLCBkYXRhID0gcGVuZ3VpbnMpCgpzdW1tYXJ5KGFvdl9wZW5ndWluX3NwZWNpZXMpICMgVXNlIHN1bW1hcnkgdG8gZ2VuZXJhdGUgdGhlIEFOT1ZBIHRhYmxlCmBgYAoKRGlzY3Vzc2lvbjoKCiogSDA6IFRoZXJlIGlzIG5vIGRpZmZlcmVuY2UgYmV0d2VlbiBwb3B1bGF0aW9uIG1lYW5zIGZvciB0aGUgdGhyZWUgeWVhcnMKKiBwID0gMC40MTQuIEZhaWwgdG8gcmVqZWN0IEgwLiBXZSBmaW5kIG5vIGV2aWRlbmNlIHRoYXQgYXZlcmFnZSBwb3B1bGF0aW9uIGJvZHkgbWFzcyBpcyBkaWZmZXJlbnQgYmV0d2VlbiAyMDA3LCAyMDA4IGFuZCAyMDA5LiBUaGF0IGlzLCBnaXZlbiB0aGUgbm9pc2UgaW4gb3VyIGRhdGEsIG91ciBvYnNlcnZlZCBkaWZmZXJlbmNlcyB3ZXJlIGxpa2VseSB0byBvY2N1ciBqdXN0IGJ5IGNoYW5jZSAoNDEuNCUgcHJvYmFiaWxpdHkpLgoKCgozLmEpIAoKYGBge3IgVHVrZXl9ClR1a2V5SFNEKGFvdl9iaWxsX2xlbmd0aF9zcGVjaWVzKQpgYGAKCkRpc2N1c3Npb246IAoKKiBBbGwgcC12YWx1ZXMgPCAwLjA1LCBzbyBhbGwgcGFpcmVkIGNvbXBhcmlzb25zIGFyZSBkaWZmZXJlbnQuIFdlIGNvbmNsdWRlIHdpdGggPiA5NSUgY29uZmlkZW5jZSB0aGF0IHRoZSBwb3B1bGF0aW9uIG1lYW4gYmlsbCBsZW5ndGhzIG9mIGFsbCBzcGVjaWVzIGFyZSBkaWZmZXJlbnQuIEJhc2VkIG9uIHRoZSBjb25maWRlbmNlIGludGVydmFscywgQ2hpbnN0cmFwIGhhdmUgdGhlIGxvbmdlc3QgbWVhbiBiaWxsIGxlbmd0aCwgQWRlbGllIGhhdmUgdGhlIHNob3J0ZXN0LCBhbmQgR2VudG9vIGFyZSBpbnRlcm1lZGlhdGUuCgoKMy5iKQoKYGBge3IgdHdvIHdheX0KCiMgVmlzdWFsaXNlIHRoZSBkYXRhLiBCZWNhdXNlIHRoZSBsaW5lcyBmb3IgbWFsZSBhbmQgZmVtYWxlIGFyZSBjbG9zZSB0byBwYXJhbGxlbCB3ZSBleHBlY3QgdGhhdCB0aGUgZWZmZWN0IG9mIHNwZWNpZXMgaXMgdGhlIHNhbWUKIyBmb3IgYm90aCBzZXhlcy4KaW50ZXJhY3Rpb24ucGxvdChwZW5ndWlucyRzcGVjaWVzLCBwZW5ndWlucyRzZXgsIHBlbmd1aW5zJGJpbGxfbGVuZ3RoX21tKQoKIyBQZXJmb3JtIHRoZSBBTk9WQS4gTm90ZSB0aGUgY2hhbmdlcyB0byB0aGUgbW9kZWwgZnJvbSB0aGUgb25lLWZhY3RvciBhbmFseXNpcyBhYm92ZS4KYW92X2JpbGxfbGVuZ3RoX3NwZWNpZXNfc2V4IDwtIGFvdihiaWxsX2xlbmd0aF9tbSB+IHNwZWNpZXMgKyBzZXggKyAoc3BlY2llcyAqIHNleCksIGRhdGEgPSBwZW5ndWlucykKCiMgRGlzcGxheSB0aGUgQU5PVkEgdGFibGUKc3VtbWFyeShhb3ZfYmlsbF9sZW5ndGhfc3BlY2llc19zZXgpCmBgYAoKRGlzY3Vzc2lvbjoKCiogRm9yIHRoZSBzcGVjaWVzOnNleCBpbnRlcmFjdGlvbiB0ZXJtLCB0aGUgcC12YWx1ZSBpcyAwLjEwMyAoZ3JlYXRlciB0aGFuIDAuMDUpIHNvIHdlIGZhaWwgdG8gcmVqZWN0IHRoZSBudWxsIGh5cG90aGVzaXMgYW5kIHN0YXRlIHRoYXQgd2UgaGF2ZSBubyBldmlkZW5jZSBmb3IgYW4gaW50ZXJhY3Rpb24gYmV0d2VlbiB0aGVzZSB0d28gZmFjdG9ycy4gT3VyIGV4cGVjdGF0aW9uIGJhc2VkIG9uIHRoZSBpbnRlcmFjdGlvbiBwbG90IGlzIHN1cHBvcnRlZC4KCgoKNC5hKSAKCmBgYHtyIGNvcn0KIyBMb2FkIHRoZSBkYXRhCmJlZWNoX3NlZWRfYmlyZF9hYnVuZGFuY2VfZGYgPC0gcmVhZC5jc3YoImRhdGEvQmVlY2hTZWVkQmlyZEFidW5kYW5jZS5jc3YiKQoKIyBWaXN1YWxpc2UgdGhlIGRhdGEKbGlicmFyeShnZ3Bsb3QyKQpnZ3Bsb3QoZGF0YSA9IGJlZWNoX3NlZWRfYmlyZF9hYnVuZGFuY2VfZGYpICsKICBnZW9tX3BvaW50KG1hcHBpbmcgPSBhZXMoeCA9IFNlZWRQZXJTcU0sIHk9QmlyZEFidW5kYW5jZSkpCgojIENvbXB1dGUgdGhlIG9ic2VydmVkIGNvcnJlbGF0aW9uCmNvcihiZWVjaF9zZWVkX2JpcmRfYWJ1bmRhbmNlX2RmJFNlZWRQZXJTcU0sIGJlZWNoX3NlZWRfYmlyZF9hYnVuZGFuY2VfZGYkQmlyZEFidW5kYW5jZSkKCiMgVGVzdCBmb3Igc2lnbmlmaWNhbmNlCmNvci50ZXN0KGJlZWNoX3NlZWRfYmlyZF9hYnVuZGFuY2VfZGYkQmlyZEFidW5kYW5jZSwgYmVlY2hfc2VlZF9iaXJkX2FidW5kYW5jZV9kZiRTZWVkUGVyU3FNKQpgYGAKCkRpc2N1c3Npb246CiogcCA8IDAuMDAxLiBXZSByZWplY3QgSDA6IHJobyA9IDAgYW5kIGNvbmNsdWRlIHRoYXQgdGhlc2UgdHdvIG1lYXN1cmVzIGFyZSBjb3JyZWxhdGVkIGluIHRoZSBwb3B1bGF0aW9uLiBUaGUgY29ycmVsYXRpb24gaXMgbmVnYXRpdmUgKHItb2JzZXJ2ZWQgPSAtMC42KS4gVGh1cywgaGlnaGVyIGRlbnNpdHkgb2YgYmVlY2ggc2VlZHMgaXMgYXNzb2NpYXRlZCB3aXRoIGZld2VyIGJpcmRzLgoKCjQuYikgQSBwb3NzaWJsZSBleHBsYW5hdGlvbiBpcyB0aGF0IG1vcmUgc2VlZCBhbHNvIG1lYW5zIG1vcmUgcHJlZGF0b3JzIChyYXRzIGxpa2UgYmVlY2ggc2VlZHMgdG9vKSBhbmQgdGhlIG5lZ2F0aXZlIGVmZmVjdCBvZiBwcmVkYXRpb24gb24gYmlyZCBwb3B1bGF0aW9ucyBpcyBncmVhdGVyIHRoYW4gdGhlIHBvc2l0aXZlIGVmZmVjdCBvZiBncmVhdGVyIGZvb2QgYXZhaWxhYmlsaXR5LiBUbyB0ZXN0IHRoaXMgeW91IHNob3VsZCBjb3VudCBhYnVuZGFuY2Ugb2Ygc2VlZC1lYXRpbmcgcHJlZGF0b3JzIChlLmcuIHJhdHMpLgoKCgoKNS5hKSAKCmBgYHtyIHByIHN0dWRlbnQgbGV2ZWx9CgojIExvYWQgdGhlIGRhdGEKc3R1ZGVudF9wcmVmZXJlbmNlX2RmIDwtIHJlYWQuY3N2KCJkYXRhL1RlYWNoaW5nTW9kZVByZWZlcmVuY2VzLmNzdiIpCgojIEdlbmVyYXRlIHRoZSBmcmVxdWVuY3kgdGFibGUgZm9yIG9uZSBmYWN0b3IKdGFibGUoc3R1ZGVudF9wcmVmZXJlbmNlX2RmJFN0dWRlbnRMZXZlbCkKCmBgYAoKCjUuYikgCgpgYGB7ciBwciBwcmVmZXJlbmNlfQoKIyBHZW5lcmF0ZSB0aGUgZnJlcXVlbmN5IHRhYmxlIGZvciBvbmUgZmFjdG9yCiMgUHJlZmVyZW5jZSBhcHBlYXJzIHRvIGJlIGFwcHJveGltYXRlbHkgZXZlbmx5IHNwbGl0IGJldHdlZW4gb25saW5lIGFuZCBmdGYKdGFibGUoc3R1ZGVudF9wcmVmZXJlbmNlX2RmJFByZWZlcmVuY2UpCgpgYGAKCgo1LmMpIAoKYGBge3IgY2hpIHNxfQoKIyBWaXN1YWxpc2UgdGhlIGRhdGEgLS0gcHJlZmVyZW5jZSBkb2Vzbid0IGxvb2sgc28gZXZlbmx5IHNwbGl0IG5vdy4uLi4KZ2dwbG90KGRhdGEgPSBzdHVkZW50X3ByZWZlcmVuY2VfZGYpICsKICBnZW9tX2JhcihhZXMoeCA9IFN0dWRlbnRMZXZlbCwgZmlsbD1QcmVmZXJlbmNlKSwgcG9zaXRpb24gPSAiZG9kZ2UiKQoKCiMgUnVuIHRoZSBpbmZlcmVudGlhbCB0ZXN0CmNoaXNxLnRlc3Qoc3R1ZGVudF9wcmVmZXJlbmNlX2RmJFN0dWRlbnRMZXZlbCwgc3R1ZGVudF9wcmVmZXJlbmNlX2RmJFByZWZlcmVuY2UpCgpgYGAKCkRpc2N1c3Npb246CgoqIHAgPCAwLjAwMSBXZSByZWplY3QgdGhlIG51bGwgaHlwb3RoZXNpcyB0aGF0IHRoZSB0d28gZmFjdG9ycyBhcmUgaW5kZXBlbmRlbnQuIEJhc2VkIG9uIG8gdXIgb2JzZXJ2ZWQgZGF0YSwgd2UgY29uY2x1ZGUgdGhhdCBmb3IgcG9zdC1ncmFkIHN0dWRlbnRzLCBhIGdyZWF0ZXIgcHJvcG9ydGlvbiBwcmVmZXIgb25saW5lIHRlYWNoaW5nIHRoYW4gZnRmIHRlYWNoaW5nLiBGb3IgdW5kZXJncmFkdWF0ZSBzdHVkZW50cyB0aGlzIHBhdHRlcm4gaXMgcmV2ZXJzZWQuCgoKCg==</div>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("zoom_notes_09.Rmd");
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

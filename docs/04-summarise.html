@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Summarising</title>
+
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">R4SSP Semester 1 2022</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Modules
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Intro</li>
+    <li>
+      <a href="01-intro.html">Intro to R and RStudio</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Data Focus</li>
+    <li>
+      <a href="02-visualise.html">Part 1: Visualising</a>
+    </li>
+    <li>
+      <a href="03-subset.html">Part 2: Subsetting</a>
+    </li>
+    <li>
+      <a href="04-summarise.html">Part 3: Summarising</a>
+    </li>
+    <li>
+      <a href="05-transform.html">Part 4: Transforming</a>
+    </li>
+    <li>
+      <a href="06-communicate.html">Part 5: Communicating</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Programming focus</li>
+    <li>
+      <a href="07-functions.html">Functions and Choices</a>
+    </li>
+    <li>
+      <a href="08-iterate.html">Repeating Code</a>
+    </li>
+    <li>
+      <a href="09-workflows.html">Workflows</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Zoom Notes
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="zoom_notes_01.html">01 - Introducing R and RStudio</a>
+    </li>
+    <li>
+      <a href="zoom_notes_02.html">02 - Visualising data</a>
+    </li>
+    <li>
+      <a href="zoom_notes_03.html">03 - Subsetting data</a>
+    </li>
+    <li>
+      <a href="zoom_notes_04.html">04 - Summarising data</a>
+    </li>
+    <li>
+      <a href="zoom_notes_05.html">05 - Transforming data</a>
+    </li>
+    <li>
+      <a href="zoom_notes_06.html">Handout 6</a>
+    </li>
+    <li>
+      <a href="zoom_notes_07.html">Handout 7</a>
+    </li>
+    <li>
+      <a href="zoom_notes_08.html">Handout 8</a>
+    </li>
+    <li>
+      <a href="zoom_notes_09.html">Handout 9</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+<li role="separator" class="divider"></li>
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Summarising</h1>
+<h4 class="date">Semester 1, 2022</h4>
+
+</div>
+
+
+<blockquote>
+<h4 id="associated-material">Associated Material</h4>
+<p>Zoom notes: <a href="zoom_notes_04.html">Zoom Notes 04 - Summarising
+data</a></p>
+<p>Readings</p>
+<ul>
+<li><a href="https://r4ds.had.co.nz/exploratory-data-analysis.html">R
+for Data Science - Chapter 7</a></li>
+</ul>
+</blockquote>
+<p><br />
+</p>
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<p>We do scientific research to test hypotheses, answer questions, or
+just learn something about the world. After the often labourious process
+of data collection, we may have hundreds (or even thousands) of data
+points, but we haven’t actually learned anything. To squeeze the
+knowledge out of our raw data, we must use statistics.</p>
+<p>The formal topic of statistics is large and complex, and we do not
+attempt to teach it here (there are papers for that, and we recommend
+you take as many of them as possible). We concentrate on how to use R to
+perform common statistical analyses. R is especially useful for such
+tasks because of its extensive set of statistical libraries and
+efficient data handling facilities.</p>
+<p>There are two general types of statistical analyses – descriptive
+statistics, which allow us to summarise and describe our raw data, and
+inferential statistics, which allow us to generalise our results beyond
+our observed data. We will discuss descriptive statistics in this module
+and inferential techniques in Module 06.</p>
+<p>For this module, we will use two data sets – the Palmers Penguins
+data we saw earlier in the Data Visualisation module, and a data set
+containing Chlorophyll A (ChlA) readings from three New Zealand lakes
+(data provided by the local Regional Councils). ChlA levels are an
+indicator of phytoplankton biomass, and provide a general measure of
+lake health – more ChlA indicates poorer health. The “toxic algal
+blooms” that occur occasionally in New Zealand lakes are accompanied by
+a dramatic spike in measured ChlA.</p>
+</div>
+<div id="loading-the-data" class="section level2">
+<h2>Loading the data</h2>
+<pre class="r"><code>
+# Install palmerpenguins once on any computer
+# install.packages(&quot;palmerspenguins&quot;)
+
+# After loading the library, a tibble
+# called &#39;penguins&#39; will be initialised
+library(palmerpenguins)
+
+# Check the structure
+penguins
+#&gt; # A tibble: 344 × 8
+#&gt;    species island    bill_length_mm bill_depth_mm flipper_length_mm body_mass_g
+#&gt;    &lt;fct&gt;   &lt;fct&gt;              &lt;dbl&gt;         &lt;dbl&gt;             &lt;int&gt;       &lt;int&gt;
+#&gt;  1 Adelie  Torgersen           39.1          18.7               181        3750
+#&gt;  2 Adelie  Torgersen           39.5          17.4               186        3800
+#&gt;  3 Adelie  Torgersen           40.3          18                 195        3250
+#&gt;  4 Adelie  Torgersen           NA            NA                  NA          NA
+#&gt;  5 Adelie  Torgersen           36.7          19.3               193        3450
+#&gt;  6 Adelie  Torgersen           39.3          20.6               190        3650
+#&gt;  7 Adelie  Torgersen           38.9          17.8               181        3625
+#&gt;  8 Adelie  Torgersen           39.2          19.6               195        4675
+#&gt;  9 Adelie  Torgersen           34.1          18.1               193        3475
+#&gt; 10 Adelie  Torgersen           42            20.2               190        4250
+#&gt; # … with 334 more rows, and 2 more variables: sex &lt;fct&gt;, year &lt;int&gt;
+
+# Read in the lakes data file, parsing the lake 
+# name column as a factor
+lakes &lt;- read.csv(&quot;data/NZ_lake_chla_data.csv&quot;, stringsAsFactors = TRUE)
+
+# Since they are conceptually categorical in this data set, 
+# you may wish to cast Year and Month to factors as well, for completeness...
+lakes$Year &lt;- as.factor(lakes$Year)
+lakes$Month &lt;- as.factor(lakes$Month)  
+
+# Check the structure
+str(lakes)
+#&gt; &#39;data.frame&#39;:    408 obs. of  4 variables:
+#&gt;  $ LakeName: Factor w/ 3 levels &quot;Lake Ellesmere&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...
+#&gt;  $ Year    : Factor w/ 13 levels &quot;2001&quot;,&quot;2002&quot;,..: 4 4 4 4 4 4 4 4 4 4 ...
+#&gt;  $ Month   : Factor w/ 12 levels &quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,..: 1 2 3 4 5 6 7 8 9 10 ...
+#&gt;  $ ChlA    : num  66.9 79.9 95 82.4 59.6 69 62.1 96.3 135 102 ...</code></pre>
+</div>
+<div id="visualise-the-data" class="section level2">
+<h2>Visualise the data</h2>
+<p>When faced with a new data set, my first step is invariably to start
+making graphs. These “pictures” of your data provide an easy way to see
+large-scale patterns that will help guide your further analysis. They
+also help you to catch any problems in your data (see the skewness
+exercise below) that must be addressed before proceeding to more complex
+analyses.</p>
+<p>An excellent first graph for continuous (i.e. not categorical) data
+is the <strong>frequency distribution</strong>, or
+<strong>histogram</strong>, which has data value on the x-axis and
+frequency (i.e. count or proportion) on the y-axis. This shows you, in a
+single picture, how your data are distributed.</p>
+<p>The <code>penguins</code> data set contains values for 344 different
+penguins. We begin by looking at how the penguins’ body weights are
+distributed.</p>
+<pre class="r"><code>
+# With base R
+# The &#39;breaks&#39; argument controls the number of bars drawn
+hist(penguins$body_mass_g, 
+     breaks = 100,
+     main=&quot;Distribution of Penguin Body Mass&quot;, xlab = &quot;Body mass (g)&quot;, ylab = &quot;Frequency&quot;)</code></pre>
+<p><img src="figures/04/04-histograms-1.png" width="672" /></p>
+<pre class="r"><code>
+
+# With ggplot
+# Load the library before your first call to ggplot
+library(ggplot2)
+
+# The values provided to &#39;colour&#39; and &#39;fill&#39; are hexidecimal colour codes. Note the 
+# hash mark prefix. It is required.
+# The &#39;labs&#39; layer controls graph title and axis labels
+ggplot(data = penguins) +
+  geom_histogram(aes(x = body_mass_g), colour = &quot;#2222EE&quot;, fill=&quot;#eeeeff&quot;) +
+  labs(title = &quot;Distribution of Penguin Body Mass&quot;, x = &quot;Body Mass (g)&quot;, y = &quot;Frequency&quot;)</code></pre>
+<p><img src="figures/04/04-histograms-2.png" width="672" /></p>
+<div id="exercise-1" class="section level3">
+<h3>Exercise 1</h3>
+<p>Using ggplot, make a histogram of all the ChlA values in data frame
+lakes, with each lake in a different colour, as shown. If you need help,
+review Module 3, or see my solution at the end of this handout. What
+does this simple graph tell you about the health of these three
+lakes?</p>
+<p><img src="figures/04/04-lake_hists-1.png" width="672" /></p>
+</div>
+</div>
+<div id="distribution-graphs-for-categorical-data"
+class="section level2">
+<h2>Distribution graphs for categorical data</h2>
+<p>The functions <code>hist</code> and <code>geom_histogram</code> are
+appropriate for <strong>continuous</strong> (numerical) data. For
+<strong>categorical</strong> variables (e.g. Species and Island in the
+penguin data set) it is usually better to make a bar graph. The example
+code below shows how to generate a bar graph in ggplot (cf. Module 03).
+Note how we modify the default ggplot colour palette to something more
+accessible to viewers with atypical colour vision:</p>
+<pre class="r"><code>
+# &quot;Colour-blind friendly&quot; palette from #https://personal.sron.nl/~pault/
+# These are hexadecimal colour codes. The # is required.
+customPalette &lt;- c(&quot;#DDAA33&quot;, &quot;#BB5566&quot;, &quot;#004488&quot;)
+
+# Generate a stacked bar plot, and use our custom colour palette
+ggplot(data = penguins) +
+  geom_bar(aes(x = island, fill=species), position = &quot;stack&quot;) +
+  scale_fill_manual(values = customPalette)</code></pre>
+<p><img src="figures/04/04-categorical_distribution-1.png" width="672" /></p>
+<p>Even a simple graph like this helps you to get to know your data.
+Just by inspection we see that Biscoe island has the largest population,
+Torgersen has only Adelie penguins, Dream Island has nearly equal
+numbers of Chinstrap and Gentoo, etc. When first approaching a big data
+set, always think about starting with some graphs.</p>
+<div id="exercise-2" class="section level3">
+<h3>Exercise 2</h3>
+<p>The bar graph above is in “stacked” format. Some people prefer bar
+graphs to have separate bars for each group, as shown below. Write the
+code needed to generate this graph. Hint: This requires changing only
+the value of one argument in the code above. See Module 03 for more
+revision as needed.</p>
+<p><img src="figures/04/04-categorical_distribution_dodge-1.png" width="672" /></p>
+</div>
+</div>
+<div id="measures-of-central-tendency" class="section level2">
+<h2>Measures of Central Tendency</h2>
+<p>Look at the graph you made earlier showing the distributions of ChlA
+for the three lakes. You might describe the Lake Ellesmere ChlA readings
+as “mostly below 100” and the Lake Rotorua readings as “mostly between
+10 and 20”. Statements like this are attempts to describe a
+<strong>typical</strong> score from a large data set. They allow us to
+capture the fact that, for example, <em>overall</em>, Lake Ellesmere has
+higher ChlA readings than Lake Rotorua It is not the case that
+<em>every</em> Ellesmere reading is higher than <em>every</em> Rotorua
+reading, but <strong>typically</strong> this is the case.</p>
+<p>In statistics, a precise measure of such typicality is called a
+<strong>Measure of Central Tendency</strong> (MCT). The most common MCTs
+are the <strong>mean</strong>, the <strong>median</strong> and the
+<strong>mode</strong>. These are, respectively, the mathematical
+average, the middle score, and the most frequent score (or scores) in a
+data set. There are some subtle statistical issues around which of the
+three MCT is appropriate for any given data analysis situation (ask your
+lecturer for details), but they are all easy to compute in R (we have,
+in fact, already met function <code>mean</code> in earlier modules), and
+we show example code below for computing these descriptive statistics on
+a single column of data from the penguins data set.</p>
+<p>Note that the penguins data has some missing some values (cf. Module
+01 - Tidy Data), The functions for mean and median will not work if the
+input data have any <code>NA</code> (missing) values. The most common
+solution is to omit those scores from the computation by setting the
+<code>na.rm</code> argument to <code>TRUE</code> as shown:</p>
+<pre class="r"><code>
+# Mean
+
+# We have seen this code before... We pass the column of interest
+# to function mean
+mean(penguins$body_mass_g, na.rm=TRUE)
+#&gt; [1] 4201.754
+
+
+# Median
+
+# The familiar pattern....
+median(penguins$body_mass_g, na.rm = TRUE)
+#&gt; [1] 4050
+
+
+# Mode
+
+# Base R has no built-in function for mode. After Module 08
+# you will be able to write your own Mode function. Or you can
+# use one of several available in auxiliary libraries. The
+# DescTools library is a good one.
+
+# Install the package once on each machine
+# install.packages(&quot;DescTools&quot;)
+
+# Load the library once each session
+library(DescTools)
+
+#Call the function
+Mode(penguins$body_mass_g, na.rm=TRUE)
+#&gt; [1] 3800
+#&gt; attr(,&quot;freq&quot;)
+#&gt; [1] 12</code></pre>
+<p>Note that DescTools::Mode returns the modal (i.e. most common value)
+with an attached <strong>attribute</strong> called “freq” equal to the
+number of occurences.</p>
+</div>
+<div id="using-function-summary" class="section level2">
+<h2>Using function <code>summary</code></h2>
+<p>When you have a very large number of data measures, you may wish to
+compute MCTs for individual columns as shown above. An efficient
+alternative for smaller data sets is to use function
+<code>summary</code>, which accepts a data frame and summarises
+<em>all</em> its columns at once. Function <code>summary</code> computes
+frequencies for categorical variables, and measures of central tendency
+for continuous variables. It also reports the numbers of NA values in
+each column. Function <code>summary</code> provides some additional
+measures (minimum, 1st quartile, 3rd quartile, and maximum) that we will
+discuss in more detail later.</p>
+<pre class="r"><code>summary(penguins)
+#&gt;       species          island    bill_length_mm  bill_depth_mm  
+#&gt;  Adelie   :152   Biscoe   :168   Min.   :32.10   Min.   :13.10  
+#&gt;  Chinstrap: 68   Dream    :124   1st Qu.:39.23   1st Qu.:15.60  
+#&gt;  Gentoo   :124   Torgersen: 52   Median :44.45   Median :17.30  
+#&gt;                                  Mean   :43.92   Mean   :17.15  
+#&gt;                                  3rd Qu.:48.50   3rd Qu.:18.70  
+#&gt;                                  Max.   :59.60   Max.   :21.50  
+#&gt;                                  NA&#39;s   :2       NA&#39;s   :2      
+#&gt;  flipper_length_mm  body_mass_g       sex           year     
+#&gt;  Min.   :172.0     Min.   :2700   female:165   Min.   :2007  
+#&gt;  1st Qu.:190.0     1st Qu.:3550   male  :168   1st Qu.:2007  
+#&gt;  Median :197.0     Median :4050   NA&#39;s  : 11   Median :2008  
+#&gt;  Mean   :200.9     Mean   :4202                Mean   :2008  
+#&gt;  3rd Qu.:213.0     3rd Qu.:4750                3rd Qu.:2009  
+#&gt;  Max.   :231.0     Max.   :6300                Max.   :2009  
+#&gt;  NA&#39;s   :2         NA&#39;s   :2</code></pre>
+<div id="exercise-3" class="section level3">
+<h3>Exercise 3</h3>
+<p>The results for column <code>year</code> may not be what you
+expected. Function <code>summary</code> has computed an <em>average
+value</em> for <code>year</code>. Does this seem like the appropriate
+analysis? (Answer =&gt; No.) Modify <code>penguins</code> to make
+<code>summary</code> treat the <code>year</code> data correctly, and
+rerun <code>summary</code>.</p>
+</div>
+</div>
+<div id="measures-of-variability" class="section level2">
+<h2>Measures of Variability</h2>
+<p>In the histograms for ChlA from each of three New Zealand lakes, the
+three groups of scores did not overlap completely, indicating that the
+typical values – the central tendencies – were different for the three
+lakes. We can confirm this observation by comparing the means. We can
+use function <code>aggregate</code> or <code>group_by</code> and
+<code>summarise</code> from package <code>dplyr</code> (cf. Module
+03).</p>
+<pre class="r"><code># Using aggregate. compute the group means
+aggregate(lakes$ChlA, by = list(Lake = lakes$LakeName), FUN=mean)
+#&gt;             Lake         x
+#&gt; 1 Lake Ellesmere 80.566667
+#&gt; 2   Lake Rotorua 18.419015
+#&gt; 3     Lake Taupo  1.030606
+
+# Using dplyr -- install tidyverse first if needed
+library(dplyr)
+by_lake &lt;- group_by(lakes, LakeName)
+summarise(by_lake, Mean_ChlA = mean(ChlA))
+#&gt; # A tibble: 3 × 2
+#&gt;   LakeName       Mean_ChlA
+#&gt;   &lt;fct&gt;              &lt;dbl&gt;
+#&gt; 1 Lake Ellesmere     80.6 
+#&gt; 2 Lake Rotorua       18.4 
+#&gt; 3 Lake Taupo          1.03</code></pre>
+<p>However, not only do the central points of the three lakes’
+distributions differ, so do the amounts of “spread”. Lake Taupo’s
+distribution is very “skinny”; all its readings are similar. Lake
+Ellesmere is squashed and spread out; its readings vary a lot. Lake
+Rotorua is intermediate. To illustrate this more clearly, we can use
+ggplot to make separate graphs for each lake, adjusting the y-axes to
+make comparison easier (note the arguments to
+<code>facet_grid</code>).</p>
+<pre class="r"><code>ggplot(data = lakes) +
+  geom_histogram(aes(x = ChlA, fill=LakeName), color=&quot;black&quot;) +
+  facet_grid(rows = vars(LakeName), scales=&quot;free_y&quot;)</code></pre>
+<p><img src="figures/04/facet_graphs-1.png" width="672" /></p>
+<p>Statistically, the “spread out” quality of a distribution reflects
+its <strong>variability</strong>.</p>
+<p>We can capture variability more precisely with measures of the
+<strong>range</strong> of the data set. These are typically the smallest
+and largest scores (minimum and maximum) and the scores at the 25th and
+75th percentiles (also called <strong>1st quartile</strong> and
+<strong>3rd quartile</strong>). Earlier, we saw that function
+<code>summary</code> computes these measures of range. However, if we
+simply pass the entire <code>lakes</code> data frame to function
+<code>summary</code>, it will combine the data from all three lakes – to
+compare the lakes we need the values from each lake separately.</p>
+<p>In Module 02 we saw that we could solve this problem by using
+function <code>subset</code> to select out just the rows from one lake,
+and passing those rows to <code>summary</code>. However, we can achieve
+the same result more parsimoniously by using function
+<code>aggregate</code>. Above we used aggregate with
+<code>FUN = mean</code> to get the mean ChlA for each lake. We can use
+<code>FUN = summary</code> to call function <code>summary</code>
+separately for the records of each lake. (The same result can be
+achieved with <code>group_by</code> and <code>summarise</code>.)</p>
+<pre class="r"><code>aggregate(lakes$ChlA, by = list(Lake = lakes$LakeName), FUN=summary)
+#&gt;             Lake     x.Min.  x.1st Qu.   x.Median     x.Mean  x.3rd Qu.
+#&gt; 1 Lake Ellesmere   1.300000  44.000000  67.950000  80.566667  97.087500
+#&gt; 2   Lake Rotorua   2.500000  10.825000  15.950000  18.419015  23.625000
+#&gt; 3     Lake Taupo   0.200000   0.600000   0.900000   1.030606   1.400000
+#&gt;       x.Max.
+#&gt; 1 521.300000
+#&gt; 2  77.100000
+#&gt; 3   2.900000</code></pre>
+<p>We can also measure the variablity in a data set with the
+<strong>standard deviation</strong>. The standard deviation is the most
+commonly used measure of variability, and it plays an important
+mathematical role in inferential statistics (ask your stats lecturer for
+details – it’s very interesting). Conceptually, the standard deviation
+is <em>almost</em> equal to the average distance from the mean across
+all the values in a data set – it doesn’t equal <em>exactly</em> that
+value, because of how it is computed, but it is close, and it can be
+helpful to think of it with this approximation. Big standard deviation
+shows that scores are spread far from their mean; small standard
+deviation shows that scores tend to huddle close to their mean. Compute
+standard deviation with function <code>sd</code>.</p>
+<pre class="r"><code>
+# Remember you can save having to type the data frame
+# name by using attach
+attach(lakes)
+aggregate(ChlA, by = list(Lake = LakeName), FUN=sd)
+#&gt;             Lake          x
+#&gt; 1 Lake Ellesmere 63.5217194
+#&gt; 2   Lake Rotorua 11.6637583
+#&gt; 3     Lake Taupo  0.5627233
+
+# More processing of data frame lakes could go here........
+
+# But remember to detach when you&#39;re finished...
+detach(lakes)</code></pre>
+<p>The histograms, the measures of range, and the standard deviations
+all indicate that Taupo has very stable ChlA measures, Rotorua is a
+little noisier, and Ellesmere is all over the place. This phytoplankton
+biomass stability is an important indicator of lake health – a stable
+lake is at much lower risk of a toxic algal bloom.</p>
+</div>
+<div id="efficient-code-for-descriptive-statistics"
+class="section level2">
+<h2>Efficient code for descriptive statistics</h2>
+<p>The function <code>describeBy</code> in package <code>psych</code>
+will compute all the descriptive summaries we have seen (and a few more)
+in one statement. When you are exploring a single data column and a
+single grouping column (so the output doesn’t get too large), this is a
+very useful function.</p>
+<pre class="r"><code># Install once on any computer
+#install.packages(&quot;psych&quot;)
+
+# Call once each R session
+library(psych)
+#&gt; 
+#&gt; Attaching package: &#39;psych&#39;
+#&gt; The following objects are masked from &#39;package:DescTools&#39;:
+#&gt; 
+#&gt;     AUC, ICC, SD
+#&gt; The following objects are masked from &#39;package:ggplot2&#39;:
+#&gt; 
+#&gt;     %+%, alpha
+
+# Pass in the data column and the grouping column
+describeBy(lakes$ChlA, lakes$LakeName)
+#&gt; 
+#&gt;  Descriptive statistics by group 
+#&gt; group: Lake Ellesmere
+#&gt;    vars   n  mean    sd median trimmed  mad min   max range skew kurtosis  se
+#&gt; X1    1 120 80.57 63.52  67.95   72.45 40.7 1.3 521.3   520 3.12     17.5 5.8
+#&gt; ------------------------------------------------------------ 
+#&gt; group: Lake Rotorua
+#&gt;    vars   n  mean    sd median trimmed  mad min  max range skew kurtosis   se
+#&gt; X1    1 132 18.42 11.66  15.95   16.97 9.12 2.5 77.1  74.6 1.71     4.75 1.02
+#&gt; ------------------------------------------------------------ 
+#&gt; group: Lake Taupo
+#&gt;    vars   n mean   sd median trimmed  mad min max range skew kurtosis   se
+#&gt; X1    1 156 1.03 0.56    0.9    0.97 0.56 0.2 2.9   2.7 0.97      0.5 0.05</code></pre>
+<p>Package <code>psych</code> contains many other interesting
+statistical tools, especially for multivariate data sets commonly found
+in psychological and ecological research. Ask Google or your lecturer
+for details.</p>
+</div>
+<div id="exploring-the-relationship-between-two-variables"
+class="section level2">
+<h2>Exploring the relationship between two variables</h2>
+<p>The preceding descriptive statistics all looked at data measures –
+ChlA, bill length, body weight, etc. – individually, summarising their
+distribution, central tendency and variability. Often, however, we are
+interested in describing <strong>the relationship between data
+measures</strong>. For example, we might want to know if heavier
+penguins also tend to have longer bills. This type of relationship is
+called a <strong>correlation</strong>. When we have more than one
+measure for each experimental participant (or each penguin, or each
+lake) we can explore correlations between pairs of measures graphically
+with a <strong>scatterplot</strong>. A scatterplot has one measure on
+each axis, and one point for each participant’s pair of scores.</p>
+<p>In the code example below we make a scatterplot with ggplot
+(cf. Module 03), and show how to add a <strong>linear trend
+line</strong>. Conceptually, this is the line that runs through the
+center of the scatterplot points, and it helps us to see the direction
+of the relationship. Mathematically, trend lines are actually very
+complicated things, and we generate them with the powerful function
+<code>lm</code>,(for <strong>linear model</strong>). You will learn
+about the many fascinating things you can do with linear modeling if you
+take advanced statistics papers.</p>
+<pre class="r"><code># geom_point plots the points of the scatterplot 
+
+# geom_smooth plots the linear trend line computed with function lm
+
+# The se argument determines whether error bars are shown 
+# around the trend line.
+
+ggplot(data = penguins, mapping = aes(x = body_mass_g, y = bill_length_mm)) +
+  geom_point() +
+  geom_smooth(method = &quot;lm&quot;, se=FALSE)</code></pre>
+<p><img src="figures/04/04-scatterplot-1.png" width="672" /></p>
+<p>The scatterplot gives us a very clear picture: those penguins with
+higher body weights tend to also have longer bills, and this is
+reflected in the positive slope of the trendline. Note however that this
+is not an absolute rule. Is it easy to find pairs of points such that
+the lighter of two penguins has the longer bill. This is typical of
+correlational data.</p>
+<p>There are various statistical measures that capture the strength of a
+correlation (i.e. how close it is to being an absolute rule). For
+continuous, numerical data (such as bill length and body weight) use the
+R function <code>cor</code> to compute the numerical correlation value.
+As with means and medians, we must tell <code>cor</code> how to cope
+with missing data (NA scores). Unfortunately the syntax is not
+consistent across the functions. For function <code>mean</code> we set
+argument <code>na.rm = TRUE</code>. For function <code>cor</code> we
+must set argument <code>use = "complete.obs"</code>, meaning that we
+want the function to use only those rows that are complete (i.e. have
+both values). These idiosyncracies occur from time to time in R; you
+just have to learn them.</p>
+<pre class="r"><code>
+# Pass the two data columns into function cor
+cor(penguins$bill_length_mm, penguins$body_mass_g, use=&quot;complete.obs&quot;)
+#&gt; [1] 0.5951098</code></pre>
+<p>Function <code>cor</code> returns a value between -1 and 1.
+Correlations that trend downward (i.e. if one score is high, the other
+tends to be low) will have a negative correlation value. Correlations
+that trend upward (i.e. if one score is high the other also tends to be
+high) will have a positive correlation value. The closer the absolute
+value of <code>cor</code> is to 1, the stronger the correlation (you
+know who to talk to for more detail, don’t you?).</p>
+<p>For example, consider these two scatterplots:</p>
+<p><img src="figures/04/04-comparing-1.png" width="672" /></p>
+<div id="exercise-4" class="section level3">
+<h3>Exercise 4</h3>
+<p>For one of the scatterplots above, the computed correlation score is
+0.60. For the other, it is 0.87. First, predict which is which. Second,
+write the necessary R code to confirm your prediction.</p>
+</div>
+<div id="exercise-5" class="section level3">
+<h3>Exercise 5</h3>
+<p>5.1. Many scientific data sets have histograms that are
+“bell-shaped”. That is, most of the values cluster in the middle, and
+the frequency drops off symmetrically toward smaller and larger scores.
+The distribution of penguin body mass is a good example of a data set
+that is approximately bell-shaped.</p>
+<p>Many inferential statistical techniques require data sets to be close
+to a very specific bell-shape called the <strong>normal curve</strong>.
+If your data deviate too far from <strong>normal</strong>, the
+inferential tests will give incorrect results. The most serious such
+deviation is <strong>skew</strong>, which is when the bell-shape tilts
+to one side, with a long tail in either the smaller or larger
+direction.</p>
+<p>The penguin body mass graph is not perfectly symmetrical. It shows a
+bit of skewness with a longer tail toward the heavier penguins. But many
+data sets from nature are <em>extremely</em> skewed. We can see this in
+the lakes data.</p>
+<p>Observe Lake Ellesmere in the histogram of the three lake’s ChlA
+readings. Although most of the readings are clustered below 100, there
+are some much larger values – one reading is more than 500 – creating a
+long “tail” to the right. The ChlA measure in Lake Ellesmere is
+skewed.</p>
+<p>We can compute an exact numerical value for the skewness of a
+distribution using function <code>skewness</code> from package
+<code>e1071</code>. As in the examples above, we can compute the
+skewness for each lake using <code>aggregate</code> or, if we are using
+<code>dplyr</code>, using <code>group_by</code> and
+<code>summarise</code>. Alternatively, we can use
+<code>describeBy</code> as above. It includes skewness among its summary
+statistics.</p>
+<p>With the method of your choice, compute the skewness value for each
+lake. What does the pattern of results tell you about the health of the
+three lakes?</p>
+<p>5.2. A perfectly symmetrical distribution will have a skewness of 0.
+As a distribution tilts further and further from normal, the absolute
+value of the skewness measure goes up. What consititutes “too much skew”
+varies between disciplines, and for an assignment you will want to check
+with your lecturer. However, a common rule of thumb is that any value
+greater than 1 (or less than -1) has enough skew that you need to think
+about dealing with it. A value greater than 3 (as found with the Lake
+Ellesmere data) is <em>definitely</em> skewed.</p>
+<p>As mentioned earlier, many inferential tests give inaccurate results
+with skewed data, so in cases like the lakes data, we must “unskew” our
+values. A common approach is to compute the natural logarithm of each
+data value (using R function <code>log</code>), and analyse those logs
+(ask your lecturer about alternative approaches). The logarithm
+computation pulls extreme scores in, reducing the skew, without changing
+the overall relationships between data values.</p>
+<p>In Module 04 you saw how to add a new computed column to a data frame
+using either function <code>mutate</code> or the <code>$</code>
+operator. Using the technique of your choice, add a column to data frame
+lakes that holds the natural log of each ChlA reading.</p>
+<ol start="3" style="list-style-type: decimal">
+<li>Using ggplot, make a histogram of all the log ChlA values in data
+frame lakes, with each lake in a different colour. This code is
+<em>extremely</em> similar to the code you wrote for the earlier
+exercise. How would you describe these distributions. Are Lake
+Ellesmere’s log ChlA values skewed? What can you provide as evidence for
+your answer?</li>
+</ol>
+</div>
+<div id="code-solution-for-the-lakes-histogram" class="section level3">
+<h3>Code solution for the lakes histogram</h3>
+<pre class="r fold-hide"><code>ggplot(data = lakes) +
+  geom_histogram(aes(x = ChlA, color = LakeName, fill=LakeName), position=&quot;dodge&quot;)
+</code></pre>
+</div>
+</div>
+
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiU3VtbWFyaXNpbmciCmRhdGU6ICJTZW1lc3RlciAxLCAyMDIyIgpvdXRwdXQ6CiAgaHRtbF9kb2N1bWVudDoKICAgIHRvYzogdHJ1ZQogICAgdG9jX2Zsb2F0OiB0cnVlCiAgICB0b2NfZGVwdGg6IDMKICAgIGNvZGVfZG93bmxvYWQ6IHRydWUKICAgIGNvZGVfZm9sZGluZzogc2hvdwotLS0KCmBgYHtyIHNldHVwLCBpbmNsdWRlPUZBTFNFfQpsaWJyYXJ5KGtuaXRyKQoKa25pdHI6Om9wdHNfY2h1bmskc2V0KAogIGNvbW1lbnQgPSAiIz4iLAogIGZpZy5wYXRoID0gImZpZ3VyZXMvMDQvIiwgIyB1c2Ugb25seSBmb3Igc2luZ2xlIFJtZCBmaWxlcwogIGNvbGxhcHNlID0gVFJVRSwKICBlY2hvID0gVFJVRQopCgoKYGBgCgo+ICMjIyMgQXNzb2NpYXRlZCBNYXRlcmlhbAo+Cj4gWm9vbSBub3RlczogW1pvb20gTm90ZXMgMDQgLSBTdW1tYXJpc2luZyBkYXRhXSh6b29tX25vdGVzXzA0Lmh0bWwpCj4KPiBSZWFkaW5ncwo+Cj4gLSBbUiBmb3IgRGF0YSBTY2llbmNlIC0gQ2hhcHRlciA3XShodHRwczovL3I0ZHMuaGFkLmNvLm56L2V4cGxvcmF0b3J5LWRhdGEtYW5hbHlzaXMuaHRtbCkKClwKCiMjIEludHJvZHVjdGlvbgoKV2UgZG8gc2NpZW50aWZpYyByZXNlYXJjaCB0byB0ZXN0IGh5cG90aGVzZXMsIGFuc3dlciBxdWVzdGlvbnMsIG9yIGp1c3QgbGVhcm4gc29tZXRoaW5nIGFib3V0IHRoZSB3b3JsZC4gQWZ0ZXIgdGhlIG9mdGVuIGxhYm91cmlvdXMgcHJvY2VzcyBvZiBkYXRhIGNvbGxlY3Rpb24sIHdlIG1heSBoYXZlIGh1bmRyZWRzIChvciBldmVuIHRob3VzYW5kcykgb2YgZGF0YSBwb2ludHMsIGJ1dCB3ZSBoYXZlbid0IGFjdHVhbGx5IGxlYXJuZWQgYW55dGhpbmcuIFRvIHNxdWVlemUgdGhlIGtub3dsZWRnZSBvdXQgb2Ygb3VyIHJhdyBkYXRhLCB3ZSBtdXN0IHVzZSBzdGF0aXN0aWNzLgoKVGhlIGZvcm1hbCB0b3BpYyBvZiBzdGF0aXN0aWNzIGlzIGxhcmdlIGFuZCBjb21wbGV4LCBhbmQgd2UgZG8gbm90IGF0dGVtcHQgdG8gdGVhY2ggaXQgaGVyZSAodGhlcmUgYXJlIHBhcGVycyBmb3IgdGhhdCwgYW5kIHdlIHJlY29tbWVuZCB5b3UgdGFrZSBhcyBtYW55IG9mIHRoZW0gYXMgcG9zc2libGUpLiBXZSBjb25jZW50cmF0ZSBvbiBob3cgdG8gdXNlIFIgdG8gcGVyZm9ybSBjb21tb24gc3RhdGlzdGljYWwgYW5hbHlzZXMuIFIgaXMgZXNwZWNpYWxseSB1c2VmdWwgZm9yIHN1Y2ggdGFza3MgYmVjYXVzZSBvZiBpdHMgZXh0ZW5zaXZlIHNldCBvZiBzdGF0aXN0aWNhbCBsaWJyYXJpZXMgYW5kIGVmZmljaWVudCBkYXRhIGhhbmRsaW5nIGZhY2lsaXRpZXMuIAoKVGhlcmUgYXJlIHR3byBnZW5lcmFsIHR5cGVzIG9mIHN0YXRpc3RpY2FsIGFuYWx5c2VzIC0tIGRlc2NyaXB0aXZlIHN0YXRpc3RpY3MsIHdoaWNoIGFsbG93IHVzIHRvIHN1bW1hcmlzZSBhbmQgZGVzY3JpYmUgb3VyIHJhdyBkYXRhLCBhbmQgaW5mZXJlbnRpYWwgc3RhdGlzdGljcywgd2hpY2ggYWxsb3cgdXMgdG8gZ2VuZXJhbGlzZSBvdXIgcmVzdWx0cyBiZXlvbmQgb3VyIG9ic2VydmVkIGRhdGEuIFdlIHdpbGwgZGlzY3VzcyBkZXNjcmlwdGl2ZSBzdGF0aXN0aWNzIGluIHRoaXMgbW9kdWxlIGFuZCBpbmZlcmVudGlhbCB0ZWNobmlxdWVzIGluIE1vZHVsZSAwNi4KCkZvciB0aGlzIG1vZHVsZSwgd2Ugd2lsbCB1c2UgdHdvIGRhdGEgc2V0cyAtLSB0aGUgUGFsbWVycyBQZW5ndWlucyBkYXRhIHdlIHNhdyBlYXJsaWVyIGluIHRoZSBEYXRhIFZpc3VhbGlzYXRpb24gbW9kdWxlLCBhbmQgYSBkYXRhIHNldCBjb250YWluaW5nIENobG9yb3BoeWxsIEEgKENobEEpIHJlYWRpbmdzIGZyb20gdGhyZWUgTmV3IFplYWxhbmQgbGFrZXMgKGRhdGEgcHJvdmlkZWQgYnkgdGhlIGxvY2FsIFJlZ2lvbmFsIENvdW5jaWxzKS4gQ2hsQSBsZXZlbHMgYXJlIGFuIGluZGljYXRvciBvZiBwaHl0b3BsYW5rdG9uIGJpb21hc3MsIGFuZCBwcm92aWRlIGEgZ2VuZXJhbCBtZWFzdXJlIG9mIGxha2UgaGVhbHRoIC0tIG1vcmUgQ2hsQSBpbmRpY2F0ZXMgcG9vcmVyIGhlYWx0aC4gVGhlICJ0b3hpYyBhbGdhbCBibG9vbXMiIHRoYXQgb2NjdXIgb2NjYXNpb25hbGx5IGluIE5ldyBaZWFsYW5kIGxha2VzIGFyZSBhY2NvbXBhbmllZCBieSBhIGRyYW1hdGljIHNwaWtlIGluIG1lYXN1cmVkIENobEEuCgojIyBMb2FkaW5nIHRoZSBkYXRhCgpgYGB7ciBsb2FkIHRoZSBkYXRhLCB3YXJuaW5nPUZBTFNFLCBtZXNzYWdlPUZBTFNFfQoKIyBJbnN0YWxsIHBhbG1lcnBlbmd1aW5zIG9uY2Ugb24gYW55IGNvbXB1dGVyCiMgaW5zdGFsbC5wYWNrYWdlcygicGFsbWVyc3Blbmd1aW5zIikKCiMgQWZ0ZXIgbG9hZGluZyB0aGUgbGlicmFyeSwgYSB0aWJibGUKIyBjYWxsZWQgJ3Blbmd1aW5zJyB3aWxsIGJlIGluaXRpYWxpc2VkCmxpYnJhcnkocGFsbWVycGVuZ3VpbnMpCgojIENoZWNrIHRoZSBzdHJ1Y3R1cmUKcGVuZ3VpbnMKCiMgUmVhZCBpbiB0aGUgbGFrZXMgZGF0YSBmaWxlLCBwYXJzaW5nIHRoZSBsYWtlIAojIG5hbWUgY29sdW1uIGFzIGEgZmFjdG9yCmxha2VzIDwtIHJlYWQuY3N2KCJkYXRhL05aX2xha2VfY2hsYV9kYXRhLmNzdiIsIHN0cmluZ3NBc0ZhY3RvcnMgPSBUUlVFKQoKIyBTaW5jZSB0aGV5IGFyZSBjb25jZXB0dWFsbHkgY2F0ZWdvcmljYWwgaW4gdGhpcyBkYXRhIHNldCwgCiMgeW91IG1heSB3aXNoIHRvIGNhc3QgWWVhciBhbmQgTW9udGggdG8gZmFjdG9ycyBhcyB3ZWxsLCBmb3IgY29tcGxldGVuZXNzLi4uCmxha2VzJFllYXIgPC0gYXMuZmFjdG9yKGxha2VzJFllYXIpCmxha2VzJE1vbnRoIDwtIGFzLmZhY3RvcihsYWtlcyRNb250aCkgIAoKIyBDaGVjayB0aGUgc3RydWN0dXJlCnN0cihsYWtlcykKYGBgCgoKIyMgVmlzdWFsaXNlIHRoZSBkYXRhCgpXaGVuIGZhY2VkIHdpdGggYSBuZXcgZGF0YSBzZXQsIG15IGZpcnN0IHN0ZXAgaXMgaW52YXJpYWJseSB0byBzdGFydCBtYWtpbmcgZ3JhcGhzLiBUaGVzZSAicGljdHVyZXMiIG9mIHlvdXIgZGF0YSBwcm92aWRlIGFuIGVhc3kgd2F5IHRvIHNlZSBsYXJnZS1zY2FsZSBwYXR0ZXJucyB0aGF0IHdpbGwgaGVscCBndWlkZSB5b3VyIGZ1cnRoZXIgYW5hbHlzaXMuIFRoZXkgYWxzbyBoZWxwIHlvdSB0byBjYXRjaCBhbnkgcHJvYmxlbXMgaW4geW91ciBkYXRhIChzZWUgdGhlIHNrZXduZXNzIGV4ZXJjaXNlIGJlbG93KSB0aGF0IG11c3QgYmUgYWRkcmVzc2VkIGJlZm9yZSBwcm9jZWVkaW5nIHRvIG1vcmUgY29tcGxleCBhbmFseXNlcy4KCkFuIGV4Y2VsbGVudCBmaXJzdCBncmFwaCBmb3IgY29udGludW91cyAoaS5lLiBub3QgY2F0ZWdvcmljYWwpIGRhdGEgaXMgdGhlICoqZnJlcXVlbmN5IGRpc3RyaWJ1dGlvbioqLCAgb3IgKipoaXN0b2dyYW0qKiwgd2hpY2ggaGFzIGRhdGEgdmFsdWUgb24gdGhlIHgtYXhpcyBhbmQgZnJlcXVlbmN5IChpLmUuIGNvdW50IG9yIHByb3BvcnRpb24pIG9uIHRoZSB5LWF4aXMuIFRoaXMgc2hvd3MgeW91LCBpbiBhIHNpbmdsZSBwaWN0dXJlLCBob3cgeW91ciBkYXRhIGFyZSBkaXN0cmlidXRlZC4KClRoZSBgcGVuZ3VpbnNgIGRhdGEgc2V0IGNvbnRhaW5zIHZhbHVlcyBmb3IgMzQ0IGRpZmZlcmVudCBwZW5ndWlucy4gV2UgYmVnaW4gYnkgbG9va2luZyBhdCBob3cgdGhlIHBlbmd1aW5zJyBib2R5IHdlaWdodHMgYXJlIGRpc3RyaWJ1dGVkLiAKCmBgYHtyIDA0LWhpc3RvZ3JhbXMsIHdhcm5pbmc9RkFMU0UsIG1lc3NhZ2U9RkFMU0V9CgojIFdpdGggYmFzZSBSCiMgVGhlICdicmVha3MnIGFyZ3VtZW50IGNvbnRyb2xzIHRoZSBudW1iZXIgb2YgYmFycyBkcmF3bgpoaXN0KHBlbmd1aW5zJGJvZHlfbWFzc19nLCAKICAgICBicmVha3MgPSAxMDAsCiAgICAgbWFpbj0iRGlzdHJpYnV0aW9uIG9mIFBlbmd1aW4gQm9keSBNYXNzIiwgeGxhYiA9ICJCb2R5IG1hc3MgKGcpIiwgeWxhYiA9ICJGcmVxdWVuY3kiKQoKCiMgV2l0aCBnZ3Bsb3QKIyBMb2FkIHRoZSBsaWJyYXJ5IGJlZm9yZSB5b3VyIGZpcnN0IGNhbGwgdG8gZ2dwbG90CmxpYnJhcnkoZ2dwbG90MikKCiMgVGhlIHZhbHVlcyBwcm92aWRlZCB0byAnY29sb3VyJyBhbmQgJ2ZpbGwnIGFyZSBoZXhpZGVjaW1hbCBjb2xvdXIgY29kZXMuIE5vdGUgdGhlIAojIGhhc2ggbWFyayBwcmVmaXguIEl0IGlzIHJlcXVpcmVkLgojIFRoZSAnbGFicycgbGF5ZXIgY29udHJvbHMgZ3JhcGggdGl0bGUgYW5kIGF4aXMgbGFiZWxzCmdncGxvdChkYXRhID0gcGVuZ3VpbnMpICsKICBnZW9tX2hpc3RvZ3JhbShhZXMoeCA9IGJvZHlfbWFzc19nKSwgY29sb3VyID0gIiMyMjIyRUUiLCBmaWxsPSIjZWVlZWZmIikgKwogIGxhYnModGl0bGUgPSAiRGlzdHJpYnV0aW9uIG9mIFBlbmd1aW4gQm9keSBNYXNzIiwgeCA9ICJCb2R5IE1hc3MgKGcpIiwgeSA9ICJGcmVxdWVuY3kiKQpgYGAKCiMjIyBFeGVyY2lzZSAxCgpVc2luZyBnZ3Bsb3QsIG1ha2UgYSBoaXN0b2dyYW0gb2YgYWxsIHRoZSBDaGxBIHZhbHVlcyBpbiBkYXRhIGZyYW1lIGxha2VzLCB3aXRoIGVhY2ggbGFrZSBpbiBhIGRpZmZlcmVudCBjb2xvdXIsIGFzIHNob3duLiBJZiB5b3UgbmVlZCBoZWxwLCByZXZpZXcgTW9kdWxlIDMsIG9yIHNlZSBteSBzb2x1dGlvbiBhdCB0aGUgZW5kIG9mIHRoaXMgaGFuZG91dC4gV2hhdCBkb2VzIHRoaXMgc2ltcGxlIGdyYXBoIHRlbGwgeW91IGFib3V0IHRoZSBoZWFsdGggb2YgdGhlc2UgdGhyZWUgbGFrZXM/CgpgYGB7ciAwNC1sYWtlX2hpc3RzLCBlY2hvPUZBTFNFLCB3YXJuaW5nPUZBTFNFLCBtZXNzYWdlPUZBTFNFfQpnZ3Bsb3QoZGF0YSA9IGxha2VzKSArCiAgZ2VvbV9oaXN0b2dyYW0oYWVzKHggPSBDaGxBLCBjb2xvciA9IExha2VOYW1lLCBmaWxsPUxha2VOYW1lKSwgcG9zaXRpb249ImRvZGdlIikKCmBgYAoKCiMjIERpc3RyaWJ1dGlvbiBncmFwaHMgZm9yIGNhdGVnb3JpY2FsIGRhdGEKClRoZSBmdW5jdGlvbnMgYGhpc3RgIGFuZCBgZ2VvbV9oaXN0b2dyYW1gIGFyZSBhcHByb3ByaWF0ZSBmb3IgKipjb250aW51b3VzKiogKG51bWVyaWNhbCkgZGF0YS4gRm9yICoqY2F0ZWdvcmljYWwqKiB2YXJpYWJsZXMgKGUuZy4gU3BlY2llcyBhbmQgSXNsYW5kIGluIHRoZSBwZW5ndWluIGRhdGEgc2V0KSBpdCBpcyB1c3VhbGx5IGJldHRlciB0byBtYWtlIGEgYmFyIGdyYXBoLiBUaGUgZXhhbXBsZSBjb2RlIGJlbG93IHNob3dzIGhvdyB0byBnZW5lcmF0ZSBhIGJhciBncmFwaCBpbiBnZ3Bsb3QgKGNmLiBNb2R1bGUgMDMpLiBOb3RlIGhvdyB3ZSBtb2RpZnkgdGhlIGRlZmF1bHQgZ2dwbG90IGNvbG91ciBwYWxldHRlIHRvIHNvbWV0aGluZyBtb3JlIGFjY2Vzc2libGUgdG8gdmlld2VycyB3aXRoIGF0eXBpY2FsIGNvbG91ciB2aXNpb246CgoKYGBge3IgMDQtY2F0ZWdvcmljYWxfZGlzdHJpYnV0aW9ufQoKIyAiQ29sb3VyLWJsaW5kIGZyaWVuZGx5IiBwYWxldHRlIGZyb20gI2h0dHBzOi8vcGVyc29uYWwuc3Jvbi5ubC9+cGF1bHQvCiMgVGhlc2UgYXJlIGhleGFkZWNpbWFsIGNvbG91ciBjb2Rlcy4gVGhlICMgaXMgcmVxdWlyZWQuCmN1c3RvbVBhbGV0dGUgPC0gYygiI0REQUEzMyIsICIjQkI1NTY2IiwgIiMwMDQ0ODgiKQoKIyBHZW5lcmF0ZSBhIHN0YWNrZWQgYmFyIHBsb3QsIGFuZCB1c2Ugb3VyIGN1c3RvbSBjb2xvdXIgcGFsZXR0ZQpnZ3Bsb3QoZGF0YSA9IHBlbmd1aW5zKSArCiAgZ2VvbV9iYXIoYWVzKHggPSBpc2xhbmQsIGZpbGw9c3BlY2llcyksIHBvc2l0aW9uID0gInN0YWNrIikgKwogIHNjYWxlX2ZpbGxfbWFudWFsKHZhbHVlcyA9IGN1c3RvbVBhbGV0dGUpCmBgYAoKRXZlbiBhIHNpbXBsZSBncmFwaCBsaWtlIHRoaXMgaGVscHMgeW91IHRvIGdldCB0byBrbm93IHlvdXIgZGF0YS4gSnVzdCBieSBpbnNwZWN0aW9uIHdlIHNlZSB0aGF0IEJpc2NvZSBpc2xhbmQgaGFzIHRoZSBsYXJnZXN0IHBvcHVsYXRpb24sIFRvcmdlcnNlbiBoYXMgb25seSBBZGVsaWUgcGVuZ3VpbnMsIERyZWFtIElzbGFuZCBoYXMgbmVhcmx5IGVxdWFsIG51bWJlcnMgb2YgQ2hpbnN0cmFwIGFuZCBHZW50b28sIGV0Yy4gV2hlbiBmaXJzdCBhcHByb2FjaGluZyBhIGJpZyBkYXRhIHNldCwgYWx3YXlzIHRoaW5rIGFib3V0IHN0YXJ0aW5nIHdpdGggc29tZSBncmFwaHMuCgoKIyMjIEV4ZXJjaXNlIDIKClRoZSBiYXIgZ3JhcGggYWJvdmUgaXMgaW4gInN0YWNrZWQiIGZvcm1hdC4gU29tZSBwZW9wbGUgcHJlZmVyIGJhciBncmFwaHMgdG8gaGF2ZSBzZXBhcmF0ZSBiYXJzIGZvciBlYWNoIGdyb3VwLCBhcyBzaG93biBiZWxvdy4gV3JpdGUgdGhlIGNvZGUgbmVlZGVkIHRvIGdlbmVyYXRlIHRoaXMgZ3JhcGguIEhpbnQ6IFRoaXMgcmVxdWlyZXMgY2hhbmdpbmcgb25seSB0aGUgdmFsdWUgb2Ygb25lIGFyZ3VtZW50IGluIHRoZSBjb2RlIGFib3ZlLiBTZWUgTW9kdWxlIDAzIGZvciBtb3JlIHJldmlzaW9uIGFzIG5lZWRlZC4KCgpgYGB7ciAwNC1jYXRlZ29yaWNhbF9kaXN0cmlidXRpb25fZG9kZ2UsIGVjaG89RkFMU0UsIHdhcm5pbmc9RkFMU0UsIG1lc3NhZ2U9RkFMU0V9CgojICJDb2xvdXItYmxpbmQgZnJpZW5kbHkiIHBhbGV0dGUgZnJvbSAjaHR0cHM6Ly9wZXJzb25hbC5zcm9uLm5sL35wYXVsdC8KIyBUaGVzZSBhcmUgaGV4YWRlY2ltYWwgY29sb3VyIGNvZGVzLiBUaGUgIyBpcyByZXF1aXJlZC4KY3VzdG9tUGFsZXR0ZSA8LSBjKCIjRERBQTMzIiwgIiNCQjU1NjYiLCAiIzAwNDQ4OCIpCgojIEdlbmVyYXRlIGEgc3RhY2tlZCBiYXIgcGxvdCwgYW5kIHVzZSBvdXIgY3VzdG9tIGNvbG91ciBwYWxldHRlCmdncGxvdChkYXRhID0gcGVuZ3VpbnMpICsKICBnZW9tX2JhcihhZXMoeCA9IGlzbGFuZCwgZmlsbD1zcGVjaWVzKSwgcG9zaXRpb24gPSAiZG9kZ2UiKSArCiAgc2NhbGVfZmlsbF9tYW51YWwodmFsdWVzID0gY3VzdG9tUGFsZXR0ZSkKYGBgCgojIyBNZWFzdXJlcyBvZiBDZW50cmFsIFRlbmRlbmN5CgpMb29rIGF0IHRoZSBncmFwaCB5b3UgbWFkZSBlYXJsaWVyIHNob3dpbmcgdGhlIGRpc3RyaWJ1dGlvbnMgb2YgQ2hsQSBmb3IgdGhlIHRocmVlIGxha2VzLiBZb3UgbWlnaHQgZGVzY3JpYmUgdGhlIExha2UgRWxsZXNtZXJlIENobEEgcmVhZGluZ3MgYXMgIm1vc3RseSBiZWxvdyAxMDAiIGFuZCB0aGUgTGFrZSBSb3RvcnVhIHJlYWRpbmdzIGFzICJtb3N0bHkgYmV0d2VlbiAxMCBhbmQgMjAiLiAgU3RhdGVtZW50cyBsaWtlIHRoaXMgYXJlIGF0dGVtcHRzIHRvIGRlc2NyaWJlIGEgKip0eXBpY2FsKiogc2NvcmUgZnJvbSBhIGxhcmdlIGRhdGEgc2V0LiBUaGV5IGFsbG93IHVzIHRvIGNhcHR1cmUgdGhlIGZhY3QgdGhhdCwgZm9yIGV4YW1wbGUsICpvdmVyYWxsKiwgTGFrZSBFbGxlc21lcmUgaGFzIGhpZ2hlciBDaGxBIHJlYWRpbmdzIHRoYW4gTGFrZSBSb3RvcnVhIEl0IGlzIG5vdCB0aGUgY2FzZSB0aGF0ICpldmVyeSogRWxsZXNtZXJlIHJlYWRpbmcgaXMgaGlnaGVyIHRoYW4gKmV2ZXJ5KiBSb3RvcnVhIHJlYWRpbmcsIGJ1dCAqKnR5cGljYWxseSoqIHRoaXMgaXMgdGhlIGNhc2UuIAoKSW4gc3RhdGlzdGljcywgYSBwcmVjaXNlIG1lYXN1cmUgb2Ygc3VjaCB0eXBpY2FsaXR5IGlzIGNhbGxlZCBhICoqTWVhc3VyZSBvZiBDZW50cmFsIFRlbmRlbmN5KiogKE1DVCkuIFRoZSBtb3N0IGNvbW1vbiBNQ1RzIGFyZSB0aGUgKiptZWFuKiosIHRoZSAqKm1lZGlhbioqIGFuZCB0aGUgKiptb2RlKiouIFRoZXNlIGFyZSwgcmVzcGVjdGl2ZWx5LCB0aGUgbWF0aGVtYXRpY2FsIGF2ZXJhZ2UsIHRoZSBtaWRkbGUgc2NvcmUsIGFuZCB0aGUgbW9zdCBmcmVxdWVudCBzY29yZSAob3Igc2NvcmVzKSBpbiBhIGRhdGEgc2V0LiBUaGVyZSBhcmUgc29tZSBzdWJ0bGUgc3RhdGlzdGljYWwgaXNzdWVzIGFyb3VuZCB3aGljaCBvZiB0aGUgdGhyZWUgTUNUIGlzIGFwcHJvcHJpYXRlIGZvciBhbnkgZ2l2ZW4gZGF0YSBhbmFseXNpcyBzaXR1YXRpb24gKGFzayB5b3VyIGxlY3R1cmVyIGZvciBkZXRhaWxzKSwgYnV0IHRoZXkgYXJlIGFsbCBlYXN5IHRvIGNvbXB1dGUgaW4gUiAod2UgaGF2ZSwgaW4gZmFjdCwgYWxyZWFkeSBtZXQgZnVuY3Rpb24gYG1lYW5gIGluIGVhcmxpZXIgbW9kdWxlcyksIGFuZCB3ZSBzaG93IGV4YW1wbGUgY29kZSBiZWxvdyBmb3IgY29tcHV0aW5nIHRoZXNlIGRlc2NyaXB0aXZlIHN0YXRpc3RpY3Mgb24gYSBzaW5nbGUgY29sdW1uIG9mIGRhdGEgZnJvbSB0aGUgcGVuZ3VpbnMgZGF0YSBzZXQuCgpOb3RlIHRoYXQgdGhlIHBlbmd1aW5zIGRhdGEgaGFzIHNvbWUgbWlzc2luZyBzb21lIHZhbHVlcyAoY2YuIE1vZHVsZSAwMSAtIFRpZHkgRGF0YSksIFRoZSBmdW5jdGlvbnMgZm9yIG1lYW4gYW5kIG1lZGlhbiB3aWxsIG5vdCB3b3JrIGlmIHRoZSBpbnB1dCBkYXRhIGhhdmUgYW55IGBOQWAgKG1pc3NpbmcpIHZhbHVlcy4gVGhlIG1vc3QgY29tbW9uIHNvbHV0aW9uIGlzIHRvIG9taXQgdGhvc2Ugc2NvcmVzIGZyb20gdGhlIGNvbXB1dGF0aW9uIGJ5IHNldHRpbmcgdGhlIGBuYS5ybWAgYXJndW1lbnQgdG8gYFRSVUVgIGFzIHNob3duOgoKYGBge3IgTUNULCB3YXJuaW5nPUZBTFNFLCBtZXNzYWdlPUZBTFNFfQoKIyBNZWFuCgojIFdlIGhhdmUgc2VlbiB0aGlzIGNvZGUgYmVmb3JlLi4uIFdlIHBhc3MgdGhlIGNvbHVtbiBvZiBpbnRlcmVzdAojIHRvIGZ1bmN0aW9uIG1lYW4KbWVhbihwZW5ndWlucyRib2R5X21hc3NfZywgbmEucm09VFJVRSkKCgojIE1lZGlhbgoKIyBUaGUgZmFtaWxpYXIgcGF0dGVybi4uLi4KbWVkaWFuKHBlbmd1aW5zJGJvZHlfbWFzc19nLCBuYS5ybSA9IFRSVUUpCgoKIyBNb2RlCgojIEJhc2UgUiBoYXMgbm8gYnVpbHQtaW4gZnVuY3Rpb24gZm9yIG1vZGUuIEFmdGVyIE1vZHVsZSAwOAojIHlvdSB3aWxsIGJlIGFibGUgdG8gd3JpdGUgeW91ciBvd24gTW9kZSBmdW5jdGlvbi4gT3IgeW91IGNhbgojIHVzZSBvbmUgb2Ygc2V2ZXJhbCBhdmFpbGFibGUgaW4gYXV4aWxpYXJ5IGxpYnJhcmllcy4gVGhlCiMgRGVzY1Rvb2xzIGxpYnJhcnkgaXMgYSBnb29kIG9uZS4KCiMgSW5zdGFsbCB0aGUgcGFja2FnZSBvbmNlIG9uIGVhY2ggbWFjaGluZQojIGluc3RhbGwucGFja2FnZXMoIkRlc2NUb29scyIpCgojIExvYWQgdGhlIGxpYnJhcnkgb25jZSBlYWNoIHNlc3Npb24KbGlicmFyeShEZXNjVG9vbHMpCgojQ2FsbCB0aGUgZnVuY3Rpb24KTW9kZShwZW5ndWlucyRib2R5X21hc3NfZywgbmEucm09VFJVRSkKCmBgYApOb3RlIHRoYXQgRGVzY1Rvb2xzOjpNb2RlIHJldHVybnMgdGhlIG1vZGFsIChpLmUuIG1vc3QgY29tbW9uIHZhbHVlKSB3aXRoIGFuIGF0dGFjaGVkICoqYXR0cmlidXRlKiogY2FsbGVkICJmcmVxIiBlcXVhbCB0byB0aGUgbnVtYmVyIG9mIG9jY3VyZW5jZXMuCgoKIyMgVXNpbmcgZnVuY3Rpb24gYHN1bW1hcnlgCgpXaGVuIHlvdSBoYXZlIGEgdmVyeSBsYXJnZSBudW1iZXIgb2YgZGF0YSBtZWFzdXJlcywgeW91IG1heSB3aXNoIHRvIGNvbXB1dGUgTUNUcyBmb3IgaW5kaXZpZHVhbCBjb2x1bW5zIGFzIHNob3duIGFib3ZlLiBBbiBlZmZpY2llbnQgYWx0ZXJuYXRpdmUgZm9yIHNtYWxsZXIgZGF0YSBzZXRzIGlzIHRvIHVzZSBmdW5jdGlvbiBgc3VtbWFyeWAsIHdoaWNoIGFjY2VwdHMgYSBkYXRhIGZyYW1lIGFuZCBzdW1tYXJpc2VzICphbGwqIGl0cyBjb2x1bW5zIGF0IG9uY2UuIEZ1bmN0aW9uIGBzdW1tYXJ5YCBjb21wdXRlcyBmcmVxdWVuY2llcyBmb3IgY2F0ZWdvcmljYWwgdmFyaWFibGVzLCBhbmQgbWVhc3VyZXMgb2YgY2VudHJhbCB0ZW5kZW5jeSBmb3IgY29udGludW91cyB2YXJpYWJsZXMuIEl0IGFsc28gcmVwb3J0cyB0aGUgbnVtYmVycyBvZiBOQSB2YWx1ZXMgaW4gZWFjaCBjb2x1bW4uIEZ1bmN0aW9uIGBzdW1tYXJ5YCBwcm92aWRlcyBzb21lIGFkZGl0aW9uYWwgbWVhc3VyZXMgKG1pbmltdW0sIDFzdCBxdWFydGlsZSwgM3JkIHF1YXJ0aWxlLCBhbmQgbWF4aW11bSkgdGhhdCB3ZSB3aWxsIGRpc2N1c3MgaW4gbW9yZSBkZXRhaWwgbGF0ZXIuCgpgYGB7ciBzdW1tYXJ5fQpzdW1tYXJ5KHBlbmd1aW5zKQpgYGAKCiMjIyBFeGVyY2lzZSAzCgpUaGUgcmVzdWx0cyBmb3IgY29sdW1uIGB5ZWFyYCBtYXkgbm90IGJlIHdoYXQgeW91IGV4cGVjdGVkLiBGdW5jdGlvbiBgc3VtbWFyeWAgaGFzIGNvbXB1dGVkIGFuICphdmVyYWdlIHZhbHVlKiBmb3IgYHllYXJgLiBEb2VzIHRoaXMgc2VlbSBsaWtlIHRoZSBhcHByb3ByaWF0ZSBhbmFseXNpcz8gKEFuc3dlciA9PiBOby4pIE1vZGlmeSBgcGVuZ3VpbnNgIHRvIG1ha2UgYHN1bW1hcnlgIHRyZWF0IHRoZSBgeWVhcmAgZGF0YSBjb3JyZWN0bHksIGFuZCByZXJ1biBgc3VtbWFyeWAuCgoKIyMgTWVhc3VyZXMgb2YgVmFyaWFiaWxpdHkKCkluIHRoZSBoaXN0b2dyYW1zIGZvciBDaGxBIGZyb20gZWFjaCBvZiB0aHJlZSBOZXcgWmVhbGFuZCBsYWtlcywgdGhlIHRocmVlIGdyb3VwcyBvZiBzY29yZXMgZGlkIG5vdCBvdmVybGFwIGNvbXBsZXRlbHksIGluZGljYXRpbmcgdGhhdCB0aGUgdHlwaWNhbCB2YWx1ZXMgLS0gdGhlIGNlbnRyYWwgdGVuZGVuY2llcyAtLSB3ZXJlIGRpZmZlcmVudCBmb3IgdGhlIHRocmVlIGxha2VzLiBXZSBjYW4gY29uZmlybSB0aGlzIG9ic2VydmF0aW9uIGJ5IGNvbXBhcmluZyB0aGUgbWVhbnMuIFdlIGNhbiB1c2UgZnVuY3Rpb24gYGFnZ3JlZ2F0ZWAgb3IgYGdyb3VwX2J5YCBhbmQgYHN1bW1hcmlzZWAgZnJvbSBwYWNrYWdlIGBkcGx5cmAgKGNmLiBNb2R1bGUgMDMpLgoKYGBge3IgbGFrZSBtZWFuc30KIyBVc2luZyBhZ2dyZWdhdGUuIGNvbXB1dGUgdGhlIGdyb3VwIG1lYW5zCmFnZ3JlZ2F0ZShsYWtlcyRDaGxBLCBieSA9IGxpc3QoTGFrZSA9IGxha2VzJExha2VOYW1lKSwgRlVOPW1lYW4pCgojIFVzaW5nIGRwbHlyIC0tIGluc3RhbGwgdGlkeXZlcnNlIGZpcnN0IGlmIG5lZWRlZApsaWJyYXJ5KGRwbHlyKQpieV9sYWtlIDwtIGdyb3VwX2J5KGxha2VzLCBMYWtlTmFtZSkKc3VtbWFyaXNlKGJ5X2xha2UsIE1lYW5fQ2hsQSA9IG1lYW4oQ2hsQSkpCmBgYAoKSG93ZXZlciwgbm90IG9ubHkgZG8gdGhlIGNlbnRyYWwgcG9pbnRzIG9mIHRoZSB0aHJlZSBsYWtlcycgZGlzdHJpYnV0aW9ucyBkaWZmZXIsIHNvIGRvIHRoZSBhbW91bnRzIG9mICJzcHJlYWQiLiBMYWtlIFRhdXBvJ3MgZGlzdHJpYnV0aW9uIGlzIHZlcnkgInNraW5ueSI7IGFsbCBpdHMgcmVhZGluZ3MgYXJlIHNpbWlsYXIuIExha2UgRWxsZXNtZXJlIGlzIHNxdWFzaGVkIGFuZCBzcHJlYWQgb3V0OyBpdHMgcmVhZGluZ3MgdmFyeSBhIGxvdC4gTGFrZSBSb3RvcnVhIGlzIGludGVybWVkaWF0ZS4gVG8gaWxsdXN0cmF0ZSB0aGlzIG1vcmUgY2xlYXJseSwgd2UgY2FuIHVzZSBnZ3Bsb3QgdG8gbWFrZSBzZXBhcmF0ZSBncmFwaHMgZm9yIGVhY2ggbGFrZSwgYWRqdXN0aW5nIHRoZSB5LWF4ZXMgdG8gbWFrZSBjb21wYXJpc29uIGVhc2llciAobm90ZSB0aGUgYXJndW1lbnRzIHRvIGBmYWNldF9ncmlkYCkuCgpgYGB7ciBmYWNldF9ncmFwaHMsIHdhcm5pbmc9RkFMU0UsIG1lc3NhZ2U9RkFMU0V9CmdncGxvdChkYXRhID0gbGFrZXMpICsKICBnZW9tX2hpc3RvZ3JhbShhZXMoeCA9IENobEEsIGZpbGw9TGFrZU5hbWUpLCBjb2xvcj0iYmxhY2siKSArCiAgZmFjZXRfZ3JpZChyb3dzID0gdmFycyhMYWtlTmFtZSksIHNjYWxlcz0iZnJlZV95IikKYGBgCgpTdGF0aXN0aWNhbGx5LCB0aGUgInNwcmVhZCBvdXQiIHF1YWxpdHkgb2YgYSBkaXN0cmlidXRpb24gcmVmbGVjdHMgaXRzICoqdmFyaWFiaWxpdHkqKi4KCldlIGNhbiBjYXB0dXJlIHZhcmlhYmlsaXR5IG1vcmUgcHJlY2lzZWx5IHdpdGggbWVhc3VyZXMgb2YgdGhlICoqcmFuZ2UqKiBvZiB0aGUgZGF0YSBzZXQuIFRoZXNlIGFyZSB0eXBpY2FsbHkgdGhlIHNtYWxsZXN0IGFuZCBsYXJnZXN0IHNjb3JlcyAobWluaW11bSBhbmQgbWF4aW11bSkgYW5kIHRoZSBzY29yZXMgYXQgdGhlIDI1dGggYW5kIDc1dGggcGVyY2VudGlsZXMgKGFsc28gY2FsbGVkICoqMXN0IHF1YXJ0aWxlKiogYW5kICoqM3JkIHF1YXJ0aWxlKiopLiBFYXJsaWVyLCB3ZSBzYXcgdGhhdCBmdW5jdGlvbiBgc3VtbWFyeWAgY29tcHV0ZXMgdGhlc2UgbWVhc3VyZXMgb2YgcmFuZ2UuIEhvd2V2ZXIsIGlmIHdlIHNpbXBseSBwYXNzIHRoZSBlbnRpcmUgYGxha2VzYCBkYXRhIGZyYW1lIHRvIGZ1bmN0aW9uIGBzdW1tYXJ5YCwgaXQgd2lsbCBjb21iaW5lIHRoZSBkYXRhIGZyb20gYWxsIHRocmVlIGxha2VzIC0tIHRvIGNvbXBhcmUgdGhlIGxha2VzIHdlIG5lZWQgdGhlIHZhbHVlcyBmcm9tIGVhY2ggbGFrZSBzZXBhcmF0ZWx5LgoKSW4gTW9kdWxlIDAyIHdlIHNhdyB0aGF0IHdlIGNvdWxkIHNvbHZlIHRoaXMgcHJvYmxlbSBieSB1c2luZyBmdW5jdGlvbiBgc3Vic2V0YCB0byBzZWxlY3Qgb3V0IGp1c3QgdGhlIHJvd3MgZnJvbSBvbmUgbGFrZSwgYW5kIHBhc3NpbmcgdGhvc2Ugcm93cyB0byBgc3VtbWFyeWAuIEhvd2V2ZXIsIHdlIGNhbiBhY2hpZXZlIHRoZSBzYW1lIHJlc3VsdCBtb3JlIHBhcnNpbW9uaW91c2x5IGJ5IHVzaW5nIGZ1bmN0aW9uIGBhZ2dyZWdhdGVgLiBBYm92ZSB3ZSB1c2VkIGFnZ3JlZ2F0ZSB3aXRoIGBGVU4gPSBtZWFuYCB0byBnZXQgdGhlIG1lYW4gQ2hsQSBmb3IgZWFjaCBsYWtlLiBXZSBjYW4gdXNlIGBGVU4gPSBzdW1tYXJ5YCB0byBjYWxsIGZ1bmN0aW9uIGBzdW1tYXJ5YCBzZXBhcmF0ZWx5IGZvciB0aGUgcmVjb3JkcyBvZiBlYWNoIGxha2UuIChUaGUgc2FtZSByZXN1bHQgY2FuIGJlIGFjaGlldmVkIHdpdGggYGdyb3VwX2J5YCBhbmQgYHN1bW1hcmlzZWAuKQoKYGBge3IgYWdncmVnYXRlIHN1bW1hcnl9CmFnZ3JlZ2F0ZShsYWtlcyRDaGxBLCBieSA9IGxpc3QoTGFrZSA9IGxha2VzJExha2VOYW1lKSwgRlVOPXN1bW1hcnkpCmBgYAoKV2UgY2FuIGFsc28gbWVhc3VyZSB0aGUgdmFyaWFibGl0eSBpbiBhIGRhdGEgc2V0IHdpdGggdGhlICoqc3RhbmRhcmQgZGV2aWF0aW9uKiouIFRoZSBzdGFuZGFyZCBkZXZpYXRpb24gaXMgdGhlIG1vc3QgY29tbW9ubHkgdXNlZCBtZWFzdXJlIG9mIHZhcmlhYmlsaXR5LCBhbmQgaXQgcGxheXMgYW4gaW1wb3J0YW50IG1hdGhlbWF0aWNhbCByb2xlIGluIGluZmVyZW50aWFsIHN0YXRpc3RpY3MgKGFzayB5b3VyIHN0YXRzIGxlY3R1cmVyIGZvciBkZXRhaWxzIC0tIGl0J3MgdmVyeSBpbnRlcmVzdGluZykuIENvbmNlcHR1YWxseSwgdGhlIHN0YW5kYXJkIGRldmlhdGlvbiBpcyAqYWxtb3N0KiBlcXVhbCB0byB0aGUgYXZlcmFnZSBkaXN0YW5jZSBmcm9tIHRoZSBtZWFuIGFjcm9zcyBhbGwgdGhlIHZhbHVlcyBpbiBhIGRhdGEgc2V0IC0tIGl0IGRvZXNuJ3QgZXF1YWwgKmV4YWN0bHkqIHRoYXQgdmFsdWUsIGJlY2F1c2Ugb2YgaG93IGl0IGlzIGNvbXB1dGVkLCBidXQgaXQgaXMgY2xvc2UsIGFuZCBpdCBjYW4gYmUgaGVscGZ1bCB0byB0aGluayBvZiBpdCB3aXRoIHRoaXMgYXBwcm94aW1hdGlvbi4gQmlnIHN0YW5kYXJkIGRldmlhdGlvbiBzaG93cyB0aGF0IHNjb3JlcyBhcmUgc3ByZWFkIGZhciBmcm9tIHRoZWlyIG1lYW47IHNtYWxsIHN0YW5kYXJkIGRldmlhdGlvbiBzaG93cyB0aGF0IHNjb3JlcyB0ZW5kIHRvIGh1ZGRsZSBjbG9zZSB0byB0aGVpciBtZWFuLiBDb21wdXRlIHN0YW5kYXJkIGRldmlhdGlvbiB3aXRoIGZ1bmN0aW9uIGBzZGAuCgpgYGB7ciBzZH0KCiMgUmVtZW1iZXIgeW91IGNhbiBzYXZlIGhhdmluZyB0byB0eXBlIHRoZSBkYXRhIGZyYW1lCiMgbmFtZSBieSB1c2luZyBhdHRhY2gKYXR0YWNoKGxha2VzKQphZ2dyZWdhdGUoQ2hsQSwgYnkgPSBsaXN0KExha2UgPSBMYWtlTmFtZSksIEZVTj1zZCkKCiMgTW9yZSBwcm9jZXNzaW5nIG9mIGRhdGEgZnJhbWUgbGFrZXMgY291bGQgZ28gaGVyZS4uLi4uLi4uCgojIEJ1dCByZW1lbWJlciB0byBkZXRhY2ggd2hlbiB5b3UncmUgZmluaXNoZWQuLi4KZGV0YWNoKGxha2VzKQpgYGAKClRoZSBoaXN0b2dyYW1zLCB0aGUgbWVhc3VyZXMgb2YgcmFuZ2UsIGFuZCB0aGUgc3RhbmRhcmQgZGV2aWF0aW9ucyBhbGwgaW5kaWNhdGUgdGhhdCBUYXVwbyBoYXMgdmVyeSBzdGFibGUgQ2hsQSBtZWFzdXJlcywgUm90b3J1YSBpcyBhIGxpdHRsZSBub2lzaWVyLCBhbmQgRWxsZXNtZXJlIGlzIGFsbCBvdmVyIHRoZSBwbGFjZS4gVGhpcyBwaHl0b3BsYW5rdG9uIGJpb21hc3Mgc3RhYmlsaXR5IGlzIGFuIGltcG9ydGFudCBpbmRpY2F0b3Igb2YgbGFrZSBoZWFsdGggLS0gYSBzdGFibGUgbGFrZSBpcyBhdCBtdWNoIGxvd2VyIHJpc2sgb2YgYSB0b3hpYyBhbGdhbCBibG9vbS4KCgojIyBFZmZpY2llbnQgY29kZSBmb3IgZGVzY3JpcHRpdmUgc3RhdGlzdGljcwoKVGhlIGZ1bmN0aW9uIGBkZXNjcmliZUJ5YCBpbiBwYWNrYWdlIGBwc3ljaGAgd2lsbCAgY29tcHV0ZSBhbGwgdGhlIGRlc2NyaXB0aXZlIHN1bW1hcmllcyB3ZSBoYXZlIHNlZW4gKGFuZCBhIGZldyBtb3JlKSBpbiBvbmUgc3RhdGVtZW50LiBXaGVuIHlvdSBhcmUgZXhwbG9yaW5nIGEgc2luZ2xlIGRhdGEgY29sdW1uIGFuZCBhIHNpbmdsZSBncm91cGluZyBjb2x1bW4gKHNvIHRoZSBvdXRwdXQgZG9lc24ndCBnZXQgdG9vIGxhcmdlKSwgdGhpcyBpcyBhIHZlcnkgdXNlZnVsIGZ1bmN0aW9uLiAKCgpgYGB7ciBwc3ljaH0KIyBJbnN0YWxsIG9uY2Ugb24gYW55IGNvbXB1dGVyCiNpbnN0YWxsLnBhY2thZ2VzKCJwc3ljaCIpCgojIENhbGwgb25jZSBlYWNoIFIgc2Vzc2lvbgpsaWJyYXJ5KHBzeWNoKQoKIyBQYXNzIGluIHRoZSBkYXRhIGNvbHVtbiBhbmQgdGhlIGdyb3VwaW5nIGNvbHVtbgpkZXNjcmliZUJ5KGxha2VzJENobEEsIGxha2VzJExha2VOYW1lKQpgYGAKClBhY2thZ2UgYHBzeWNoYCBjb250YWlucyBtYW55IG90aGVyIGludGVyZXN0aW5nIHN0YXRpc3RpY2FsIHRvb2xzLCBlc3BlY2lhbGx5IGZvciBtdWx0aXZhcmlhdGUgZGF0YSBzZXRzIGNvbW1vbmx5IGZvdW5kIGluIHBzeWNob2xvZ2ljYWwgYW5kIGVjb2xvZ2ljYWwgcmVzZWFyY2guIEFzayBHb29nbGUgb3IgeW91ciBsZWN0dXJlciBmb3IgZGV0YWlscy4KCiMjIEV4cGxvcmluZyB0aGUgcmVsYXRpb25zaGlwIGJldHdlZW4gdHdvIHZhcmlhYmxlcwpUaGUgcHJlY2VkaW5nIGRlc2NyaXB0aXZlIHN0YXRpc3RpY3MgYWxsIGxvb2tlZCBhdCBkYXRhIG1lYXN1cmVzIC0tIENobEEsIGJpbGwgbGVuZ3RoLCBib2R5IHdlaWdodCwgZXRjLiAtLSBpbmRpdmlkdWFsbHksIHN1bW1hcmlzaW5nIHRoZWlyIGRpc3RyaWJ1dGlvbiwgY2VudHJhbCB0ZW5kZW5jeSBhbmQgdmFyaWFiaWxpdHkuIE9mdGVuLCBob3dldmVyLCB3ZSBhcmUgaW50ZXJlc3RlZCBpbiBkZXNjcmliaW5nICoqdGhlIHJlbGF0aW9uc2hpcCBiZXR3ZWVuIGRhdGEgbWVhc3VyZXMqKi4gRm9yIGV4YW1wbGUsIHdlIG1pZ2h0IHdhbnQgdG8ga25vdyBpZiBoZWF2aWVyIHBlbmd1aW5zIGFsc28gdGVuZCB0byBoYXZlIGxvbmdlciBiaWxscy4gVGhpcyB0eXBlIG9mIHJlbGF0aW9uc2hpcCBpcyBjYWxsZWQgYSAqKmNvcnJlbGF0aW9uKiouIFdoZW4gd2UgaGF2ZSBtb3JlIHRoYW4gb25lIG1lYXN1cmUgZm9yIGVhY2ggZXhwZXJpbWVudGFsIHBhcnRpY2lwYW50IChvciBlYWNoIHBlbmd1aW4sIG9yIGVhY2ggbGFrZSkgd2UgY2FuIGV4cGxvcmUgY29ycmVsYXRpb25zIGJldHdlZW4gcGFpcnMgb2YgbWVhc3VyZXMgZ3JhcGhpY2FsbHkgd2l0aCBhICoqc2NhdHRlcnBsb3QqKi4gQSBzY2F0dGVycGxvdCBoYXMgb25lIG1lYXN1cmUgb24gZWFjaCBheGlzLCBhbmQgb25lIHBvaW50IGZvciBlYWNoIHBhcnRpY2lwYW50J3MgcGFpciBvZiBzY29yZXMuCgpJbiB0aGUgY29kZSBleGFtcGxlIGJlbG93IHdlIG1ha2UgYSBzY2F0dGVycGxvdCB3aXRoIGdncGxvdCAoY2YuIE1vZHVsZSAwMyksIGFuZCBzaG93IGhvdyB0byBhZGQgYSAqKmxpbmVhciB0cmVuZCBsaW5lKiouIENvbmNlcHR1YWxseSwgdGhpcyBpcyB0aGUgbGluZSB0aGF0IHJ1bnMgdGhyb3VnaCB0aGUgY2VudGVyIG9mIHRoZSBzY2F0dGVycGxvdCBwb2ludHMsIGFuZCBpdCBoZWxwcyB1cyB0byBzZWUgdGhlIGRpcmVjdGlvbiBvZiB0aGUgcmVsYXRpb25zaGlwLiBNYXRoZW1hdGljYWxseSwgdHJlbmQgbGluZXMgYXJlIGFjdHVhbGx5IHZlcnkgY29tcGxpY2F0ZWQgdGhpbmdzLCBhbmQgd2UgZ2VuZXJhdGUgdGhlbSB3aXRoIHRoZSBwb3dlcmZ1bCBmdW5jdGlvbiBgbG1gLChmb3IgKipsaW5lYXIgbW9kZWwqKikuIFlvdSB3aWxsIGxlYXJuIGFib3V0IHRoZSBtYW55IGZhc2NpbmF0aW5nIHRoaW5ncyB5b3UgY2FuIGRvIHdpdGggbGluZWFyIG1vZGVsaW5nIGlmIHlvdSB0YWtlIGFkdmFuY2VkIHN0YXRpc3RpY3MgcGFwZXJzLgoKCmBgYHtyIDA0LXNjYXR0ZXJwbG90LCB3YXJuaW5nPUZBTFNFLCBtZXNzYWdlPUZBTFNFfQojIGdlb21fcG9pbnQgcGxvdHMgdGhlIHBvaW50cyBvZiB0aGUgc2NhdHRlcnBsb3QgCgojIGdlb21fc21vb3RoIHBsb3RzIHRoZSBsaW5lYXIgdHJlbmQgbGluZSBjb21wdXRlZCB3aXRoIGZ1bmN0aW9uIGxtCgojIFRoZSBzZSBhcmd1bWVudCBkZXRlcm1pbmVzIHdoZXRoZXIgZXJyb3IgYmFycyBhcmUgc2hvd24gCiMgYXJvdW5kIHRoZSB0cmVuZCBsaW5lLgoKZ2dwbG90KGRhdGEgPSBwZW5ndWlucywgbWFwcGluZyA9IGFlcyh4ID0gYm9keV9tYXNzX2csIHkgPSBiaWxsX2xlbmd0aF9tbSkpICsKICBnZW9tX3BvaW50KCkgKwogIGdlb21fc21vb3RoKG1ldGhvZCA9ICJsbSIsIHNlPUZBTFNFKQoKYGBgCgpUaGUgc2NhdHRlcnBsb3QgZ2l2ZXMgdXMgYSB2ZXJ5IGNsZWFyIHBpY3R1cmU6IHRob3NlIHBlbmd1aW5zIHdpdGggaGlnaGVyIGJvZHkgd2VpZ2h0cyB0ZW5kIHRvIGFsc28gaGF2ZSBsb25nZXIgYmlsbHMsIGFuZCB0aGlzIGlzIHJlZmxlY3RlZCBpbiB0aGUgcG9zaXRpdmUgc2xvcGUgb2YgdGhlIHRyZW5kbGluZS4gTm90ZSBob3dldmVyIHRoYXQgdGhpcyBpcyBub3QgYW4gYWJzb2x1dGUgcnVsZS4gSXMgaXQgZWFzeSB0byBmaW5kIHBhaXJzIG9mIHBvaW50cyBzdWNoIHRoYXQgdGhlIGxpZ2h0ZXIgb2YgdHdvIHBlbmd1aW5zIGhhcyB0aGUgbG9uZ2VyIGJpbGwuIFRoaXMgaXMgdHlwaWNhbCBvZiBjb3JyZWxhdGlvbmFsIGRhdGEuIAoKVGhlcmUgYXJlIHZhcmlvdXMgc3RhdGlzdGljYWwgbWVhc3VyZXMgdGhhdCBjYXB0dXJlIHRoZSBzdHJlbmd0aCBvZiBhIGNvcnJlbGF0aW9uIChpLmUuIGhvdyBjbG9zZSBpdCBpcyB0byBiZWluZyBhbiBhYnNvbHV0ZSBydWxlKS4gRm9yIGNvbnRpbnVvdXMsIG51bWVyaWNhbCBkYXRhIChzdWNoIGFzIGJpbGwgbGVuZ3RoIGFuZCBib2R5IHdlaWdodCkgdXNlIHRoZSBSIGZ1bmN0aW9uIGBjb3JgIHRvIGNvbXB1dGUgdGhlIG51bWVyaWNhbCBjb3JyZWxhdGlvbiB2YWx1ZS4gQXMgd2l0aCBtZWFucyBhbmQgbWVkaWFucywgd2UgbXVzdCB0ZWxsIGBjb3JgIGhvdyB0byBjb3BlIHdpdGggbWlzc2luZyBkYXRhIChOQSBzY29yZXMpLiBVbmZvcnR1bmF0ZWx5IHRoZSBzeW50YXggaXMgbm90IGNvbnNpc3RlbnQgYWNyb3NzIHRoZSBmdW5jdGlvbnMuIEZvciBmdW5jdGlvbiBgbWVhbmAgd2Ugc2V0IGFyZ3VtZW50IGBuYS5ybSA9IFRSVUVgLiBGb3IgZnVuY3Rpb24gYGNvcmAgd2UgbXVzdCBzZXQgYXJndW1lbnQgYHVzZSA9ICJjb21wbGV0ZS5vYnMiYCwgbWVhbmluZyB0aGF0IHdlIHdhbnQgdGhlIGZ1bmN0aW9uIHRvIHVzZSBvbmx5IHRob3NlIHJvd3MgdGhhdCBhcmUgY29tcGxldGUgKGkuZS4gaGF2ZSBib3RoIHZhbHVlcykuIFRoZXNlIGlkaW9zeW5jcmFjaWVzIG9jY3VyIGZyb20gdGltZSB0byB0aW1lIGluIFI7IHlvdSBqdXN0IGhhdmUgdG8gbGVhcm4gdGhlbS4KCmBgYHtyIGNvcn0KCiMgUGFzcyB0aGUgdHdvIGRhdGEgY29sdW1ucyBpbnRvIGZ1bmN0aW9uIGNvcgpjb3IocGVuZ3VpbnMkYmlsbF9sZW5ndGhfbW0sIHBlbmd1aW5zJGJvZHlfbWFzc19nLCB1c2U9ImNvbXBsZXRlLm9icyIpCmBgYAoKRnVuY3Rpb24gYGNvcmAgcmV0dXJucyBhIHZhbHVlIGJldHdlZW4gLTEgYW5kIDEuIENvcnJlbGF0aW9ucyB0aGF0IHRyZW5kIGRvd253YXJkIChpLmUuIGlmIG9uZSBzY29yZSBpcyBoaWdoLCB0aGUgb3RoZXIgdGVuZHMgdG8gYmUgbG93KSB3aWxsIGhhdmUgYSBuZWdhdGl2ZSBjb3JyZWxhdGlvbiB2YWx1ZS4gQ29ycmVsYXRpb25zIHRoYXQgdHJlbmQgdXB3YXJkIChpLmUuIGlmIG9uZSBzY29yZSBpcyBoaWdoIHRoZSBvdGhlciBhbHNvIHRlbmRzIHRvIGJlIGhpZ2gpIHdpbGwgaGF2ZSBhIHBvc2l0aXZlIGNvcnJlbGF0aW9uIHZhbHVlLiBUaGUgY2xvc2VyIHRoZSBhYnNvbHV0ZSB2YWx1ZSBvZiBgY29yYCBpcyB0byAxLCB0aGUgc3Ryb25nZXIgdGhlIGNvcnJlbGF0aW9uICh5b3Uga25vdyB3aG8gdG8gdGFsayB0byBmb3IgbW9yZSBkZXRhaWwsIGRvbid0IHlvdT8pLgoKRm9yIGV4YW1wbGUsIGNvbnNpZGVyIHRoZXNlIHR3byBzY2F0dGVycGxvdHM6CgpgYGB7ciAwNC1jb21wYXJpbmcsIGVjaG89RkFMU0UsIHdhcm5pbmc9RkFMU0UsIG1lc3NhZ2U9RkFMU0V9CmxpYnJhcnkoZ3JpZEV4dHJhKQpwbG90MSA8LSBnZ3Bsb3QoZGF0YSA9IHBlbmd1aW5zLCBtYXBwaW5nID0gYWVzKHggPSBib2R5X21hc3NfZywgeSA9IGJpbGxfbGVuZ3RoX21tKSkgKwogIGdlb21fcG9pbnQoKSArCiAgZ2VvbV9zbW9vdGgobWV0aG9kID0gImxtIiwgc2U9RkFMU0UpCnBsb3QyIDwtIGdncGxvdChkYXRhID0gcGVuZ3VpbnMsIG1hcHBpbmcgPSBhZXMoeCA9IGJvZHlfbWFzc19nLCB5ID0gZmxpcHBlcl9sZW5ndGhfbW0pKSArCiAgZ2VvbV9wb2ludCgpICsKICBnZW9tX3Ntb290aChtZXRob2QgPSAibG0iLCBzZT1GQUxTRSkKZ3JpZC5hcnJhbmdlKHBsb3QxLCBwbG90MiwgbmNvbD0yKQpgYGAKCmBgYHtyIGNvciBleGVyY2lzZSBzb2x1dGlvbiwgZWNobz1GQUxTRSwgaW5jbHVkZT1GQUxTRX0KY29yKHBlbmd1aW5zJGJvZHlfbWFzc19nLCBwZW5ndWlucyRiaWxsX2xlbmd0aF9tbSwgdXNlPSJjb21wbGV0ZS5vYnMiKQoKY29yKHBlbmd1aW5zJGJvZHlfbWFzc19nLCBwZW5ndWlucyRmbGlwcGVyX2xlbmd0aF9tbSwgdXNlPSJjb21wbGV0ZS5vYnMiKQpgYGAKCiMjIyBFeGVyY2lzZSA0CgpGb3Igb25lIG9mIHRoZSBzY2F0dGVycGxvdHMgYWJvdmUsIHRoZSBjb21wdXRlZCBjb3JyZWxhdGlvbiBzY29yZSBpcyAwLjYwLiBGb3IgdGhlIG90aGVyLCBpdCBpcyAwLjg3LiBGaXJzdCwgcHJlZGljdCB3aGljaCBpcyB3aGljaC4gU2Vjb25kLCB3cml0ZSB0aGUgbmVjZXNzYXJ5IFIgY29kZSB0byBjb25maXJtIHlvdXIgcHJlZGljdGlvbi4KCgojIyMgRXhlcmNpc2UgNQoKNS4xLiBNYW55IHNjaWVudGlmaWMgZGF0YSBzZXRzIGhhdmUgaGlzdG9ncmFtcyB0aGF0IGFyZSAiYmVsbC1zaGFwZWQiLiBUaGF0IGlzLCBtb3N0IG9mIHRoZSB2YWx1ZXMgY2x1c3RlciBpbiB0aGUgbWlkZGxlLCBhbmQgdGhlIGZyZXF1ZW5jeSBkcm9wcyBvZmYgc3ltbWV0cmljYWxseSB0b3dhcmQgc21hbGxlciBhbmQgbGFyZ2VyIHNjb3Jlcy4gVGhlIGRpc3RyaWJ1dGlvbiBvZiBwZW5ndWluIGJvZHkgbWFzcyBpcyBhIGdvb2QgZXhhbXBsZSBvZiBhIGRhdGEgc2V0IHRoYXQgaXMgYXBwcm94aW1hdGVseSBiZWxsLXNoYXBlZC4KCk1hbnkgaW5mZXJlbnRpYWwgc3RhdGlzdGljYWwgdGVjaG5pcXVlcyByZXF1aXJlIGRhdGEgc2V0cyB0byBiZSBjbG9zZSB0byBhIHZlcnkgc3BlY2lmaWMgYmVsbC1zaGFwZSBjYWxsZWQgdGhlICoqbm9ybWFsIGN1cnZlKiouIElmIHlvdXIgZGF0YSBkZXZpYXRlIHRvbyBmYXIgZnJvbSAqKm5vcm1hbCoqLCB0aGUgaW5mZXJlbnRpYWwgdGVzdHMgd2lsbCBnaXZlIGluY29ycmVjdCByZXN1bHRzLiBUaGUgbW9zdCBzZXJpb3VzIHN1Y2ggZGV2aWF0aW9uIGlzICoqc2tldyoqLCB3aGljaCBpcyB3aGVuIHRoZSBiZWxsLXNoYXBlIHRpbHRzIHRvIG9uZSBzaWRlLCB3aXRoIGEgbG9uZyB0YWlsIGluIGVpdGhlciB0aGUgc21hbGxlciBvciBsYXJnZXIgZGlyZWN0aW9uLiAKClRoZSBwZW5ndWluIGJvZHkgbWFzcyBncmFwaCBpcyBub3QgcGVyZmVjdGx5IHN5bW1ldHJpY2FsLiBJdCBzaG93cyBhIGJpdCBvZiBza2V3bmVzcyB3aXRoIGEgbG9uZ2VyIHRhaWwgdG93YXJkIHRoZSBoZWF2aWVyIHBlbmd1aW5zLiBCdXQgbWFueSBkYXRhIHNldHMgZnJvbSBuYXR1cmUgYXJlICpleHRyZW1lbHkqIHNrZXdlZC4gV2UgY2FuIHNlZSB0aGlzIGluIHRoZSBsYWtlcyBkYXRhLiAKCk9ic2VydmUgTGFrZSBFbGxlc21lcmUgaW4gdGhlIGhpc3RvZ3JhbSBvZiB0aGUgdGhyZWUgbGFrZSdzIENobEEgcmVhZGluZ3MuIEFsdGhvdWdoIG1vc3Qgb2YgdGhlIHJlYWRpbmdzIGFyZSBjbHVzdGVyZWQgYmVsb3cgMTAwLCB0aGVyZSBhcmUgc29tZSBtdWNoIGxhcmdlciB2YWx1ZXMgLS0gb25lIHJlYWRpbmcgaXMgbW9yZSB0aGFuIDUwMCAtLSBjcmVhdGluZyBhIGxvbmcgInRhaWwiIHRvIHRoZSByaWdodC4gVGhlIENobEEgbWVhc3VyZSBpbiBMYWtlIEVsbGVzbWVyZSBpcyBza2V3ZWQuIAoKV2UgY2FuIGNvbXB1dGUgYW4gZXhhY3QgbnVtZXJpY2FsIHZhbHVlIGZvciB0aGUgc2tld25lc3Mgb2YgYSBkaXN0cmlidXRpb24gdXNpbmcgZnVuY3Rpb24gYHNrZXduZXNzYCBmcm9tIHBhY2thZ2UgYGUxMDcxYC4gQXMgaW4gdGhlIGV4YW1wbGVzIGFib3ZlLCB3ZSBjYW4gY29tcHV0ZSB0aGUgc2tld25lc3MgZm9yIGVhY2ggbGFrZSB1c2luZyBgYWdncmVnYXRlYCBvciwgaWYgd2UgYXJlIHVzaW5nIGBkcGx5cmAsIHVzaW5nIGBncm91cF9ieWAgYW5kIGBzdW1tYXJpc2VgLiBBbHRlcm5hdGl2ZWx5LCB3ZSBjYW4gdXNlIGBkZXNjcmliZUJ5YCBhcyBhYm92ZS4gSXQgaW5jbHVkZXMgc2tld25lc3MgYW1vbmcgaXRzIHN1bW1hcnkgc3RhdGlzdGljcy4KCldpdGggdGhlIG1ldGhvZCBvZiB5b3VyIGNob2ljZSwgY29tcHV0ZSB0aGUgc2tld25lc3MgdmFsdWUgZm9yIGVhY2ggbGFrZS4gV2hhdCBkb2VzIHRoZSBwYXR0ZXJuIG9mIHJlc3VsdHMgdGVsbCB5b3UgYWJvdXQgdGhlIGhlYWx0aCBvZiB0aGUgdGhyZWUgbGFrZXM/CgpgYGB7ciBza2V3bmVzcywgZWNobyA9IEZBTFNFLCBpbmNsdWRlID0gRkFMU0UsIHdhcm5pbmc9RkFMU0UsIG1lc3NhZ2U9RkFMU0V9CgojIEluc3RhbGwgcGFja2FnZSBvbmNlIGZvciBlYWNoIG1hY2hpbmUKIyBpbnN0YWxsLnBhY2thZ2VzKCJlMTA3MSIpCgojIExvYWQgbGlicmFyeSBvbmNlIGZvciBlYWNoIFIgc2Vzc2lvbgpsaWJyYXJ5KGUxMDcxKQoKIyBVc2luZyBiYXNlIFIKYWdncmVnYXRlKGxha2VzJENobEEsIGJ5ID0gbGlzdChMYWtlID0gbGFrZXMkTGFrZU5hbWUpLCBGVU4gPSBza2V3bmVzcykKCgojIFVzaW5nIGRwbHlyCmxpYnJhcnkoZHBseXIpCmJ5X2xha2UgPC0gZ3JvdXBfYnkobGFrZXMsIExha2VOYW1lKQpzdW1tYXJpc2UoYnlfbGFrZSwgU2tld25lc3MgPSBza2V3bmVzcyhDaGxBKSkKYGBgCgo1LjIuIEEgcGVyZmVjdGx5IHN5bW1ldHJpY2FsIGRpc3RyaWJ1dGlvbiB3aWxsIGhhdmUgYSBza2V3bmVzcyBvZiAwLiBBcyBhIGRpc3RyaWJ1dGlvbiB0aWx0cyBmdXJ0aGVyIGFuZCBmdXJ0aGVyIGZyb20gbm9ybWFsLCB0aGUgYWJzb2x1dGUgdmFsdWUgb2YgdGhlIHNrZXduZXNzIG1lYXN1cmUgZ29lcyB1cC4gV2hhdCBjb25zaXRpdHV0ZXMgInRvbyBtdWNoIHNrZXciIHZhcmllcyBiZXR3ZWVuIGRpc2NpcGxpbmVzLCBhbmQgZm9yIGFuIGFzc2lnbm1lbnQgeW91IHdpbGwgd2FudCB0byBjaGVjayB3aXRoIHlvdXIgbGVjdHVyZXIuIEhvd2V2ZXIsIGEgY29tbW9uIHJ1bGUgb2YgdGh1bWIgaXMgdGhhdCBhbnkgdmFsdWUgZ3JlYXRlciB0aGFuIDEgKG9yIGxlc3MgdGhhbiAtMSkgaGFzIGVub3VnaCBza2V3IHRoYXQgeW91IG5lZWQgdG8gdGhpbmsgYWJvdXQgZGVhbGluZyB3aXRoIGl0LiBBIHZhbHVlIGdyZWF0ZXIgdGhhbiAzIChhcyBmb3VuZCB3aXRoIHRoZSBMYWtlIEVsbGVzbWVyZSBkYXRhKSBpcyAqZGVmaW5pdGVseSogc2tld2VkLgoKQXMgbWVudGlvbmVkIGVhcmxpZXIsIG1hbnkgaW5mZXJlbnRpYWwgdGVzdHMgZ2l2ZSBpbmFjY3VyYXRlIHJlc3VsdHMgd2l0aCBza2V3ZWQgZGF0YSwgc28gaW4gY2FzZXMgbGlrZSB0aGUgbGFrZXMgZGF0YSwgd2UgbXVzdCAidW5za2V3IiBvdXIgdmFsdWVzLiBBIGNvbW1vbiBhcHByb2FjaCBpcyB0byBjb21wdXRlIHRoZSBuYXR1cmFsIGxvZ2FyaXRobSBvZiBlYWNoIGRhdGEgdmFsdWUgKHVzaW5nIFIgZnVuY3Rpb24gYGxvZ2ApLCBhbmQgYW5hbHlzZSB0aG9zZSBsb2dzIChhc2sgeW91ciBsZWN0dXJlciBhYm91dCBhbHRlcm5hdGl2ZSBhcHByb2FjaGVzKS4gVGhlIGxvZ2FyaXRobSBjb21wdXRhdGlvbiBwdWxscyBleHRyZW1lIHNjb3JlcyBpbiwgcmVkdWNpbmcgdGhlIHNrZXcsIHdpdGhvdXQgY2hhbmdpbmcgdGhlIG92ZXJhbGwgcmVsYXRpb25zaGlwcyBiZXR3ZWVuIGRhdGEgdmFsdWVzLiAKCkluIE1vZHVsZSAwNCB5b3Ugc2F3IGhvdyB0byBhZGQgYSBuZXcgY29tcHV0ZWQgY29sdW1uIHRvIGEgZGF0YSBmcmFtZSB1c2luZyBlaXRoZXIgZnVuY3Rpb24gYG11dGF0ZWAgb3IgdGhlIGAkYCBvcGVyYXRvci4gVXNpbmcgdGhlIHRlY2huaXF1ZSBvZiB5b3VyIGNob2ljZSwgYWRkIGEgY29sdW1uIHRvIGRhdGEgZnJhbWUgbGFrZXMgdGhhdCBob2xkcyB0aGUgbmF0dXJhbCBsb2cgb2YgZWFjaCBDaGxBIHJlYWRpbmcuCgoKYGBge3IgMDQtbG9nc19zb2x1dGlvbiwgZWNobz1GQUxTRSwgaW5jbHVkZT1GQUxTRSwgd2FybmluZz1GQUxTRSwgbWVzc2FnZT1GQUxTRX0KCiMgQWRkIGEgbmV3IGNvbHVtbiB0byB0aGUgZGF0YSBmcmFtZSB0aGF0IGhvbGRzIHRoZSBsb2cgb2YgdGhlIHJhdyBDaGxBCiMgVGhpcyBjYW4gYWxzbyBiZSBkb25lIHdpdGggZHBseXI6Om11dGF0ZQpsYWtlcyRsb2dfQ2hsQSA8LSBsb2cobGFrZXMkQ2hsQSkKCiMgUGxvdCB0aGUgaGlzdG9ncmFtCgpnZ3Bsb3QoZGF0YSA9IGxha2VzKSArCiAgZ2VvbV9oaXN0b2dyYW0oYWVzKHggPSBsb2dfQ2hsQSwgY29sb3IgPSBMYWtlTmFtZSwgZmlsbD1MYWtlTmFtZSksIHBvc2l0aW9uPSJkb2RnZSIpCmBgYAoKMy4gVXNpbmcgZ2dwbG90LCBtYWtlIGEgaGlzdG9ncmFtIG9mIGFsbCB0aGUgbG9nIENobEEgdmFsdWVzIGluIGRhdGEgZnJhbWUgbGFrZXMsIHdpdGggZWFjaCBsYWtlIGluIGEgZGlmZmVyZW50IGNvbG91ci4gVGhpcyBjb2RlIGlzICpleHRyZW1lbHkqIHNpbWlsYXIgdG8gdGhlIGNvZGUgeW91IHdyb3RlIGZvciB0aGUgZWFybGllciBleGVyY2lzZS4gSG93IHdvdWxkIHlvdSBkZXNjcmliZSB0aGVzZSBkaXN0cmlidXRpb25zLiBBcmUgTGFrZSBFbGxlc21lcmUncyBsb2cgQ2hsQSB2YWx1ZXMgc2tld2VkPyBXaGF0IGNhbiB5b3UgcHJvdmlkZSBhcyBldmlkZW5jZSBmb3IgeW91ciBhbnN3ZXI/CgoKCiMjIyBDb2RlIHNvbHV0aW9uIGZvciB0aGUgbGFrZXMgaGlzdG9ncmFtCgpgYGB7ciAwNC1sYWtlX2hpc3RzX3NvbHV0aW9uLCB3YXJuaW5nPUZBTFNFLCBtZXNzYWdlPUZBTFNFLCBldmFsPUZBTFNFLCBjbGFzcy5zb3VyY2UgPSAiZm9sZC1oaWRlIn0KZ2dwbG90KGRhdGEgPSBsYWtlcykgKwogIGdlb21faGlzdG9ncmFtKGFlcyh4ID0gQ2hsQSwgY29sb3IgPSBMYWtlTmFtZSwgZmlsbD1MYWtlTmFtZSksIHBvc2l0aW9uPSJkb2RnZSIpCgpgYGAK</div>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("04-summarise.Rmd");
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
