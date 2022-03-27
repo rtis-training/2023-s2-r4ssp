@@ -1,5 +1,5 @@
 ---
-title: "Handout 04 - Summarising Data"
+title: "Zoom Notes 04 - Summarising Data"
 output:
   html_document:
     toc: true
@@ -14,7 +14,7 @@ library(knitr)
 
 knitr::opts_chunk$set(
   comment = "#>",
-  fig.path = "figures/", # use only for single Rmd files
+  fig.path = "figures/04/", # use only for single Rmd files
   collapse = TRUE,
   echo = TRUE
 )
@@ -22,5 +22,13 @@ knitr::opts_chunk$set(
 
 ```
 
+
+> #### Associated Material
+>
+> Module: [Module 04 - Summarising data](04-summarising.html)
+>
+> Readings
+>
+> - [R for Data Science - Chapter 7](https://r4ds.had.co.nz/exploratory-data-analysis.html)
 
 <!-- Patricia to populate -->

@@ -15,25 +15,35 @@ library(knitr)
 
 knitr::opts_chunk$set(
   comment = "#>",
-  fig.path = "figures/", # use only for single Rmd files
+  fig.path = "figures/05/", # use only for single Rmd files
   collapse = TRUE,
   echo = TRUE
 )
 ```
 
-Handout: [Handout 05 - Transforming Data](handout5.html)
 
-Associated readings:
+> #### Associated Material
+>
+> Zoom notes: [Zoom Notes 05 - Transforming Data](zoom_notes_05.html)
+>
+> Readings:
+>
+> - [R for Data Science Chapter 10](https://r4ds.had.co.nz/tibbles.html)
+> - [R for Data Science Chapter 11](https://r4ds.had.co.nz/data-import.html)
+> - [R for Data Science Chapter 12](https://r4ds.had.co.nz/tidy-data.html)
+> - [R for Data Science Chapter 13](https://r4ds.had.co.nz/relational-data.html)
+> - [R for Data Science Chapter 14](https://r4ds.had.co.nz/strings.html)
 
-- [R for Data Science - Chapter 5](https://r4ds.had.co.nz/transform.html)
+\
 
+The main purpose of module is to cover data/tidying (inside R), how to reshape data, and how to combine datasets together using a common identifier
 
 Main topics to cover:
 
 'tidying' data through string manipulations
 
-- unite
-- separate
+- read_csv and column defs + tibbles
+- unite/separate
 - str_sub
 - str_split
 - trimws
@@ -41,8 +51,8 @@ Main topics to cover:
 - replace_na
 - parse_numeric/as.numeric
 - drop_na
-- {janitor} for clean column names
-- {broom} for turning base R stat output into nice rectangles
+- (possibly) {janitor} for clean column names
+- (possibly) {broom} for turning base R stat output into nice rectangles
 
 pivoting data long/wide -> useful for ggplot
 

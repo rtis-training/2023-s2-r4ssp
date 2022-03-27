@@ -11,7 +11,7 @@
 
 
 
-<title>Handout 05 - Transforming Data</title>
+<title>Zoom Notes: Transforming Data</title>
 
 <script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -347,7 +347,9 @@ div.tocify {
     <li>
       <a href="02-visualise.html">Part 1: Visualising</a>
     </li>
-    <li class="dropdown-header">Part 2: Subsetting</li>
+    <li>
+      <a href="03-subset.html">Part 2: Subsetting</a>
+    </li>
     <li class="dropdown-header">Part 3: Summarising</li>
     <li class="dropdown-header">Part 4: Transforming</li>
     <li class="dropdown-header">Part 5: Communicating</li>
@@ -370,6 +372,9 @@ div.tocify {
     </li>
     <li>
       <a href="zoom_notes_02.html">02 - Visualising data</a>
+    </li>
+    <li>
+      <a href="zoom_notes_03.html">03 - Subsetting data</a>
     </li>
   </ul>
 </li>
@@ -398,14 +403,34 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Handout 05 - Transforming Data</h1>
+<h1 class="title toc-ignore">Zoom Notes: Transforming Data</h1>
+<h4 class="date">Semester 1, 2022</h4>
 
 </div>
 
 
+<blockquote>
+<h4 id="associated-material">Associated Material</h4>
+<p>Module: <a href="05-transform.html">Module 05 - Transforming
+data</a></p>
+<p>Readings</p>
+<ul>
+<li><a href="https://r4ds.had.co.nz/tibbles.html">R for Data Science
+Chapter 10</a></li>
+<li><a href="https://r4ds.had.co.nz/data-import.html">R for Data Science
+Chapter 11</a></li>
+<li><a href="https://r4ds.had.co.nz/tidy-data.html">R for Data Science
+Chapter 12</a></li>
+<li><a href="https://r4ds.had.co.nz/relational-data.html">R for Data
+Science Chapter 13</a></li>
+<li><a href="https://r4ds.had.co.nz/strings.html">R for Data Science
+Chapter 14</a></li>
+</ul>
+</blockquote>
 <p>Main topics to cover:</p>
 <p>‘tidying’ data through string manipulations</p>
 <ul>
+<li>read_csv and column defs + tibbles</li>
 <li>unite</li>
 <li>separate</li>
 <li>str_sub</li>
@@ -433,7 +458,7 @@ div.tocify {
 <li>bind_cols</li>
 </ul>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiSGFuZG91dCAwNSAtIFRyYW5zZm9ybWluZyBEYXRhIgpvdXRwdXQ6CiAgaHRtbF9kb2N1bWVudDoKICAgIHRvYzogdHJ1ZQogICAgdG9jX2Zsb2F0OiB0cnVlCiAgICB0b2NfZGVwdGg6IDMKICAgIGNvZGVfZG93bmxvYWQ6IHRydWUKICAgIGNvZGVfZm9sZGluZzogc2hvdwotLS0KCmBgYHtyIHNldHVwLCBpbmNsdWRlPUZBTFNFfQpsaWJyYXJ5KGtuaXRyKQoKa25pdHI6Om9wdHNfY2h1bmskc2V0KAogIGNvbW1lbnQgPSAiIz4iLAogIGZpZy5wYXRoID0gImZpZ3VyZXMvIiwgIyB1c2Ugb25seSBmb3Igc2luZ2xlIFJtZCBmaWxlcwogIGNvbGxhcHNlID0gVFJVRSwKICBlY2hvID0gVFJVRQopCgoKYGBgCgoKTWFpbiB0b3BpY3MgdG8gY292ZXI6CgondGlkeWluZycgZGF0YSB0aHJvdWdoIHN0cmluZyBtYW5pcHVsYXRpb25zCgotIHVuaXRlCi0gc2VwYXJhdGUKLSBzdHJfc3ViCi0gc3RyX3NwbGl0Ci0gdHJpbXdzCi0gcGFzdGUvcGFzdGUwCi0gcmVwbGFjZV9uYQotIHBhcnNlX251bWVyaWMvYXMubnVtZXJpYwotIGRyb3BfbmEKLSB7amFuaXRvcn0gZm9yIGNsZWFuIGNvbHVtbiBuYW1lcwotIHticm9vbX0gZm9yIHR1cm5pbmcgYmFzZSBSIHN0YXQgb3V0cHV0IGludG8gbmljZSByZWN0YW5nbGVzCgpwaXZvdGluZyBkYXRhIGxvbmcvd2lkZSAtPiB1c2VmdWwgZm9yIGdncGxvdAoKLSBwaXZvdF93aWRlcgotIHBpdm90X2xvbmdlcgoKCmNvbWJpbmluZyBkYXRhc2V0cyB0aHJvdWdoIGpvaW5zL2JpbmRzCgotIHJiaW5kCi0gY2JpbmQKLSBtZXJnZQotIGZ1bGwvaW5uZXIvbGVmdC9yaWdodCBqb2lucwotIGJpbmRfcm93cwotIGJpbmRfY29scwoKCgoKCgoKCgo=</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiWm9vbSBOb3RlczogVHJhbnNmb3JtaW5nIERhdGEiCmRhdGU6ICJTZW1lc3RlciAxLCAyMDIyIgpvdXRwdXQ6CiAgaHRtbF9kb2N1bWVudDoKICAgIHRvYzogdHJ1ZQogICAgdG9jX2Zsb2F0OiB0cnVlCiAgICB0b2NfZGVwdGg6IDMKICAgIGNvZGVfZG93bmxvYWQ6IHRydWUKICAgIGNvZGVfZm9sZGluZzogc2hvdwotLS0KCj4gIyMjIyBBc3NvY2lhdGVkIE1hdGVyaWFsCj4KPiBNb2R1bGU6IFtNb2R1bGUgMDUgLSBUcmFuc2Zvcm1pbmcgZGF0YV0oMDUtdHJhbnNmb3JtLmh0bWwpCj4KPiBSZWFkaW5ncwo+Cj4gLSBbUiBmb3IgRGF0YSBTY2llbmNlIENoYXB0ZXIgMTBdKGh0dHBzOi8vcjRkcy5oYWQuY28ubnovdGliYmxlcy5odG1sKQo+IC0gW1IgZm9yIERhdGEgU2NpZW5jZSBDaGFwdGVyIDExXShodHRwczovL3I0ZHMuaGFkLmNvLm56L2RhdGEtaW1wb3J0Lmh0bWwpCj4gLSBbUiBmb3IgRGF0YSBTY2llbmNlIENoYXB0ZXIgMTJdKGh0dHBzOi8vcjRkcy5oYWQuY28ubnovdGlkeS1kYXRhLmh0bWwpCj4gLSBbUiBmb3IgRGF0YSBTY2llbmNlIENoYXB0ZXIgMTNdKGh0dHBzOi8vcjRkcy5oYWQuY28ubnovcmVsYXRpb25hbC1kYXRhLmh0bWwpCj4gLSBbUiBmb3IgRGF0YSBTY2llbmNlIENoYXB0ZXIgMTRdKGh0dHBzOi8vcjRkcy5oYWQuY28ubnovc3RyaW5ncy5odG1sKQoKYGBge3Igc2V0dXAsIGluY2x1ZGU9RkFMU0V9CmxpYnJhcnkoa25pdHIpCgprbml0cjo6b3B0c19jaHVuayRzZXQoCiAgY29tbWVudCA9ICIjPiIsCiAgZmlnLnBhdGggPSAiZmlndXJlcy8iLCAjIHVzZSBvbmx5IGZvciBzaW5nbGUgUm1kIGZpbGVzCiAgY29sbGFwc2UgPSBUUlVFLAogIGVjaG8gPSBUUlVFCikKCgpgYGAKCgpNYWluIHRvcGljcyB0byBjb3ZlcjoKCid0aWR5aW5nJyBkYXRhIHRocm91Z2ggc3RyaW5nIG1hbmlwdWxhdGlvbnMKCi0gcmVhZF9jc3YgYW5kIGNvbHVtbiBkZWZzICsgdGliYmxlcwotIHVuaXRlCi0gc2VwYXJhdGUKLSBzdHJfc3ViCi0gc3RyX3NwbGl0Ci0gdHJpbXdzCi0gcGFzdGUvcGFzdGUwCi0gcmVwbGFjZV9uYQotIHBhcnNlX251bWVyaWMvYXMubnVtZXJpYwotIGRyb3BfbmEKLSB7amFuaXRvcn0gZm9yIGNsZWFuIGNvbHVtbiBuYW1lcwotIHticm9vbX0gZm9yIHR1cm5pbmcgYmFzZSBSIHN0YXQgb3V0cHV0IGludG8gbmljZSByZWN0YW5nbGVzCgpwaXZvdGluZyBkYXRhIGxvbmcvd2lkZSAtPiB1c2VmdWwgZm9yIGdncGxvdAoKLSBwaXZvdF93aWRlcgotIHBpdm90X2xvbmdlcgoKCmNvbWJpbmluZyBkYXRhc2V0cyB0aHJvdWdoIGpvaW5zL2JpbmRzCgotIHJiaW5kCi0gY2JpbmQKLSBtZXJnZQotIGZ1bGwvaW5uZXIvbGVmdC9yaWdodCBqb2lucwotIGJpbmRfcm93cwotIGJpbmRfY29scwoKCgoKCgoKCgo=</div>
 
 
 </div>

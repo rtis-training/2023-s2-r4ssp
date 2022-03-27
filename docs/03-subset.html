@@ -1,0 +1,1517 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Subsetting</title>
+
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">R4SSP Semester 1 2022</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Modules
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Intro</li>
+    <li>
+      <a href="01-intro.html">Intro to R and RStudio</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Data Focus</li>
+    <li>
+      <a href="02-visualise.html">Part 1: Visualising</a>
+    </li>
+    <li>
+      <a href="03-subset.html">Part 2: Subsetting</a>
+    </li>
+    <li class="dropdown-header">Part 3: Summarising</li>
+    <li class="dropdown-header">Part 4: Transforming</li>
+    <li class="dropdown-header">Part 5: Communicating</li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Programming focus</li>
+    <li class="dropdown-header">Functions and Choices</li>
+    <li class="dropdown-header">Repeating Code</li>
+    <li class="dropdown-header">Workflows</li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Zoom Notes
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="zoom_notes_01.html">01 - Introducing R and RStudio</a>
+    </li>
+    <li>
+      <a href="zoom_notes_02.html">02 - Visualising data</a>
+    </li>
+    <li>
+      <a href="zoom_notes_03.html">03 - Subsetting data</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+<li role="separator" class="divider"></li>
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Subsetting</h1>
+<h4 class="date">Semester 1, 2022</h4>
+
+</div>
+
+
+<blockquote>
+<h4 id="associated-material">Associated Material</h4>
+<p>Zoom notes: <a href="zoom_notes_03.html">Zoom Notes 03 - Selecting
+and Filtering Data</a></p>
+<p>Reading:</p>
+<ul>
+<li><a href="https://r4ds.had.co.nz/transform.html">R for Data Science -
+Chapter 5</a></li>
+</ul>
+</blockquote>
+<p><br />
+</p>
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<p>If you are working through the suggested materials in order, you have
+just completed <a
+href="https://r4ds.had.co.nz/transform.html"><strong>Chapter 5 - Data
+Transformation (https://r4ds.had.co.nz/transform.html)</strong></a> from
+the online text <em>R for Data Science</em>. This material demonstrated
+how to use the library <strong>dplyr</strong>, one of the libraries in
+the <strong>tidyverse</strong> family. You will have learned how to use
+the five core transformation functions – <code>filter</code>,
+<code>arrange</code>, <code>select</code>, <code>mutate</code> and
+<code>summarise</code> (with its helper function <code>group_by</code>).
+These functions allow you to modify and perform summaries on data
+frames, and to pull out specific portions of data frames for detailed
+analysis. Library <code>dplyr</code> is widely used, and you will see
+many examples of it in R code you find in the wild.</p>
+<p>The functions in <code>dplyr</code> (and in all the other libraries
+in the tidyverse) are technically <strong>wrappers</strong> around base
+R code. That is, they themselves are written using base R commands. Thus
+it is possible to perform all the same transformations <em>without</em>
+<code>dplyr</code>, by using only base R. Many programmers and
+researchers (including some of your lecturers) prefer to use base R for
+these operations, and you will also see it often in R code in the wild.
+Therefore, in this supplementary handout, we will illustrate the
+equivalent base R syntax for the <code>dplyr</code> functions you just
+learned.</p>
+<p>People make the choice between <code>dplyr</code> and base R for
+several reasons. Many people find <code>dplyr</code> syntax easier to
+use, because it is more <strong>uniform</strong>. That is, all the big
+five <code>dplyr</code> transformation functions use approximately the
+same syntax. In base R, there is more variation. Scientists who work
+with very large data sets are often concerned about how fast their code
+can be executed. In some cases, <code>dplyr</code> executes more slowly
+than base R (because of the extra code required for the wrapping),
+leading these researchers to prefer the base R approach. Because
+<code>dplyr</code> is a relatively new addition to R, some people prefer
+base R because they learned it first, and are happy to continue using
+it.</p>
+<p>Unless you are required to use a particular approach (check with your
+lecturer if you are unsure), you can choose whichever set of commands
+you like using. You can even mix and match them – they give the same
+results, and R doesn’t care. However, it is very important that you can
+<em>understand</em> both styles. One of the great benefits of the R
+ecosystem is the wide sharing of code, and you can’t fully participate
+in this unless you are comfortable with all the major dialects.</p>
+<p><br />
+</p>
+</div>
+<div id="subsetting" class="section level2">
+<h2>Subsetting</h2>
+<p>Often when we’re dealing with data we want to be able to pull out and
+operate on subsets of it. There are many different methods that can be
+used to subset data, and we’ll cover a couple of different methods. One
+of the most common methods is to use the “extract” function
+<code>[]</code>.</p>
+<p>There are two main ways approaches to sub-setting: based on an
+identifier such as position or name, or based on a condition. And for
+rectangular two-dimensional objects like data frames we also think about
+if we’re operating on rows or columns.</p>
+<div id="subsetting-by-position-index" class="section level3">
+<h3>Subsetting by position (index)</h3>
+<p>Vectors are made up of items, and each item has a positional index
+(starting from 1 - other languages differ). We can use this index as an
+argument to <code>[]</code> to pull out and return a new vector of the
+specified item. A negative of the index will return a copy of the
+original but with the item at the given position removed.</p>
+<pre class="r"><code># a numeric vector
+some_numbers &lt;- c(2, 45, -9, 6)
+
+# pull out the second item
+some_numbers[2]
+#&gt; [1] 45
+
+# remove the first item
+some_numbers[-1]
+#&gt; [1] 45 -9  6</code></pre>
+<p>If we want multiple items we supply a vector of numbers for the
+indexes we want. The order of the supplied indexes is the order in which
+the resultant vector will be created - it can also be used to duplicate
+items.</p>
+<pre class="r"><code>some_letters &lt;- c(&quot;l&quot;, &quot;o&quot;, &quot;h&quot;, &quot;e&quot;)
+
+# pull out items 1 and 3
+some_letters[c(1,3)]
+#&gt; [1] &quot;l&quot; &quot;h&quot;
+
+# reorder and duplicate
+some_letters[c(3,4,1,1,2)]
+#&gt; [1] &quot;h&quot; &quot;e&quot; &quot;l&quot; &quot;l&quot; &quot;o&quot;</code></pre>
+<p>Indices are positional, but we could also supply a boolean vector
+with the <code>TRUE</code> in the positions for items we would like to
+keep and <code>FALSE</code> for items we would like to drop. The boolean
+vector can either match in length or be a factor of the vector length
+(in which case it gets ‘recycled’ until it matches the length)</p>
+<pre class="r"><code>some_numbers
+#&gt; [1]  2 45 -9  6
+
+# matching length 
+some_numbers[c(TRUE, TRUE, FALSE, FALSE)]
+#&gt; [1]  2 45
+
+# take every second item
+some_numbers[c(FALSE, TRUE)]
+#&gt; [1] 45  6</code></pre>
+</div>
+<div id="subsetting-by-condition" class="section level3">
+<h3>Subsetting by condition</h3>
+<p>Often though, we don’t want to have to identify and keep track of the
+indices for items in our data, but instead we want to subset our data to
+items that match certain conditions.</p>
+<p>Similar to how we can operate on an entire vector through the
+arithmetic operators, there are also operators for performing
+comparisons.</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Operation</th>
+<th align="center">R Symbol</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Less than</td>
+<td align="center">&lt;</td>
+</tr>
+<tr class="even">
+<td align="left">Less than or equal to</td>
+<td align="center">&lt;=</td>
+</tr>
+<tr class="odd">
+<td align="left">Greater than</td>
+<td align="center">&gt;</td>
+</tr>
+<tr class="even">
+<td align="left">Greater than or equal to</td>
+<td align="center">&gt;=</td>
+</tr>
+<tr class="odd">
+<td align="left">Not equal to</td>
+<td align="center">!=</td>
+</tr>
+</tbody>
+</table>
+<p>When we apply comparisons to a vector we get in return a vector with
+boolean values (<code>TRUE</code>/<code>FALSE</code>) corresponding an
+item-wise comparison.</p>
+<pre class="r"><code>some_numbers &lt; 15
+#&gt; [1]  TRUE FALSE  TRUE  TRUE</code></pre>
+<p>And these boolean vectors are used for sub-setting. So we can in fact
+supply our conditional statement as the argument to <code>[]</code> so
+keep all the items that meet our condition</p>
+<pre class="r"><code># keep numbers less than 15
+some_numbers[some_numbers &lt; 15]
+#&gt; [1]  2 -9  6</code></pre>
+<p>One final comparison function is <code>%in%</code>, which lets us
+compare two vectors for matching items. <code>%in%</code> will return a
+boolean vector corresponding to the items on the left hand side that
+were also found “in” the right hand side. This operator is extremely
+helpful to use instead of combining multiple ‘or’ (<code>|</code>)
+conditions.</p>
+<pre class="r"><code>my_pets &lt;- c(&quot;dog&quot;, &quot;cat&quot;, &quot;turtle&quot;)
+
+# using &#39;or&#39;
+my_pets[ my_pets == &quot;frog&quot; | my_pets == &quot;dog&quot; | my_pets == &quot;rabbit&quot; | my_pets == &quot;horse&quot;]
+#&gt; [1] &quot;dog&quot;
+
+
+# use of %in%
+my_pets %in% c(&quot;frog&quot;, &quot;dog&quot;, &quot;rabbit&quot;, &quot;horse&quot;)
+#&gt; [1]  TRUE FALSE FALSE
+
+my_pets[my_pets %in% c(&quot;frog&quot;, &quot;dog&quot;, &quot;rabbit&quot;)]
+#&gt; [1] &quot;dog&quot;</code></pre>
+<div id="missing-data" class="section level4">
+<h4>Missing data</h4>
+<p>One extremely common subsetting operation is dealing with missing
+data. Missing data in R is represented by <code>NA</code>.
+<code>NA</code> in R is a special data type and the set of comparator
+operations that we have covered will always return <code>NA</code> (even
+<code>NA == NA</code> will return <code>NA</code>) so instead there is a
+special function that is used to tell us when we have missing data so we
+can handle it appropriately and that function is <code>is.na</code>
+which will return <code>TRUE</code> is something is <code>NA</code> and
+<code>FALSE</code> in all other instances.</p>
+<pre class="r"><code>NA &lt; 6
+#&gt; [1] NA
+
+NA == &quot;a&quot;
+#&gt; [1] NA
+
+NA != TRUE
+#&gt; [1] NA
+
+NA == NA
+#&gt; [1] NA
+
+is.na(NA)
+#&gt; [1] TRUE</code></pre>
+<p>Some functions can deal with missing data as part of the function by
+setting the parameter <code>na.rm = TRUE</code>, but not all functions
+have this.</p>
+<pre class="r"><code>missing_example &lt;- c(NA, 1, 4, 6, NA, 8)
+
+mean(missing_example)
+#&gt; [1] NA
+
+mean(missing_example, na.rm = TRUE)
+#&gt; [1] 4.75</code></pre>
+<p>To remove missing data so it can be used with functions with an
+<code>na.rm</code> parameter we can use <code>is.na</code> to identify
+the <code>NA</code> values and then conditionally subset:</p>
+<pre class="r"><code>missing_example
+#&gt; [1] NA  1  4  6 NA  8
+
+is.na(missing_example)
+#&gt; [1]  TRUE FALSE FALSE FALSE  TRUE FALSE
+
+missing_example[!is.na(missing_example)]
+#&gt; [1] 1 4 6 8</code></pre>
+<p>Remember <code>is.na</code> will be <code>TRUE</code> when there is
+<code>NA</code>, so we can use the <code>!</code> (not) operator to
+invert the logic.</p>
+</div>
+</div>
+</div>
+<div id="subsetting-in-2-dimensions" class="section level2">
+<h2>Subsetting in 2-dimensions</h2>
+<p>We can take the same principles we covered using <code>[]</code> on
+vectors and apply them on rectangular 2-dimensional structures like the
+data.frame. Adding a second dimension means we now need to supply 2
+arguments to <code>[]</code>, the first argument is for rows, and the
+second is for columns.</p>
+<p>The general syntax is:</p>
+<p><em>name_of_data_frame[row_information, column_information]</em></p>
+<p>There are a variety of ways to express row and column information. To
+see how they work, let’s first make a very simple data frame by hand,
+and then perform some sub-setting operations on it. Enter the following
+code into RStudio to create <strong>geography_df</strong>.</p>
+<pre class="r"><code>countries &lt;- c(&quot;Austria&quot;, &quot;Brazil&quot;, &quot;Canada&quot;, &quot;Denmark&quot;)
+capitals &lt;- c(&quot;Vienna&quot;, &quot;Brasilia&quot;, &quot;Ottawa&quot;, &quot;Copenhagen&quot;)
+population_in_millions &lt;- c(9, 211, 38, 6)
+
+geography_df &lt;- data.frame(Country = countries,
+                           Capital = capitals,
+                           PopulationMillions = population_in_millions)
+
+geography_df
+#&gt;   Country    Capital PopulationMillions
+#&gt; 1 Austria     Vienna                  9
+#&gt; 2  Brazil   Brasilia                211
+#&gt; 3  Canada     Ottawa                 38
+#&gt; 4 Denmark Copenhagen                  6</code></pre>
+<p>In the simplest form of subsetting, we want just one single value
+from a data frame, so we provide the row number and column number of the
+cell of interest. For example, imagine we want the population of Vienna.
+We know that Vienna is in row 1 and the population is in column 3. To
+select that cell we provide 1 for the row information and 3 for the
+column information in the square brackets:</p>
+<pre class="r"><code>geography_df[1,3]
+#&gt; [1] 9</code></pre>
+<p>Don’t worry about how you would know the specific row and column of
+the cell you are interested in. This particular selection operation is
+typically used in situations where your code is computing those values
+based on complex criteria. This example is merely illustrative. <a
+href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a></p>
+<p>There are two very useful extensions to this pattern:</p>
+<ol style="list-style-type: decimal">
+<li>Either the row or column index (or both) may specify a
+<strong>range</strong> using the : operator. For example, 1:3 or 6:12
+(these are “1 to 3” and “6 to 12” respectively).</li>
+</ol>
+<pre class="r"><code># For rows 2 to 4 (Brazil, Canada, Denmark), select the population (column 3)
+geography_df[2:4, 3]
+#&gt; [1] 211  38   6
+
+# For Canada (row 3), select both the capital name and population (cols 2 and 3)
+geography_df[3, 2:3]
+#&gt;   Capital PopulationMillions
+#&gt; 3  Ottawa                 38</code></pre>
+<ol start="2" style="list-style-type: decimal">
+<li>Either the row or column index <strong>may be omitted</strong>. That
+is, we can say <code>geography_df[3 , ]</code> or
+<code>geography_df[ , 2]</code>. The missing element is interpreted as
+<strong>all</strong>. Omit the row number and you want <strong>all
+rows</strong> in the supplied column(s). Omit the column number and you
+want <strong>all columns</strong> in the supplied row(s).</li>
+</ol>
+<pre class="r"><code>
+# For Denmark (row 4), select all the columns
+geography_df[4, ]
+#&gt;   Country    Capital PopulationMillions
+#&gt; 4 Denmark Copenhagen                  6
+
+# For all rows, select the capital city name (column 2)
+geography_df[ , 2]
+#&gt; [1] &quot;Vienna&quot;     &quot;Brasilia&quot;   &quot;Ottawa&quot;     &quot;Copenhagen&quot;</code></pre>
+<p>You may have been surprised by the output generated by that last
+example. Although you have selected a single column, the output is
+printed horizontally, as though it were a row. This is a peculiarity of
+R. Any collection that has a single dimension (i.e. doesn’t have both
+columns and rows) is treated as a plain vector. And vectors are always
+printed horizontally. By extension, since a selected column of a data
+frame is a vector, you can apply everything you have learned about
+vectors to selected data frame columns, which is exactly what we want to
+be able to do.</p>
+<p>You can combine ranges and the <em>missing index = all</em>
+technique:</p>
+<pre class="r"><code># For the first three rows, select all the columns
+geography_df[1:3 , ]
+#&gt;   Country  Capital PopulationMillions
+#&gt; 1 Austria   Vienna                  9
+#&gt; 2  Brazil Brasilia                211
+#&gt; 3  Canada   Ottawa                 38</code></pre>
+<p>As an exercise, what do you think <code>geography_df[ , ]</code>
+(i.e. where both row and column information are omitted) will do? Try
+it. Were you right?</p>
+<p>Instead of using column numbers, you can provide column names as the
+column information (and row names as the row information if your data
+frame has named rows). Use the combine function <code>c()</code> to
+provide multiple column names, and be sure to surround each column name
+with quotes, because R considers them to be strings in this
+situation.</p>
+<pre class="r"><code>geography_df[2:4, &quot;Capital&quot;]
+#&gt; [1] &quot;Brasilia&quot;   &quot;Ottawa&quot;     &quot;Copenhagen&quot;
+
+geography_df[3:4, c(&quot;Country&quot;, &quot;Capital&quot;)]
+#&gt;   Country    Capital
+#&gt; 3  Canada     Ottawa
+#&gt; 4 Denmark Copenhagen</code></pre>
+<p>Another method available in base R is the <code>subset</code>
+function. It takes the format</p>
+<p>subset(x = dataframe, subset =
+conditional_statement_to_apply_to_rows, select = columns_to_keep)</p>
+<pre class="r"><code>countries_over_30million &lt;- subset(geography_df, subset = PopulationMillions &gt; 30, select = c(&quot;Country&quot;, &quot;PopulationMillions&quot;) )
+countries_over_30million
+#&gt;   Country PopulationMillions
+#&gt; 2  Brazil                211
+#&gt; 3  Canada                 38</code></pre>
+<p>Again, not supplying the <code>subset</code> argument or
+<code>select</code> argument will keep all rows (subset) or columns
+(select).</p>
+<p>Sub-setting isn’t usually done performed in isolation. Usually there
+is a workflow that we’re working through as part of our data analysis.
+We’re now going to take look at some functions from the Tidyverse -
+specifically <code>dplyr</code> that are part of that data analysis
+workflow, and we’ll also provide the equivalent base R approach.</p>
+<div id="selecting-columns" class="section level3">
+<h3>Selecting columns</h3>
+<p>So far we’ve covered methods that will let us subset both rows and
+columns at the same time.</p>
+<p>If we’re after a single column in a data frame this can be pulled out
+using the <code>$</code> using the format
+<code>dataframe$columnname</code>.</p>
+<pre class="r"><code># need an example</code></pre>
+<p>This can be useful if you want to perform an operation on only one
+column such as calculating a summary statistic like the mean or standard
+deviation. It can also be used to modify or create a new column on a
+data frame.</p>
+<pre class="r"><code># need example
+
+# mean(dataframe$column)
+
+# dataframe$columnname  &lt;- dataframe$othercolumn * 1000</code></pre>
+<p>To see how selection with the <code>select</code> function from
+<code>dplyr</code> compares to selection with the extract operator [ ]
+in base R, let’s load the <strong>flights</strong> data frame and repeat
+some of the exercises from <em>R for Data Science</em>.</p>
+<pre class="r"><code>
+# Load the library that contains the flights data frame
+library(nycflights13)
+
+# Load dplyr
+library(dplyr)
+
+
+
+# Select the year, month, and day columns from the flights data frame
+
+# With dplyr
+year_month_day_cols_dplyr &lt;- select(flights, year, month, day)
+year_month_day_cols_dplyr
+#&gt; # A tibble: 336,776 × 3
+#&gt;     year month   day
+#&gt;    &lt;int&gt; &lt;int&gt; &lt;int&gt;
+#&gt;  1  2013     1     1
+#&gt;  2  2013     1     1
+#&gt;  3  2013     1     1
+#&gt;  4  2013     1     1
+#&gt;  5  2013     1     1
+#&gt;  6  2013     1     1
+#&gt;  7  2013     1     1
+#&gt;  8  2013     1     1
+#&gt;  9  2013     1     1
+#&gt; 10  2013     1     1
+#&gt; # … with 336,766 more rows
+
+# With base R
+year_month_day_cols_base &lt;- flights[ , c(&quot;year&quot;, &quot;month&quot;, &quot;day&quot;)]
+year_month_day_cols_base
+#&gt; # A tibble: 336,776 × 3
+#&gt;     year month   day
+#&gt;    &lt;int&gt; &lt;int&gt; &lt;int&gt;
+#&gt;  1  2013     1     1
+#&gt;  2  2013     1     1
+#&gt;  3  2013     1     1
+#&gt;  4  2013     1     1
+#&gt;  5  2013     1     1
+#&gt;  6  2013     1     1
+#&gt;  7  2013     1     1
+#&gt;  8  2013     1     1
+#&gt;  9  2013     1     1
+#&gt; 10  2013     1     1
+#&gt; # … with 336,766 more rows</code></pre>
+<!--
+- using helper functions
+  - starts_with
+  - ends_with
+  - contains
+  - anyof
+-->
+</div>
+<div id="filtering-rows" class="section level3">
+<h3>Filtering rows</h3>
+<p>The <code>dplyr</code> function <code>filter</code> is analogous to
+the base R function <code>subset</code>. The two functions have
+identical syntax. We can see how some of the <code>dplyr</code> filter
+operations from the previous section would be written using base R. If
+you wish, run this code in RStudio, and inspect the results of each
+statement.</p>
+<pre class="r"><code>
+# In all cases, these pairs of commands produce the same output
+# In each pair, the first version is dplyr and the second
+# is base R
+
+# All flights with arrival delay &gt;= 120 minutes
+late_dplyr &lt;- filter(flights, arr_delay &gt; 120)
+late_base &lt;- subset(flights, arr_delay &gt; 120)
+
+# Flew to IAH or HOU
+houston_dplyr &lt;- filter(flights, dest == &quot;IAH&quot; | dest == &quot;HOU&quot;)
+houston_base &lt;- subset(flights, dest == &quot;IAH&quot; | dest == &quot;HOU&quot;)
+
+# Alternatively, using %in%, which requires less typing
+houston_dplyr &lt;- filter(flights, dest %in% c(&quot;IAH&quot;, &quot;HOU&quot;))
+houston_base &lt;- subset(flights, dest %in% c(&quot;IAH&quot;, &quot;HOU&quot;))
+
+# Select rows with missing values using is.na() 
+missing_dep_time_dplyr &lt;- filter(flights, is.na(dep_time))
+missing_dep_time_base &lt;- subset(flights, is.na(dep_time))</code></pre>
+<p>Base R does not have the helper function <code>between</code>, but
+the same result can be achieved in a number of ways:</p>
+<pre class="r"><code># Between
+
+# These four commands all produce the same result
+
+# dplyr
+summer_dplyr &lt;- filter(flights, between(month, 7, 9))
+
+# base R
+summer_base_01 &lt;- subset(flights, month %in% c(7,8,9))
+summer_base_02 &lt;- subset(flights, month %in% 7:9)
+summer_base_03 &lt;- subset(flights, month &gt;=7 &amp; month &lt;= 9)</code></pre>
+<p>When you have multiple options for performing a computation, the
+general goal is to strike a balance between <strong>parsimony</strong>
+(not too much typing) and <strong>readability</strong> (your code is
+easy <em>for other people</em> to understand). When working on group
+projects, or in a professional software development context, readability
+is considered the more critical of the two features.<br />
+</p>
+</div>
+</div>
+<div id="arranging-sorting" class="section level2">
+<h2>Arranging (sorting)</h2>
+<p>The <code>dplyr</code> function <code>arrange</code> is analogous to
+base R selection using [ ] combined with function <code>order</code>. We
+use <code>order</code> as the row information to [ ]. The arguments to
+<code>order</code> are a comma separated sequence of the columns on
+which we wish to sort. We identify the columns using the $ operator, in
+the usual way.</p>
+<p>For example, the <code>dplyr</code> statement and the base R
+statement below both sort the entire flight data frame on the year,
+month, and day columns:</p>
+<pre class="r"><code>
+# Sort using arrange or order
+
+# dplyr
+year_month_day_dplyr &lt;- arrange(flights, year, month, day)
+
+# base R – we omit the column index to get all columns in the result
+year_month_day_base &lt;- flights[order(flights$year, flights$month, flights$day), ] 
+
+# Compare the results
+year_month_day_dplyr
+#&gt; # A tibble: 336,776 × 19
+#&gt;     year month   day dep_time sched_dep_time dep_delay arr_time sched_arr_time
+#&gt;    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;          &lt;int&gt;
+#&gt;  1  2013     1     1      517            515         2      830            819
+#&gt;  2  2013     1     1      533            529         4      850            830
+#&gt;  3  2013     1     1      542            540         2      923            850
+#&gt;  4  2013     1     1      544            545        -1     1004           1022
+#&gt;  5  2013     1     1      554            600        -6      812            837
+#&gt;  6  2013     1     1      554            558        -4      740            728
+#&gt;  7  2013     1     1      555            600        -5      913            854
+#&gt;  8  2013     1     1      557            600        -3      709            723
+#&gt;  9  2013     1     1      557            600        -3      838            846
+#&gt; 10  2013     1     1      558            600        -2      753            745
+#&gt; # … with 336,766 more rows, and 11 more variables: arr_delay &lt;dbl&gt;,
+#&gt; #   carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;,
+#&gt; #   air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;
+year_month_day_base
+#&gt; # A tibble: 336,776 × 19
+#&gt;     year month   day dep_time sched_dep_time dep_delay arr_time sched_arr_time
+#&gt;    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;          &lt;int&gt;
+#&gt;  1  2013     1     1      517            515         2      830            819
+#&gt;  2  2013     1     1      533            529         4      850            830
+#&gt;  3  2013     1     1      542            540         2      923            850
+#&gt;  4  2013     1     1      544            545        -1     1004           1022
+#&gt;  5  2013     1     1      554            600        -6      812            837
+#&gt;  6  2013     1     1      554            558        -4      740            728
+#&gt;  7  2013     1     1      555            600        -5      913            854
+#&gt;  8  2013     1     1      557            600        -3      709            723
+#&gt;  9  2013     1     1      557            600        -3      838            846
+#&gt; 10  2013     1     1      558            600        -2      753            745
+#&gt; # … with 336,766 more rows, and 11 more variables: arr_delay &lt;dbl&gt;,
+#&gt; #   carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;,
+#&gt; #   air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</code></pre>
+<p>By default, <code>order</code> sorts in ascending order (i.e. from
+smallest to largest). To sort in descending order, place - (the negative
+sign; the hyphen) in front of an argument to <code>order</code>. We can
+again compare this operation in <code>dplyr</code> and base R:</p>
+<pre class="r"><code># Descending sort
+
+# dplyr
+desc_dep_delay_dplyr &lt;- arrange(flights, desc(dep_delay))
+
+# base R
+desc_dep_delay_base &lt;- flights[order(-flights$dep_delay),]
+
+# Check dplyr – the data frame is sorted in descending order of dep_delay
+desc_dep_delay_dplyr
+#&gt; # A tibble: 336,776 × 19
+#&gt;     year month   day dep_time sched_dep_time dep_delay arr_time sched_arr_time
+#&gt;    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;          &lt;int&gt;
+#&gt;  1  2013     1     9      641            900      1301     1242           1530
+#&gt;  2  2013     6    15     1432           1935      1137     1607           2120
+#&gt;  3  2013     1    10     1121           1635      1126     1239           1810
+#&gt;  4  2013     9    20     1139           1845      1014     1457           2210
+#&gt;  5  2013     7    22      845           1600      1005     1044           1815
+#&gt;  6  2013     4    10     1100           1900       960     1342           2211
+#&gt;  7  2013     3    17     2321            810       911      135           1020
+#&gt;  8  2013     6    27      959           1900       899     1236           2226
+#&gt;  9  2013     7    22     2257            759       898      121           1026
+#&gt; 10  2013    12     5      756           1700       896     1058           2020
+#&gt; # … with 336,766 more rows, and 11 more variables: arr_delay &lt;dbl&gt;,
+#&gt; #   carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;,
+#&gt; #   air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;
+
+# Check base – the data frame is sorted in descending order of dep_delay
+desc_dep_delay_base
+#&gt; # A tibble: 336,776 × 19
+#&gt;     year month   day dep_time sched_dep_time dep_delay arr_time sched_arr_time
+#&gt;    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;          &lt;int&gt;
+#&gt;  1  2013     1     9      641            900      1301     1242           1530
+#&gt;  2  2013     6    15     1432           1935      1137     1607           2120
+#&gt;  3  2013     1    10     1121           1635      1126     1239           1810
+#&gt;  4  2013     9    20     1139           1845      1014     1457           2210
+#&gt;  5  2013     7    22      845           1600      1005     1044           1815
+#&gt;  6  2013     4    10     1100           1900       960     1342           2211
+#&gt;  7  2013     3    17     2321            810       911      135           1020
+#&gt;  8  2013     6    27      959           1900       899     1236           2226
+#&gt;  9  2013     7    22     2257            759       898      121           1026
+#&gt; 10  2013    12     5      756           1700       896     1058           2020
+#&gt; # … with 336,766 more rows, and 11 more variables: arr_delay &lt;dbl&gt;,
+#&gt; #   carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;,
+#&gt; #   air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</code></pre>
+</div>
+<div id="creating-new-columns" class="section level2">
+<h2>Creating new columns</h2>
+<p>In <code>dplyr</code> we use function <code>mutate</code> to create
+new columns. In base R, we simply assign the new column directly to the
+data frame, using $. Each new column must be created in a separate
+statement. In the code below, we will compare the two techniques. In
+both approaches we will begin by making a copy of data frame flights,
+before we start to modify it. This is common practice so that you always
+have a clean copy of your original data.</p>
+<pre class="r"><code>
+# dplyr
+
+# Make a copy
+flights_dplyr &lt;- flights
+
+# Add new columns with mutate
+flights_dplyr &lt;- mutate(flights_dplyr, gain=dep_delay - arr_delay, speed = distance / air_time * 60)
+
+
+# base R
+
+# Make a copy
+flights_base &lt;- flights
+
+# Add the new columns
+attach(flights_base)
+flights_base$gain &lt;- dep_delay - arr_delay
+flights_base$speed &lt;- distance / air_time * 60
+
+# Compare using base R selection
+# Ask for columns gain and speed for rows 1 to 15
+# They are the same
+flights_dplyr[1:5, c(&quot;gain&quot;, &quot;speed&quot;)]
+#&gt; # A tibble: 5 × 2
+#&gt;    gain speed
+#&gt;   &lt;dbl&gt; &lt;dbl&gt;
+#&gt; 1    -9  370.
+#&gt; 2   -16  374.
+#&gt; 3   -31  408.
+#&gt; 4    17  517.
+#&gt; 5    19  394.
+flights_base[1:5, c(&quot;gain&quot;, &quot;speed&quot;)]
+#&gt; # A tibble: 5 × 2
+#&gt;    gain speed
+#&gt;   &lt;dbl&gt; &lt;dbl&gt;
+#&gt; 1    -9  370.
+#&gt; 2   -16  374.
+#&gt; 3   -31  408.
+#&gt; 4    17  517.
+#&gt; 5    19  394.</code></pre>
+</div>
+<div id="grouping-and-summarising" class="section level2">
+<h2>Grouping and Summarising</h2>
+<p>With <code>dplyr</code> we take group summaries (e.g. getting the
+average arrival for all flights in each month) by using
+<code>group_by</code> to group the data frame (gather the rows together
+by month) and <code>summarise</code> to apply the summary function (take
+the average for each month). In base R both of these steps are handled
+by the single function <code>aggregate</code>. This function takes four
+arguments:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Arg name</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>x</td>
+<td>The name of the data frame</td>
+</tr>
+<tr class="even">
+<td>by</td>
+<td>A list of columns to group by</td>
+</tr>
+<tr class="odd">
+<td>FUN</td>
+<td>The name of the summary function to apply</td>
+</tr>
+<tr class="even">
+<td>na.rm</td>
+<td>Set to TRUE is you want to ignore missing values</td>
+</tr>
+</tbody>
+</table>
+<p>The only new part is the syntax used to declare a list for argument
+<strong>by</strong>. We will first look at an example of how to take
+group means in both <code>dplyr</code> and base R, and then discuss the
+list in more detail.</p>
+<pre class="r"><code># Compute the average arrival delay, collapsed across months
+
+# Using dplyr
+
+# Group by month
+by_month &lt;- group_by(flights, month)
+
+# Take the means
+mean_delay_by_month_dplyr &lt;- summarise(by_month, MeanDelay = mean(arr_delay, na.rm = TRUE))
+
+# Check the output
+mean_delay_by_month_dplyr
+#&gt; # A tibble: 12 × 2
+#&gt;    month MeanDelay
+#&gt;    &lt;int&gt;     &lt;dbl&gt;
+#&gt;  1     1     6.13 
+#&gt;  2     2     5.61 
+#&gt;  3     3     5.81 
+#&gt;  4     4    11.2  
+#&gt;  5     5     3.52 
+#&gt;  6     6    16.5  
+#&gt;  7     7    16.7  
+#&gt;  8     8     6.04 
+#&gt;  9     9    -4.02 
+#&gt; 10    10    -0.167
+#&gt; 11    11     0.461
+#&gt; 12    12    14.9
+
+
+
+# Using base R function aggregate
+mean_delay_by_month_base &lt;- aggregate(x = flights$arr_delay, 
+                                      by = list(Month = flights$month),
+                                      FUN = mean,
+                                      na.rm = TRUE)
+
+
+# Check the output
+mean_delay_by_month_base
+#&gt;    Month          x
+#&gt; 1      1  6.1299720
+#&gt; 2      2  5.6130194
+#&gt; 3      3  5.8075765
+#&gt; 4      4 11.1760630
+#&gt; 5      5  3.5215088
+#&gt; 6      6 16.4813296
+#&gt; 7      7 16.7113067
+#&gt; 8      8  6.0406524
+#&gt; 9      9 -4.0183636
+#&gt; 10    10 -0.1670627
+#&gt; 11    11  0.4613474
+#&gt; 12    12 14.8703553</code></pre>
+<p>Use function <code>list</code> to create the value for argument
+<code>by</code> . This function is like the combine function for
+vectors, except it creates a collection of <em>named elements</em>. We
+often see the function in situations like this:</p>
+<pre class="r"><code># A list is a collection of named elements
+pet_data &lt;- list(PetName = &quot;Snoopy&quot;, PetOwner = &quot;Charlie Brown&quot;, PetBreed = &quot;Beagle&quot;)
+pet_data
+#&gt; $PetName
+#&gt; [1] &quot;Snoopy&quot;
+#&gt; 
+#&gt; $PetOwner
+#&gt; [1] &quot;Charlie Brown&quot;
+#&gt; 
+#&gt; $PetBreed
+#&gt; [1] &quot;Beagle&quot;</code></pre>
+<p>When using <code>aggregate</code> you create a list of columns that
+you want to group by. The names of the columns will be the column
+headers for the output table of summarised results. To group by multiple
+columns, add more elements to the list. For example, if we wanted the
+average delay by month <em>for each origin airport separately</em> we
+would say:</p>
+<pre class="r"><code># Compute the average arrival delay, collapsed across months, separately for
+# each origin airport. There are 3 airports and 12 months, so we expect to 
+# get 36 means.
+
+# Using dplyr
+
+# Group by month and origin
+by_month_origin &lt;- group_by(flights, month, origin)
+
+# Take the means
+mean_month_origin_dplyr &lt;- summarise(by_month_origin, MeanDelay = mean(arr_delay, na.rm = TRUE))
+#&gt; `summarise()` has grouped output by &#39;month&#39;. You can override using the
+#&gt; `.groups` argument.
+
+# Check the output
+mean_month_origin_dplyr
+#&gt; # A tibble: 36 × 3
+#&gt; # Groups:   month [12]
+#&gt;    month origin MeanDelay
+#&gt;    &lt;int&gt; &lt;chr&gt;      &lt;dbl&gt;
+#&gt;  1     1 EWR        12.8 
+#&gt;  2     1 JFK         1.37
+#&gt;  3     1 LGA         3.38
+#&gt;  4     2 EWR         8.78
+#&gt;  5     2 JFK         4.39
+#&gt;  6     2 LGA         3.15
+#&gt;  7     3 EWR        10.6 
+#&gt;  8     3 JFK         2.58
+#&gt;  9     3 LGA         3.74
+#&gt; 10     4 EWR        14.1 
+#&gt; # … with 26 more rows
+
+
+
+# Using base R function aggregate
+mean_month_origin_base &lt;- aggregate(x = flights$arr_delay, 
+                                      by = list(Month = flights$month, Origin = flights$origin),
+                                      FUN = mean,
+                                      na.rm = TRUE)
+
+
+# Check the output. Note that dplyr and base R sort the output in different orders
+mean_month_origin_base
+#&gt;    Month Origin          x
+#&gt; 1      1    EWR 12.8165557
+#&gt; 2      2    EWR  8.7751603
+#&gt; 3      3    EWR 10.6007988
+#&gt; 4      4    EWR 14.1433877
+#&gt; 5      5    EWR  5.3819276
+#&gt; 6      6    EWR 16.8635990
+#&gt; 7      7    EWR 15.4602015
+#&gt; 8      8    EWR  6.7123423
+#&gt; 9      9    EWR -4.7299722
+#&gt; 10    10    EWR  2.6047372
+#&gt; 11    11    EWR  0.6724982
+#&gt; 12    12    EWR 19.6397450
+#&gt; 13     1    JFK  1.3683977
+#&gt; 14     2    JFK  4.3910328
+#&gt; 15     3    JFK  2.5808150
+#&gt; 16     4    JFK  7.0115389
+#&gt; 17     5    JFK  2.1229773
+#&gt; 18     6    JFK 17.5969288
+#&gt; 19     7    JFK 20.1902224
+#&gt; 20     8    JFK  5.9108409
+#&gt; 21     9    JFK -4.4630178
+#&gt; 22    10    JFK -3.5859719
+#&gt; 23    11    JFK -0.8728745
+#&gt; 24    12    JFK 12.6775748
+#&gt; 25     1    LGA  3.3824023
+#&gt; 26     2    LGA  3.1473894
+#&gt; 27     3    LGA  3.7384982
+#&gt; 28     4    LGA 12.0385817
+#&gt; 29     5    LGA  2.7963764
+#&gt; 30     6    LGA 14.7692779
+#&gt; 31     7    LGA 14.1815696
+#&gt; 32     8    LGA  5.4078014
+#&gt; 33     9    LGA -2.8253950
+#&gt; 34    10    LGA  0.1864229
+#&gt; 35    11    LGA  1.5511865
+#&gt; 36    12    LGA 11.9563716</code></pre>
+</div>
+<div id="workflows-and-data-pipelines" class="section level2">
+<h2>Workflows and data pipelines</h2>
+<p>Traditionally data analysis workflows in R have consisted of either
+many nested operations, or the use of assigning intermediate steps to
+variables. One of the key differences in approach between the Tidyverse
+and base R (until very recently with R v4.1+) is the idea of ‘pipes’
+which allow us to ‘chain’ operations together, with the key benefit
+being readability of code. When reading code, it can be useful to read
+the pipe as the word “then”.</p>
+<div id="pipes" class="section level3">
+<h3>Pipes</h3>
+<p>The pipe function from <code>magrittr</code> which is part of the
+Tidyverse, enables the creation of ‘pipelines’ or chaining together of
+functions as opposed to nesting. The pipe function (<code>%&gt;%</code>
+shortcut <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>M</kbd> - on a Mac
+use <kbd>Cmd</kbd> instead of <kbd>Ctrl</kbd>) takes the output of the
+function and uses it as the first argument for the next function. When
+you read <code>%&gt;%</code> in code you can think of it as the word
+“then”.</p>
+<p>For instance, if we call the name of our data set by itself, it will
+put the results onto the screen, however if we ‘pipe’ it to another
+function it gets used as the input for that function instead.</p>
+<pre class="r"><code>flights
+#&gt; # A tibble: 336,776 × 19
+#&gt;     year month   day dep_time sched_dep_time dep_delay arr_time sched_arr_time
+#&gt;    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;          &lt;int&gt;
+#&gt;  1  2013     1     1      517            515         2      830            819
+#&gt;  2  2013     1     1      533            529         4      850            830
+#&gt;  3  2013     1     1      542            540         2      923            850
+#&gt;  4  2013     1     1      544            545        -1     1004           1022
+#&gt;  5  2013     1     1      554            600        -6      812            837
+#&gt;  6  2013     1     1      554            558        -4      740            728
+#&gt;  7  2013     1     1      555            600        -5      913            854
+#&gt;  8  2013     1     1      557            600        -3      709            723
+#&gt;  9  2013     1     1      557            600        -3      838            846
+#&gt; 10  2013     1     1      558            600        -2      753            745
+#&gt; # … with 336,766 more rows, and 11 more variables: arr_delay &lt;dbl&gt;,
+#&gt; #   carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;,
+#&gt; #   air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;
+
+
+flights %&gt;% head()
+#&gt; # A tibble: 6 × 19
+#&gt;    year month   day dep_time sched_dep_time dep_delay arr_time sched_arr_time
+#&gt;   &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;          &lt;int&gt;
+#&gt; 1  2013     1     1      517            515         2      830            819
+#&gt; 2  2013     1     1      533            529         4      850            830
+#&gt; 3  2013     1     1      542            540         2      923            850
+#&gt; 4  2013     1     1      544            545        -1     1004           1022
+#&gt; 5  2013     1     1      554            600        -6      812            837
+#&gt; 6  2013     1     1      554            558        -4      740            728
+#&gt; # … with 11 more variables: arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;,
+#&gt; #   tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;,
+#&gt; #   hour &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</code></pre>
+<p>This works for functions that expect the first argument to be the
+data. We can also be explicit about which argument we would like the
+input from the pipe to occupy. We can use <code>.</code> to represent
+this</p>
+<pre class="r"><code>flights %&gt;% head(n = 10, x = .)
+#&gt; # A tibble: 10 × 19
+#&gt;     year month   day dep_time sched_dep_time dep_delay arr_time sched_arr_time
+#&gt;    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;          &lt;int&gt;
+#&gt;  1  2013     1     1      517            515         2      830            819
+#&gt;  2  2013     1     1      533            529         4      850            830
+#&gt;  3  2013     1     1      542            540         2      923            850
+#&gt;  4  2013     1     1      544            545        -1     1004           1022
+#&gt;  5  2013     1     1      554            600        -6      812            837
+#&gt;  6  2013     1     1      554            558        -4      740            728
+#&gt;  7  2013     1     1      555            600        -5      913            854
+#&gt;  8  2013     1     1      557            600        -3      709            723
+#&gt;  9  2013     1     1      557            600        -3      838            846
+#&gt; 10  2013     1     1      558            600        -2      753            745
+#&gt; # … with 11 more variables: arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;,
+#&gt; #   tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;,
+#&gt; #   hour &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</code></pre>
+<p><br />
+</p>
+<p>We can use the <code>%&gt;%</code> to chain multiple functions
+together. Here we’ll look at the workflow of calculating the mean
+airtime of flights leaving JFK or LGA for each month with the resulting
+mean airtime sorted from longest to shortest flight time.</p>
+<pre class="r"><code># base R with intermediates
+
+# Subset the data
+flights_jfk_lga &lt;- subset(flights, origin == &quot;JFK&quot; | origin == &quot;LGA&quot;, select = c(&quot;month&quot;, &quot;origin&quot;,&quot;air_time&quot;))
+
+# calculate the mean air time for each month/origin grouping
+flight_results &lt;- aggregate(x = flights_jfk_lga$air_time, 
+          by = list(month = flights_jfk_lga$month, origin = flights_jfk_lga$origin),
+          FUN = mean,
+          na.rm = TRUE)
+
+# rename the result column
+names(flight_results)[which(names(flight_results) == &quot;x&quot;)] &lt;- &quot;mean_air_time&quot;
+
+# sort the results
+flight_results_base &lt;- flight_results[order(flight_results$mean_air_time, decreasing = TRUE),]
+
+# show top 6 results
+head(flight_results_base)
+#&gt;    month origin mean_air_time
+#&gt; 12    12    JFK      191.4167
+#&gt; 11    11    JFK      185.1466
+#&gt; 4      4    JFK      182.2326
+#&gt; 1      1    JFK      181.1520
+#&gt; 10    10    JFK      179.0988
+#&gt; 3      3    JFK      178.4356</code></pre>
+<pre class="r"><code># dplyr using pipes
+
+flight_results_dplyr &lt;- flights %&gt;% 
+  # subset the data
+  select(month, origin, air_time) %&gt;% 
+  filter(origin == &quot;JFK&quot; | origin == &quot;LGA&quot;) %&gt;%
+  # calculate the mean air time for each month/origin grouping
+  group_by(month, origin) %&gt;% 
+  summarise(mean_air_time = mean(air_time, na.rm = TRUE)) %&gt;% 
+  # sort the results
+  arrange(desc(mean_air_time))
+#&gt; `summarise()` has grouped output by &#39;month&#39;. You can override using the
+#&gt; `.groups` argument.
+
+# show top 6 results
+head(flight_results_dplyr)
+#&gt; # A tibble: 6 × 3
+#&gt; # Groups:   month [6]
+#&gt;   month origin mean_air_time
+#&gt;   &lt;int&gt; &lt;chr&gt;          &lt;dbl&gt;
+#&gt; 1    12 JFK             191.
+#&gt; 2    11 JFK             185.
+#&gt; 3     4 JFK             182.
+#&gt; 4     1 JFK             181.
+#&gt; 5    10 JFK             179.
+#&gt; 6     3 JFK             178.</code></pre>
+<p>One of the nice features of dealing with pipes, is that you can do
+your subsetting workflow and pipe directly into <code>ggplot</code>,
+although it’s usually a good idea to assign your subsetted data and then
+use that to start your plotting pipeline. If you pipe your data into
+ggplot RStudio will also let you auto-complete your columns with
+<kbd>Tab</kbd>.</p>
+<pre class="r"><code>flights %&gt;% 
+  # subset the data
+  select(month, origin, air_time) %&gt;% 
+  filter(origin == &quot;JFK&quot; | origin == &quot;LGA&quot;) %&gt;%
+  # plot the data
+  ggplot(aes(x = origin, y = air_time)) + geom_boxplot()
+#&gt; Warning: Removed 5722 rows containing non-finite values (stat_boxplot).</code></pre>
+<p><img src="figures/03/pipe_plot-1.png" width="672" /></p>
+</div>
+</div>
+<div id="conclusion" class="section level2">
+<h2>Conclusion</h2>
+<p>R users are constantly adding new libraries to base R, meaning that
+you will probably have several options for doing any job in R. The
+various options sometimes have subtle technical differences that will
+generate a lot of argument between professional programmers, but are
+unlikely to matter much to research scientists. In general, you should
+explore the R ecosystem freely and use whatever you like.
+<strong>However</strong> on assignments, it is wise to check with the
+lecturer before using something that is really different from what is
+presented in class. Your lecturer may, for educational reasons, want you
+to use specific R tools.</p>
+</div>
+<div id="whats-next" class="section level2">
+<h2>What’s Next</h2>
+<p>Fill in the module feedback form <a
+href="https://tinyurl.com/r4ssp-module-fb"
+class="uri">https://tinyurl.com/r4ssp-module-fb</a>.</p>
+<p>You may recall that way back in the first module of this mini-course
+we said we were going to analyse data. We haven’t really done much of
+that yet. So far we have been <em>getting ready</em> to analyse data. In
+the next module, we will start really digging into our data with
+exploratory analysis and descriptive statistics. Because this is not a
+statistics course <em>per se</em> we will only be using common general
+analyses in the handouts and readings. If, for a project or assignment,
+you need to do something more esoteric, just let us know – someone has
+probably written an R library for it.</p>
+</div>
+<div class="footnotes footnotes-end-of-document">
+<hr />
+<ol>
+<li id="fn1"><p>If you have programmed before in Java or one of the
+C-family of languages, you may expect the first row to be <strong>row
+0</strong>, not <strong>row 1</strong>, and the first column to be
+<strong>column 0</strong>, not <strong>column 1</strong>. Just let go of
+that. In R, row and column numbering starts at 1. Different languages,
+different rules.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiU3Vic2V0dGluZyIKZGF0ZTogIlNlbWVzdGVyIDEsIDIwMjIiCm91dHB1dDoKICBodG1sX2RvY3VtZW50OgogICAgdG9jOiB0cnVlCiAgICB0b2NfZmxvYXQ6IHRydWUKICAgIHRvY19kZXB0aDogMwogICAgY29kZV9kb3dubG9hZDogdHJ1ZQogICAgY29kZV9mb2xkaW5nOiBzaG93Ci0tLQoKYGBge3Igc2V0dXAsIGluY2x1ZGU9RkFMU0V9CmxpYnJhcnkoa25pdHIpCgprbml0cjo6b3B0c19jaHVuayRzZXQoCiAgY29tbWVudCA9ICIjPiIsCiAgZmlnLnBhdGggPSAiZmlndXJlcy8wMy8iLCAjIHVzZSBvbmx5IGZvciBzaW5nbGUgUm1kIGZpbGVzCiAgY29sbGFwc2UgPSBUUlVFLAogIGVjaG8gPSBUUlVFCikKYGBgCgoKCj4gIyMjIyBBc3NvY2lhdGVkIE1hdGVyaWFsCj4KPiBab29tIG5vdGVzOiBbWm9vbSBOb3RlcyAwMyAtIFNlbGVjdGluZyBhbmQgRmlsdGVyaW5nIERhdGFdKHpvb21fbm90ZXNfMDMuaHRtbCkKPgo+IFJlYWRpbmc6Cj4KPiAtIFtSIGZvciBEYXRhIFNjaWVuY2UgLSBDaGFwdGVyIDVdKGh0dHBzOi8vcjRkcy5oYWQuY28ubnovdHJhbnNmb3JtLmh0bWwpCgpcCgojIyBJbnRyb2R1Y3Rpb24KCklmIHlvdSBhcmUgd29ya2luZyB0aHJvdWdoIHRoZSBzdWdnZXN0ZWQgbWF0ZXJpYWxzIGluIG9yZGVyLCB5b3UgaGF2ZSBqdXN0IGNvbXBsZXRlZCBbKipDaGFwdGVyIDUgLSBEYXRhIFRyYW5zZm9ybWF0aW9uIChodHRwczovL3I0ZHMuaGFkLmNvLm56L3RyYW5zZm9ybS5odG1sKSoqXShodHRwczovL3I0ZHMuaGFkLmNvLm56L3RyYW5zZm9ybS5odG1sKSBmcm9tIHRoZSBvbmxpbmUgdGV4dCAqUiBmb3IgRGF0YSBTY2llbmNlKi4gVGhpcyBtYXRlcmlhbCBkZW1vbnN0cmF0ZWQgaG93IHRvIHVzZSB0aGUgbGlicmFyeSAqKmRwbHlyKiosIG9uZSBvZiB0aGUgbGlicmFyaWVzIGluIHRoZSAqKnRpZHl2ZXJzZSoqIGZhbWlseS4gWW91IHdpbGwgaGF2ZSBsZWFybmVkIGhvdyB0byB1c2UgdGhlIGZpdmUgY29yZSB0cmFuc2Zvcm1hdGlvbiBmdW5jdGlvbnMgLS0gYGZpbHRlcmAsIGBhcnJhbmdlYCwgYHNlbGVjdGAsIGBtdXRhdGVgIGFuZCBgc3VtbWFyaXNlYCAod2l0aCBpdHMgaGVscGVyIGZ1bmN0aW9uIGBncm91cF9ieWApLiBUaGVzZSBmdW5jdGlvbnMgYWxsb3cgeW91IHRvIG1vZGlmeSBhbmQgcGVyZm9ybSBzdW1tYXJpZXMgb24gZGF0YSBmcmFtZXMsIGFuZCB0byBwdWxsIG91dCBzcGVjaWZpYyBwb3J0aW9ucyBvZiBkYXRhIGZyYW1lcyBmb3IgZGV0YWlsZWQgYW5hbHlzaXMuIExpYnJhcnkgYGRwbHlyYCBpcyB3aWRlbHkgdXNlZCwgYW5kIHlvdSB3aWxsIHNlZSBtYW55IGV4YW1wbGVzIG9mIGl0IGluIFIgY29kZSB5b3UgZmluZCBpbiB0aGUgd2lsZC4KClRoZSBmdW5jdGlvbnMgaW4gYGRwbHlyYCAoYW5kIGluIGFsbCB0aGUgb3RoZXIgbGlicmFyaWVzIGluIHRoZSB0aWR5dmVyc2UpIGFyZSB0ZWNobmljYWxseSAqKndyYXBwZXJzKiogYXJvdW5kIGJhc2UgUiBjb2RlLiBUaGF0IGlzLCB0aGV5IHRoZW1zZWx2ZXMgYXJlIHdyaXR0ZW4gdXNpbmcgYmFzZSBSIGNvbW1hbmRzLiBUaHVzIGl0IGlzIHBvc3NpYmxlIHRvIHBlcmZvcm0gYWxsIHRoZSBzYW1lIHRyYW5zZm9ybWF0aW9ucyAqd2l0aG91dCogYGRwbHlyYCwgYnkgdXNpbmcgb25seSBiYXNlIFIuIE1hbnkgcHJvZ3JhbW1lcnMgYW5kIHJlc2VhcmNoZXJzIChpbmNsdWRpbmcgc29tZSBvZiB5b3VyIGxlY3R1cmVycykgcHJlZmVyIHRvIHVzZSBiYXNlIFIgZm9yIHRoZXNlIG9wZXJhdGlvbnMsIGFuZCB5b3Ugd2lsbCBhbHNvIHNlZSBpdCBvZnRlbiBpbiBSIGNvZGUgaW4gdGhlIHdpbGQuIFRoZXJlZm9yZSwgaW4gdGhpcyBzdXBwbGVtZW50YXJ5IGhhbmRvdXQsIHdlIHdpbGwgaWxsdXN0cmF0ZSB0aGUgZXF1aXZhbGVudCBiYXNlIFIgc3ludGF4IGZvciB0aGUgYGRwbHlyYCBmdW5jdGlvbnMgeW91IGp1c3QgbGVhcm5lZC4KClBlb3BsZSBtYWtlIHRoZSBjaG9pY2UgYmV0d2VlbiBgZHBseXJgIGFuZCBiYXNlIFIgZm9yIHNldmVyYWwgcmVhc29ucy4gTWFueSBwZW9wbGUgZmluZCBgZHBseXJgIHN5bnRheCBlYXNpZXIgdG8gdXNlLCBiZWNhdXNlIGl0IGlzIG1vcmUgKip1bmlmb3JtKiouIFRoYXQgaXMsIGFsbCB0aGUgYmlnIGZpdmUgYGRwbHlyYCB0cmFuc2Zvcm1hdGlvbiBmdW5jdGlvbnMgdXNlIGFwcHJveGltYXRlbHkgdGhlIHNhbWUgc3ludGF4LiBJbiBiYXNlIFIsIHRoZXJlIGlzIG1vcmUgdmFyaWF0aW9uLiBTY2llbnRpc3RzIHdobyB3b3JrIHdpdGggdmVyeSBsYXJnZSBkYXRhIHNldHMgYXJlIG9mdGVuIGNvbmNlcm5lZCBhYm91dCBob3cgZmFzdCB0aGVpciBjb2RlIGNhbiBiZSBleGVjdXRlZC4gSW4gc29tZSBjYXNlcywgYGRwbHlyYCBleGVjdXRlcyBtb3JlIHNsb3dseSB0aGFuIGJhc2UgUiAoYmVjYXVzZSBvZiB0aGUgZXh0cmEgY29kZSByZXF1aXJlZCBmb3IgdGhlIHdyYXBwaW5nKSwgbGVhZGluZyB0aGVzZSByZXNlYXJjaGVycyB0byBwcmVmZXIgdGhlIGJhc2UgUiBhcHByb2FjaC4gQmVjYXVzZSBgZHBseXJgIGlzIGEgcmVsYXRpdmVseSBuZXcgYWRkaXRpb24gdG8gUiwgc29tZSBwZW9wbGUgcHJlZmVyIGJhc2UgUiBiZWNhdXNlIHRoZXkgbGVhcm5lZCBpdCBmaXJzdCwgYW5kIGFyZSBoYXBweSB0byBjb250aW51ZSB1c2luZyBpdC4KClVubGVzcyB5b3UgYXJlIHJlcXVpcmVkIHRvIHVzZSBhIHBhcnRpY3VsYXIgYXBwcm9hY2ggKGNoZWNrIHdpdGggeW91ciBsZWN0dXJlciBpZiB5b3UgYXJlIHVuc3VyZSksIHlvdSBjYW4gY2hvb3NlIHdoaWNoZXZlciBzZXQgb2YgY29tbWFuZHMgeW91IGxpa2UgdXNpbmcuIFlvdSBjYW4gZXZlbiBtaXggYW5kIG1hdGNoIHRoZW0gLS0gdGhleSBnaXZlIHRoZSBzYW1lIHJlc3VsdHMsIGFuZCBSIGRvZXNuJ3QgY2FyZS4gSG93ZXZlciwgaXQgaXMgdmVyeSBpbXBvcnRhbnQgdGhhdCB5b3UgY2FuICp1bmRlcnN0YW5kKiBib3RoIHN0eWxlcy4gT25lIG9mIHRoZSBncmVhdCBiZW5lZml0cyBvZiB0aGUgUiBlY29zeXN0ZW0gaXMgdGhlIHdpZGUgc2hhcmluZyBvZiBjb2RlLCBhbmQgeW91IGNhbid0IGZ1bGx5IHBhcnRpY2lwYXRlIGluIHRoaXMgdW5sZXNzIHlvdSBhcmUgY29tZm9ydGFibGUgd2l0aCBhbGwgdGhlIG1ham9yIGRpYWxlY3RzLgoKXAoKIyMgU3Vic2V0dGluZwoKT2Z0ZW4gd2hlbiB3ZSdyZSBkZWFsaW5nIHdpdGggZGF0YSB3ZSB3YW50IHRvIGJlIGFibGUgdG8gcHVsbCBvdXQgYW5kIG9wZXJhdGUgb24gc3Vic2V0cyBvZiBpdC4gVGhlcmUgYXJlIG1hbnkgZGlmZmVyZW50IG1ldGhvZHMgdGhhdCBjYW4gYmUgdXNlZCB0byBzdWJzZXQgZGF0YSwgYW5kIHdlJ2xsIGNvdmVyIGEgY291cGxlIG9mIGRpZmZlcmVudCBtZXRob2RzLiBPbmUgb2YgdGhlIG1vc3QgY29tbW9uIG1ldGhvZHMgaXMgdG8gdXNlIHRoZSAiZXh0cmFjdCIgZnVuY3Rpb24gYFtdYC4gCgpUaGVyZSBhcmUgdHdvIG1haW4gd2F5cyBhcHByb2FjaGVzIHRvIHN1Yi1zZXR0aW5nOiBiYXNlZCBvbiBhbiBpZGVudGlmaWVyIHN1Y2ggYXMgcG9zaXRpb24gb3IgbmFtZSwgb3IgYmFzZWQgb24gYSBjb25kaXRpb24uIEFuZCBmb3IgcmVjdGFuZ3VsYXIgdHdvLWRpbWVuc2lvbmFsIG9iamVjdHMgbGlrZSBkYXRhIGZyYW1lcyB3ZSBhbHNvIHRoaW5rIGFib3V0IGlmIHdlJ3JlIG9wZXJhdGluZyBvbiByb3dzIG9yIGNvbHVtbnMuCgojIyMgU3Vic2V0dGluZyBieSBwb3NpdGlvbiAoaW5kZXgpCgpWZWN0b3JzIGFyZSBtYWRlIHVwIG9mIGl0ZW1zLCBhbmQgZWFjaCBpdGVtIGhhcyBhIHBvc2l0aW9uYWwgaW5kZXggKHN0YXJ0aW5nIGZyb20gMSAtIG90aGVyIGxhbmd1YWdlcyBkaWZmZXIpLiBXZSBjYW4gdXNlIHRoaXMgaW5kZXggYXMgYW4gYXJndW1lbnQgdG8gYFtdYCB0byBwdWxsIG91dCBhbmQgcmV0dXJuIGEgbmV3IHZlY3RvciBvZiB0aGUgc3BlY2lmaWVkIGl0ZW0uIEEgbmVnYXRpdmUgb2YgdGhlIGluZGV4IHdpbGwgcmV0dXJuIGEgY29weSBvZiB0aGUgb3JpZ2luYWwgYnV0IHdpdGggdGhlIGl0ZW0gYXQgdGhlIGdpdmVuIHBvc2l0aW9uIHJlbW92ZWQuCgpgYGB7cn0KIyBhIG51bWVyaWMgdmVjdG9yCnNvbWVfbnVtYmVycyA8LSBjKDIsIDQ1LCAtOSwgNikKCiMgcHVsbCBvdXQgdGhlIHNlY29uZCBpdGVtCnNvbWVfbnVtYmVyc1syXQoKIyByZW1vdmUgdGhlIGZpcnN0IGl0ZW0Kc29tZV9udW1iZXJzWy0xXQpgYGAKCklmIHdlIHdhbnQgbXVsdGlwbGUgaXRlbXMgd2Ugc3VwcGx5IGEgdmVjdG9yIG9mIG51bWJlcnMgZm9yIHRoZSBpbmRleGVzIHdlIHdhbnQuIFRoZSBvcmRlciBvZiB0aGUgc3VwcGxpZWQgaW5kZXhlcyBpcyB0aGUgb3JkZXIgaW4gd2hpY2ggdGhlIHJlc3VsdGFudCB2ZWN0b3Igd2lsbCBiZSBjcmVhdGVkIC0gaXQgY2FuIGFsc28gYmUgdXNlZCB0byBkdXBsaWNhdGUgaXRlbXMuCgoKYGBge3J9CnNvbWVfbGV0dGVycyA8LSBjKCJsIiwgIm8iLCAiaCIsICJlIikKCiMgcHVsbCBvdXQgaXRlbXMgMSBhbmQgMwpzb21lX2xldHRlcnNbYygxLDMpXQoKIyByZW9yZGVyIGFuZCBkdXBsaWNhdGUKc29tZV9sZXR0ZXJzW2MoMyw0LDEsMSwyKV0KYGBgCgpJbmRpY2VzIGFyZSBwb3NpdGlvbmFsLCBidXQgd2UgY291bGQgYWxzbyBzdXBwbHkgYSBib29sZWFuIHZlY3RvciB3aXRoIHRoZSBgVFJVRWAgaW4gdGhlIHBvc2l0aW9ucyBmb3IgaXRlbXMgd2Ugd291bGQgbGlrZSB0byBrZWVwIGFuZCBgRkFMU0VgIGZvciBpdGVtcyB3ZSB3b3VsZCBsaWtlIHRvIGRyb3AuIFRoZSBib29sZWFuIHZlY3RvciBjYW4gZWl0aGVyIG1hdGNoIGluIGxlbmd0aCBvciBiZSBhIGZhY3RvciBvZiB0aGUgdmVjdG9yIGxlbmd0aCAoaW4gd2hpY2ggY2FzZSBpdCBnZXRzICdyZWN5Y2xlZCcgdW50aWwgaXQgbWF0Y2hlcyB0aGUgbGVuZ3RoKQoKYGBge3J9CnNvbWVfbnVtYmVycwoKIyBtYXRjaGluZyBsZW5ndGggCnNvbWVfbnVtYmVyc1tjKFRSVUUsIFRSVUUsIEZBTFNFLCBGQUxTRSldCgojIHRha2UgZXZlcnkgc2Vjb25kIGl0ZW0Kc29tZV9udW1iZXJzW2MoRkFMU0UsIFRSVUUpXQpgYGAKCgojIyMgU3Vic2V0dGluZyBieSBjb25kaXRpb24KCk9mdGVuIHRob3VnaCwgd2UgZG9uJ3Qgd2FudCB0byBoYXZlIHRvIGlkZW50aWZ5IGFuZCBrZWVwIHRyYWNrIG9mIHRoZSBpbmRpY2VzIGZvciBpdGVtcyBpbiBvdXIgZGF0YSwgYnV0IGluc3RlYWQgd2Ugd2FudCB0byBzdWJzZXQgb3VyIGRhdGEgdG8gaXRlbXMgdGhhdCBtYXRjaCBjZXJ0YWluIGNvbmRpdGlvbnMuCgpTaW1pbGFyIHRvIGhvdyB3ZSBjYW4gb3BlcmF0ZSBvbiBhbiBlbnRpcmUgdmVjdG9yIHRocm91Z2ggdGhlIGFyaXRobWV0aWMgb3BlcmF0b3JzLCB0aGVyZSBhcmUgYWxzbyBvcGVyYXRvcnMgZm9yIHBlcmZvcm1pbmcgY29tcGFyaXNvbnMuCgp8IE9wZXJhdGlvbiAgICAgICAgICAgICAgICB8IFIgU3ltYm9sIHwKfDotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLXw6LS0tLS0tLS0tLTp8CnwgTGVzcyB0aGFuICAgICAgICAgICAgICAgIHwgXDwgICAgICAgfAp8IExlc3MgdGhhbiBvciBlcXVhbCB0byAgICB8IFw8PSAgICAgIHwKfCBHcmVhdGVyIHRoYW4gICAgICAgICAgICAgfCBcPiAgICAgICB8CnwgR3JlYXRlciB0aGFuIG9yIGVxdWFsIHRvIHwgXD49ICAgICAgfAp8IE5vdCBlcXVhbCB0byAgICAgICAgICAgICB8ICE9ICAgICAgIHwKCldoZW4gd2UgYXBwbHkgY29tcGFyaXNvbnMgdG8gYSB2ZWN0b3Igd2UgZ2V0IGluIHJldHVybiBhIHZlY3RvciB3aXRoIGJvb2xlYW4gdmFsdWVzIChgVFJVRWAvYEZBTFNFYCkgY29ycmVzcG9uZGluZyBhbiBpdGVtLXdpc2UgY29tcGFyaXNvbi4KCmBgYHtyfQpzb21lX251bWJlcnMgPCAxNQpgYGAKCkFuZCB0aGVzZSBib29sZWFuIHZlY3RvcnMgYXJlIHVzZWQgZm9yIHN1Yi1zZXR0aW5nLiBTbyB3ZSBjYW4gaW4gZmFjdCBzdXBwbHkgb3VyIGNvbmRpdGlvbmFsIHN0YXRlbWVudCBhcyB0aGUgYXJndW1lbnQgdG8gYFtdYCBzbyBrZWVwIGFsbCB0aGUgaXRlbXMgdGhhdCBtZWV0IG91ciBjb25kaXRpb24KCmBgYHtyfQojIGtlZXAgbnVtYmVycyBsZXNzIHRoYW4gMTUKc29tZV9udW1iZXJzW3NvbWVfbnVtYmVycyA8IDE1XQpgYGAKCk9uZSBmaW5hbCBjb21wYXJpc29uIGZ1bmN0aW9uIGlzIGAlaW4lYCwgd2hpY2ggbGV0cyB1cyBjb21wYXJlIHR3byB2ZWN0b3JzIGZvciBtYXRjaGluZyBpdGVtcy4gYCVpbiVgIHdpbGwgcmV0dXJuIGEgYm9vbGVhbiB2ZWN0b3IgY29ycmVzcG9uZGluZyB0byB0aGUgaXRlbXMgb24gdGhlIGxlZnQgaGFuZCBzaWRlIHRoYXQgd2VyZSBhbHNvIGZvdW5kICJpbiIgdGhlIHJpZ2h0IGhhbmQgc2lkZS4gVGhpcyBvcGVyYXRvciBpcyBleHRyZW1lbHkgaGVscGZ1bCB0byB1c2UgaW5zdGVhZCBvZiBjb21iaW5pbmcgbXVsdGlwbGUgJ29yJyAoYHxgKSBjb25kaXRpb25zLgoKYGBge3J9Cm15X3BldHMgPC0gYygiZG9nIiwgImNhdCIsICJ0dXJ0bGUiKQoKIyB1c2luZyAnb3InCm15X3BldHNbIG15X3BldHMgPT0gImZyb2ciIHwgbXlfcGV0cyA9PSAiZG9nIiB8IG15X3BldHMgPT0gInJhYmJpdCIgfCBteV9wZXRzID09ICJob3JzZSJdCgoKIyB1c2Ugb2YgJWluJQpteV9wZXRzICVpbiUgYygiZnJvZyIsICJkb2ciLCAicmFiYml0IiwgImhvcnNlIikKCm15X3BldHNbbXlfcGV0cyAlaW4lIGMoImZyb2ciLCAiZG9nIiwgInJhYmJpdCIpXQpgYGAKCgoKIyMjIyBNaXNzaW5nIGRhdGEKCk9uZSBleHRyZW1lbHkgY29tbW9uIHN1YnNldHRpbmcgb3BlcmF0aW9uIGlzIGRlYWxpbmcgd2l0aCBtaXNzaW5nIGRhdGEuIE1pc3NpbmcgZGF0YSBpbiBSIGlzIHJlcHJlc2VudGVkIGJ5IGBOQWAuIGBOQWAgaW4gUiBpcyBhIHNwZWNpYWwgZGF0YSB0eXBlIGFuZCB0aGUgc2V0IG9mIGNvbXBhcmF0b3Igb3BlcmF0aW9ucyB0aGF0IHdlIGhhdmUgY292ZXJlZCB3aWxsIGFsd2F5cyByZXR1cm4gYE5BYCAoZXZlbiBgTkEgPT0gTkFgIHdpbGwgcmV0dXJuIGBOQWApIHNvIGluc3RlYWQgdGhlcmUgaXMgYSBzcGVjaWFsIGZ1bmN0aW9uIHRoYXQgaXMgdXNlZCB0byB0ZWxsIHVzIHdoZW4gd2UgaGF2ZSBtaXNzaW5nIGRhdGEgc28gd2UgY2FuIGhhbmRsZSBpdCBhcHByb3ByaWF0ZWx5IGFuZCB0aGF0IGZ1bmN0aW9uIGlzIGBpcy5uYWAgd2hpY2ggd2lsbCByZXR1cm4gYFRSVUVgIGlzIHNvbWV0aGluZyBpcyBgTkFgIGFuZCBgRkFMU0VgIGluIGFsbCBvdGhlciBpbnN0YW5jZXMuCgpgYGB7cn0KTkEgPCA2CgpOQSA9PSAiYSIKCk5BICE9IFRSVUUKCk5BID09IE5BCgppcy5uYShOQSkKYGBgCgoKU29tZSBmdW5jdGlvbnMgY2FuIGRlYWwgd2l0aCBtaXNzaW5nIGRhdGEgYXMgcGFydCBvZiB0aGUgZnVuY3Rpb24gYnkgc2V0dGluZyB0aGUgcGFyYW1ldGVyIGBuYS5ybSA9IFRSVUVgLCBidXQgbm90IGFsbCBmdW5jdGlvbnMgaGF2ZSB0aGlzLgoKYGBge3J9Cm1pc3NpbmdfZXhhbXBsZSA8LSBjKE5BLCAxLCA0LCA2LCBOQSwgOCkKCm1lYW4obWlzc2luZ19leGFtcGxlKQoKbWVhbihtaXNzaW5nX2V4YW1wbGUsIG5hLnJtID0gVFJVRSkKYGBgCgpUbyByZW1vdmUgbWlzc2luZyBkYXRhIHNvIGl0IGNhbiBiZSB1c2VkIHdpdGggZnVuY3Rpb25zIHdpdGggYW4gYG5hLnJtYCBwYXJhbWV0ZXIgd2UgY2FuIHVzZSBgaXMubmFgIHRvIGlkZW50aWZ5IHRoZSBgTkFgIHZhbHVlcyBhbmQgdGhlbiBjb25kaXRpb25hbGx5IHN1YnNldDoKCmBgYHtyfQptaXNzaW5nX2V4YW1wbGUKCmlzLm5hKG1pc3NpbmdfZXhhbXBsZSkKCm1pc3NpbmdfZXhhbXBsZVshaXMubmEobWlzc2luZ19leGFtcGxlKV0KYGBgCgpSZW1lbWJlciBgaXMubmFgIHdpbGwgYmUgYFRSVUVgIHdoZW4gdGhlcmUgaXMgYE5BYCwgc28gd2UgY2FuIHVzZSB0aGUgYCFgIChub3QpIG9wZXJhdG9yIHRvIGludmVydCB0aGUgbG9naWMuCgoKCiMjIFN1YnNldHRpbmcgaW4gMi1kaW1lbnNpb25zCgpXZSBjYW4gdGFrZSB0aGUgc2FtZSBwcmluY2lwbGVzIHdlIGNvdmVyZWQgdXNpbmcgYFtdYCBvbiB2ZWN0b3JzIGFuZCBhcHBseSB0aGVtIG9uIHJlY3Rhbmd1bGFyIDItZGltZW5zaW9uYWwgc3RydWN0dXJlcyBsaWtlIHRoZSBkYXRhLmZyYW1lLiBBZGRpbmcgYSBzZWNvbmQgZGltZW5zaW9uIG1lYW5zIHdlIG5vdyBuZWVkIHRvIHN1cHBseSAyIGFyZ3VtZW50cyB0byBgW11gLCB0aGUgZmlyc3QgYXJndW1lbnQgaXMgZm9yIHJvd3MsIGFuZCB0aGUgc2Vjb25kIGlzIGZvciBjb2x1bW5zLgoKVGhlIGdlbmVyYWwgc3ludGF4IGlzOgoKKm5hbWVfb2ZfZGF0YV9mcmFtZVtyb3dfaW5mb3JtYXRpb24sIGNvbHVtbl9pbmZvcm1hdGlvbl0qCgpUaGVyZSBhcmUgYSB2YXJpZXR5IG9mIHdheXMgdG8gZXhwcmVzcyByb3cgYW5kIGNvbHVtbiBpbmZvcm1hdGlvbi4gVG8gc2VlIGhvdyB0aGV5IHdvcmssIGxldCdzIGZpcnN0IG1ha2UgYSB2ZXJ5IHNpbXBsZSBkYXRhIGZyYW1lIGJ5IGhhbmQsIGFuZCB0aGVuIHBlcmZvcm0gc29tZSBzdWItc2V0dGluZyBvcGVyYXRpb25zIG9uIGl0LiBFbnRlciB0aGUgZm9sbG93aW5nIGNvZGUgaW50byBSU3R1ZGlvIHRvIGNyZWF0ZSAqKmdlb2dyYXBoeV9kZioqLgoKYGBge3IgbWFudWFsIGRhdGEgMX0KY291bnRyaWVzIDwtIGMoIkF1c3RyaWEiLCAiQnJhemlsIiwgIkNhbmFkYSIsICJEZW5tYXJrIikKY2FwaXRhbHMgPC0gYygiVmllbm5hIiwgIkJyYXNpbGlhIiwgIk90dGF3YSIsICJDb3BlbmhhZ2VuIikKcG9wdWxhdGlvbl9pbl9taWxsaW9ucyA8LSBjKDksIDIxMSwgMzgsIDYpCgpnZW9ncmFwaHlfZGYgPC0gZGF0YS5mcmFtZShDb3VudHJ5ID0gY291bnRyaWVzLAogICAgICAgICAgICAgICAgICAgICAgICAgICBDYXBpdGFsID0gY2FwaXRhbHMsCiAgICAgICAgICAgICAgICAgICAgICAgICAgIFBvcHVsYXRpb25NaWxsaW9ucyA9IHBvcHVsYXRpb25faW5fbWlsbGlvbnMpCgpnZW9ncmFwaHlfZGYKYGBgCgpJbiB0aGUgc2ltcGxlc3QgZm9ybSBvZiBzdWJzZXR0aW5nLCB3ZSB3YW50IGp1c3Qgb25lIHNpbmdsZSB2YWx1ZSBmcm9tIGEgZGF0YSBmcmFtZSwgc28gd2UgcHJvdmlkZSB0aGUgcm93IG51bWJlciBhbmQgY29sdW1uIG51bWJlciBvZiB0aGUgY2VsbCBvZiBpbnRlcmVzdC4gRm9yIGV4YW1wbGUsIGltYWdpbmUgd2Ugd2FudCB0aGUgcG9wdWxhdGlvbiBvZiBWaWVubmEuIFdlIGtub3cgdGhhdCBWaWVubmEgaXMgaW4gcm93IDEgYW5kIHRoZSBwb3B1bGF0aW9uIGlzIGluIGNvbHVtbiAzLiBUbyBzZWxlY3QgdGhhdCBjZWxsIHdlIHByb3ZpZGUgMSBmb3IgdGhlIHJvdyBpbmZvcm1hdGlvbiBhbmQgMyBmb3IgdGhlIGNvbHVtbiBpbmZvcm1hdGlvbiBpbiB0aGUgc3F1YXJlIGJyYWNrZXRzOgoKYGBge3Igc2luZ2xlIHNlbGVjdGlvbn0KZ2VvZ3JhcGh5X2RmWzEsM10KYGBgCgpEb24ndCB3b3JyeSBhYm91dCBob3cgeW91IHdvdWxkIGtub3cgdGhlIHNwZWNpZmljIHJvdyBhbmQgY29sdW1uIG9mIHRoZSBjZWxsIHlvdSBhcmUgaW50ZXJlc3RlZCBpbi4gVGhpcyBwYXJ0aWN1bGFyIHNlbGVjdGlvbiBvcGVyYXRpb24gaXMgdHlwaWNhbGx5IHVzZWQgaW4gc2l0dWF0aW9ucyB3aGVyZSB5b3VyIGNvZGUgaXMgY29tcHV0aW5nIHRob3NlIHZhbHVlcyBiYXNlZCBvbiBjb21wbGV4IGNyaXRlcmlhLiBUaGlzIGV4YW1wbGUgaXMgbWVyZWx5IGlsbHVzdHJhdGl2ZS4gW14xXQoKW14xXTogSWYgeW91IGhhdmUgcHJvZ3JhbW1lZCBiZWZvcmUgaW4gSmF2YSBvciBvbmUgb2YgdGhlIEMtZmFtaWx5IG9mIGxhbmd1YWdlcywgeW91IG1heSBleHBlY3QgdGhlIGZpcnN0IHJvdyB0byBiZSAqKnJvdyAwKiosIG5vdCAqKnJvdyAxKiosIGFuZCB0aGUgZmlyc3QgY29sdW1uIHRvIGJlICoqY29sdW1uIDAqKiwgbm90ICoqY29sdW1uIDEqKi4gSnVzdCBsZXQgZ28gb2YgdGhhdC4gSW4gUiwgcm93IGFuZCBjb2x1bW4gbnVtYmVyaW5nIHN0YXJ0cyBhdCAxLiBEaWZmZXJlbnQgbGFuZ3VhZ2VzLCBkaWZmZXJlbnQgcnVsZXMuCgpUaGVyZSBhcmUgdHdvIHZlcnkgdXNlZnVsIGV4dGVuc2lvbnMgdG8gdGhpcyBwYXR0ZXJuOgoKMS4gIEVpdGhlciB0aGUgcm93IG9yIGNvbHVtbiBpbmRleCAob3IgYm90aCkgbWF5IHNwZWNpZnkgYSAqKnJhbmdlKiogdXNpbmcgdGhlIDogb3BlcmF0b3IuIEZvciBleGFtcGxlLCAxOjMgb3IgNjoxMiAodGhlc2UgYXJlICIxIHRvIDMiIGFuZCAiNiB0byAxMiIgcmVzcGVjdGl2ZWx5KS4KCmBgYHtyIHJhbmdlfQojIEZvciByb3dzIDIgdG8gNCAoQnJhemlsLCBDYW5hZGEsIERlbm1hcmspLCBzZWxlY3QgdGhlIHBvcHVsYXRpb24gKGNvbHVtbiAzKQpnZW9ncmFwaHlfZGZbMjo0LCAzXQoKIyBGb3IgQ2FuYWRhIChyb3cgMyksIHNlbGVjdCBib3RoIHRoZSBjYXBpdGFsIG5hbWUgYW5kIHBvcHVsYXRpb24gKGNvbHMgMiBhbmQgMykKZ2VvZ3JhcGh5X2RmWzMsIDI6M10KCmBgYAoKMi4gIEVpdGhlciB0aGUgcm93IG9yIGNvbHVtbiBpbmRleCAqKm1heSBiZSBvbWl0dGVkKiouIFRoYXQgaXMsIHdlIGNhbiBzYXkgYGdlb2dyYXBoeV9kZlszICwgXWAgb3IgYGdlb2dyYXBoeV9kZlsgLCAyXWAuIFRoZSBtaXNzaW5nIGVsZW1lbnQgaXMgaW50ZXJwcmV0ZWQgYXMgKiphbGwqKi4gT21pdCB0aGUgcm93IG51bWJlciBhbmQgeW91IHdhbnQgKiphbGwgcm93cyoqIGluIHRoZSBzdXBwbGllZCBjb2x1bW4ocykuIE9taXQgdGhlIGNvbHVtbiBudW1iZXIgYW5kIHlvdSB3YW50ICoqYWxsIGNvbHVtbnMqKiBpbiB0aGUgc3VwcGxpZWQgcm93KHMpLgoKYGBge3Igb21pdHRlZCBpbmRleH0KCiMgRm9yIERlbm1hcmsgKHJvdyA0KSwgc2VsZWN0IGFsbCB0aGUgY29sdW1ucwpnZW9ncmFwaHlfZGZbNCwgXQoKIyBGb3IgYWxsIHJvd3MsIHNlbGVjdCB0aGUgY2FwaXRhbCBjaXR5IG5hbWUgKGNvbHVtbiAyKQpnZW9ncmFwaHlfZGZbICwgMl0KCmBgYAoKWW91IG1heSBoYXZlIGJlZW4gc3VycHJpc2VkIGJ5IHRoZSBvdXRwdXQgZ2VuZXJhdGVkIGJ5IHRoYXQgbGFzdCBleGFtcGxlLiBBbHRob3VnaCB5b3UgaGF2ZSBzZWxlY3RlZCBhIHNpbmdsZSBjb2x1bW4sIHRoZSBvdXRwdXQgaXMgcHJpbnRlZCBob3Jpem9udGFsbHksIGFzIHRob3VnaCBpdCB3ZXJlIGEgcm93LiBUaGlzIGlzIGEgcGVjdWxpYXJpdHkgb2YgUi4gQW55IGNvbGxlY3Rpb24gdGhhdCBoYXMgYSBzaW5nbGUgZGltZW5zaW9uIChpLmUuIGRvZXNuJ3QgaGF2ZSBib3RoIGNvbHVtbnMgYW5kIHJvd3MpIGlzIHRyZWF0ZWQgYXMgYSBwbGFpbiB2ZWN0b3IuIEFuZCB2ZWN0b3JzIGFyZSBhbHdheXMgcHJpbnRlZCBob3Jpem9udGFsbHkuIEJ5IGV4dGVuc2lvbiwgc2luY2UgYSBzZWxlY3RlZCBjb2x1bW4gb2YgYSBkYXRhIGZyYW1lIGlzIGEgdmVjdG9yLCB5b3UgY2FuIGFwcGx5IGV2ZXJ5dGhpbmcgeW91IGhhdmUgbGVhcm5lZCBhYm91dCB2ZWN0b3JzIHRvIHNlbGVjdGVkIGRhdGEgZnJhbWUgY29sdW1ucywgd2hpY2ggaXMgZXhhY3RseSB3aGF0IHdlIHdhbnQgdG8gYmUgYWJsZSB0byBkby4KCllvdSBjYW4gY29tYmluZSByYW5nZXMgYW5kIHRoZSAqbWlzc2luZyBpbmRleCA9IGFsbCogdGVjaG5pcXVlOgoKYGBge3IgdG9nZXRoZXJ9CiMgRm9yIHRoZSBmaXJzdCB0aHJlZSByb3dzLCBzZWxlY3QgYWxsIHRoZSBjb2x1bW5zCmdlb2dyYXBoeV9kZlsxOjMgLCBdCgpgYGAKCkFzIGFuIGV4ZXJjaXNlLCB3aGF0IGRvIHlvdSB0aGluayBgZ2VvZ3JhcGh5X2RmWyAsIF1gIChpLmUuIHdoZXJlIGJvdGggcm93IGFuZCBjb2x1bW4gaW5mb3JtYXRpb24gYXJlIG9taXR0ZWQpIHdpbGwgZG8/IFRyeSBpdC4gV2VyZSB5b3UgcmlnaHQ/CgpJbnN0ZWFkIG9mIHVzaW5nIGNvbHVtbiBudW1iZXJzLCB5b3UgY2FuIHByb3ZpZGUgY29sdW1uIG5hbWVzIGFzIHRoZSBjb2x1bW4gaW5mb3JtYXRpb24gKGFuZCByb3cgbmFtZXMgYXMgdGhlIHJvdyBpbmZvcm1hdGlvbiBpZiB5b3VyIGRhdGEgZnJhbWUgaGFzIG5hbWVkIHJvd3MpLiBVc2UgdGhlIGNvbWJpbmUgZnVuY3Rpb24gYGMoKWAgdG8gcHJvdmlkZSBtdWx0aXBsZSBjb2x1bW4gbmFtZXMsIGFuZCBiZSBzdXJlIHRvIHN1cnJvdW5kIGVhY2ggY29sdW1uIG5hbWUgd2l0aCBxdW90ZXMsIGJlY2F1c2UgUiBjb25zaWRlcnMgdGhlbSB0byBiZSBzdHJpbmdzIGluIHRoaXMgc2l0dWF0aW9uLgoKYGBge3IgbmFtZWQgY29sdW1uc30KZ2VvZ3JhcGh5X2RmWzI6NCwgIkNhcGl0YWwiXQoKZ2VvZ3JhcGh5X2RmWzM6NCwgYygiQ291bnRyeSIsICJDYXBpdGFsIildCmBgYAoKCgpBbm90aGVyIG1ldGhvZCBhdmFpbGFibGUgaW4gYmFzZSBSIGlzIHRoZSBgc3Vic2V0YCBmdW5jdGlvbi4gSXQgdGFrZXMgdGhlIGZvcm1hdAoKc3Vic2V0KHggPSBkYXRhZnJhbWUsIHN1YnNldCA9IGNvbmRpdGlvbmFsX3N0YXRlbWVudF90b19hcHBseV90b19yb3dzLCBzZWxlY3QgPSBjb2x1bW5zX3RvX2tlZXApCgoKYGBge3J9CmNvdW50cmllc19vdmVyXzMwbWlsbGlvbiA8LSBzdWJzZXQoZ2VvZ3JhcGh5X2RmLCBzdWJzZXQgPSBQb3B1bGF0aW9uTWlsbGlvbnMgPiAzMCwgc2VsZWN0ID0gYygiQ291bnRyeSIsICJQb3B1bGF0aW9uTWlsbGlvbnMiKSApCmNvdW50cmllc19vdmVyXzMwbWlsbGlvbgpgYGAKQWdhaW4sIG5vdCBzdXBwbHlpbmcgdGhlIGBzdWJzZXRgIGFyZ3VtZW50IG9yIGBzZWxlY3RgIGFyZ3VtZW50IHdpbGwga2VlcCBhbGwgcm93cyAoc3Vic2V0KSBvciBjb2x1bW5zIChzZWxlY3QpLgoKClN1Yi1zZXR0aW5nIGlzbid0IHVzdWFsbHkgZG9uZSBwZXJmb3JtZWQgaW4gaXNvbGF0aW9uLiBVc3VhbGx5IHRoZXJlIGlzIGEgd29ya2Zsb3cgdGhhdCB3ZSdyZSB3b3JraW5nIHRocm91Z2ggYXMgcGFydCBvZiBvdXIgZGF0YSBhbmFseXNpcy4gV2UncmUgbm93IGdvaW5nIHRvIHRha2UgbG9vayBhdCBzb21lIGZ1bmN0aW9ucyBmcm9tIHRoZSBUaWR5dmVyc2UgLSBzcGVjaWZpY2FsbHkgYGRwbHlyYCB0aGF0IGFyZSBwYXJ0IG9mIHRoYXQgZGF0YSBhbmFseXNpcyB3b3JrZmxvdywgYW5kIHdlJ2xsIGFsc28gcHJvdmlkZSB0aGUgZXF1aXZhbGVudCBiYXNlIFIgYXBwcm9hY2guCgojIyMgU2VsZWN0aW5nIGNvbHVtbnMKClNvIGZhciB3ZSd2ZSBjb3ZlcmVkIG1ldGhvZHMgdGhhdCB3aWxsIGxldCB1cyBzdWJzZXQgYm90aCByb3dzIGFuZCBjb2x1bW5zIGF0IHRoZSBzYW1lIHRpbWUuIAoKSWYgd2UncmUgYWZ0ZXIgYSBzaW5nbGUgY29sdW1uIGluIGEgZGF0YSBmcmFtZSB0aGlzIGNhbiBiZSBwdWxsZWQgb3V0IHVzaW5nIHRoZSBgJGAgdXNpbmcgdGhlIGZvcm1hdCBgZGF0YWZyYW1lJGNvbHVtbm5hbWVgLgoKYGBge3J9CiMgbmVlZCBhbiBleGFtcGxlCmBgYAoKVGhpcyBjYW4gYmUgdXNlZnVsIGlmIHlvdSB3YW50IHRvIHBlcmZvcm0gYW4gb3BlcmF0aW9uIG9uIG9ubHkgb25lIGNvbHVtbiBzdWNoIGFzIGNhbGN1bGF0aW5nIGEgc3VtbWFyeSBzdGF0aXN0aWMgbGlrZSB0aGUgbWVhbiBvciBzdGFuZGFyZCBkZXZpYXRpb24uIEl0IGNhbiBhbHNvIGJlIHVzZWQgdG8gbW9kaWZ5IG9yIGNyZWF0ZSBhIG5ldyBjb2x1bW4gb24gYSBkYXRhIGZyYW1lLgoKYGBge3J9CiMgbmVlZCBleGFtcGxlCgojIG1lYW4oZGF0YWZyYW1lJGNvbHVtbikKCiMgZGF0YWZyYW1lJGNvbHVtbm5hbWUgIDwtIGRhdGFmcmFtZSRvdGhlcmNvbHVtbiAqIDEwMDAKYGBgCgoKVG8gc2VlIGhvdyBzZWxlY3Rpb24gd2l0aCB0aGUgYHNlbGVjdGAgZnVuY3Rpb24gZnJvbSBgZHBseXJgIGNvbXBhcmVzIHRvIHNlbGVjdGlvbiB3aXRoIHRoZSBleHRyYWN0IG9wZXJhdG9yIFsgXSBpbiBiYXNlIFIsIGxldCdzIGxvYWQgdGhlICoqZmxpZ2h0cyoqIGRhdGEgZnJhbWUgYW5kIHJlcGVhdCBzb21lIG9mIHRoZSBleGVyY2lzZXMgZnJvbSAqUiBmb3IgRGF0YSBTY2llbmNlKi4KCmBgYHtyIGxvYWQgZmxpZ2h0cywgd2FybmluZz1GQUxTRX0KCiMgTG9hZCB0aGUgbGlicmFyeSB0aGF0IGNvbnRhaW5zIHRoZSBmbGlnaHRzIGRhdGEgZnJhbWUKbGlicmFyeShueWNmbGlnaHRzMTMpCgojIExvYWQgZHBseXIKbGlicmFyeShkcGx5cikKCgoKIyBTZWxlY3QgdGhlIHllYXIsIG1vbnRoLCBhbmQgZGF5IGNvbHVtbnMgZnJvbSB0aGUgZmxpZ2h0cyBkYXRhIGZyYW1lCgojIFdpdGggZHBseXIKeWVhcl9tb250aF9kYXlfY29sc19kcGx5ciA8LSBzZWxlY3QoZmxpZ2h0cywgeWVhciwgbW9udGgsIGRheSkKeWVhcl9tb250aF9kYXlfY29sc19kcGx5cgoKIyBXaXRoIGJhc2UgUgp5ZWFyX21vbnRoX2RheV9jb2xzX2Jhc2UgPC0gZmxpZ2h0c1sgLCBjKCJ5ZWFyIiwgIm1vbnRoIiwgImRheSIpXQp5ZWFyX21vbnRoX2RheV9jb2xzX2Jhc2UKYGBgCgoKPCEtLQotIHVzaW5nIGhlbHBlciBmdW5jdGlvbnMKICAtIHN0YXJ0c193aXRoCiAgLSBlbmRzX3dpdGgKICAtIGNvbnRhaW5zCiAgLSBhbnlvZgotLT4KCgojIyMgRmlsdGVyaW5nIHJvd3MKClRoZSBgZHBseXJgIGZ1bmN0aW9uIGBmaWx0ZXJgIGlzIGFuYWxvZ291cyB0byB0aGUgYmFzZSBSIGZ1bmN0aW9uIGBzdWJzZXRgLiBUaGUgdHdvIGZ1bmN0aW9ucyBoYXZlIGlkZW50aWNhbCBzeW50YXguIFdlIGNhbiBzZWUgaG93IHNvbWUgb2YgdGhlIGBkcGx5cmAgZmlsdGVyIG9wZXJhdGlvbnMgZnJvbSB0aGUgcHJldmlvdXMgc2VjdGlvbiB3b3VsZCBiZSB3cml0dGVuIHVzaW5nIGJhc2UgUi4gSWYgeW91IHdpc2gsIHJ1biB0aGlzIGNvZGUgaW4gUlN0dWRpbywgYW5kIGluc3BlY3QgdGhlIHJlc3VsdHMgb2YgZWFjaCBzdGF0ZW1lbnQuCgpgYGB7ciBmaWx0ZXIgYW5kIHN1YnNldH0KCiMgSW4gYWxsIGNhc2VzLCB0aGVzZSBwYWlycyBvZiBjb21tYW5kcyBwcm9kdWNlIHRoZSBzYW1lIG91dHB1dAojIEluIGVhY2ggcGFpciwgdGhlIGZpcnN0IHZlcnNpb24gaXMgZHBseXIgYW5kIHRoZSBzZWNvbmQKIyBpcyBiYXNlIFIKCiMgQWxsIGZsaWdodHMgd2l0aCBhcnJpdmFsIGRlbGF5ID49IDEyMCBtaW51dGVzCmxhdGVfZHBseXIgPC0gZmlsdGVyKGZsaWdodHMsIGFycl9kZWxheSA+IDEyMCkKbGF0ZV9iYXNlIDwtIHN1YnNldChmbGlnaHRzLCBhcnJfZGVsYXkgPiAxMjApCgojIEZsZXcgdG8gSUFIIG9yIEhPVQpob3VzdG9uX2RwbHlyIDwtIGZpbHRlcihmbGlnaHRzLCBkZXN0ID09ICJJQUgiIHwgZGVzdCA9PSAiSE9VIikKaG91c3Rvbl9iYXNlIDwtIHN1YnNldChmbGlnaHRzLCBkZXN0ID09ICJJQUgiIHwgZGVzdCA9PSAiSE9VIikKCiMgQWx0ZXJuYXRpdmVseSwgdXNpbmcgJWluJSwgd2hpY2ggcmVxdWlyZXMgbGVzcyB0eXBpbmcKaG91c3Rvbl9kcGx5ciA8LSBmaWx0ZXIoZmxpZ2h0cywgZGVzdCAlaW4lIGMoIklBSCIsICJIT1UiKSkKaG91c3Rvbl9iYXNlIDwtIHN1YnNldChmbGlnaHRzLCBkZXN0ICVpbiUgYygiSUFIIiwgIkhPVSIpKQoKIyBTZWxlY3Qgcm93cyB3aXRoIG1pc3NpbmcgdmFsdWVzIHVzaW5nIGlzLm5hKCkgCm1pc3NpbmdfZGVwX3RpbWVfZHBseXIgPC0gZmlsdGVyKGZsaWdodHMsIGlzLm5hKGRlcF90aW1lKSkKbWlzc2luZ19kZXBfdGltZV9iYXNlIDwtIHN1YnNldChmbGlnaHRzLCBpcy5uYShkZXBfdGltZSkpCmBgYAoKQmFzZSBSIGRvZXMgbm90IGhhdmUgdGhlIGhlbHBlciBmdW5jdGlvbiBgYmV0d2VlbmAsIGJ1dCB0aGUgc2FtZSByZXN1bHQgY2FuIGJlIGFjaGlldmVkIGluIGEgbnVtYmVyIG9mIHdheXM6CgpgYGB7ciBiZXR3ZWVufQojIEJldHdlZW4KCiMgVGhlc2UgZm91ciBjb21tYW5kcyBhbGwgcHJvZHVjZSB0aGUgc2FtZSByZXN1bHQKCiMgZHBseXIKc3VtbWVyX2RwbHlyIDwtIGZpbHRlcihmbGlnaHRzLCBiZXR3ZWVuKG1vbnRoLCA3LCA5KSkKCiMgYmFzZSBSCnN1bW1lcl9iYXNlXzAxIDwtIHN1YnNldChmbGlnaHRzLCBtb250aCAlaW4lIGMoNyw4LDkpKQpzdW1tZXJfYmFzZV8wMiA8LSBzdWJzZXQoZmxpZ2h0cywgbW9udGggJWluJSA3OjkpCnN1bW1lcl9iYXNlXzAzIDwtIHN1YnNldChmbGlnaHRzLCBtb250aCA+PTcgJiBtb250aCA8PSA5KQpgYGAKCldoZW4geW91IGhhdmUgbXVsdGlwbGUgb3B0aW9ucyBmb3IgcGVyZm9ybWluZyBhIGNvbXB1dGF0aW9uLCB0aGUgZ2VuZXJhbCBnb2FsIGlzIHRvIHN0cmlrZSBhIGJhbGFuY2UgYmV0d2VlbiAqKnBhcnNpbW9ueSoqIChub3QgdG9vIG11Y2ggdHlwaW5nKSBhbmQgKipyZWFkYWJpbGl0eSoqICh5b3VyIGNvZGUgaXMgZWFzeSAqZm9yIG90aGVyIHBlb3BsZSogdG8gdW5kZXJzdGFuZCkuIFdoZW4gd29ya2luZyBvbiBncm91cCBwcm9qZWN0cywgb3IgaW4gYSBwcm9mZXNzaW9uYWwgc29mdHdhcmUgZGV2ZWxvcG1lbnQgY29udGV4dCwgcmVhZGFiaWxpdHkgaXMgY29uc2lkZXJlZCB0aGUgbW9yZSBjcml0aWNhbCBvZiB0aGUgdHdvIGZlYXR1cmVzLlwKCgojIyBBcnJhbmdpbmcgKHNvcnRpbmcpCgpUaGUgYGRwbHlyYCBmdW5jdGlvbiBgYXJyYW5nZWAgaXMgYW5hbG9nb3VzIHRvIGJhc2UgUiBzZWxlY3Rpb24gdXNpbmcgWyBdIGNvbWJpbmVkIHdpdGggZnVuY3Rpb24gYG9yZGVyYC4gV2UgdXNlIGBvcmRlcmAgYXMgdGhlIHJvdyBpbmZvcm1hdGlvbiB0byBbIF0uIFRoZSBhcmd1bWVudHMgdG8gYG9yZGVyYCBhcmUgYSBjb21tYSBzZXBhcmF0ZWQgc2VxdWVuY2Ugb2YgdGhlIGNvbHVtbnMgb24gd2hpY2ggd2Ugd2lzaCB0byBzb3J0LiBXZSBpZGVudGlmeSB0aGUgY29sdW1ucyB1c2luZyB0aGUgXCQgb3BlcmF0b3IsIGluIHRoZSB1c3VhbCB3YXkuCgpGb3IgZXhhbXBsZSwgdGhlIGBkcGx5cmAgc3RhdGVtZW50IGFuZCB0aGUgYmFzZSBSIHN0YXRlbWVudCBiZWxvdyBib3RoIHNvcnQgdGhlIGVudGlyZSBmbGlnaHQgZGF0YSBmcmFtZSBvbiB0aGUgeWVhciwgbW9udGgsIGFuZCBkYXkgY29sdW1uczoKCmBgYHtyIG9yZGVyfQoKIyBTb3J0IHVzaW5nIGFycmFuZ2Ugb3Igb3JkZXIKCiMgZHBseXIKeWVhcl9tb250aF9kYXlfZHBseXIgPC0gYXJyYW5nZShmbGlnaHRzLCB5ZWFyLCBtb250aCwgZGF5KQoKIyBiYXNlIFIg4oCTIHdlIG9taXQgdGhlIGNvbHVtbiBpbmRleCB0byBnZXQgYWxsIGNvbHVtbnMgaW4gdGhlIHJlc3VsdAp5ZWFyX21vbnRoX2RheV9iYXNlIDwtIGZsaWdodHNbb3JkZXIoZmxpZ2h0cyR5ZWFyLCBmbGlnaHRzJG1vbnRoLCBmbGlnaHRzJGRheSksIF0gCgojIENvbXBhcmUgdGhlIHJlc3VsdHMKeWVhcl9tb250aF9kYXlfZHBseXIKeWVhcl9tb250aF9kYXlfYmFzZQoKYGBgCgoKQnkgZGVmYXVsdCwgYG9yZGVyYCBzb3J0cyBpbiBhc2NlbmRpbmcgb3JkZXIgKGkuZS4gZnJvbSBzbWFsbGVzdCB0byBsYXJnZXN0KS4gVG8gc29ydCBpbiBkZXNjZW5kaW5nIG9yZGVyLCBwbGFjZSAtICh0aGUgbmVnYXRpdmUgc2lnbjsgdGhlIGh5cGhlbikgaW4gZnJvbnQgb2YgYW4gYXJndW1lbnQgdG8gYG9yZGVyYC4gV2UgY2FuIGFnYWluIGNvbXBhcmUgdGhpcyBvcGVyYXRpb24gaW4gYGRwbHlyYCBhbmQgYmFzZSBSOgoKYGBge3IgZGVzY2VuZGluZ30KIyBEZXNjZW5kaW5nIHNvcnQKCiMgZHBseXIKZGVzY19kZXBfZGVsYXlfZHBseXIgPC0gYXJyYW5nZShmbGlnaHRzLCBkZXNjKGRlcF9kZWxheSkpCgojIGJhc2UgUgpkZXNjX2RlcF9kZWxheV9iYXNlIDwtIGZsaWdodHNbb3JkZXIoLWZsaWdodHMkZGVwX2RlbGF5KSxdCgojIENoZWNrIGRwbHlyIOKAkyB0aGUgZGF0YSBmcmFtZSBpcyBzb3J0ZWQgaW4gZGVzY2VuZGluZyBvcmRlciBvZiBkZXBfZGVsYXkKZGVzY19kZXBfZGVsYXlfZHBseXIKCiMgQ2hlY2sgYmFzZSDigJMgdGhlIGRhdGEgZnJhbWUgaXMgc29ydGVkIGluIGRlc2NlbmRpbmcgb3JkZXIgb2YgZGVwX2RlbGF5CmRlc2NfZGVwX2RlbGF5X2Jhc2UKCmBgYAoKIyMgQ3JlYXRpbmcgbmV3IGNvbHVtbnMKCkluIGBkcGx5cmAgd2UgdXNlIGZ1bmN0aW9uIGBtdXRhdGVgIHRvIGNyZWF0ZSBuZXcgY29sdW1ucy4gSW4gYmFzZSBSLCB3ZSBzaW1wbHkgYXNzaWduIHRoZSBuZXcgY29sdW1uIGRpcmVjdGx5IHRvIHRoZSBkYXRhIGZyYW1lLCB1c2luZyBcJC4gRWFjaCBuZXcgY29sdW1uIG11c3QgYmUgY3JlYXRlZCBpbiBhIHNlcGFyYXRlIHN0YXRlbWVudC4gSW4gdGhlIGNvZGUgYmVsb3csIHdlIHdpbGwgY29tcGFyZSB0aGUgdHdvIHRlY2huaXF1ZXMuIEluIGJvdGggYXBwcm9hY2hlcyB3ZSB3aWxsIGJlZ2luIGJ5IG1ha2luZyBhIGNvcHkgb2YgZGF0YSBmcmFtZSBmbGlnaHRzLCBiZWZvcmUgd2Ugc3RhcnQgdG8gbW9kaWZ5IGl0LiBUaGlzIGlzIGNvbW1vbiBwcmFjdGljZSBzbyB0aGF0IHlvdSBhbHdheXMgaGF2ZSBhIGNsZWFuIGNvcHkgb2YgeW91ciBvcmlnaW5hbCBkYXRhLgoKYGBge3IgbXV0YXRlLCB3YXJuaW5nPUZBTFNFfQoKIyBkcGx5cgoKIyBNYWtlIGEgY29weQpmbGlnaHRzX2RwbHlyIDwtIGZsaWdodHMKCiMgQWRkIG5ldyBjb2x1bW5zIHdpdGggbXV0YXRlCmZsaWdodHNfZHBseXIgPC0gbXV0YXRlKGZsaWdodHNfZHBseXIsIGdhaW49ZGVwX2RlbGF5IC0gYXJyX2RlbGF5LCBzcGVlZCA9IGRpc3RhbmNlIC8gYWlyX3RpbWUgKiA2MCkKCgojIGJhc2UgUgoKIyBNYWtlIGEgY29weQpmbGlnaHRzX2Jhc2UgPC0gZmxpZ2h0cwoKIyBBZGQgdGhlIG5ldyBjb2x1bW5zCmF0dGFjaChmbGlnaHRzX2Jhc2UpCmZsaWdodHNfYmFzZSRnYWluIDwtIGRlcF9kZWxheSAtIGFycl9kZWxheQpmbGlnaHRzX2Jhc2Ukc3BlZWQgPC0gZGlzdGFuY2UgLyBhaXJfdGltZSAqIDYwCgojIENvbXBhcmUgdXNpbmcgYmFzZSBSIHNlbGVjdGlvbgojIEFzayBmb3IgY29sdW1ucyBnYWluIGFuZCBzcGVlZCBmb3Igcm93cyAxIHRvIDE1CiMgVGhleSBhcmUgdGhlIHNhbWUKZmxpZ2h0c19kcGx5clsxOjUsIGMoImdhaW4iLCAic3BlZWQiKV0KZmxpZ2h0c19iYXNlWzE6NSwgYygiZ2FpbiIsICJzcGVlZCIpXQpgYGAKCiMjIEdyb3VwaW5nIGFuZCBTdW1tYXJpc2luZwoKV2l0aCBgZHBseXJgIHdlIHRha2UgZ3JvdXAgc3VtbWFyaWVzIChlLmcuIGdldHRpbmcgdGhlIGF2ZXJhZ2UgYXJyaXZhbCBmb3IgYWxsIGZsaWdodHMgaW4gZWFjaCBtb250aCkgYnkgdXNpbmcgYGdyb3VwX2J5YCB0byBncm91cCB0aGUgZGF0YSBmcmFtZSAoZ2F0aGVyIHRoZSByb3dzIHRvZ2V0aGVyIGJ5IG1vbnRoKSBhbmQgYHN1bW1hcmlzZWAgdG8gYXBwbHkgdGhlIHN1bW1hcnkgZnVuY3Rpb24gKHRha2UgdGhlIGF2ZXJhZ2UgZm9yIGVhY2ggbW9udGgpLiBJbiBiYXNlIFIgYm90aCBvZiB0aGVzZSBzdGVwcyBhcmUgaGFuZGxlZCBieSB0aGUgc2luZ2xlIGZ1bmN0aW9uIGBhZ2dyZWdhdGVgLiBUaGlzIGZ1bmN0aW9uIHRha2VzIGZvdXIgYXJndW1lbnRzOgoKfCBBcmcgbmFtZSB8IE1lYW5pbmcgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8CnwtLS0tLS0tLS0tfC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tfAp8IHggICAgICAgIHwgVGhlIG5hbWUgb2YgdGhlIGRhdGEgZnJhbWUgICAgICAgICAgICAgICAgICAgICAgIHwKfCBieSAgICAgICB8IEEgbGlzdCBvZiBjb2x1bW5zIHRvIGdyb3VwIGJ5ICAgICAgICAgICAgICAgICAgICB8CnwgRlVOICAgICAgfCBUaGUgbmFtZSBvZiB0aGUgc3VtbWFyeSBmdW5jdGlvbiB0byBhcHBseSAgICAgICAgfAp8IG5hLnJtICAgIHwgU2V0IHRvIFRSVUUgaXMgeW91IHdhbnQgdG8gaWdub3JlIG1pc3NpbmcgdmFsdWVzIHwKClRoZSBvbmx5IG5ldyBwYXJ0IGlzIHRoZSBzeW50YXggdXNlZCB0byBkZWNsYXJlIGEgbGlzdCBmb3IgYXJndW1lbnQgKipieSoqLiBXZSB3aWxsIGZpcnN0IGxvb2sgYXQgYW4gZXhhbXBsZSBvZiBob3cgdG8gdGFrZSBncm91cCBtZWFucyBpbiBib3RoIGBkcGx5cmAgYW5kIGJhc2UgUiwgYW5kIHRoZW4gZGlzY3VzcyB0aGUgbGlzdCBpbiBtb3JlIGRldGFpbC4KCmBgYHtyIGdyb3VwIG1lYW5zIDAxLCB3YXJuaW5nPUZBTFNFfQojIENvbXB1dGUgdGhlIGF2ZXJhZ2UgYXJyaXZhbCBkZWxheSwgY29sbGFwc2VkIGFjcm9zcyBtb250aHMKCiMgVXNpbmcgZHBseXIKCiMgR3JvdXAgYnkgbW9udGgKYnlfbW9udGggPC0gZ3JvdXBfYnkoZmxpZ2h0cywgbW9udGgpCgojIFRha2UgdGhlIG1lYW5zCm1lYW5fZGVsYXlfYnlfbW9udGhfZHBseXIgPC0gc3VtbWFyaXNlKGJ5X21vbnRoLCBNZWFuRGVsYXkgPSBtZWFuKGFycl9kZWxheSwgbmEucm0gPSBUUlVFKSkKCiMgQ2hlY2sgdGhlIG91dHB1dAptZWFuX2RlbGF5X2J5X21vbnRoX2RwbHlyCgoKCiMgVXNpbmcgYmFzZSBSIGZ1bmN0aW9uIGFnZ3JlZ2F0ZQptZWFuX2RlbGF5X2J5X21vbnRoX2Jhc2UgPC0gYWdncmVnYXRlKHggPSBmbGlnaHRzJGFycl9kZWxheSwgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgYnkgPSBsaXN0KE1vbnRoID0gZmxpZ2h0cyRtb250aCksCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgRlVOID0gbWVhbiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBuYS5ybSA9IFRSVUUpCgoKIyBDaGVjayB0aGUgb3V0cHV0Cm1lYW5fZGVsYXlfYnlfbW9udGhfYmFzZQpgYGAKClVzZSBmdW5jdGlvbiBgbGlzdGAgdG8gY3JlYXRlIHRoZSB2YWx1ZSBmb3IgYXJndW1lbnQgYGJ5YCAuIFRoaXMgZnVuY3Rpb24gaXMgbGlrZSB0aGUgY29tYmluZSBmdW5jdGlvbiBmb3IgdmVjdG9ycywgZXhjZXB0IGl0IGNyZWF0ZXMgYSBjb2xsZWN0aW9uIG9mICpuYW1lZCBlbGVtZW50cyouIFdlIG9mdGVuIHNlZSB0aGUgZnVuY3Rpb24gaW4gc2l0dWF0aW9ucyBsaWtlIHRoaXM6CgpgYGB7ciBsaXN0fQojIEEgbGlzdCBpcyBhIGNvbGxlY3Rpb24gb2YgbmFtZWQgZWxlbWVudHMKcGV0X2RhdGEgPC0gbGlzdChQZXROYW1lID0gIlNub29weSIsIFBldE93bmVyID0gIkNoYXJsaWUgQnJvd24iLCBQZXRCcmVlZCA9ICJCZWFnbGUiKQpwZXRfZGF0YQpgYGAKCldoZW4gdXNpbmcgYGFnZ3JlZ2F0ZWAgeW91IGNyZWF0ZSBhIGxpc3Qgb2YgY29sdW1ucyB0aGF0IHlvdSB3YW50IHRvIGdyb3VwIGJ5LiBUaGUgbmFtZXMgb2YgdGhlIGNvbHVtbnMgd2lsbCBiZSB0aGUgY29sdW1uIGhlYWRlcnMgZm9yIHRoZSBvdXRwdXQgdGFibGUgb2Ygc3VtbWFyaXNlZCByZXN1bHRzLiBUbyBncm91cCBieSBtdWx0aXBsZSBjb2x1bW5zLCBhZGQgbW9yZSBlbGVtZW50cyB0byB0aGUgbGlzdC4gRm9yIGV4YW1wbGUsIGlmIHdlIHdhbnRlZCB0aGUgYXZlcmFnZSBkZWxheSBieSBtb250aCAqZm9yIGVhY2ggb3JpZ2luIGFpcnBvcnQgc2VwYXJhdGVseSogd2Ugd291bGQgc2F5OgoKYGBge3IgZ3JvdXAgbWVhbnMgMDIsIHdhcm5pbmc9RkFMU0V9CiMgQ29tcHV0ZSB0aGUgYXZlcmFnZSBhcnJpdmFsIGRlbGF5LCBjb2xsYXBzZWQgYWNyb3NzIG1vbnRocywgc2VwYXJhdGVseSBmb3IKIyBlYWNoIG9yaWdpbiBhaXJwb3J0LiBUaGVyZSBhcmUgMyBhaXJwb3J0cyBhbmQgMTIgbW9udGhzLCBzbyB3ZSBleHBlY3QgdG8gCiMgZ2V0IDM2IG1lYW5zLgoKIyBVc2luZyBkcGx5cgoKIyBHcm91cCBieSBtb250aCBhbmQgb3JpZ2luCmJ5X21vbnRoX29yaWdpbiA8LSBncm91cF9ieShmbGlnaHRzLCBtb250aCwgb3JpZ2luKQoKIyBUYWtlIHRoZSBtZWFucwptZWFuX21vbnRoX29yaWdpbl9kcGx5ciA8LSBzdW1tYXJpc2UoYnlfbW9udGhfb3JpZ2luLCBNZWFuRGVsYXkgPSBtZWFuKGFycl9kZWxheSwgbmEucm0gPSBUUlVFKSkKCiMgQ2hlY2sgdGhlIG91dHB1dAptZWFuX21vbnRoX29yaWdpbl9kcGx5cgoKCgojIFVzaW5nIGJhc2UgUiBmdW5jdGlvbiBhZ2dyZWdhdGUKbWVhbl9tb250aF9vcmlnaW5fYmFzZSA8LSBhZ2dyZWdhdGUoeCA9IGZsaWdodHMkYXJyX2RlbGF5LCAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBieSA9IGxpc3QoTW9udGggPSBmbGlnaHRzJG1vbnRoLCBPcmlnaW4gPSBmbGlnaHRzJG9yaWdpbiksCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgRlVOID0gbWVhbiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBuYS5ybSA9IFRSVUUpCgoKIyBDaGVjayB0aGUgb3V0cHV0LiBOb3RlIHRoYXQgZHBseXIgYW5kIGJhc2UgUiBzb3J0IHRoZSBvdXRwdXQgaW4gZGlmZmVyZW50IG9yZGVycwptZWFuX21vbnRoX29yaWdpbl9iYXNlCmBgYAoKCiMjIFdvcmtmbG93cyBhbmQgZGF0YSBwaXBlbGluZXMKClRyYWRpdGlvbmFsbHkgZGF0YSBhbmFseXNpcyB3b3JrZmxvd3MgaW4gUiBoYXZlIGNvbnNpc3RlZCBvZiBlaXRoZXIgbWFueSBuZXN0ZWQgb3BlcmF0aW9ucywgb3IgdGhlIHVzZSBvZiBhc3NpZ25pbmcgaW50ZXJtZWRpYXRlIHN0ZXBzIHRvIHZhcmlhYmxlcy4gT25lIG9mIHRoZSBrZXkgZGlmZmVyZW5jZXMgaW4gYXBwcm9hY2ggYmV0d2VlbiB0aGUgVGlkeXZlcnNlIGFuZCBiYXNlIFIgKHVudGlsIHZlcnkgcmVjZW50bHkgd2l0aCBSIHY0LjErKSBpcyB0aGUgaWRlYSBvZiAncGlwZXMnIHdoaWNoIGFsbG93IHVzIHRvICdjaGFpbicgb3BlcmF0aW9ucyB0b2dldGhlciwgd2l0aCB0aGUga2V5IGJlbmVmaXQgYmVpbmcgcmVhZGFiaWxpdHkgb2YgY29kZS4gV2hlbiByZWFkaW5nIGNvZGUsIGl0IGNhbiBiZSB1c2VmdWwgdG8gcmVhZCB0aGUgcGlwZSBhcyB0aGUgd29yZCAidGhlbiIuCgoKIyMjIFBpcGVzCgoKVGhlIHBpcGUgZnVuY3Rpb24gZnJvbSBgbWFncml0dHJgIHdoaWNoIGlzIHBhcnQgb2YgdGhlIFRpZHl2ZXJzZSwgZW5hYmxlcyB0aGUgY3JlYXRpb24gb2YgJ3BpcGVsaW5lcycgb3IgY2hhaW5pbmcgdG9nZXRoZXIgb2YgZnVuY3Rpb25zIGFzIG9wcG9zZWQgdG8gbmVzdGluZy4gVGhlIHBpcGUgZnVuY3Rpb24gKGAlPiVgIHNob3J0Y3V0IDxrYmQ+Q3RybDwva2JkPiArIDxrYmQ+U2hpZnQ8L2tiZD4gKyA8a2JkPk08L2tiZD4gLSBvbiBhIE1hYyB1c2UgPGtiZD5DbWQ8L2tiZD4gaW5zdGVhZCBvZiA8a2JkPkN0cmw8L2tiZD4pIHRha2VzIHRoZSBvdXRwdXQgb2YgdGhlIGZ1bmN0aW9uIGFuZCB1c2VzIGl0IGFzIHRoZSBmaXJzdCBhcmd1bWVudCBmb3IgdGhlIG5leHQgZnVuY3Rpb24uIFdoZW4geW91IHJlYWQgYCU+JWAgaW4gY29kZSB5b3UgY2FuIHRoaW5rIG9mIGl0IGFzIHRoZSB3b3JkICJ0aGVuIi4KCkZvciBpbnN0YW5jZSwgaWYgd2UgY2FsbCB0aGUgbmFtZSBvZiBvdXIgZGF0YSBzZXQgYnkgaXRzZWxmLCBpdCB3aWxsIHB1dCB0aGUgcmVzdWx0cyBvbnRvIHRoZSBzY3JlZW4sIGhvd2V2ZXIgaWYgd2UgJ3BpcGUnIGl0IHRvIGFub3RoZXIgZnVuY3Rpb24gaXQgZ2V0cyB1c2VkIGFzIHRoZSBpbnB1dCBmb3IgdGhhdCBmdW5jdGlvbiBpbnN0ZWFkLiAKYGBge3J9CmZsaWdodHMKCgpmbGlnaHRzICU+JSBoZWFkKCkKYGBgCgpUaGlzIHdvcmtzIGZvciBmdW5jdGlvbnMgdGhhdCBleHBlY3QgdGhlIGZpcnN0IGFyZ3VtZW50IHRvIGJlIHRoZSBkYXRhLiBXZSBjYW4gYWxzbyBiZSBleHBsaWNpdCBhYm91dCB3aGljaCBhcmd1bWVudCB3ZSB3b3VsZCBsaWtlIHRoZSBpbnB1dCBmcm9tIHRoZSBwaXBlIHRvIG9jY3VweS4gV2UgY2FuIHVzZSBgLmAgdG8gcmVwcmVzZW50IHRoaXMKCmBgYHtyfQpmbGlnaHRzICU+JSBoZWFkKG4gPSAxMCwgeCA9IC4pCmBgYAoKXAoKV2UgY2FuIHVzZSB0aGUgYCU+JWAgdG8gY2hhaW4gbXVsdGlwbGUgZnVuY3Rpb25zIHRvZ2V0aGVyLiBIZXJlIHdlJ2xsIGxvb2sgYXQgdGhlIHdvcmtmbG93IG9mIGNhbGN1bGF0aW5nIHRoZSBtZWFuIGFpcnRpbWUgb2YgZmxpZ2h0cyBsZWF2aW5nIEpGSyBvciBMR0EgZm9yIGVhY2ggbW9udGggd2l0aCB0aGUgcmVzdWx0aW5nIG1lYW4gYWlydGltZSBzb3J0ZWQgZnJvbSBsb25nZXN0IHRvIHNob3J0ZXN0IGZsaWdodCB0aW1lLiAKCmBgYHtyfQojIGJhc2UgUiB3aXRoIGludGVybWVkaWF0ZXMKCiMgU3Vic2V0IHRoZSBkYXRhCmZsaWdodHNfamZrX2xnYSA8LSBzdWJzZXQoZmxpZ2h0cywgb3JpZ2luID09ICJKRksiIHwgb3JpZ2luID09ICJMR0EiLCBzZWxlY3QgPSBjKCJtb250aCIsICJvcmlnaW4iLCJhaXJfdGltZSIpKQoKIyBjYWxjdWxhdGUgdGhlIG1lYW4gYWlyIHRpbWUgZm9yIGVhY2ggbW9udGgvb3JpZ2luIGdyb3VwaW5nCmZsaWdodF9yZXN1bHRzIDwtIGFnZ3JlZ2F0ZSh4ID0gZmxpZ2h0c19qZmtfbGdhJGFpcl90aW1lLCAKICAgICAgICAgIGJ5ID0gbGlzdChtb250aCA9IGZsaWdodHNfamZrX2xnYSRtb250aCwgb3JpZ2luID0gZmxpZ2h0c19qZmtfbGdhJG9yaWdpbiksCiAgICAgICAgICBGVU4gPSBtZWFuLAogICAgICAgICAgbmEucm0gPSBUUlVFKQoKIyByZW5hbWUgdGhlIHJlc3VsdCBjb2x1bW4KbmFtZXMoZmxpZ2h0X3Jlc3VsdHMpW3doaWNoKG5hbWVzKGZsaWdodF9yZXN1bHRzKSA9PSAieCIpXSA8LSAibWVhbl9haXJfdGltZSIKCiMgc29ydCB0aGUgcmVzdWx0cwpmbGlnaHRfcmVzdWx0c19iYXNlIDwtIGZsaWdodF9yZXN1bHRzW29yZGVyKGZsaWdodF9yZXN1bHRzJG1lYW5fYWlyX3RpbWUsIGRlY3JlYXNpbmcgPSBUUlVFKSxdCgojIHNob3cgdG9wIDYgcmVzdWx0cwpoZWFkKGZsaWdodF9yZXN1bHRzX2Jhc2UpCmBgYAoKCmBgYHtyfQojIGRwbHlyIHVzaW5nIHBpcGVzCgpmbGlnaHRfcmVzdWx0c19kcGx5ciA8LSBmbGlnaHRzICU+JSAKICAjIHN1YnNldCB0aGUgZGF0YQogIHNlbGVjdChtb250aCwgb3JpZ2luLCBhaXJfdGltZSkgJT4lIAogIGZpbHRlcihvcmlnaW4gPT0gIkpGSyIgfCBvcmlnaW4gPT0gIkxHQSIpICU+JQogICMgY2FsY3VsYXRlIHRoZSBtZWFuIGFpciB0aW1lIGZvciBlYWNoIG1vbnRoL29yaWdpbiBncm91cGluZwogIGdyb3VwX2J5KG1vbnRoLCBvcmlnaW4pICU+JSAKICBzdW1tYXJpc2UobWVhbl9haXJfdGltZSA9IG1lYW4oYWlyX3RpbWUsIG5hLnJtID0gVFJVRSkpICU+JSAKICAjIHNvcnQgdGhlIHJlc3VsdHMKICBhcnJhbmdlKGRlc2MobWVhbl9haXJfdGltZSkpCgojIHNob3cgdG9wIDYgcmVzdWx0cwpoZWFkKGZsaWdodF9yZXN1bHRzX2RwbHlyKQpgYGAKCk9uZSBvZiB0aGUgbmljZSBmZWF0dXJlcyBvZiBkZWFsaW5nIHdpdGggcGlwZXMsIGlzIHRoYXQgeW91IGNhbiBkbyB5b3VyIHN1YnNldHRpbmcgd29ya2Zsb3cgYW5kIHBpcGUgZGlyZWN0bHkgaW50byBgZ2dwbG90YCwgYWx0aG91Z2ggaXQncyB1c3VhbGx5IGEgZ29vZCBpZGVhIHRvIGFzc2lnbiB5b3VyIHN1YnNldHRlZCBkYXRhIGFuZCB0aGVuIHVzZSB0aGF0IHRvIHN0YXJ0IHlvdXIgcGxvdHRpbmcgcGlwZWxpbmUuIElmIHlvdSBwaXBlIHlvdXIgZGF0YSBpbnRvIGdncGxvdCBSU3R1ZGlvIHdpbGwgYWxzbyBsZXQgeW91IGF1dG8tY29tcGxldGUgeW91ciBjb2x1bW5zIHdpdGggPGtiZD5UYWI8L2tiZD4uCgpgYGB7ciBwaXBlX3Bsb3R9CmZsaWdodHMgJT4lIAogICMgc3Vic2V0IHRoZSBkYXRhCiAgc2VsZWN0KG1vbnRoLCBvcmlnaW4sIGFpcl90aW1lKSAlPiUgCiAgZmlsdGVyKG9yaWdpbiA9PSAiSkZLIiB8IG9yaWdpbiA9PSAiTEdBIikgJT4lCiAgIyBwbG90IHRoZSBkYXRhCiAgZ2dwbG90KGFlcyh4ID0gb3JpZ2luLCB5ID0gYWlyX3RpbWUpKSArIGdlb21fYm94cGxvdCgpCmBgYAoKCiMjIENvbmNsdXNpb24KClIgdXNlcnMgYXJlIGNvbnN0YW50bHkgYWRkaW5nIG5ldyBsaWJyYXJpZXMgdG8gYmFzZSBSLCBtZWFuaW5nIHRoYXQgeW91IHdpbGwgcHJvYmFibHkgaGF2ZSBzZXZlcmFsIG9wdGlvbnMgZm9yIGRvaW5nIGFueSBqb2IgaW4gUi4gVGhlIHZhcmlvdXMgb3B0aW9ucyBzb21ldGltZXMgaGF2ZSBzdWJ0bGUgdGVjaG5pY2FsIGRpZmZlcmVuY2VzIHRoYXQgd2lsbCBnZW5lcmF0ZSBhIGxvdCBvZiBhcmd1bWVudCBiZXR3ZWVuIHByb2Zlc3Npb25hbCBwcm9ncmFtbWVycywgYnV0IGFyZSB1bmxpa2VseSB0byBtYXR0ZXIgbXVjaCB0byByZXNlYXJjaCBzY2llbnRpc3RzLiBJbiBnZW5lcmFsLCB5b3Ugc2hvdWxkIGV4cGxvcmUgdGhlIFIgZWNvc3lzdGVtIGZyZWVseSBhbmQgdXNlIHdoYXRldmVyIHlvdSBsaWtlLiAqKkhvd2V2ZXIqKiBvbiBhc3NpZ25tZW50cywgaXQgaXMgd2lzZSB0byBjaGVjayB3aXRoIHRoZSBsZWN0dXJlciBiZWZvcmUgdXNpbmcgc29tZXRoaW5nIHRoYXQgaXMgcmVhbGx5IGRpZmZlcmVudCBmcm9tIHdoYXQgaXMgcHJlc2VudGVkIGluIGNsYXNzLiBZb3VyIGxlY3R1cmVyIG1heSwgZm9yIGVkdWNhdGlvbmFsIHJlYXNvbnMsIHdhbnQgeW91IHRvIHVzZSBzcGVjaWZpYyBSIHRvb2xzLgoKIyMgV2hhdCdzIE5leHQKCkZpbGwgaW4gdGhlIG1vZHVsZSBmZWVkYmFjayBmb3JtIDxodHRwczovL3Rpbnl1cmwuY29tL3I0c3NwLW1vZHVsZS1mYj4uCgpZb3UgbWF5IHJlY2FsbCB0aGF0IHdheSBiYWNrIGluIHRoZSBmaXJzdCBtb2R1bGUgb2YgdGhpcyBtaW5pLWNvdXJzZSB3ZSBzYWlkIHdlIHdlcmUgZ29pbmcgdG8gYW5hbHlzZSBkYXRhLiBXZSBoYXZlbid0IHJlYWxseSBkb25lIG11Y2ggb2YgdGhhdCB5ZXQuIFNvIGZhciB3ZSBoYXZlIGJlZW4gKmdldHRpbmcgcmVhZHkqIHRvIGFuYWx5c2UgZGF0YS4gSW4gdGhlIG5leHQgbW9kdWxlLCB3ZSB3aWxsIHN0YXJ0IHJlYWxseSBkaWdnaW5nIGludG8gb3VyIGRhdGEgd2l0aCBleHBsb3JhdG9yeSBhbmFseXNpcyBhbmQgZGVzY3JpcHRpdmUgc3RhdGlzdGljcy4gQmVjYXVzZSB0aGlzIGlzIG5vdCBhIHN0YXRpc3RpY3MgY291cnNlICpwZXIgc2UqIHdlIHdpbGwgb25seSBiZSB1c2luZyBjb21tb24gZ2VuZXJhbCBhbmFseXNlcyBpbiB0aGUgaGFuZG91dHMgYW5kIHJlYWRpbmdzLiBJZiwgZm9yIGEgcHJvamVjdCBvciBhc3NpZ25tZW50LCB5b3UgbmVlZCB0byBkbyBzb21ldGhpbmcgbW9yZSBlc290ZXJpYywganVzdCBsZXQgdXMga25vdyAtLSBzb21lb25lIGhhcyBwcm9iYWJseSB3cml0dGVuIGFuIFIgbGlicmFyeSBmb3IgaXQuCgoKCgo=</div>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("03-subset.Rmd");
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

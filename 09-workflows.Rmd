@@ -1,0 +1,41 @@
+---
+title: "Workflows"
+date: "Semester 1, 2022"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 3
+    code_download: true
+    code_folding: show
+---
+  
+```{r setup, include=FALSE}
+library(knitr)
+
+knitr::opts_chunk$set(
+  comment = "#>",
+  fig.path = "figures/09/", # use only for single Rmd files
+  collapse = TRUE,
+  echo = TRUE
+)
+```
+
+> #### Associated Material
+>
+> Zoom Notes: [Zoom Notes 09 - Workflows](zoom_notes_09.html)
+
+
+> Potential topics:
+> 
+> - infrential stats
+>   - formula syntax
+>   - formala syntax in context of loop and/or custom function for running through many models
+> - projects
+> - organisation
+> - scripts
+> - rmd driven dev
+> - packages
+> - debugging
+> - complex data structures (lists)
+> - git

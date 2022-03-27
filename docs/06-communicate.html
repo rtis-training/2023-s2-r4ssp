@@ -11,7 +11,7 @@
 
 
 
-<title>Zoom Notes 04 - Summarising Data</title>
+<title>Communicate</title>
 
 <script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -350,14 +350,26 @@ div.tocify {
     <li>
       <a href="03-subset.html">Part 2: Subsetting</a>
     </li>
-    <li class="dropdown-header">Part 3: Summarising</li>
-    <li class="dropdown-header">Part 4: Transforming</li>
-    <li class="dropdown-header">Part 5: Communicating</li>
+    <li>
+      <a href="04-summarise.html">Part 3: Summarising</a>
+    </li>
+    <li>
+      <a href="05-transform.html">Part 4: Transforming</a>
+    </li>
+    <li>
+      <a href="06-communicate.html">Part 5: Communicating</a>
+    </li>
     <li class="divider"></li>
     <li class="dropdown-header">Programming focus</li>
-    <li class="dropdown-header">Functions and Choices</li>
-    <li class="dropdown-header">Repeating Code</li>
-    <li class="dropdown-header">Workflows</li>
+    <li>
+      <a href="07-functions.html">Functions and Choices</a>
+    </li>
+    <li>
+      <a href="08-iterate.html">Repeating Code</a>
+    </li>
+    <li>
+      <a href="09-workflows.html">Workflows</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -375,6 +387,24 @@ div.tocify {
     </li>
     <li>
       <a href="zoom_notes_03.html">03 - Subsetting data</a>
+    </li>
+    <li>
+      <a href="zoom_notes_04.html">04 - Summarising data</a>
+    </li>
+    <li>
+      <a href="zoom_notes_05.html">05 - Transforming data</a>
+    </li>
+    <li>
+      <a href="zoom_notes_06.html">06 - Communicating data</a>
+    </li>
+    <li>
+      <a href="zoom_notes_07.html">07 - Functions and choices</a>
+    </li>
+    <li>
+      <a href="zoom_notes_08.html">08 - Repeating code</a>
+    </li>
+    <li>
+      <a href="zoom_notes_09.html">09 - Workflows</a>
     </li>
   </ul>
 </li>
@@ -403,24 +433,86 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Zoom Notes 04 - Summarising Data</h1>
+<h1 class="title toc-ignore">Communicate</h1>
+<h4 class="date">Semester 1, 2022</h4>
 
 </div>
 
 
 <blockquote>
 <h4 id="associated-material">Associated Material</h4>
-<p>Module: <a href="04-summarising.html">Module 04 - Summarising
-data</a></p>
-<p>Readings</p>
-<ul>
-<li><a href="https://r4ds.had.co.nz/exploratory-data-analysis.html">R
-for Data Science - Chapter 7</a></li>
-</ul>
+<p>Zoom notes: <a href="zoom_notes_06.html">Zoom Notes 06 -
+Communicate</a></p>
+<p>Readings:</p>
+<p><a href="https://r4ds.had.co.nz/r-markdown.html">R for Data Science -
+Chapter 27</a> <a
+href="https://r4ds.had.co.nz/r-markdown-formats.html">R for Data Science
+- Chapter 29</a> <a
+href="https://bookdown.org/yihui/rmarkdown/">Reference: RMarkdown - the
+definitive guide</a></p>
 </blockquote>
-<!-- Patricia to populate -->
+<p>This module is going to cover:</p>
+<ul>
+<li><p>using the {here} package to manage paths for scripts and
+rmarkdown</p></li>
+<li><p>Using the document outline/collapsing code in Rscripts</p></li>
+<li><p>(briefly) converting a R script into a notebook</p></li>
+</ul>
+<p>The main focus will be on covering the usefulness of Rmarkdown in
+creating descriptive analysis documents</p>
+<p>Cover the basics of the 3 components of an Rmarkdown document - yaml
+- markdown - code chunks</p>
+<p>Introduce the basic syntax of Markdown - headers - bold/italics -
+lists - verbatim code</p>
+<p>Options of a code chunk - echo - eval - include - warning - message -
+fig - results - inline code</p>
+<p>Embedding images - images - knitr::include_graphics -
+<code>![]()</code></p>
+<p>Embedding plots</p>
+<p>Making tables - markdown - knitr::kable - customising tables with the
+{kableExtra} package</p>
+<div id="the-below-content-is-copypasted-from-appendix-of-module-1"
+class="section level2">
+<h2>The below content is copy/pasted from appendix of module 1</h2>
+</div>
+<div id="some-more-r-markdown" class="section level2">
+<h2>Some more R Markdown</h2>
+<p>Let’s look more closely at how you can use R Markdown to generate
+well-formatted research reports.</p>
+<p>1. Following the procedure described in Handout 2 - Get Started with
+R, create an R Markdown file</p>
+<p>2. The new file contains some template text. In the <em>second shaded
+block</em> replace the command <code>summary(cars)</code> with some of
+the code you have just written. Be careful not to delete either of the
+lines that begin with ```. Those symbols signal to RStudio that the
+contents is R code, not text.</p>
+<p>For example, I made this replacement:</p>
+<div class="figure" style="text-align: center">
+<img src="images/markdown_replace_code.png" alt="Replace the template code with yours" width="50%" />
+<p class="caption">
+Replace the template code with yours
+</p>
+</div>
+<p>3. You might also want to replace some of the text (in the non-shaded
+areas), to match your new code.</p>
+<p>4. Knit the document (click the Knit button). Wait while R processes
+the document. It will generate output to the console, but you can ignore
+that for now.</p>
+<p>5. Admire the result.</p>
+</div>
+<div id="exercise---r-markdown" class="section level2">
+<h2>Exercise - R Markdown</h2>
+<ol style="list-style-type: decimal">
+<li>Figure out how to generate a Word document with R Markdown (Hint:
+look at the dropdown list beside the Knit button, by clicking the small
+triangle).</li>
+<li>Some lines in the text areas of the R Markdown template start with
+##, and the text is coloured Blue. What does the ## do? What do you
+think prefacing a line of text with ### would do? Test your theory.</li>
+</ol>
+</div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiWm9vbSBOb3RlcyAwNCAtIFN1bW1hcmlzaW5nIERhdGEiCm91dHB1dDoKICBodG1sX2RvY3VtZW50OgogICAgdG9jOiB0cnVlCiAgICB0b2NfZmxvYXQ6IHRydWUKICAgIHRvY19kZXB0aDogMwogICAgY29kZV9kb3dubG9hZDogdHJ1ZQogICAgY29kZV9mb2xkaW5nOiBzaG93Ci0tLQoKYGBge3Igc2V0dXAsIGluY2x1ZGU9RkFMU0V9CmxpYnJhcnkoa25pdHIpCgprbml0cjo6b3B0c19jaHVuayRzZXQoCiAgY29tbWVudCA9ICIjPiIsCiAgZmlnLnBhdGggPSAiZmlndXJlcy8wNC8iLCAjIHVzZSBvbmx5IGZvciBzaW5nbGUgUm1kIGZpbGVzCiAgY29sbGFwc2UgPSBUUlVFLAogIGVjaG8gPSBUUlVFCikKCgpgYGAKCgo+ICMjIyMgQXNzb2NpYXRlZCBNYXRlcmlhbAo+Cj4gTW9kdWxlOiBbTW9kdWxlIDA0IC0gU3VtbWFyaXNpbmcgZGF0YV0oMDQtc3VtbWFyaXNpbmcuaHRtbCkKPgo+IFJlYWRpbmdzCj4KPiAtIFtSIGZvciBEYXRhIFNjaWVuY2UgLSBDaGFwdGVyIDddKGh0dHBzOi8vcjRkcy5oYWQuY28ubnovZXhwbG9yYXRvcnktZGF0YS1hbmFseXNpcy5odG1sKQoKPCEtLSBQYXRyaWNpYSB0byBwb3B1bGF0ZSAtLT4K</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiQ29tbXVuaWNhdGUiCmRhdGU6ICJTZW1lc3RlciAxLCAyMDIyIgpvdXRwdXQ6CiAgaHRtbF9kb2N1bWVudDoKICAgIHRvYzogdHJ1ZQogICAgdG9jX2Zsb2F0OiB0cnVlCiAgICB0b2NfZGVwdGg6IDMKICAgIGNvZGVfZG93bmxvYWQ6IHRydWUKICAgIGNvZGVfZm9sZGluZzogc2hvdwotLS0KCgpgYGB7ciBzZXR1cCwgaW5jbHVkZT1GQUxTRX0KbGlicmFyeShrbml0cikKCmtuaXRyOjpvcHRzX2NodW5rJHNldCgKICBjb21tZW50ID0gIiM+IiwKICBmaWcucGF0aCA9ICJmaWd1cmVzLzA2LyIsICMgdXNlIG9ubHkgZm9yIHNpbmdsZSBSbWQgZmlsZXMKICBjb2xsYXBzZSA9IFRSVUUsCiAgZWNobyA9IFRSVUUKKQoKCmBgYAoKCj4gIyMjIyBBc3NvY2lhdGVkIE1hdGVyaWFsCj4KPiBab29tIG5vdGVzOiBbWm9vbSBOb3RlcyAwNiAtIENvbW11bmljYXRlXSh6b29tX25vdGVzXzA2Lmh0bWwpCj4KPiBSZWFkaW5nczoKPgo+IFtSIGZvciBEYXRhIFNjaWVuY2UgLSBDaGFwdGVyIDI3XShodHRwczovL3I0ZHMuaGFkLmNvLm56L3ItbWFya2Rvd24uaHRtbCkKPiBbUiBmb3IgRGF0YSBTY2llbmNlIC0gQ2hhcHRlciAyOV0oaHR0cHM6Ly9yNGRzLmhhZC5jby5uei9yLW1hcmtkb3duLWZvcm1hdHMuaHRtbCkKPiBbUmVmZXJlbmNlOiBSTWFya2Rvd24gLSB0aGUgZGVmaW5pdGl2ZSBndWlkZV0oaHR0cHM6Ly9ib29rZG93bi5vcmcveWlodWkvcm1hcmtkb3duLykKCgoKVGhpcyBtb2R1bGUgaXMgZ29pbmcgdG8gY292ZXI6IAoKLSB1c2luZyB0aGUge2hlcmV9IHBhY2thZ2UgdG8gbWFuYWdlIHBhdGhzIGZvciBzY3JpcHRzIGFuZCBybWFya2Rvd24KCi0gVXNpbmcgdGhlIGRvY3VtZW50IG91dGxpbmUvY29sbGFwc2luZyBjb2RlIGluIFJzY3JpcHRzCi0gKGJyaWVmbHkpIGNvbnZlcnRpbmcgYSBSIHNjcmlwdCBpbnRvIGEgbm90ZWJvb2sKClRoZSBtYWluIGZvY3VzIHdpbGwgYmUgb24gY292ZXJpbmcgdGhlIHVzZWZ1bG5lc3Mgb2YgUm1hcmtkb3duIGluIGNyZWF0aW5nIGRlc2NyaXB0aXZlIGFuYWx5c2lzIGRvY3VtZW50cwoKQ292ZXIgdGhlIGJhc2ljcyBvZiB0aGUgMyBjb21wb25lbnRzIG9mIGFuIFJtYXJrZG93biBkb2N1bWVudAotIHlhbWwKLSBtYXJrZG93bgotIGNvZGUgY2h1bmtzCgpJbnRyb2R1Y2UgdGhlIGJhc2ljIHN5bnRheCBvZiBNYXJrZG93bgotIGhlYWRlcnMKLSBib2xkL2l0YWxpY3MKLSBsaXN0cwotIHZlcmJhdGltIGNvZGUKCgpPcHRpb25zIG9mIGEgY29kZSBjaHVuawotIGVjaG8KLSBldmFsCi0gaW5jbHVkZQotIHdhcm5pbmcKLSBtZXNzYWdlCi0gZmlnCi0gcmVzdWx0cwotIGlubGluZSBjb2RlCgpFbWJlZGRpbmcgaW1hZ2VzCi0gaW1hZ2VzCiAgLSBrbml0cjo6aW5jbHVkZV9ncmFwaGljcwogIC0gYCFbXSgpYAogIApFbWJlZGRpbmcgcGxvdHMKCgpNYWtpbmcgdGFibGVzCi0gbWFya2Rvd24KLSBrbml0cjo6a2FibGUKICAtIGN1c3RvbWlzaW5nIHRhYmxlcyB3aXRoIHRoZSB7a2FibGVFeHRyYX0gcGFja2FnZQoKCgoKCgoKCgoKClRoZSBiZWxvdyBjb250ZW50IGlzIGNvcHkvcGFzdGVkIGZyb20gYXBwZW5kaXggb2YgbW9kdWxlIDEKLS0tLS0KCgoKIyMgU29tZSBtb3JlIFIgTWFya2Rvd24KCkxldCdzIGxvb2sgbW9yZSBjbG9zZWx5IGF0IGhvdyB5b3UgY2FuIHVzZSBSIE1hcmtkb3duIHRvIGdlbmVyYXRlIHdlbGwtZm9ybWF0dGVkIHJlc2VhcmNoIHJlcG9ydHMuCgoxXC4gRm9sbG93aW5nIHRoZSBwcm9jZWR1cmUgZGVzY3JpYmVkIGluIEhhbmRvdXQgMiAtIEdldCBTdGFydGVkIHdpdGggUiwgY3JlYXRlIGFuIFIgTWFya2Rvd24gZmlsZQoKMlwuIFRoZSBuZXcgZmlsZSBjb250YWlucyBzb21lIHRlbXBsYXRlIHRleHQuIEluIHRoZSAqc2Vjb25kIHNoYWRlZCBibG9jayogcmVwbGFjZSB0aGUgY29tbWFuZCBgc3VtbWFyeShjYXJzKWAgd2l0aCBzb21lIG9mIHRoZSBjb2RlIHlvdSBoYXZlIGp1c3Qgd3JpdHRlbi4gQmUgY2FyZWZ1bCBub3QgdG8gZGVsZXRlIGVpdGhlciBvZiB0aGUgbGluZXMgdGhhdCBiZWdpbiB3aXRoIGBgYC4gVGhvc2Ugc3ltYm9scyBzaWduYWwgdG8gUlN0dWRpbyB0aGF0IHRoZSBjb250ZW50cyBpcyBSIGNvZGUsIG5vdCB0ZXh0LiAKCkZvciBleGFtcGxlLCBJIG1hZGUgdGhpcyByZXBsYWNlbWVudDoKCmBgYHtyLCBmaWcuYWxpZ249J2NlbnRlcicsIG91dC53aWR0aCA9ICI1MCUiLCBmaWcuY2FwID0gIlJlcGxhY2UgdGhlIHRlbXBsYXRlIGNvZGUgd2l0aCB5b3VycyIsIGZpZy5wb3MgPSAiSCIsIGVjaG8gPSBGQUxTRX0KaW5jbHVkZV9ncmFwaGljcygiaW1hZ2VzL21hcmtkb3duX3JlcGxhY2VfY29kZS5wbmciKQpgYGAKCjNcLiBZb3UgbWlnaHQgYWxzbyB3YW50IHRvIHJlcGxhY2Ugc29tZSBvZiB0aGUgdGV4dCAoaW4gdGhlIG5vbi1zaGFkZWQgYXJlYXMpLCB0byBtYXRjaCB5b3VyIG5ldyBjb2RlLiAKCjRcLiBLbml0IHRoZSBkb2N1bWVudCAoY2xpY2sgdGhlIEtuaXQgYnV0dG9uKS4gV2FpdCB3aGlsZSBSIHByb2Nlc3NlcyB0aGUgZG9jdW1lbnQuIEl0IHdpbGwgZ2VuZXJhdGUgb3V0cHV0IHRvIHRoZSBjb25zb2xlLCBidXQgeW91IGNhbiBpZ25vcmUgdGhhdCBmb3Igbm93LgoKNVwuIEFkbWlyZSB0aGUgcmVzdWx0LgoKIyMgRXhlcmNpc2UgLSBSIE1hcmtkb3duCgoxLiBGaWd1cmUgb3V0IGhvdyB0byBnZW5lcmF0ZSBhIFdvcmQgZG9jdW1lbnQgd2l0aCBSIE1hcmtkb3duIChIaW50OiBsb29rIGF0IHRoZSBkcm9wZG93biBsaXN0IGJlc2lkZSB0aGUgS25pdCBidXR0b24sIGJ5IGNsaWNraW5nIHRoZSBzbWFsbCB0cmlhbmdsZSkuCjIuIFNvbWUgbGluZXMgaW4gdGhlIHRleHQgYXJlYXMgb2YgdGhlIFIgTWFya2Rvd24gdGVtcGxhdGUgc3RhcnQgd2l0aCAjIywgYW5kIHRoZSB0ZXh0IGlzIGNvbG91cmVkIEJsdWUuIFdoYXQgZG9lcyB0aGUgIyMgZG8/IFdoYXQgZG8geW91IHRoaW5rIHByZWZhY2luZyBhIGxpbmUgb2YgdGV4dCB3aXRoICMjIyB3b3VsZCBkbz8gVGVzdCB5b3VyIHRoZW9yeS4K</div>
 
 
 </div>
@@ -458,7 +550,7 @@ $(document).ready(function () {
 <!-- code folding -->
 <script>
 $(document).ready(function () {
-  window.initializeSourceEmbed("zoom_notes_04.Rmd");
+  window.initializeSourceEmbed("06-communicate.Rmd");
   window.initializeCodeFolding("show" === "show");
 });
 </script>

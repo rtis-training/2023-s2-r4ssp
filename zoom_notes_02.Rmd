@@ -32,6 +32,7 @@ knitr::opts_chunk$set(
 \
 
 > #### Associated material:
+>
 > Module: [Module 02 - Visualising Data](02-visualise.html)
 > 
 > Readings:

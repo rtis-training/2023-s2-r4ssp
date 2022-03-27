@@ -1,0 +1,458 @@
+---
+title: "Functions and Choices"
+date: "Semester 1, 2022"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 3
+    code_download: true
+    code_folding: show
+---
+
+```{r setup, include=FALSE}
+library(knitr)
+
+knitr::opts_chunk$set(
+  comment = "#>",
+  fig.path = "figures/07/", # use only for single Rmd files
+  collapse = TRUE,
+  echo = TRUE
+)
+
+
+```
+
+> #### Associated Material
+>
+> Zoom notes: [Zoom notes 07 - Functions and Choices](zoom_notes_07.html)
+> 
+> Readings:
+>
+> - [R for Data Science - Chapter 19](https://r4ds.had.co.nz/functions.html)
+
+\
+
+# Introduction
+
+These next two modules are going to introduce the idea of modularity of code. What does this actually mean in practice though? What this means is that we're going to be looking out for where we are copy and pasting the same code, and looking to turn this into a reusable function instead -- giving ourselves a single place to make updates/changes, rather than having to track down all duplications and making the changes to them. There is an upfront 'cost' to doing this because we have to put more effort in initially but this pays off in the long run as we benefit from less maintenance burden, and we gain more trust that our code is behaving how we want it.
+
+Largely up until this point all the functions in R for what you want to do have been provided through either "Base R" or packages that have needed to be installed such as the tidyverse. In this module and the next, we're going to learn how to create our own functions within R so that we can do exactly what we want to do. The content for this module is covered well by [R4DS chapter 19 (https://r4ds.had.co.nz/functions.html)](https://r4ds.had.co.nz/functions.html), so make sure to have a read of that chapter. Part of making functions requires us to make our code be able to make choices, this module will also cover this or as it is also know "flow of control".
+
+<!-- [Previous course of Murray](https://github.com/murraycadzow/R_functions_and_iterators/blob/master/Code/functions.Rmd) -->
+
+
+
+**Learning Objectives**
+
+-  Be able to create custom functions
+    -   Define arguments
+    -   Input check
+    -   Return results
+- Use control statements to perform input checking on functions
+
+# Functions
+
+Firstly, you might be wondering "Why would I want to create my own functions when I can find a package that already does what I want?" It's great if someone else has made something that does what you want, but sometimes it doesn't fit your exact purpose. Another reason to learn about functions is for modularity and maintainability of your own code/analysis. From [R for Data Science](https://r4ds.had.co.nz/functions.html):
+
+> One of the best ways to improve your reach as a data scientist is to write functions. Functions allow you to automate common tasks in a more powerful and general way than copy-and-pasting. Writing a function has three big advantages over using copy-and-paste:
+>
+> 1.  You can give a function an evocative name that makes your code easier to understand.
+> 2.  As requirements change, you only need to update code in one place, instead of many.
+> 3.  You eliminate the chance of making incidental mistakes when you copy and paste (i.e. updating a variable name in one place, but not in another).
+>
+> You should consider writing a function whenever you've copied and pasted a block of code more than twice (i.e. you now have three copies of the same code).
+
+## Composition of a function
+
+A function in R is comprised of four parts:
+
+1. a name
+2. inputs (arguments/variables)
+3. the body (the code that does something)
+4. output (what gets returned after the body has run)
+
+As you have been using R you will have noticed that many tasks have a particular function already available for you to use, such as `mean` or `sd`. In this section we are going to learn how to make our own functions. We can define our own functions using the `function()` function.
+
+Inside the parenthesis we define what variables are going to be passed to our function and curly braces contain the body of the function. If we want to return a value from our function  R will automatically return the result of the last line of the function body or we end can do so explicitly with `return()`.
+
+We can assign this new function to a variable so that we call on it later, it is possible to have an _anonymous_ function but these are usually found as part of `map` or the apply family (introduced in Module 8) but we won't be covering anonymous functions in this course. 
+
+To call our new function we now use the variable name and pass any required arguments.
+
+Here is an example of how to create a function:
+```{r}
+# an example function skeleton
+name <- function(variables) {
+  # body
+}
+```
+
+**NB:** in RStudio you can get a code snippet/template by typing "fun" and hitting `<tab>`
+
+Here is an example function that will double the value of the provided number:
+```{r, eval = TRUE, echo = TRUE}
+# Doubles the provided number
+double <- function( num ){
+  num * 2
+}
+
+double(2)
+```
+
+**Important: Functions don't auto-update when you modify the code that creates them, you must re-run the entire function code block.**
+
+
+We can also have multiple arguments for our functions:
+
+```{r, eval = TRUE, echo = TRUE}
+# Calculates BMI on a supplied height (m) and weight (kg)
+calcBMI <- function(height, weight){
+  weight / height ^ 2
+}
+
+
+calcBMI(height = 1.68, weight = 73)
+```
+
+**NB:** Variables declared only inside a function don't exist outside of the function -- see the _Scope_ section.
+
+We'll now go into some more explanation about the each part of the function composition. 
+
+### Naming
+
+Naming things is really hard. A helpful tip for naming of functions is the name should give the user an idea of what the function *does*, so should contain a verb. Try not to choose a name of a variable or function that already exists, as this will prevent you from being able to call upon the other version by using it's short name that you'll be used to e.g. `filter()`, `mean()` and instead you'll have to access the other versions with their full name which looks like this _package::function_name()_ e.g. `dplyr::filter()` or `base::mean()`. This full name method is also how you can refer exact functions from particular packages if packages have functions of the same name and you have loaded them with `library`.
+
+### Defining arguments
+
+Usually there are two categories of variables for a function. The first category are *data* and is often called `x`. A nice practice is to define your arguments for your input data first. The second category is *behaviour modifiers*, i.e. they control the details of the computation. A common behaviour modifier is what to do with `NA`'s e.g. `na.rm`.
+
+At the time of declaring your arguments, you can also assign defaults. It is a good idea to set the defaults of your behaviour modifying arguments to something sensible. When the function is called by the user if they don't supply a value for the argument the value provided by the default is used.
+
+Here is an example function that could be used if you wanted to duplicate your data:
+```{r}
+# duplicates a vector n times
+duplicate <- function(x, n = 2) {
+ rep(x, n)
+}
+
+my_nums <- c(1,2,3)
+
+# duplicates twice (default)
+duplicate(my_nums)
+
+# duplicates 4 times
+duplicate(my_nums, n = 4)
+```
+
+Something that you may have noticed is the use of the argument name is not required for the function to run. This is because R will fill in the values of the arguments based on position. You can run arguments in any order, so long as the names are provided. Best practice is to use the names when calling functions because it provides better readability of code, especially for the behaviour modifying ones.
+
+Another important thing to note is that we haven't explicitly covered is the use of `=` rather than `<-` when defining arguments. Technically `=` can be used for assignment of variables and you may have already seen this being done:
+
+```{r}
+# using '=' for assignment to a variable
+a = 3
+
+a
+```
+
+However, the key difference between `=` and `<-` comes to the use of defining arguments to a function. `=` will pass the value to the argument without creating a variable in your global environment, `<-` can be used (but strongly recommended against) as it will pass the value to the argument, but also create a variable in the global environment of the same name:
+
+```{r, error = TRUE}
+mean(x = 3)
+# x shouldn't exist so gives an error
+x
+
+# don't do this:
+mean(x <- 3)
+# x now exists
+x
+```
+
+
+**NB:** For more on environments see the __Scope__ section.
+
+### Outputs
+
+Usually the reason for calling a function is to have it provide some output, however, providing an output isn't necessary. The last line of the function is usually what gets returned back to the user but it is possible to be explicit about what is returned by using `return()`, or to exit from the body earlier than the final line -- this situation usually arises when using control statements (explained later in this handout).
+
+Here is an example of using the last line:
+
+```{r}
+double <- function( num ){
+  # the result of the next line will be automatically returned
+  num * 2
+}
+
+double(4)
+```
+
+And using `return()`:
+
+```{r}
+double <- function( num ){
+  # the result of the next line will be automatically returned
+  result <- num * 2
+  return(result)
+}
+
+double(5)
+```
+
+This particular example of using return does create extra steps such as making and assigning to a local variable. The most useful time to use `return()` is in the body of a control flow statement to exit out the function early if a condition is met -- see the **If and Else** section.
+
+
+## Scope
+
+When you specify a variable in R it will start trying to find something with that name within the global environment (displayed in the _Environment_ tab in RStudio). In the case of functions, any variable defined in the function (including through its arguments) stays within the function (a separate local environment specific to the function). If however in the body of the function you refer to a variable that hasn't been defined in the function, R will start looking at the global environment and if it finds a variable of the same name you've created outside of the function, it will use the value that is stored within it. This behaviour can cause issues.
+
+
+Here is an example, where the function needs a value for `n` but it hasn't been supplied as an argument and there is no default value.
+
+```{r, error=TRUE}
+# multiplies the number x by the number n
+multiply_by_n <- function(x){
+  x * n
+}
+
+multiply_by_n(x = 3)
+```
+
+In the function body we referred to `n` which wasn't defined anywhere so we got an error.
+
+
+Let's use the same function again but define `n` outside the function:
+```{r}
+# multiplies the number x by the number n
+multiply_by_n <- function(x){
+  x * n
+}
+
+# define n in the global environment 
+n <- 10
+
+multiply_by_n(x = 3)
+```
+This time R looks for `n` inside the body but doesn't find it and when it looks into the global environment it finds a variable named `n` and so uses that value.
+ 
+ This time we're going to modify the function to take a second argument called `n`, and also have `n` defined in the global environment:
+```{r}
+# multiplies the number x by the number n
+multiply_by_n <- function(x, n){
+  x * n
+}
+
+# define n in the global environment
+n <- 10
+
+multiply_by_n(x = 3, n = 2)
+```
+ 
+The value of `n` that was used was the value supplied as the argument, rather than the version that was defined in the global environment. What this tells us is that functions will use a locally defined variable, but if it can't find one, it will start to look wider.
+
+Another example that demonstrates that functions operate locally (inside the body) is trying to modify variables that exist in the global environment:
+
+```{r}
+# assign the value provided to x to the variable a
+modify_a <- function(x){
+  a <- x
+}
+```
+
+This function looks like it should assign the value of `x` into `a`. To demonstrate that the function is only working on the _function_ version of `a`, we'll define `a` globally, run the function, then see what the value in `a` is afterwards:
+
+```{r}
+# define a global version of a
+a <- 12
+
+# we want a to become 5
+modify_a(x = 5)
+
+
+# output the value of a
+a
+```
+
+The value of `a` has remained `r a` rather than `5` like we had hoped. This shows again that the function is creating variables that only exist inside the function, and isn't modifying the global environment.
+
+# Control Statements
+
+Control statements allow us to use conditions to execute particular pieces of code based on the input. In the context of functions, often if we are creating a behaviour modifying argument, we want certain blocks of code to run depending on the value supplied to the argument. These statements rely on a test (condition/comparison) that results in a boolean (`TRUE`/`FALSE`) to determine what gets run. Boolean logic operators can be used in to modify or combine tests to result in a single `TRUE` or `FALSE`.
+
+
+Boolean Operation | Symbol in R
+---|---
+NOT | !
+OR | \|
+AND | &
+
+These can be combined with the comparison operators you saw in Module 3 (`==`, `!=`, `<`, `<=`, `>`, `>=`) to combine statements together into more complex logic statements. The result of the NOT, AND, and OR can be seen in the below logic table:
+
+Statement | Becomes
+---|---|---|---
+  !TRUE | `r !TRUE`
+ !FALSE | `r !FALSE` 
+TRUE & TRUE | `r TRUE & TRUE`
+TRUE & FALSE | `r TRUE & FALSE`
+FALSE & TRUE | `r FALSE & TRUE`
+FALSE & FALSE | `r FALSE & FALSE`
+TRUE \| TRUE | `r TRUE | TRUE`
+TRUE \| FALSE | `r TRUE | FALSE`
+FALSE \| TRUE | `r FALSE | TRUE`
+FALSE \| FALSE | `r FALSE | FALSE`
+
+
+
+## If and Else
+
+We use the results of logic statements in **if()** to determine if a block of code should run. The format of an `if` statement is:
+
+```{r, eval = FALSE}
+if (condition) {
+  # code here is only run if condition was TRUE
+}
+```
+
+Similar to a function, the `{}`'s denote the body of code belonging to `if`. This code is **only** run when the `if` condition is TRUE, otherwise it gets skipped. If we want another block of code to run when only when the condition is FALSE, we can use `else` at the end of the code block to create this second block.
+
+```{r, eval = FALSE}
+if (condition) {
+  # code here is only run if condition was TRUE
+} else {
+  # code here is only run if condition was FALSE
+}
+
+
+```
+
+The following example shows how you can create a series of conditions, where the conditions are run one at a time from the top and the first condition that evaluates to `TRUE` is the only code block that gets run.
+
+
+```{r}
+bmi <- 21
+if(bmi > 30){
+  print("obese")
+} else if (bmi > 25){
+  print("overweight")
+} else if (bmi > 20){
+  print("healthy")
+} else {
+  print("underweight")
+}
+```
+
+
+## Improving functions
+
+Now that we have looked at control statements and how they operate, we're going to look at how we can use them to make our functions better.
+
+### Failing
+
+One of the saying in programming is "if it's going to fail, it's best to fail early". What this means in practice is that if we know that our function can only handle a specific input or it will cause issues i.e. `1 + 2` is fine but `1 + "a"` causes an error, we want to program **defensively** so that our function "fails" before it encounters the error. R also provides notoriously difficult error messages to understand. As part of our defensive programming we can provide some messages that are user friendly instead.
+
+- data type check functions
+- stop()
+Here is an example of how we can check that the data coming into our function is the correct data type:
+
+
+```{r, error=TRUE}
+# Returns the provided number doubled
+double_number <- function(x) {
+  if( !is.numeric(x) ){
+    stop("x needs to be a number.")
+  }
+  x * 2
+}
+
+
+double_number(4)
+
+double_number("a")
+```
+
+N.B. Check the appendix for more on data types.
+
+Following the principles of fail fast and early, we want to have our checks as some of the very first code in the function body, so that if the wrong input is given we 'fail' out of the function without any further code running. We can do this using the control statement `if` to check the condition. First we're checking if `x` is a `numeric` type, `is.numeric` returns `TRUE` if it is and `FALSE` if it isn't. But we want to enter the `if` body when `x` is not numeric so perform a boolean `NOT` using the `!`.
+
+Once we have determined that `x` isn't numeric we want the function to exit but also provide a message to the user as to why. This is done using `stop()` which causes the function to exit and provides the error message that is provided - ideally something useful for the user.
+
+
+
+
+
+# Conclusion
+
+This document has presented an introduction to creating your own functions and implementing control flow into your code. We covered concepts such as 'failing fast and early', and scoping of variables. If you would like to take your understanding of functions further then some good places to refer to are the free online books [Advanced R](https://adv-r.hadley.nz) and [R packages](https://r-pkgs.org).
+
+
+## What's Next
+
+Fill in the module feedback form [https://tinyurl.com/r4ssp-module-fb](https://tinyurl.com/r4ssp-module-fb).
+
+Next move onto [R for Data Science Chapter 21 - Iteration (https://r4ds.had.co.nz/iteration.html)](https://r4ds.had.co.nz/iteration.html) to learn about how we can start to reduce code duplication, and start to repeat what we do efficiently through iteration or 'loops'. As always, if you run into trouble, let us know.
+
+# Appendix
+
+## Data types
+
+Not all data is created equal, in R this concept is captured by _data types_. For a vector, all values must be of a single data type.
+
+The main data types that you will encounter in R are:
+
+- _Logical_ ( `c(TRUE, FALSE)`)
+- _Numeric_ - also called _Real_ or _Double_ (Numbers that have a floating point (decimal) representation e.g. `c(1, 3.6, 1e3)`)
+- _Character_ - also called _String_ (anything inside matching opening and closing quotes (single or double) e.g. `c("a", "some words", "animal"`))
+
+There are 3 other less common:
+
+- _Integer_ (integers `c(1L, 4L, -3L)`)
+- _Complex_ (Complex numbers e.g. `c(0+3i, 4i, -2-5i)`)
+- _Raw_ (the bytes of a file)
+
+
+Each data type is known in R as an _atomic_ vector. R has built in functions to be able to determine the data type of a vector, `typeof()` is the best one to use, but others such as `str()` and `class()` can be used.
+
+There is also a series of functions that let us do explicit checking for a data type which will return `TRUE` or `FALSE`:
+
+- `is.logical()`
+- `is.numeric()` or `is.double()`
+- `is.character()`
+- `is.integer()`
+- `is.complex()`
+- `is.raw()`
+
+
+
+### Data Type Coercion
+
+In R, when doing operations on multiple vectors, they all need to be the same data type - but how can this work if we have for example a numeric vector and a character vector? _Coercion_ is how R deals with trying to operate on two vectors of different data types. What this means in practice is that R will convert the data type of a vector in a defined manner such that we end up will all of the same type and follows a "lowest common data type"
+ approach. Using the 3 main data types from above, the following is the order in which they will be coerced into the next data type: _logical_ -> _numeric_ -> _character_.
+ 
+This principle applies when you try to create a vector of mixed data types too, R will coerce everything until it is a single data type.
+ 
+
+See if you can predict what data type the result will be (you can check by using `typeof()`: 
+```{r, eval = FALSE}
+# logical and numeric
+c(4, TRUE, 5)
+
+# numeric and character
+c(1, 3, "A")
+
+# logical and character
+c(FALSE, "cat","frog")
+
+# mixed
+c("see", TRUE, 4.8)
+
+# tricky
+c("1.3", "4", TRUE)
+```
+
+We can also explicitly force coercion into a particular data type by using the following:
+
+- `as.logical()`
+- `as.numeric()`
+- `as.character()`
+
+The other data types also have similarly named functions. When going against the normal direction of coercion, it is important to realise that if your data doesn't have a representation in that data type, it will become _NA_ (missing).

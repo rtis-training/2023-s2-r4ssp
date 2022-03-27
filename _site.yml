@@ -15,29 +15,29 @@ navbar:
         - text: "Part 1: Visualising"
           href: 02-visualise.html
         - text: "Part 2: Subsetting"
-          # href: 03-subset.html
+          href: 03-subset.html
         - text: "Part 3: Summarising"
           # href: 04-summarise.html
         - text: "Part 4: Transforming"
           # href: 05-transform.html
         - text: "Part 5: Communicating"
-          #href: 06-communicate.html
+          # href: 06-communicate.html
         - text: "-------------"
         - text: "Programming focus"
         - text: "Functions and Choices"
-          #href: 07-functions.html
+          # href: 07-functions.html
         - text: "Repeating Code"
-          #href: 08-iterate.html
+          # href: 08-iterate.html
         - text: "Workflows"
-          #href: 09-workflows.html
+          # href: 09-workflows.html
     - text: "Zoom Notes"
       menu:
         - text: "01 - Introducing R and RStudio"
           href: zoom_notes_01.html
         - text: "02 - Visualising data"
           href: zoom_notes_02.html
-        # - text: "03 - Subsetting data"
-        #   href: zoom_notes_03.html
+        - text: "03 - Subsetting data"
+          href: zoom_notes_03.html
         # - text: "04 - Summarising data"
         #   href: zoom_notes_04.html
         # - text: "05 - Transforming data"
@@ -50,6 +50,7 @@ navbar:
     #       href: zoom_notes_08.html
     #     - text: "Handout 9"
     #       href: zoom_notes_09.html
+
     - text: "About"
       href: about.html
   type: "inverse"

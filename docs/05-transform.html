@@ -11,7 +11,7 @@
 
 
 
-<title>R for Successful Student Projects</title>
+<title>Transforming</title>
 
 <script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -29,7 +29,12 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 
@@ -55,6 +60,11 @@ if (window.hljs) {
 
 
 
+<style type="text/css">
+#rmd-source-code {
+  display: none;
+}
+</style>
 
 
 <link rel="stylesheet" href="style.css" type="text/css" />
@@ -216,7 +226,73 @@ $(document).ready(function () {
 </style>
 
 <!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
 
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
 
 
 
@@ -226,6 +302,16 @@ $(document).ready(function () {
 
 
 <div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -264,14 +350,26 @@ $(document).ready(function () {
     <li>
       <a href="03-subset.html">Part 2: Subsetting</a>
     </li>
-    <li class="dropdown-header">Part 3: Summarising</li>
-    <li class="dropdown-header">Part 4: Transforming</li>
-    <li class="dropdown-header">Part 5: Communicating</li>
+    <li>
+      <a href="04-summarise.html">Part 3: Summarising</a>
+    </li>
+    <li>
+      <a href="05-transform.html">Part 4: Transforming</a>
+    </li>
+    <li>
+      <a href="06-communicate.html">Part 5: Communicating</a>
+    </li>
     <li class="divider"></li>
     <li class="dropdown-header">Programming focus</li>
-    <li class="dropdown-header">Functions and Choices</li>
-    <li class="dropdown-header">Repeating Code</li>
-    <li class="dropdown-header">Workflows</li>
+    <li>
+      <a href="07-functions.html">Functions and Choices</a>
+    </li>
+    <li>
+      <a href="08-iterate.html">Repeating Code</a>
+    </li>
+    <li>
+      <a href="09-workflows.html">Workflows</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -290,6 +388,24 @@ $(document).ready(function () {
     <li>
       <a href="zoom_notes_03.html">03 - Subsetting data</a>
     </li>
+    <li>
+      <a href="zoom_notes_04.html">04 - Summarising data</a>
+    </li>
+    <li>
+      <a href="zoom_notes_05.html">05 - Transforming data</a>
+    </li>
+    <li>
+      <a href="zoom_notes_06.html">06 - Communicating data</a>
+    </li>
+    <li>
+      <a href="zoom_notes_07.html">07 - Functions and choices</a>
+    </li>
+    <li>
+      <a href="zoom_notes_08.html">08 - Repeating code</a>
+    </li>
+    <li>
+      <a href="zoom_notes_09.html">09 - Workflows</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -305,125 +421,83 @@ $(document).ready(function () {
 
 <div id="header">
 
-
-
-<h1 class="title toc-ignore">R for Successful Student Projects</h1>
-
-</div>
-
-
-<p><strong>This website is currently under active
-development.</strong></p>
-<p>Semester 1 2022 R for Successful Student Projects (R4SSP) will be
-online 10-noon Wednesdays, commencing from 16th March.</p>
-<p>For more information please email <a
-href="mailto:rtis.training@otago.ac.nz"
-class="email">rtis.training@otago.ac.nz</a></p>
-<div id="content" class="section level2">
-<h2>Content</h2>
-<p>This course is designed to provide many avenues to learning R. We
-have provided both Modules that give more in-depth information on topics
-and handouts, which are representative of the content that will be
-covered in the online sessions. Both resources are designed to be
-complementary to each other.</p>
-<p>We have split the content into two common purposes for learning R</p>
-<ul>
-<li>Using R for data analysis</li>
-<li>Programming using R</li>
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+<li role="separator" class="divider"></li>
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
 </ul>
-<p>The main motivation for many people is to perform data analysis, so
-we have structured the order so that people can ‘get stuff done’ and
-then learn about how to improve their efficiency using R.</p>
-</div>
-<div id="syllabus" class="section level2">
-<h2>Syllabus</h2>
-<table>
-<thead>
-<tr class="header">
-<th align="left">Date</th>
-<th align="center">Week</th>
-<th align="left">Module</th>
-<th align="center">Part</th>
-<th align="left">Topic</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">16 March</td>
-<td align="center">1</td>
-<td align="left">Setup</td>
-<td align="center"></td>
-<td align="left">Introduce the tools: R and Rstudio</td>
-</tr>
-<tr class="even">
-<td align="left">23 March</td>
-<td align="center">2</td>
-<td align="left">Data focus</td>
-<td align="center">1</td>
-<td align="left">Visualising Data</td>
-</tr>
-<tr class="odd">
-<td align="left">30 March</td>
-<td align="center">3</td>
-<td align="left">Data focus</td>
-<td align="center">2</td>
-<td align="left">Selecting and Filtering Data</td>
-</tr>
-<tr class="even">
-<td align="left">6 April</td>
-<td align="center">4</td>
-<td align="left">Data focus</td>
-<td align="center">3</td>
-<td align="left">Summarising Data</td>
-</tr>
-<tr class="odd">
-<td align="left">13 April</td>
-<td align="center">5</td>
-<td align="left">Data focus</td>
-<td align="center">4</td>
-<td align="left">Transforming Data</td>
-</tr>
-<tr class="even">
-<td align="left">20 April</td>
-<td align="center">-</td>
-<td align="left">MID-SEMESTER</td>
-<td align="center"></td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td align="left">27 April</td>
-<td align="center">6</td>
-<td align="left">Data focus</td>
-<td align="center">5</td>
-<td align="left">Communicating Data</td>
-</tr>
-<tr class="even">
-<td align="left">4 May</td>
-<td align="center">7</td>
-<td align="left">Programming focus</td>
-<td align="center">1</td>
-<td align="left">Functions and Choices</td>
-</tr>
-<tr class="odd">
-<td align="left">11 May</td>
-<td align="center">8</td>
-<td align="left">Programming focus</td>
-<td align="center">2</td>
-<td align="left">Repeating code</td>
-</tr>
-<tr class="even">
-<td align="left">18 May</td>
-<td align="center">9</td>
-<td align="left">Programming focus</td>
-<td align="center">3</td>
-<td align="left">Workflows and debugging</td>
-</tr>
-</tbody>
-</table>
 </div>
 
 
 
+<h1 class="title toc-ignore">Transforming</h1>
+<h4 class="date">Semester 1, 2022</h4>
+
+</div>
+
+
+<blockquote>
+<h4 id="associated-material">Associated Material</h4>
+<p>Zoom notes: <a href="zoom_notes_05.html">Zoom Notes 05 - Transforming
+Data</a></p>
+<p>Readings:</p>
+<ul>
+<li><a href="https://r4ds.had.co.nz/tibbles.html">R for Data Science
+Chapter 10</a></li>
+<li><a href="https://r4ds.had.co.nz/data-import.html">R for Data Science
+Chapter 11</a></li>
+<li><a href="https://r4ds.had.co.nz/tidy-data.html">R for Data Science
+Chapter 12</a></li>
+<li><a href="https://r4ds.had.co.nz/relational-data.html">R for Data
+Science Chapter 13</a></li>
+<li><a href="https://r4ds.had.co.nz/strings.html">R for Data Science
+Chapter 14</a></li>
+</ul>
+</blockquote>
+<p><br />
+</p>
+<p>The main purpose of module is to cover data/tidying (inside R), how
+to reshape data, and how to combine datasets together using a common
+identifier</p>
+<p>Main topics to cover:</p>
+<p>‘tidying’ data through string manipulations</p>
+<ul>
+<li>read_csv and column defs + tibbles</li>
+<li>unite/separate</li>
+<li>str_sub</li>
+<li>str_split</li>
+<li>trimws</li>
+<li>paste/paste0</li>
+<li>replace_na</li>
+<li>parse_numeric/as.numeric</li>
+<li>drop_na</li>
+<li>(possibly) {janitor} for clean column names</li>
+<li>(possibly) {broom} for turning base R stat output into nice
+rectangles</li>
+</ul>
+<p>pivoting data long/wide -&gt; useful for ggplot</p>
+<ul>
+<li>pivot_wider</li>
+<li>pivot_longer</li>
+</ul>
+<p>combining datasets through joins/binds</p>
+<ul>
+<li>rbind</li>
+<li>cbind</li>
+<li>merge</li>
+<li>full/inner/left/right joins</li>
+<li>bind_rows</li>
+<li>bind_cols</li>
+</ul>
+
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiVHJhbnNmb3JtaW5nIgpkYXRlOiAiU2VtZXN0ZXIgMSwgMjAyMiIKb3V0cHV0OgogIGh0bWxfZG9jdW1lbnQ6CiAgICB0b2M6IHRydWUKICAgIHRvY19mbG9hdDogdHJ1ZQogICAgdG9jX2RlcHRoOiAzCiAgICBjb2RlX2Rvd25sb2FkOiB0cnVlCiAgICBjb2RlX2ZvbGRpbmc6IHNob3cKLS0tCgpgYGB7ciBzZXR1cCwgaW5jbHVkZT1GQUxTRX0KbGlicmFyeShrbml0cikKCmtuaXRyOjpvcHRzX2NodW5rJHNldCgKICBjb21tZW50ID0gIiM+IiwKICBmaWcucGF0aCA9ICJmaWd1cmVzLzA1LyIsICMgdXNlIG9ubHkgZm9yIHNpbmdsZSBSbWQgZmlsZXMKICBjb2xsYXBzZSA9IFRSVUUsCiAgZWNobyA9IFRSVUUKKQpgYGAKCgo+ICMjIyMgQXNzb2NpYXRlZCBNYXRlcmlhbAo+Cj4gWm9vbSBub3RlczogW1pvb20gTm90ZXMgMDUgLSBUcmFuc2Zvcm1pbmcgRGF0YV0oem9vbV9ub3Rlc18wNS5odG1sKQo+Cj4gUmVhZGluZ3M6Cj4KPiAtIFtSIGZvciBEYXRhIFNjaWVuY2UgQ2hhcHRlciAxMF0oaHR0cHM6Ly9yNGRzLmhhZC5jby5uei90aWJibGVzLmh0bWwpCj4gLSBbUiBmb3IgRGF0YSBTY2llbmNlIENoYXB0ZXIgMTFdKGh0dHBzOi8vcjRkcy5oYWQuY28ubnovZGF0YS1pbXBvcnQuaHRtbCkKPiAtIFtSIGZvciBEYXRhIFNjaWVuY2UgQ2hhcHRlciAxMl0oaHR0cHM6Ly9yNGRzLmhhZC5jby5uei90aWR5LWRhdGEuaHRtbCkKPiAtIFtSIGZvciBEYXRhIFNjaWVuY2UgQ2hhcHRlciAxM10oaHR0cHM6Ly9yNGRzLmhhZC5jby5uei9yZWxhdGlvbmFsLWRhdGEuaHRtbCkKPiAtIFtSIGZvciBEYXRhIFNjaWVuY2UgQ2hhcHRlciAxNF0oaHR0cHM6Ly9yNGRzLmhhZC5jby5uei9zdHJpbmdzLmh0bWwpCgpcCgpUaGUgbWFpbiBwdXJwb3NlIG9mIG1vZHVsZSBpcyB0byBjb3ZlciBkYXRhL3RpZHlpbmcgKGluc2lkZSBSKSwgaG93IHRvIHJlc2hhcGUgZGF0YSwgYW5kIGhvdyB0byBjb21iaW5lIGRhdGFzZXRzIHRvZ2V0aGVyIHVzaW5nIGEgY29tbW9uIGlkZW50aWZpZXIKCk1haW4gdG9waWNzIHRvIGNvdmVyOgoKJ3RpZHlpbmcnIGRhdGEgdGhyb3VnaCBzdHJpbmcgbWFuaXB1bGF0aW9ucwoKLSByZWFkX2NzdiBhbmQgY29sdW1uIGRlZnMgKyB0aWJibGVzCi0gdW5pdGUvc2VwYXJhdGUKLSBzdHJfc3ViCi0gc3RyX3NwbGl0Ci0gdHJpbXdzCi0gcGFzdGUvcGFzdGUwCi0gcmVwbGFjZV9uYQotIHBhcnNlX251bWVyaWMvYXMubnVtZXJpYwotIGRyb3BfbmEKLSAocG9zc2libHkpIHtqYW5pdG9yfSBmb3IgY2xlYW4gY29sdW1uIG5hbWVzCi0gKHBvc3NpYmx5KSB7YnJvb219IGZvciB0dXJuaW5nIGJhc2UgUiBzdGF0IG91dHB1dCBpbnRvIG5pY2UgcmVjdGFuZ2xlcwoKcGl2b3RpbmcgZGF0YSBsb25nL3dpZGUgLT4gdXNlZnVsIGZvciBnZ3Bsb3QKCi0gcGl2b3Rfd2lkZXIKLSBwaXZvdF9sb25nZXIKCgpjb21iaW5pbmcgZGF0YXNldHMgdGhyb3VnaCBqb2lucy9iaW5kcwoKLSByYmluZAotIGNiaW5kCi0gbWVyZ2UKLSBmdWxsL2lubmVyL2xlZnQvcmlnaHQgam9pbnMKLSBiaW5kX3Jvd3MKLSBiaW5kX2NvbHMK</div>
+
+
+</div>
+</div>
 
 </div>
 
@@ -455,7 +529,42 @@ $(document).ready(function () {
 </script>
 
 <!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("05-transform.Rmd");
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
 
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

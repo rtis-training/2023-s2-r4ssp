@@ -1,0 +1,122 @@
+---
+title: "Communicate"
+date: "Semester 1, 2022"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 3
+    code_download: true
+    code_folding: show
+---
+
+
+```{r setup, include=FALSE}
+library(knitr)
+
+knitr::opts_chunk$set(
+  comment = "#>",
+  fig.path = "figures/06/", # use only for single Rmd files
+  collapse = TRUE,
+  echo = TRUE
+)
+
+
+```
+
+
+> #### Associated Material
+>
+> Zoom notes: [Zoom Notes 06 - Communicate](zoom_notes_06.html)
+>
+> Readings:
+>
+> [R for Data Science - Chapter 27](https://r4ds.had.co.nz/r-markdown.html)
+> [R for Data Science - Chapter 29](https://r4ds.had.co.nz/r-markdown-formats.html)
+> [Reference: RMarkdown - the definitive guide](https://bookdown.org/yihui/rmarkdown/)
+
+
+
+This module is going to cover: 
+
+- using the {here} package to manage paths for scripts and rmarkdown
+
+- Using the document outline/collapsing code in Rscripts
+- (briefly) converting a R script into a notebook
+
+The main focus will be on covering the usefulness of Rmarkdown in creating descriptive analysis documents
+
+Cover the basics of the 3 components of an Rmarkdown document
+- yaml
+- markdown
+- code chunks
+
+Introduce the basic syntax of Markdown
+- headers
+- bold/italics
+- lists
+- verbatim code
+
+
+Options of a code chunk
+- echo
+- eval
+- include
+- warning
+- message
+- fig
+- results
+- inline code
+
+Embedding images
+- images
+  - knitr::include_graphics
+  - `![]()`
+  
+Embedding plots
+
+
+Making tables
+- markdown
+- knitr::kable
+  - customising tables with the {kableExtra} package
+
+
+
+
+
+
+
+
+
+
+
+The below content is copy/pasted from appendix of module 1
+-----
+
+
+
+## Some more R Markdown
+
+Let's look more closely at how you can use R Markdown to generate well-formatted research reports.
+
+1\. Following the procedure described in Handout 2 - Get Started with R, create an R Markdown file
+
+2\. The new file contains some template text. In the *second shaded block* replace the command `summary(cars)` with some of the code you have just written. Be careful not to delete either of the lines that begin with ```. Those symbols signal to RStudio that the contents is R code, not text. 
+
+For example, I made this replacement:
+
+```{r, fig.align='center', out.width = "50%", fig.cap = "Replace the template code with yours", fig.pos = "H", echo = FALSE}
+include_graphics("images/markdown_replace_code.png")
+```
+
+3\. You might also want to replace some of the text (in the non-shaded areas), to match your new code. 
+
+4\. Knit the document (click the Knit button). Wait while R processes the document. It will generate output to the console, but you can ignore that for now.
+
+5\. Admire the result.
+
+## Exercise - R Markdown
+
+1. Figure out how to generate a Word document with R Markdown (Hint: look at the dropdown list beside the Knit button, by clicking the small triangle).
+2. Some lines in the text areas of the R Markdown template start with ##, and the text is coloured Blue. What does the ## do? What do you think prefacing a line of text with ### would do? Test your theory.

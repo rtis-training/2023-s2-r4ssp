@@ -15,7 +15,7 @@ library(knitr)
 
 knitr::opts_chunk$set(
   comment = "#>",
-  fig.path = "figures/", # use only for single Rmd files
+  fig.path = "figures/03/", # use only for single Rmd files
   collapse = TRUE,
   echo = TRUE
 )
@@ -25,10 +25,13 @@ knitr::opts_chunk$set(
 
 > #### Associated Material
 >
-> Handout: [Handout 03 - Selecting and Filtering Data](handout3.html)
+> Zoom notes: [Zoom Notes 03 - Selecting and Filtering Data](zoom_notes_03.html)
 >
 > Reading:
+>
 > - [R for Data Science - Chapter 5](https://r4ds.had.co.nz/transform.html)
+
+\
 
 ## Introduction
 
@@ -135,7 +138,7 @@ my_pets[my_pets %in% c("frog", "dog", "rabbit")]
 
 #### Missing data
 
-One extremely common subsetting operation is dealing with missing data. Missing data in R is represented by `NA`. `NA` in R is a special data type and the set of compartor operations that we have covered will always return `NA` (even `NA == NA` will return `NA`) so instead there is a special function that is used to tell us when we have missing data so we can handle it appropriately and that function is `is.na` which will return `TRUE` is something is `NA` and `FALSE` in all other instances.
+One extremely common subsetting operation is dealing with missing data. Missing data in R is represented by `NA`. `NA` in R is a special data type and the set of comparator operations that we have covered will always return `NA` (even `NA == NA` will return `NA`) so instead there is a special function that is used to tell us when we have missing data so we can handle it appropriately and that function is `is.na` which will return `TRUE` is something is `NA` and `FALSE` in all other instances.
 
 ```{r}
 NA < 6
@@ -310,6 +313,16 @@ year_month_day_cols_dplyr
 year_month_day_cols_base <- flights[ , c("year", "month", "day")]
 year_month_day_cols_base
 ```
+
+
+<!--
+- using helper functions
+  - starts_with
+  - ends_with
+  - contains
+  - anyof
+-->
+
 
 ### Filtering rows
 
@@ -518,35 +531,26 @@ Traditionally data analysis workflows in R have consisted of either many nested 
 
 ### Pipes
 
-- enable the creation of 'pipelines' or chaining together of functions as opposed to nesting
-- takes the output of the function and uses it as the first argument for the next function
 
-XXXXXXXXXXXXXXXx
+The pipe function from `magrittr` which is part of the Tidyverse, enables the creation of 'pipelines' or chaining together of functions as opposed to nesting. The pipe function (`%>%` shortcut <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>M</kbd> - on a Mac use <kbd>Cmd</kbd> instead of <kbd>Ctrl</kbd>) takes the output of the function and uses it as the first argument for the next function. When you read `%>%` in code you can think of it as the word "then".
 
-XXXXXXXXXXXXXX
-
-XXXXXXXXXXXXXXXX
-
-XXXXXXXXXXXX
-
-NEEDS SOME STUFF
-
-XXXXXXXXXXXXXX
-
-XXXXXXXXXXXXXXx
-
-XXXXXXXXXXXXXx
+For instance, if we call the name of our data set by itself, it will put the results onto the screen, however if we 'pipe' it to another function it gets used as the input for that function instead. 
+```{r}
+flights
 
 
-XXXXXXXXXXXXXXx
+flights %>% head()
+```
 
+This works for functions that expect the first argument to be the data. We can also be explicit about which argument we would like the input from the pipe to occupy. We can use `.` to represent this
 
+```{r}
+flights %>% head(n = 10, x = .)
+```
 
-#####
+\
 
-
-
-Here we'll look at the workflow of calculating the mean airtime of flights leaving JFK or LGA for each month with the resulting mean airtime sorted from longest to shortest flight time. 
+We can use the `%>%` to chain multiple functions together. Here we'll look at the workflow of calculating the mean airtime of flights leaving JFK or LGA for each month with the resulting mean airtime sorted from longest to shortest flight time. 
 
 ```{r}
 # base R with intermediates
@@ -588,6 +592,16 @@ flight_results_dplyr <- flights %>%
 head(flight_results_dplyr)
 ```
 
+One of the nice features of dealing with pipes, is that you can do your subsetting workflow and pipe directly into `ggplot`, although it's usually a good idea to assign your subsetted data and then use that to start your plotting pipeline. If you pipe your data into ggplot RStudio will also let you auto-complete your columns with <kbd>Tab</kbd>.
+
+```{r pipe_plot}
+flights %>% 
+  # subset the data
+  select(month, origin, air_time) %>% 
+  filter(origin == "JFK" | origin == "LGA") %>%
+  # plot the data
+  ggplot(aes(x = origin, y = air_time)) + geom_boxplot()
+```
 
 
 ## Conclusion
@@ -599,6 +613,7 @@ R users are constantly adding new libraries to base R, meaning that you will pro
 Fill in the module feedback form <https://tinyurl.com/r4ssp-module-fb>.
 
 You may recall that way back in the first module of this mini-course we said we were going to analyse data. We haven't really done much of that yet. So far we have been *getting ready* to analyse data. In the next module, we will start really digging into our data with exploratory analysis and descriptive statistics. Because this is not a statistics course *per se* we will only be using common general analyses in the handouts and readings. If, for a project or assignment, you need to do something more esoteric, just let us know -- someone has probably written an R library for it.
+
 
 
 

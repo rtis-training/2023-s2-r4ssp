@@ -11,7 +11,7 @@
 
 
 
-<title>Handout 06 - Communicating Data</title>
+<title>Zoom Notes: Communicating Data</title>
 
 <script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -347,7 +347,9 @@ div.tocify {
     <li>
       <a href="02-visualise.html">Part 1: Visualising</a>
     </li>
-    <li class="dropdown-header">Part 2: Subsetting</li>
+    <li>
+      <a href="03-subset.html">Part 2: Subsetting</a>
+    </li>
     <li class="dropdown-header">Part 3: Summarising</li>
     <li class="dropdown-header">Part 4: Transforming</li>
     <li class="dropdown-header">Part 5: Communicating</li>
@@ -370,6 +372,9 @@ div.tocify {
     </li>
     <li>
       <a href="zoom_notes_02.html">02 - Visualising data</a>
+    </li>
+    <li>
+      <a href="zoom_notes_03.html">03 - Subsetting data</a>
     </li>
   </ul>
 </li>
@@ -398,11 +403,22 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Handout 06 - Communicating Data</h1>
+<h1 class="title toc-ignore">Zoom Notes: Communicating Data</h1>
 
 </div>
 
 
+<blockquote>
+<h4 id="associated-material">Associated Material</h4>
+<p>Module: <a href="06-communicate.html">Module 06 - Communicate</a></p>
+<p>Readings:</p>
+<p><a href="https://r4ds.had.co.nz/r-markdown.html">R for Data Science -
+Chapter 27</a> <a
+href="https://r4ds.had.co.nz/r-markdown-formats.html">R for Data Science
+- Chapter 29</a> <a
+href="https://bookdown.org/yihui/rmarkdown/">Reference: RMarkdown - the
+definitive guide</a></p>
+</blockquote>
 <p>Scripts</p>
 <p>Rmarkdown</p>
 <ul>
@@ -430,7 +446,7 @@ div.tocify {
 <li>{here}</li>
 </ul>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiSGFuZG91dCAwNiAtIENvbW11bmljYXRpbmcgRGF0YSIKb3V0cHV0OgogIGh0bWxfZG9jdW1lbnQ6CiAgICB0b2M6IHRydWUKICAgIHRvY19mbG9hdDogdHJ1ZQogICAgdG9jX2RlcHRoOiAzCiAgICBjb2RlX2Rvd25sb2FkOiB0cnVlCiAgICBjb2RlX2ZvbGRpbmc6IHNob3cKLS0tCgpgYGB7ciBzZXR1cCwgaW5jbHVkZT1GQUxTRX0KbGlicmFyeShrbml0cikKCmtuaXRyOjpvcHRzX2NodW5rJHNldCgKICBjb21tZW50ID0gIiM+IiwKICBmaWcucGF0aCA9ICJmaWd1cmVzLyIsICMgdXNlIG9ubHkgZm9yIHNpbmdsZSBSbWQgZmlsZXMKICBjb2xsYXBzZSA9IFRSVUUsCiAgZWNobyA9IFRSVUUKKQoKCmBgYAoKClNjcmlwdHMKClJtYXJrZG93bgoKLSB5YW1sCi0gbWFya2Rvd24KLSBjb2RlIGNodW5rcwogIC0gZXZhbAogIC0gaW5jbHVkZQogIC0gd2FybmluZwogIC0gbWVzc2FnZQogIC0gZmlnCiAgLSByZXN1bHRzCi0gaW1hZ2VzCiAgLSBpbmNsdWRlX2dyYXBoaWNzCiAgLSBgIVtdKClgCi0gdGFibGVzCiAgLSBrYWJsZQogIC0ge2thYmxlRXh0cmF9CgotIHtoZXJlfQo=</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiWm9vbSBOb3RlczogQ29tbXVuaWNhdGluZyBEYXRhIgpvdXRwdXQ6CiAgaHRtbF9kb2N1bWVudDoKICAgIHRvYzogdHJ1ZQogICAgdG9jX2Zsb2F0OiB0cnVlCiAgICB0b2NfZGVwdGg6IDMKICAgIGNvZGVfZG93bmxvYWQ6IHRydWUKICAgIGNvZGVfZm9sZGluZzogc2hvdwotLS0KCmBgYHtyIHNldHVwLCBpbmNsdWRlPUZBTFNFfQpsaWJyYXJ5KGtuaXRyKQoKa25pdHI6Om9wdHNfY2h1bmskc2V0KAogIGNvbW1lbnQgPSAiIz4iLAogIGZpZy5wYXRoID0gImZpZ3VyZXMvMDYvIiwgIyB1c2Ugb25seSBmb3Igc2luZ2xlIFJtZCBmaWxlcwogIGNvbGxhcHNlID0gVFJVRSwKICBlY2hvID0gVFJVRQopCgoKYGBgCgo+ICMjIyMgQXNzb2NpYXRlZCBNYXRlcmlhbAo+Cj4gTW9kdWxlOiBbTW9kdWxlIDA2IC0gQ29tbXVuaWNhdGVdKDA2LWNvbW11bmljYXRlLmh0bWwpCj4KPiBSZWFkaW5nczoKPgo+IFtSIGZvciBEYXRhIFNjaWVuY2UgLSBDaGFwdGVyIDI3XShodHRwczovL3I0ZHMuaGFkLmNvLm56L3ItbWFya2Rvd24uaHRtbCkKPiBbUiBmb3IgRGF0YSBTY2llbmNlIC0gQ2hhcHRlciAyOV0oaHR0cHM6Ly9yNGRzLmhhZC5jby5uei9yLW1hcmtkb3duLWZvcm1hdHMuaHRtbCkKPiBbUmVmZXJlbmNlOiBSTWFya2Rvd24gLSB0aGUgZGVmaW5pdGl2ZSBndWlkZV0oaHR0cHM6Ly9ib29rZG93bi5vcmcveWlodWkvcm1hcmtkb3duLykKCgpTY3JpcHRzCgpSbWFya2Rvd24KCi0geWFtbAotIG1hcmtkb3duCi0gY29kZSBjaHVua3MKICAtIGV2YWwKICAtIGluY2x1ZGUKICAtIHdhcm5pbmcKICAtIG1lc3NhZ2UKICAtIGZpZwogIC0gcmVzdWx0cwotIGltYWdlcwogIC0gaW5jbHVkZV9ncmFwaGljcwogIC0gYCFbXSgpYAotIHRhYmxlcwogIC0ga2FibGUKICAtIHtrYWJsZUV4dHJhfQoKLSB7aGVyZX0K</div>
 
 
 </div>
