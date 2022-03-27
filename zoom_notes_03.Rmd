@@ -32,99 +32,51 @@ knitr::opts_chunk$set(
 
 ----
 
-planning to cover:
+
+## Subsetting of vectors
+
+- Using `[]` for extracting elements
+- Subsetting by index
+- Subsetting by boolean vector through conditional statements
+- Use of `%in%`
+
+### Missing Data
+
+- Defining missing data with `NA`
+- Testing for missing data with `is.na()`
+- Removal of missing data
+  - `[]` and `is.na()`
+  - functions with an `na.rm` parameter
+  
+## Subsetting in 2 dimentions
+
+- Using `[]` with 2 arguments for [rows, columns]
+- Introducing `select` for columns, and `filter` for rows from `dplyr` package
+  - Choosing and reordering columns with `select`
+  - Use of `between` with `filter`
+
+## Piping data between functions
+
+- Use of the `%>%` "pipe" from the `magrittr` package
+
+## Data manipulations
+
+- Creating new columns
+  - Using `$`
+  - Using `mutate`
+- Summarising data
+  - `summarise` from `dplyr`
+  - using `group_by` to summarise by a categorical variable
+- Sorting data
+  - `arrange`
+  - Use of `desc` to arrange in descending order
+  
+## Workflows
+
+Data subsetting and manipulations combined together with pipes to then go into ggplot.
 
 
-
-### Base R
-
-- `$`
-- `[,]`
-- nrow/ncol
-- class
-
-subsetting using
-
-  - names
-  - index
-  - conditional
-  - %in%
-
-missing data
-
-### dplyr
-
-pipes %>% 
-
-- select
-  - select helpers (possibly)
-
-- filter
-  - between
-
-
-## Modifying
-
-- mutate
-- arrange
-- group_by
-- summarise
-
-
-dplyr %>% ggplot
-----
-
-
-
-## Vector subsetting
-
-In the [first week](handout1.html) we touched on vectors and using the `[]` to extract items out based on an index. We're now going to expand on this idea but for our dataframes.
-
-Often it's fairly laborious to work out exactly which index corresponds to the data you're interested in. Usually we're more interested in data that meets certain _conditions_. Instead of sub-setting by indices, we can do conditional sub-setting.
-
-
-### Conditional subsetting
-
-Lets create an example vector to work use
-```{r}
-nums <- c(1, 2, 3, 4, 5, 6)
-
-nums
-```
-
-Similar to sub-setting by index, we can provide a vector of booleans (`TRUE`/`FALSE`) to `[]` to specify which elements to keep.
-
-```{r}
-nums[c(TRUE, FALSE, TRUE, FALSE, TRUE, FALSE)]
-```
-
-
-
-We can apply mathematical operators and our comparative operators to entire vectors. When using a comparator we get back a vector of equal length of booleans.
-
-```{r}
-nums < 4
-```
-
-We can use this vector to filter our vectors to keep only the values that returned `TRUE`.
-
-```{r}
-nums[nums < 4]
-```
-
-
-## Dataframe subsetting 
-
-Data frame subsetting is extremely similar to vector subsetting, but instead of 1-dimension, we now provide 2 arguments to `[]`, one for the rows, and one for the columns e.g. `my_dataframe[rows, cols]`. If you leave the rows argument blank, R will give you back all rows (`my_dataframe[, cols]`), and similarly leaving the columns argument blank will return all columns (`my_dataframe[rows,]`)
-
-It's important to note, that using `[]` will may not return the data back in a structure you were expecting - you will get a data frame back unless you subset to a single column in which case you will get back a vector.
-
-```{r}
-# example of subsetting using [,]
-```
-
-
-
+## Exercises
 
 
 
