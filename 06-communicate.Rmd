@@ -106,7 +106,7 @@ Let's look more closely at how you can use R Markdown to generate well-formatted
 
 For example, I made this replacement:
 
-```{r, fig.align='center', out.width = "50%", fig.cap = "Replace the template code with yours", fig.pos = "H", echo = FALSE}
+```{r, fig.align='center', out.width = "50%", fig.cap = "Replace the template code with yours", fig.pos = "H", echo = FALSE, eval=FALSE}
 include_graphics("images/markdown_replace_code.png")
 ```
 

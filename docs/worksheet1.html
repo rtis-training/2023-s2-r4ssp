@@ -11,7 +11,7 @@
 
 
 
-<title>Communicate</title>
+<title>Exercises R4SSP Module 1: Get Started with R</title>
 
 <script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -403,80 +403,142 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Communicate</h1>
+<h1 class="title toc-ignore">Exercises R4SSP Module 1: Get Started with
+R</h1>
 <h4 class="date">Semester 1, 2022</h4>
 
 </div>
 
 
-<blockquote>
-<h4 id="associated-material">Associated Material</h4>
-<p>Zoom notes: <a href="zoom_notes_06.html">Zoom Notes 06 -
-Communicate</a></p>
-<p>Readings:</p>
-<p><a href="https://r4ds.had.co.nz/r-markdown.html">R for Data Science -
-Chapter 27</a> <a
-href="https://r4ds.had.co.nz/r-markdown-formats.html">R for Data Science
-- Chapter 29</a> <a
-href="https://bookdown.org/yihui/rmarkdown/">Reference: RMarkdown - the
-definitive guide</a></p>
-</blockquote>
-<p>This module is going to cover:</p>
-<ul>
-<li><p>using the {here} package to manage paths for scripts and
-rmarkdown</p></li>
-<li><p>Using the document outline/collapsing code in Rscripts</p></li>
-<li><p>(briefly) converting a R script into a notebook</p></li>
-</ul>
-<p>The main focus will be on covering the usefulness of Rmarkdown in
-creating descriptive analysis documents</p>
-<p>Cover the basics of the 3 components of an Rmarkdown document - yaml
-- markdown - code chunks</p>
-<p>Introduce the basic syntax of Markdown - headers - bold/italics -
-lists - verbatim code</p>
-<p>Options of a code chunk - echo - eval - include - warning - message -
-fig - results - inline code</p>
-<p>Embedding images - images - knitr::include_graphics -
-<code>![]()</code></p>
-<p>Embedding plots</p>
-<p>Making tables - markdown - knitr::kable - customising tables with the
-{kableExtra} package</p>
-<div id="the-below-content-is-copypasted-from-appendix-of-module-1"
-class="section level2">
-<h2>The below content is copy/pasted from appendix of module 1</h2>
-</div>
-<div id="some-more-r-markdown" class="section level2">
-<h2>Some more R Markdown</h2>
-<p>Let’s look more closely at how you can use R Markdown to generate
-well-formatted research reports.</p>
-<p>1. Following the procedure described in Handout 2 - Get Started with
-R, create an R Markdown file</p>
-<p>2. The new file contains some template text. In the <em>second shaded
-block</em> replace the command <code>summary(cars)</code> with some of
-the code you have just written. Be careful not to delete either of the
-lines that begin with ```. Those symbols signal to RStudio that the
-contents is R code, not text.</p>
-<p>For example, I made this replacement:</p>
-<p>3. You might also want to replace some of the text (in the non-shaded
-areas), to match your new code.</p>
-<p>4. Knit the document (click the Knit button). Wait while R processes
-the document. It will generate output to the console, but you can ignore
-that for now.</p>
-<p>5. Admire the result.</p>
-</div>
-<div id="exercise---r-markdown" class="section level2">
-<h2>Exercise - R Markdown</h2>
+<div id="exercises" class="section level1">
+<h1>Exercises</h1>
+<p>Write R code to solve the following exercises. Save all your code in
+an R script file. Our solutions are at the end of the handout if you
+want to compare.</p>
+<p>If you have any comments, questions or problems, email us, or come to
+the scheduled session on Monday between 10.00 and 12.00 in the Science
+Library Seminar Room.</p>
 <ol style="list-style-type: decimal">
-<li>Figure out how to generate a Word document with R Markdown (Hint:
-look at the dropdown list beside the Knit button, by clicking the small
-triangle).</li>
-<li>Some lines in the text areas of the R Markdown template start with
-##, and the text is coloured Blue. What does the ## do? What do you
-think prefacing a line of text with ### would do? Test your theory.</li>
+<li><p>Your flatmate is doing study exchange in Arkansas (in the United
+States). She messages you that it is -17 degrees Fahrenheit. To convert
+a Fahrenheit temperature reading to Celsius, you subtract 32 from it and
+then multiply that value by 5/9. How cold is your flatmate in Celsius?
+Hint: You can group terms in R equations with round brackets, just as
+you would do in algebra.</p></li>
+<li><p>You have completed three internal assessments in one of your
+science papers. Each assessment was marked out of a maximum score of 20.
+You earned 18.5, 16 and 19 marks on the assessments. Convert your raw
+scores to percentages by creating a vector to hold your earned marks and
+then applying a single vector operation.</p></li>
+<li><p>What is your average percentage mark across all three internal
+assessments?</p></li>
+<li><p>You probably don’t need to display your average mark to more than
+2 decimal places. Use Google or an R textbook to find the function that
+will let you round a value to a given number of decimal places. Use it
+to generate your mean percentage mark to two decimal places.</p></li>
+<li><p>Create a vector of at least six animal names. Write R commands to
+determine the number of characters in the longest animal name. (Read
+that last sentence again to make sure you understand the task
+requirements.) You will need to use the function <code>c()</code> to
+create the vector, and two other functions that we discussed in this
+module.</p></li>
+<li><p>To select a single element from a vector, you write the vector
+name followed by square brackets <strong>[]</strong> (the brackets
+should touch the name). Place the <strong>position</strong> of the
+element of interest inside the square brackets. For example:</p></li>
 </ol>
+<pre class="r"><code>animals &lt;- c(&quot;Armadillo&quot;, &quot;Buffalo&quot;, &quot;Capybara&quot;, &quot;Dingo&quot;, &quot;Eel&quot;, &quot;Flamingo&quot;)
+animals[3]
+#&gt; [1] &quot;Capybara&quot;</code></pre>
+<p>In programming, an element’s position in a vector is called its
+<strong>index</strong>, and the square brackets are the <strong>index
+operator</strong>. To select multiple elements, you first create a
+vector of the indices you want, and then pass <em>that vector</em> into
+the index operator. For example, to select the first and second animals
+in our animal vector:</p>
+<pre class="r"><code>indices &lt;- c(1,2)
+animals[indices]
+#&gt; [1] &quot;Armadillo&quot; &quot;Buffalo&quot;</code></pre>
+<p>Write an R command to display the first, third and last elements of
+the animal vector.</p>
+<div id="optional-challenge-exercise" class="section level3">
+<h3>Optional Challenge Exercise</h3>
+<p>Imagine that your animals vector had many hundreds of elements – so
+many elements that you couldn’t tell, just by looking, how many there
+were. Write R commands to select the first and last elements of a vector
+when you don’t know the index of the last element. Test your solution on
+your animals vector. Hint: R has a function that will tell you how many
+elements are in a vector.</p>
+<p><br />
+</p>
+<p><br />
+</p>
+</div>
+</div>
+<div id="our-solutions" class="section level1">
+<h1>Our Solutions</h1>
+<p>Click Code/Hide to toggle the answers being shown or hidden for each
+exercise.</p>
+<p><br />
+</p>
+<div id="exercise-1" class="section level2">
+<h2>Exercise 1</h2>
+<pre class="r fold-hide"><code>celsius &lt;- (-17 - 32) * (5/9)
+celsius
+#&gt; [1] -27.22222</code></pre>
+<hr />
+</div>
+<div id="exercise-2" class="section level2">
+<h2>Exercise 2</h2>
+<pre class="r fold-hide"><code>marks &lt;- c(18.5, 16, 19)
+percentage_marks &lt;- marks/20
+percentage_marks
+#&gt; [1] 0.925 0.800 0.950</code></pre>
+<hr />
+</div>
+<div id="exercise-3" class="section level2">
+<h2>Exercise 3</h2>
+<pre class="r fold-hide"><code>mean_percentage &lt;- mean(percentage_marks)
+mean_percentage
+#&gt; [1] 0.8916667</code></pre>
+<hr />
+</div>
+<div id="exercise-4" class="section level2">
+<h2>Exercise 4</h2>
+<pre class="r fold-hide"><code>round(mean_percentage, 2)
+#&gt; [1] 0.89</code></pre>
+<hr />
+</div>
+<div id="exercise-5" class="section level2">
+<h2>Exercise 5</h2>
+<pre class="r fold-hide"><code>animals &lt;- c(&quot;Armadillo&quot;, &quot;Buffalo&quot;, &quot;Capybara&quot;, &quot;Dingo&quot;, &quot;Eel&quot;, &quot;Flamingo&quot;)
+
+characters_in_names &lt;- nchar(animals)
+
+max_characters &lt;- max(characters_in_names)
+
+max_characters
+#&gt; [1] 9</code></pre>
+<hr />
+</div>
+<div id="exercise-6" class="section level2">
+<h2>Exercise 6</h2>
+<pre class="r fold-hide"><code>
+indices &lt;- c(1,3,6)
+animals[indices]
+#&gt; [1] &quot;Armadillo&quot; &quot;Capybara&quot;  &quot;Flamingo&quot;</code></pre>
+<hr />
+</div>
+<div id="challenge-exercise" class="section level2">
+<h2>Challenge Exercise</h2>
+<pre class="r fold-hide"><code>number_of_animals &lt;- length(animals)
+first_and_last_indices &lt;- c(1, number_of_animals)
+animals[first_and_last_indices]
+#&gt; [1] &quot;Armadillo&quot; &quot;Flamingo&quot;</code></pre>
+</div>
 </div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiQ29tbXVuaWNhdGUiCmRhdGU6ICJTZW1lc3RlciAxLCAyMDIyIgpvdXRwdXQ6CiAgaHRtbF9kb2N1bWVudDoKICAgIHRvYzogdHJ1ZQogICAgdG9jX2Zsb2F0OiB0cnVlCiAgICB0b2NfZGVwdGg6IDMKICAgIGNvZGVfZG93bmxvYWQ6IHRydWUKICAgIGNvZGVfZm9sZGluZzogc2hvdwotLS0KCgpgYGB7ciBzZXR1cCwgaW5jbHVkZT1GQUxTRX0KbGlicmFyeShrbml0cikKCmtuaXRyOjpvcHRzX2NodW5rJHNldCgKICBjb21tZW50ID0gIiM+IiwKICBmaWcucGF0aCA9ICJmaWd1cmVzLzA2LyIsICMgdXNlIG9ubHkgZm9yIHNpbmdsZSBSbWQgZmlsZXMKICBjb2xsYXBzZSA9IFRSVUUsCiAgZWNobyA9IFRSVUUKKQoKCmBgYAoKCj4gIyMjIyBBc3NvY2lhdGVkIE1hdGVyaWFsCj4KPiBab29tIG5vdGVzOiBbWm9vbSBOb3RlcyAwNiAtIENvbW11bmljYXRlXSh6b29tX25vdGVzXzA2Lmh0bWwpCj4KPiBSZWFkaW5nczoKPgo+IFtSIGZvciBEYXRhIFNjaWVuY2UgLSBDaGFwdGVyIDI3XShodHRwczovL3I0ZHMuaGFkLmNvLm56L3ItbWFya2Rvd24uaHRtbCkKPiBbUiBmb3IgRGF0YSBTY2llbmNlIC0gQ2hhcHRlciAyOV0oaHR0cHM6Ly9yNGRzLmhhZC5jby5uei9yLW1hcmtkb3duLWZvcm1hdHMuaHRtbCkKPiBbUmVmZXJlbmNlOiBSTWFya2Rvd24gLSB0aGUgZGVmaW5pdGl2ZSBndWlkZV0oaHR0cHM6Ly9ib29rZG93bi5vcmcveWlodWkvcm1hcmtkb3duLykKCgoKVGhpcyBtb2R1bGUgaXMgZ29pbmcgdG8gY292ZXI6IAoKLSB1c2luZyB0aGUge2hlcmV9IHBhY2thZ2UgdG8gbWFuYWdlIHBhdGhzIGZvciBzY3JpcHRzIGFuZCBybWFya2Rvd24KCi0gVXNpbmcgdGhlIGRvY3VtZW50IG91dGxpbmUvY29sbGFwc2luZyBjb2RlIGluIFJzY3JpcHRzCi0gKGJyaWVmbHkpIGNvbnZlcnRpbmcgYSBSIHNjcmlwdCBpbnRvIGEgbm90ZWJvb2sKClRoZSBtYWluIGZvY3VzIHdpbGwgYmUgb24gY292ZXJpbmcgdGhlIHVzZWZ1bG5lc3Mgb2YgUm1hcmtkb3duIGluIGNyZWF0aW5nIGRlc2NyaXB0aXZlIGFuYWx5c2lzIGRvY3VtZW50cwoKQ292ZXIgdGhlIGJhc2ljcyBvZiB0aGUgMyBjb21wb25lbnRzIG9mIGFuIFJtYXJrZG93biBkb2N1bWVudAotIHlhbWwKLSBtYXJrZG93bgotIGNvZGUgY2h1bmtzCgpJbnRyb2R1Y2UgdGhlIGJhc2ljIHN5bnRheCBvZiBNYXJrZG93bgotIGhlYWRlcnMKLSBib2xkL2l0YWxpY3MKLSBsaXN0cwotIHZlcmJhdGltIGNvZGUKCgpPcHRpb25zIG9mIGEgY29kZSBjaHVuawotIGVjaG8KLSBldmFsCi0gaW5jbHVkZQotIHdhcm5pbmcKLSBtZXNzYWdlCi0gZmlnCi0gcmVzdWx0cwotIGlubGluZSBjb2RlCgpFbWJlZGRpbmcgaW1hZ2VzCi0gaW1hZ2VzCiAgLSBrbml0cjo6aW5jbHVkZV9ncmFwaGljcwogIC0gYCFbXSgpYAogIApFbWJlZGRpbmcgcGxvdHMKCgpNYWtpbmcgdGFibGVzCi0gbWFya2Rvd24KLSBrbml0cjo6a2FibGUKICAtIGN1c3RvbWlzaW5nIHRhYmxlcyB3aXRoIHRoZSB7a2FibGVFeHRyYX0gcGFja2FnZQoKCgoKCgoKCgoKClRoZSBiZWxvdyBjb250ZW50IGlzIGNvcHkvcGFzdGVkIGZyb20gYXBwZW5kaXggb2YgbW9kdWxlIDEKLS0tLS0KCgoKIyMgU29tZSBtb3JlIFIgTWFya2Rvd24KCkxldCdzIGxvb2sgbW9yZSBjbG9zZWx5IGF0IGhvdyB5b3UgY2FuIHVzZSBSIE1hcmtkb3duIHRvIGdlbmVyYXRlIHdlbGwtZm9ybWF0dGVkIHJlc2VhcmNoIHJlcG9ydHMuCgoxXC4gRm9sbG93aW5nIHRoZSBwcm9jZWR1cmUgZGVzY3JpYmVkIGluIEhhbmRvdXQgMiAtIEdldCBTdGFydGVkIHdpdGggUiwgY3JlYXRlIGFuIFIgTWFya2Rvd24gZmlsZQoKMlwuIFRoZSBuZXcgZmlsZSBjb250YWlucyBzb21lIHRlbXBsYXRlIHRleHQuIEluIHRoZSAqc2Vjb25kIHNoYWRlZCBibG9jayogcmVwbGFjZSB0aGUgY29tbWFuZCBgc3VtbWFyeShjYXJzKWAgd2l0aCBzb21lIG9mIHRoZSBjb2RlIHlvdSBoYXZlIGp1c3Qgd3JpdHRlbi4gQmUgY2FyZWZ1bCBub3QgdG8gZGVsZXRlIGVpdGhlciBvZiB0aGUgbGluZXMgdGhhdCBiZWdpbiB3aXRoIGBgYC4gVGhvc2Ugc3ltYm9scyBzaWduYWwgdG8gUlN0dWRpbyB0aGF0IHRoZSBjb250ZW50cyBpcyBSIGNvZGUsIG5vdCB0ZXh0LiAKCkZvciBleGFtcGxlLCBJIG1hZGUgdGhpcyByZXBsYWNlbWVudDoKCmBgYHtyLCBmaWcuYWxpZ249J2NlbnRlcicsIG91dC53aWR0aCA9ICI1MCUiLCBmaWcuY2FwID0gIlJlcGxhY2UgdGhlIHRlbXBsYXRlIGNvZGUgd2l0aCB5b3VycyIsIGZpZy5wb3MgPSAiSCIsIGVjaG8gPSBGQUxTRSwgZXZhbD1GQUxTRX0KaW5jbHVkZV9ncmFwaGljcygiaW1hZ2VzL21hcmtkb3duX3JlcGxhY2VfY29kZS5wbmciKQpgYGAKCjNcLiBZb3UgbWlnaHQgYWxzbyB3YW50IHRvIHJlcGxhY2Ugc29tZSBvZiB0aGUgdGV4dCAoaW4gdGhlIG5vbi1zaGFkZWQgYXJlYXMpLCB0byBtYXRjaCB5b3VyIG5ldyBjb2RlLiAKCjRcLiBLbml0IHRoZSBkb2N1bWVudCAoY2xpY2sgdGhlIEtuaXQgYnV0dG9uKS4gV2FpdCB3aGlsZSBSIHByb2Nlc3NlcyB0aGUgZG9jdW1lbnQuIEl0IHdpbGwgZ2VuZXJhdGUgb3V0cHV0IHRvIHRoZSBjb25zb2xlLCBidXQgeW91IGNhbiBpZ25vcmUgdGhhdCBmb3Igbm93LgoKNVwuIEFkbWlyZSB0aGUgcmVzdWx0LgoKIyMgRXhlcmNpc2UgLSBSIE1hcmtkb3duCgoxLiBGaWd1cmUgb3V0IGhvdyB0byBnZW5lcmF0ZSBhIFdvcmQgZG9jdW1lbnQgd2l0aCBSIE1hcmtkb3duIChIaW50OiBsb29rIGF0IHRoZSBkcm9wZG93biBsaXN0IGJlc2lkZSB0aGUgS25pdCBidXR0b24sIGJ5IGNsaWNraW5nIHRoZSBzbWFsbCB0cmlhbmdsZSkuCjIuIFNvbWUgbGluZXMgaW4gdGhlIHRleHQgYXJlYXMgb2YgdGhlIFIgTWFya2Rvd24gdGVtcGxhdGUgc3RhcnQgd2l0aCAjIywgYW5kIHRoZSB0ZXh0IGlzIGNvbG91cmVkIEJsdWUuIFdoYXQgZG9lcyB0aGUgIyMgZG8/IFdoYXQgZG8geW91IHRoaW5rIHByZWZhY2luZyBhIGxpbmUgb2YgdGV4dCB3aXRoICMjIyB3b3VsZCBkbz8gVGVzdCB5b3VyIHRoZW9yeS4K</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAnRXhlcmNpc2VzIFI0U1NQIE1vZHVsZSAxOiBHZXQgU3RhcnRlZCB3aXRoIFIgJwpkYXRlOiAiU2VtZXN0ZXIgMSwgMjAyMiIKb3V0cHV0OgogIGh0bWxfZG9jdW1lbnQ6CiAgICB0b2M6IHRydWUKICAgIHRvY19mbG9hdDogdHJ1ZQogICAgdG9jX2RlcHRoOiAzCiAgICBjb2RlX2Rvd25sb2FkOiB0cnVlCiAgICBjb2RlX2ZvbGRpbmc6IHNob3cKLS0tCgpgYGB7ciBzZXR1cCwgaW5jbHVkZT1GQUxTRX0KbGlicmFyeShrbml0cikKCmtuaXRyOjpvcHRzX2NodW5rJHNldCgKICBjb21tZW50ID0gIiM+IiwKICBmaWcucGF0aCA9ICJmaWd1cmVzIiwgIyB1c2Ugb25seSBmb3Igc2luZ2xlIFJtZCBmaWxlcwogIGNvbGxhcHNlID0gVFJVRSwKICBlY2hvID0gVFJVRQopCgoKYGBgCgojIEV4ZXJjaXNlcwpXcml0ZSBSIGNvZGUgdG8gc29sdmUgdGhlIGZvbGxvd2luZyBleGVyY2lzZXMuIFNhdmUgYWxsIHlvdXIgY29kZSBpbiBhbiBSIHNjcmlwdCBmaWxlLiBPdXIgc29sdXRpb25zIGFyZSBhdCB0aGUgZW5kIG9mIHRoZSBoYW5kb3V0IGlmIHlvdSB3YW50IHRvIGNvbXBhcmUuCgpJZiB5b3UgaGF2ZSBhbnkgY29tbWVudHMsIHF1ZXN0aW9ucyBvciBwcm9ibGVtcywgZW1haWwgdXMsIG9yIGNvbWUgdG8gdGhlIHNjaGVkdWxlZCBzZXNzaW9uIG9uIE1vbmRheSBiZXR3ZWVuIDEwLjAwIGFuZCAxMi4wMCBpbiB0aGUgU2NpZW5jZSBMaWJyYXJ5IFNlbWluYXIgUm9vbS4KCjEuIFlvdXIgZmxhdG1hdGUgaXMgZG9pbmcgc3R1ZHkgZXhjaGFuZ2UgaW4gQXJrYW5zYXMgKGluIHRoZSBVbml0ZWQgU3RhdGVzKS4gU2hlIG1lc3NhZ2VzIHlvdSB0aGF0IGl0IGlzIC0xNyBkZWdyZWVzIEZhaHJlbmhlaXQuIFRvIGNvbnZlcnQgYSBGYWhyZW5oZWl0IHRlbXBlcmF0dXJlIHJlYWRpbmcgdG8gQ2Vsc2l1cywgeW91IHN1YnRyYWN0IDMyIGZyb20gaXQgYW5kIHRoZW4gbXVsdGlwbHkgdGhhdCB2YWx1ZSBieSA1LzkuIEhvdyBjb2xkIGlzIHlvdXIgZmxhdG1hdGUgaW4gQ2Vsc2l1cz8gSGludDogWW91IGNhbiBncm91cCB0ZXJtcyBpbiBSIGVxdWF0aW9ucyB3aXRoIHJvdW5kIGJyYWNrZXRzLCBqdXN0IGFzIHlvdSB3b3VsZCBkbyBpbiBhbGdlYnJhLgoKMi4gWW91IGhhdmUgY29tcGxldGVkIHRocmVlIGludGVybmFsIGFzc2Vzc21lbnRzIGluIG9uZSBvZiB5b3VyIHNjaWVuY2UgcGFwZXJzLiBFYWNoIGFzc2Vzc21lbnQgd2FzIG1hcmtlZCBvdXQgb2YgYSBtYXhpbXVtIHNjb3JlIG9mIDIwLiBZb3UgZWFybmVkIDE4LjUsIDE2IGFuZCAxOSBtYXJrcyBvbiB0aGUgYXNzZXNzbWVudHMuIENvbnZlcnQgeW91ciByYXcgc2NvcmVzIHRvIHBlcmNlbnRhZ2VzIGJ5IGNyZWF0aW5nIGEgdmVjdG9yIHRvIGhvbGQgeW91ciBlYXJuZWQgbWFya3MgYW5kIHRoZW4gYXBwbHlpbmcgYSBzaW5nbGUgdmVjdG9yIG9wZXJhdGlvbi4KCjMuIFdoYXQgaXMgeW91ciBhdmVyYWdlIHBlcmNlbnRhZ2UgbWFyayBhY3Jvc3MgYWxsIHRocmVlIGludGVybmFsIGFzc2Vzc21lbnRzPwoKNC4gWW91IHByb2JhYmx5IGRvbid0IG5lZWQgdG8gZGlzcGxheSB5b3VyIGF2ZXJhZ2UgbWFyayB0byBtb3JlIHRoYW4gMiBkZWNpbWFsIHBsYWNlcy4gVXNlIEdvb2dsZSBvciBhbiBSIHRleHRib29rIHRvIGZpbmQgdGhlIGZ1bmN0aW9uIHRoYXQgd2lsbCBsZXQgeW91IHJvdW5kIGEgdmFsdWUgdG8gYSBnaXZlbiBudW1iZXIgb2YgZGVjaW1hbCBwbGFjZXMuIFVzZSBpdCB0byBnZW5lcmF0ZSB5b3VyIG1lYW4gcGVyY2VudGFnZSBtYXJrIHRvIHR3byBkZWNpbWFsIHBsYWNlcy4KCjUuIENyZWF0ZSBhIHZlY3RvciBvZiBhdCBsZWFzdCBzaXggYW5pbWFsIG5hbWVzLiBXcml0ZSBSIGNvbW1hbmRzIHRvIGRldGVybWluZSB0aGUgbnVtYmVyIG9mIGNoYXJhY3RlcnMgaW4gdGhlIGxvbmdlc3QgYW5pbWFsIG5hbWUuIChSZWFkIHRoYXQgbGFzdCBzZW50ZW5jZSBhZ2FpbiB0byBtYWtlIHN1cmUgeW91IHVuZGVyc3RhbmQgdGhlIHRhc2sgcmVxdWlyZW1lbnRzLikgWW91IHdpbGwgbmVlZCB0byB1c2UgdGhlIGZ1bmN0aW9uIGBjKClgIHRvIGNyZWF0ZSB0aGUgdmVjdG9yLCBhbmQgdHdvIG90aGVyIGZ1bmN0aW9ucyB0aGF0IHdlIGRpc2N1c3NlZCBpbiB0aGlzIG1vZHVsZS4gCgo2LiBUbyBzZWxlY3QgYSBzaW5nbGUgZWxlbWVudCBmcm9tIGEgdmVjdG9yLCB5b3Ugd3JpdGUgdGhlIHZlY3RvciBuYW1lIGZvbGxvd2VkIGJ5IHNxdWFyZSBicmFja2V0cyAqKltdKiogKHRoZSBicmFja2V0cyBzaG91bGQgdG91Y2ggdGhlIG5hbWUpLiBQbGFjZSB0aGUgKipwb3NpdGlvbioqIG9mIHRoZSBlbGVtZW50IG9mIGludGVyZXN0IGluc2lkZSB0aGUgc3F1YXJlIGJyYWNrZXRzLiBGb3IgZXhhbXBsZToKICAKYGBge3IgaW5kZXhpbmd9CmFuaW1hbHMgPC0gYygiQXJtYWRpbGxvIiwgIkJ1ZmZhbG8iLCAiQ2FweWJhcmEiLCAiRGluZ28iLCAiRWVsIiwgIkZsYW1pbmdvIikKYW5pbWFsc1szXQpgYGAKCkluIHByb2dyYW1taW5nLCBhbiBlbGVtZW50J3MgcG9zaXRpb24gaW4gYSB2ZWN0b3IgaXMgY2FsbGVkIGl0cyAqKmluZGV4KiosIGFuZCB0aGUgc3F1YXJlIGJyYWNrZXRzIGFyZSB0aGUgKippbmRleCBvcGVyYXRvcioqLiBUbyBzZWxlY3QgbXVsdGlwbGUgZWxlbWVudHMsIHlvdSBmaXJzdCBjcmVhdGUgYSB2ZWN0b3Igb2YgdGhlIGluZGljZXMgeW91IHdhbnQsIGFuZCB0aGVuIHBhc3MgKnRoYXQgdmVjdG9yKiBpbnRvIHRoZSBpbmRleCBvcGVyYXRvci4gRm9yIGV4YW1wbGUsIHRvIHNlbGVjdCB0aGUgZmlyc3QgYW5kIHNlY29uZCBhbmltYWxzIGluIG91ciBhbmltYWwgdmVjdG9yOgoKYGBge3IgbXVsdGlwbGUgaW5kaWNlc30KaW5kaWNlcyA8LSBjKDEsMikKYW5pbWFsc1tpbmRpY2VzXQpgYGAKCldyaXRlIGFuIFIgY29tbWFuZCB0byBkaXNwbGF5IHRoZSBmaXJzdCwgdGhpcmQgYW5kIGxhc3QgZWxlbWVudHMgb2YgdGhlIGFuaW1hbCB2ZWN0b3IuCgoKIyMjIE9wdGlvbmFsIENoYWxsZW5nZSBFeGVyY2lzZQpJbWFnaW5lIHRoYXQgeW91ciBhbmltYWxzIHZlY3RvciBoYWQgbWFueSBodW5kcmVkcyBvZiBlbGVtZW50cyAtLSBzbyBtYW55IGVsZW1lbnRzIHRoYXQgeW91IGNvdWxkbid0IHRlbGwsIGp1c3QgYnkgbG9va2luZywgaG93IG1hbnkgdGhlcmUgd2VyZS4gV3JpdGUgUiBjb21tYW5kcyB0byBzZWxlY3QgdGhlIGZpcnN0IGFuZCBsYXN0IGVsZW1lbnRzIG9mIGEgdmVjdG9yIHdoZW4geW91IGRvbid0IGtub3cgdGhlIGluZGV4IG9mIHRoZSBsYXN0IGVsZW1lbnQuIFRlc3QgeW91ciBzb2x1dGlvbiBvbiB5b3VyIGFuaW1hbHMgdmVjdG9yLiBIaW50OiBSIGhhcyBhIGZ1bmN0aW9uIHRoYXQgd2lsbCB0ZWxsIHlvdSBob3cgbWFueSBlbGVtZW50cyBhcmUgaW4gYSB2ZWN0b3IuCgpcCgpcCgojIE91ciBTb2x1dGlvbnMKCkNsaWNrIENvZGUvSGlkZSB0byB0b2dnbGUgdGhlIGFuc3dlcnMgYmVpbmcgc2hvd24gb3IgaGlkZGVuIGZvciBlYWNoIGV4ZXJjaXNlLgoKXAoKIyMgRXhlcmNpc2UgMQpgYGB7ciBmIHRvIGMsIGNsYXNzLnNvdXJjZSA9ICdmb2xkLWhpZGUnfQpjZWxzaXVzIDwtICgtMTcgLSAzMikgKiAoNS85KQpjZWxzaXVzCmBgYAoKLS0tCgojIyBFeGVyY2lzZSAyCmBgYHtyIG1hcmtzLCBjbGFzcy5zb3VyY2UgPSAnZm9sZC1oaWRlJ30KbWFya3MgPC0gYygxOC41LCAxNiwgMTkpCnBlcmNlbnRhZ2VfbWFya3MgPC0gbWFya3MvMjAKcGVyY2VudGFnZV9tYXJrcwpgYGAKCi0tLQoKIyMgRXhlcmNpc2UgMwpgYGB7ciBtZWFuLCBjbGFzcy5zb3VyY2UgPSAnZm9sZC1oaWRlJ30KbWVhbl9wZXJjZW50YWdlIDwtIG1lYW4ocGVyY2VudGFnZV9tYXJrcykKbWVhbl9wZXJjZW50YWdlCmBgYAoKLS0tCgojIyBFeGVyY2lzZSA0CmBgYHtyIHJvdW5kLCBjbGFzcy5zb3VyY2UgPSAnZm9sZC1oaWRlJ30Kcm91bmQobWVhbl9wZXJjZW50YWdlLCAyKQpgYGAKCi0tLQoKIyMgRXhlcmNpc2UgNQpgYGB7ciBjaGFycywgY2xhc3Muc291cmNlID0gJ2ZvbGQtaGlkZSd9CmFuaW1hbHMgPC0gYygiQXJtYWRpbGxvIiwgIkJ1ZmZhbG8iLCAiQ2FweWJhcmEiLCAiRGluZ28iLCAiRWVsIiwgIkZsYW1pbmdvIikKCmNoYXJhY3RlcnNfaW5fbmFtZXMgPC0gbmNoYXIoYW5pbWFscykKCm1heF9jaGFyYWN0ZXJzIDwtIG1heChjaGFyYWN0ZXJzX2luX25hbWVzKQoKbWF4X2NoYXJhY3RlcnMKYGBgCgotLS0KCiMjIEV4ZXJjaXNlIDYKCmBgYHtyIGZpcnN0IGFuZCBsYXN0IGhhcmQtY29kZWQsIGNsYXNzLnNvdXJjZSA9ICdmb2xkLWhpZGUnfQoKaW5kaWNlcyA8LSBjKDEsMyw2KQphbmltYWxzW2luZGljZXNdCmBgYAoKLS0tCgojIyBDaGFsbGVuZ2UgRXhlcmNpc2UKCmBgYHtyIGxlbmd0aCwgY2xhc3Muc291cmNlID0gJ2ZvbGQtaGlkZSd9Cm51bWJlcl9vZl9hbmltYWxzIDwtIGxlbmd0aChhbmltYWxzKQpmaXJzdF9hbmRfbGFzdF9pbmRpY2VzIDwtIGMoMSwgbnVtYmVyX29mX2FuaW1hbHMpCmFuaW1hbHNbZmlyc3RfYW5kX2xhc3RfaW5kaWNlc10KCmBgYAo=</div>
 
 
 </div>
@@ -514,7 +576,7 @@ $(document).ready(function () {
 <!-- code folding -->
 <script>
 $(document).ready(function () {
-  window.initializeSourceEmbed("06-communicate.Rmd");
+  window.initializeSourceEmbed("worksheet1.Rmd");
   window.initializeCodeFolding("show" === "show");
 });
 </script>
