@@ -531,35 +531,26 @@ Traditionally data analysis workflows in R have consisted of either many nested 
 
 ### Pipes
 
-- enable the creation of 'pipelines' or chaining together of functions as opposed to nesting
-- takes the output of the function and uses it as the first argument for the next function
 
-XXXXXXXXXXXXXXXx
+The pipe function from `magrittr` which is part of the Tidyverse, enables the creation of 'pipelines' or chaining together of functions as opposed to nesting. The pipe function (`%>%` shortcut <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>M</kbd> - on a Mac use <kbd>Cmd</kbd> instead of <kbd>Ctrl</kbd>) takes the output of the function and uses it as the first argument for the next function. When you read `%>%` in code you can think of it as the word "then".
 
-XXXXXXXXXXXXXX
-
-XXXXXXXXXXXXXXXX
-
-XXXXXXXXXXXX
-
-NEEDS SOME STUFF
-
-XXXXXXXXXXXXXX
-
-XXXXXXXXXXXXXXx
-
-XXXXXXXXXXXXXx
+For instance, if we call the name of our data set by itself, it will put the results onto the screen, however if we 'pipe' it to another function it gets used as the input for that function instead. 
+```{r}
+flights
 
 
-XXXXXXXXXXXXXXx
+flights %>% head()
+```
 
+This works for functions that expect the first argument to be the data. We can also be explicit about which argument we would like the input from the pipe to occupy. We can use `.` to represent this
 
+```{r}
+flights %>% head(n = 10, x = .)
+```
 
-#####
+\
 
-
-
-Here we'll look at the workflow of calculating the mean airtime of flights leaving JFK or LGA for each month with the resulting mean airtime sorted from longest to shortest flight time. 
+We can use the `%>%` to chain multiple functions together. Here we'll look at the workflow of calculating the mean airtime of flights leaving JFK or LGA for each month with the resulting mean airtime sorted from longest to shortest flight time. 
 
 ```{r}
 # base R with intermediates
@@ -622,6 +613,7 @@ R users are constantly adding new libraries to base R, meaning that you will pro
 Fill in the module feedback form <https://tinyurl.com/r4ssp-module-fb>.
 
 You may recall that way back in the first module of this mini-course we said we were going to analyse data. We haven't really done much of that yet. So far we have been *getting ready* to analyse data. In the next module, we will start really digging into our data with exploratory analysis and descriptive statistics. Because this is not a statistics course *per se* we will only be using common general analyses in the handouts and readings. If, for a project or assignment, you need to do something more esoteric, just let us know -- someone has probably written an R library for it.
+
 
 
 
