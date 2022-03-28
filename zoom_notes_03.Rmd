@@ -12,10 +12,11 @@ output:
 
 ```{r setup, include=FALSE}
 library(knitr)
+library(tidyverse)
 
 knitr::opts_chunk$set(
   comment = "#>",
-  fig.path = "figures/", # use only for single Rmd files
+  fig.path = "figures/03/", # use only for single Rmd files
   collapse = TRUE,
   echo = TRUE
 )
@@ -78,5 +79,110 @@ Data subsetting and manipulations combined together with pipes to then go into g
 
 ## Exercises
 
+1. Create the following vector and remove the missing values from it
+```{r eval = FALSE}
+missing_vec <- c(5, 32, NA, 94, NA, 1)
+```
 
 
+2. Load the Palmer Penguins dataset as below and remove all the missing values, save to a variable called *penguins_complete*.
+
+```{r, eval=FALSE}
+# if you don't have it installed
+# install.packages('palmerpenguins')
+
+library(tidyverse)
+library(palmerpenguins)
+penguins
+```
+
+
+3. How many penguins in *pengiuns_complete* have a bill_length_mm larger than 38 mm (the `n()` from `dplyr` might prove useful). Does this number change by
+    a. species?
+    b. island?
+
+4. with *penguins_complete*, make a plot comparing body mass (in kg) versus flipper length for only the Chinstrap penguins. Create nice labels.
+  
+5. With the same data as 4), create a new column `long_flippers` that specifies TRUE/FALSE if the flipper length is longer than 200 mm, and use this column to colour your plot so that the long flipper penguins get highlighted
+
+
+### Example solutions
+
+1.
+
+```{r zn03_soln1, class.source = "fold-hide"}
+missing_vec <- c(5, 32, NA, 94, NA, 1)
+
+missing_vec[!is.na(missing_vec)]
+```
+
+-----
+
+2.
+
+```{r zn03_soln2, class.source = "fold-hide"}
+penguins_complete <- penguins %>% 
+  filter(!is.na(bill_length_mm) | 
+           !is.na(bill_depth_mm) | 
+           !is.na(flipper_length_mm) |
+           !is.na(body_mass_g)| 
+           !is.na(sex))
+```
+
+
+-----
+
+3. 
+
+```{r zn03_soln3, class.source = "fold-hide"}
+penguins_complete %>% 
+  filter(bill_length_mm > 38) %>% 
+  summarise(n = n())
+
+# a)
+penguins_complete %>% 
+  filter(bill_length_mm > 38) %>% 
+  group_by(species) %>% 
+  summarise(n = n())
+
+# b)
+penguins_complete %>% 
+  filter(bill_length_mm > 38) %>% 
+  group_by(island) %>% 
+  summarise(n = n())
+```
+
+-----
+
+4.
+
+```{r zn03_soln4, class.source = "fold-hide"}
+penguins_complete %>% 
+  mutate(body_mass_kg = body_mass_g/1000) %>% 
+  filter(species == "Chinstrap") %>% 
+  ggplot(mapping = aes(x = body_mass_kg, y = flipper_length_mm)) +
+  geom_point() +
+  labs(x = "Body Mass (Kg)",
+       y = "Flipper Length (mm)",
+       title = "Body Mass vs Flipper Length",
+       subtitle = "in Chinstrap Penguins")
+```
+
+-----
+
+5. 
+
+```{r zn03_soln5, class.source = "fold-hide"}
+penguins_complete %>% 
+  mutate(body_mass_kg = body_mass_g/1000,
+         long_flippers = flipper_length_mm > 200) %>% 
+  filter(species == "Chinstrap") %>% 
+  ggplot(mapping = aes(x = body_mass_kg, y = flipper_length_mm, colour = long_flippers)) +
+  geom_point() +
+  labs(x = "Body Mass (Kg)",
+       y = "Flipper Length (mm)",
+       title = "Body Mass vs Flipper Length",
+       subtitle = "in Chinstrap Penguins",
+       colour = "Flippers > 200 mm")
+
+```

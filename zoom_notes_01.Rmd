@@ -15,7 +15,7 @@ library(knitr)
 
 knitr::opts_chunk$set(
   comment = "#>",
-  fig.path = "figures/", # use only for single Rmd files
+  fig.path = "figures/01/", # use only for single Rmd files
   collapse = TRUE,
   echo = TRUE
 )
@@ -349,3 +349,106 @@ In the Selecting and Filtering Data module we will cover this more and expand to
 9. Create a vector that has three copies of this updated animals vector.
 
 10. Combine your animal and number vectors together into a new variable called "_coerced_". Run `typeof` on this vector - how does it compare to the types of the original vector?
+
+
+### Example solutions
+
+1.
+
+```{r, zn01_soln1, class.source = "fold-hide"}
+my_numbers <- c(12, 63, 3, 7, 84)
+```
+
+----
+
+2.
+
+```{r, zn02_soln2, class.source = "fold-hide"}
+length(my_numbers)
+```
+
+----
+
+3. 
+
+```{r zn01_soln3, class.source = "fold-hide"}
+div_2 <- my_numbers / 2
+div_2
+```
+
+----
+
+4.
+
+```{r zn01_soln4, class.source = "fold-hide"}
+# minimum
+round(min(div_2), digits = 2)
+# maximum
+round(max(div_2), digits = 2)
+# mean
+round(mean(div_2), digits = 2)
+# standard deviation
+round(sd(div_2), digits = 2)
+```
+
+-----
+
+5.
+
+```{r zn01_soln5, class.source = "fold-hide"}
+animals <- c("lion", "tiger", "snake", "beetle", "turtle")
+animals
+```
+
+---
+
+6.
+
+```{r, zn01_soln6, class.source = "fold-hide"}
+nchar(animals)
+```
+
+----
+
+7.
+
+```{r, zn01_soln7, class.source = "fold-hide"}
+two_animals <- animals[c(1,4)]
+two_animals
+```
+
+-----
+
+8.
+
+```{r zn01_soln8, class.source = "fold-hide"}
+animals <- animals[-3]
+animals
+```
+
+---
+
+9.
+
+```{r, zn01_soln9, class.source = "fold-hide"}
+animals3 <- c(animals, animals, animals)
+animals3
+```
+
+---
+
+10.
+
+```{r zn10_soln10, class.source = "fold-hide"}
+my_numbers
+typeof(my_numbers)
+animals
+typeof(animals)
+
+combined <- c(my_numbers, animals)
+typeof(combined)
+combined
+# the numbers have now been coerced to be a character type so that
+# all elements of the vector are the same data type
+```
+

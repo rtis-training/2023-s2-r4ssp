@@ -488,9 +488,125 @@ then go into ggplot.</p>
 </div>
 <div id="exercises" class="section level2">
 <h2>Exercises</h2>
+<ol style="list-style-type: decimal">
+<li>Create the following vector and remove the missing values from
+it</li>
+</ol>
+<pre class="r"><code>missing_vec &lt;- c(5, 32, NA, 94, NA, 1)</code></pre>
+<ol start="2" style="list-style-type: decimal">
+<li>Load the Palmer Penguins dataset as below and remove all the missing
+values, save to a variable called <em>penguins_complete</em>.</li>
+</ol>
+<pre class="r"><code># if you don&#39;t have it installed
+# install.packages(&#39;palmerpenguins&#39;)
+
+library(tidyverse)
+library(palmerpenguins)
+penguins</code></pre>
+<ol start="3" style="list-style-type: decimal">
+<li><p>How many penguins in <em>pengiuns_complete</em> have a
+bill_length_mm larger than 38 mm (the <code>n()</code> from
+<code>dplyr</code> might prove useful). Does this number change by</p>
+<ol style="list-style-type: lower-alpha">
+<li>species?</li>
+<li>island?</li>
+</ol></li>
+<li><p>with <em>penguins_complete</em>, make a plot comparing body mass
+(in kg) versus flipper length for only the Chinstrap penguins. Create
+nice labels.</p></li>
+<li><p>With the same data as 4), create a new column
+<code>long_flippers</code> that specifies TRUE/FALSE if the flipper
+length is longer than 200 mm, and use this column to colour your plot so
+that the long flipper penguins get highlighted</p></li>
+</ol>
+<div id="example-solutions" class="section level3">
+<h3>Example solutions</h3>
+<ol style="list-style-type: decimal">
+<li></li>
+</ol>
+<pre class="r fold-hide"><code>missing_vec &lt;- c(5, 32, NA, 94, NA, 1)
+
+missing_vec[!is.na(missing_vec)]
+#&gt; [1]  5 32 94  1</code></pre>
+<hr />
+<ol start="2" style="list-style-type: decimal">
+<li></li>
+</ol>
+<pre class="r fold-hide"><code>penguins_complete &lt;- penguins %&gt;% 
+  filter(!is.na(bill_length_mm) | 
+           !is.na(bill_depth_mm) | 
+           !is.na(flipper_length_mm) |
+           !is.na(body_mass_g)| 
+           !is.na(sex))</code></pre>
+<hr />
+<ol start="3" style="list-style-type: decimal">
+<li></li>
+</ol>
+<pre class="r fold-hide"><code>penguins_complete %&gt;% 
+  filter(bill_length_mm &gt; 38) %&gt;% 
+  summarise(n = n())
+#&gt; # A tibble: 1 × 1
+#&gt;       n
+#&gt;   &lt;int&gt;
+#&gt; 1   280
+
+# a)
+penguins_complete %&gt;% 
+  filter(bill_length_mm &gt; 38) %&gt;% 
+  group_by(species) %&gt;% 
+  summarise(n = n())
+#&gt; # A tibble: 3 × 2
+#&gt;   species       n
+#&gt;   &lt;fct&gt;     &lt;int&gt;
+#&gt; 1 Adelie       89
+#&gt; 2 Chinstrap    68
+#&gt; 3 Gentoo      123
+
+# b)
+penguins_complete %&gt;% 
+  filter(bill_length_mm &gt; 38) %&gt;% 
+  group_by(island) %&gt;% 
+  summarise(n = n())
+#&gt; # A tibble: 3 × 2
+#&gt;   island        n
+#&gt;   &lt;fct&gt;     &lt;int&gt;
+#&gt; 1 Biscoe      150
+#&gt; 2 Dream        99
+#&gt; 3 Torgersen    31</code></pre>
+<hr />
+<ol start="4" style="list-style-type: decimal">
+<li></li>
+</ol>
+<pre class="r fold-hide"><code>penguins_complete %&gt;% 
+  mutate(body_mass_kg = body_mass_g/1000) %&gt;% 
+  filter(species == &quot;Chinstrap&quot;) %&gt;% 
+  ggplot(mapping = aes(x = body_mass_kg, y = flipper_length_mm)) +
+  geom_point() +
+  labs(x = &quot;Body Mass (Kg)&quot;,
+       y = &quot;Flipper Length (mm)&quot;,
+       title = &quot;Body Mass vs Flipper Length&quot;,
+       subtitle = &quot;in Chinstrap Penguins&quot;)</code></pre>
+<p><img src="figures/03/zn03_soln4-1.png" width="672" /></p>
+<hr />
+<ol start="5" style="list-style-type: decimal">
+<li></li>
+</ol>
+<pre class="r fold-hide"><code>penguins_complete %&gt;% 
+  mutate(body_mass_kg = body_mass_g/1000,
+         long_flippers = flipper_length_mm &gt; 200) %&gt;% 
+  filter(species == &quot;Chinstrap&quot;) %&gt;% 
+  ggplot(mapping = aes(x = body_mass_kg, y = flipper_length_mm, colour = long_flippers)) +
+  geom_point() +
+  labs(x = &quot;Body Mass (Kg)&quot;,
+       y = &quot;Flipper Length (mm)&quot;,
+       title = &quot;Body Mass vs Flipper Length&quot;,
+       subtitle = &quot;in Chinstrap Penguins&quot;,
+       colour = &quot;Flippers &gt; 200 mm&quot;)</code></pre>
+<p><img src="figures/03/zn03_soln5-1.png" width="672" /></p>
+</div>
 </div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiWm9vbSBOb3RlczogU2VsZWN0aW5nIGFuZCBGaWx0ZXJpbmcgRGF0YSIKZGF0ZTogIlNlbWVzdGVyIDEsIDIwMjIiCm91dHB1dDoKICBodG1sX2RvY3VtZW50OgogICAgdG9jOiB0cnVlCiAgICB0b2NfZmxvYXQ6IHRydWUKICAgIHRvY19kZXB0aDogMwogICAgY29kZV9kb3dubG9hZDogdHJ1ZQogICAgY29kZV9mb2xkaW5nOiBzaG93Ci0tLQoKYGBge3Igc2V0dXAsIGluY2x1ZGU9RkFMU0V9CmxpYnJhcnkoa25pdHIpCgprbml0cjo6b3B0c19jaHVuayRzZXQoCiAgY29tbWVudCA9ICIjPiIsCiAgZmlnLnBhdGggPSAiZmlndXJlcy8iLCAjIHVzZSBvbmx5IGZvciBzaW5nbGUgUm1kIGZpbGVzCiAgY29sbGFwc2UgPSBUUlVFLAogIGVjaG8gPSBUUlVFCikKYGBgCgo+ICMjIyMgQXNzb2NpYXRlZCBNYXRlcmlhbAo+Cj4gTW9kdWxlOiBbTW9kdWxlIDAzIC0gU3Vic2V0dGluZ10oMDMtc3Vic2V0Lmh0bWwpCj4KPiBSZWFkaW5nOgo+Cj4gLSBbUiBmb3IgRGF0YSBTY2llbmNlIC0gQ2hhcHRlciA1XShodHRwczovL3I0ZHMuaGFkLmNvLm56L3RyYW5zZm9ybS5odG1sKQoKCi0tLS0KCgojIyBTdWJzZXR0aW5nIG9mIHZlY3RvcnMKCi0gVXNpbmcgYFtdYCBmb3IgZXh0cmFjdGluZyBlbGVtZW50cwotIFN1YnNldHRpbmcgYnkgaW5kZXgKLSBTdWJzZXR0aW5nIGJ5IGJvb2xlYW4gdmVjdG9yIHRocm91Z2ggY29uZGl0aW9uYWwgc3RhdGVtZW50cwotIFVzZSBvZiBgJWluJWAKCiMjIyBNaXNzaW5nIERhdGEKCi0gRGVmaW5pbmcgbWlzc2luZyBkYXRhIHdpdGggYE5BYAotIFRlc3RpbmcgZm9yIG1pc3NpbmcgZGF0YSB3aXRoIGBpcy5uYSgpYAotIFJlbW92YWwgb2YgbWlzc2luZyBkYXRhCiAgLSBgW11gIGFuZCBgaXMubmEoKWAKICAtIGZ1bmN0aW9ucyB3aXRoIGFuIGBuYS5ybWAgcGFyYW1ldGVyCiAgCiMjIFN1YnNldHRpbmcgaW4gMiBkaW1lbnRpb25zCgotIFVzaW5nIGBbXWAgd2l0aCAyIGFyZ3VtZW50cyBmb3IgW3Jvd3MsIGNvbHVtbnNdCi0gSW50cm9kdWNpbmcgYHNlbGVjdGAgZm9yIGNvbHVtbnMsIGFuZCBgZmlsdGVyYCBmb3Igcm93cyBmcm9tIGBkcGx5cmAgcGFja2FnZQogIC0gQ2hvb3NpbmcgYW5kIHJlb3JkZXJpbmcgY29sdW1ucyB3aXRoIGBzZWxlY3RgCiAgLSBVc2Ugb2YgYGJldHdlZW5gIHdpdGggYGZpbHRlcmAKCiMjIFBpcGluZyBkYXRhIGJldHdlZW4gZnVuY3Rpb25zCgotIFVzZSBvZiB0aGUgYCU+JWAgInBpcGUiIGZyb20gdGhlIGBtYWdyaXR0cmAgcGFja2FnZQoKIyMgRGF0YSBtYW5pcHVsYXRpb25zCgotIENyZWF0aW5nIG5ldyBjb2x1bW5zCiAgLSBVc2luZyBgJGAKICAtIFVzaW5nIGBtdXRhdGVgCi0gU3VtbWFyaXNpbmcgZGF0YQogIC0gYHN1bW1hcmlzZWAgZnJvbSBgZHBseXJgCiAgLSB1c2luZyBgZ3JvdXBfYnlgIHRvIHN1bW1hcmlzZSBieSBhIGNhdGVnb3JpY2FsIHZhcmlhYmxlCi0gU29ydGluZyBkYXRhCiAgLSBgYXJyYW5nZWAKICAtIFVzZSBvZiBgZGVzY2AgdG8gYXJyYW5nZSBpbiBkZXNjZW5kaW5nIG9yZGVyCiAgCiMjIFdvcmtmbG93cwoKRGF0YSBzdWJzZXR0aW5nIGFuZCBtYW5pcHVsYXRpb25zIGNvbWJpbmVkIHRvZ2V0aGVyIHdpdGggcGlwZXMgdG8gdGhlbiBnbyBpbnRvIGdncGxvdC4KCgojIyBFeGVyY2lzZXMKCgoK</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiWm9vbSBOb3RlczogU2VsZWN0aW5nIGFuZCBGaWx0ZXJpbmcgRGF0YSIKZGF0ZTogIlNlbWVzdGVyIDEsIDIwMjIiCm91dHB1dDoKICBodG1sX2RvY3VtZW50OgogICAgdG9jOiB0cnVlCiAgICB0b2NfZmxvYXQ6IHRydWUKICAgIHRvY19kZXB0aDogMwogICAgY29kZV9kb3dubG9hZDogdHJ1ZQogICAgY29kZV9mb2xkaW5nOiBzaG93Ci0tLQoKYGBge3Igc2V0dXAsIGluY2x1ZGU9RkFMU0V9CmxpYnJhcnkoa25pdHIpCmxpYnJhcnkodGlkeXZlcnNlKQoKa25pdHI6Om9wdHNfY2h1bmskc2V0KAogIGNvbW1lbnQgPSAiIz4iLAogIGZpZy5wYXRoID0gImZpZ3VyZXMvMDMvIiwgIyB1c2Ugb25seSBmb3Igc2luZ2xlIFJtZCBmaWxlcwogIGNvbGxhcHNlID0gVFJVRSwKICBlY2hvID0gVFJVRQopCmBgYAoKPiAjIyMjIEFzc29jaWF0ZWQgTWF0ZXJpYWwKPgo+IE1vZHVsZTogW01vZHVsZSAwMyAtIFN1YnNldHRpbmddKDAzLXN1YnNldC5odG1sKQo+Cj4gUmVhZGluZzoKPgo+IC0gW1IgZm9yIERhdGEgU2NpZW5jZSAtIENoYXB0ZXIgNV0oaHR0cHM6Ly9yNGRzLmhhZC5jby5uei90cmFuc2Zvcm0uaHRtbCkKCgotLS0tCgoKIyMgU3Vic2V0dGluZyBvZiB2ZWN0b3JzCgotIFVzaW5nIGBbXWAgZm9yIGV4dHJhY3RpbmcgZWxlbWVudHMKLSBTdWJzZXR0aW5nIGJ5IGluZGV4Ci0gU3Vic2V0dGluZyBieSBib29sZWFuIHZlY3RvciB0aHJvdWdoIGNvbmRpdGlvbmFsIHN0YXRlbWVudHMKLSBVc2Ugb2YgYCVpbiVgCgojIyMgTWlzc2luZyBEYXRhCgotIERlZmluaW5nIG1pc3NpbmcgZGF0YSB3aXRoIGBOQWAKLSBUZXN0aW5nIGZvciBtaXNzaW5nIGRhdGEgd2l0aCBgaXMubmEoKWAKLSBSZW1vdmFsIG9mIG1pc3NpbmcgZGF0YQogIC0gYFtdYCBhbmQgYGlzLm5hKClgCiAgLSBmdW5jdGlvbnMgd2l0aCBhbiBgbmEucm1gIHBhcmFtZXRlcgogIAojIyBTdWJzZXR0aW5nIGluIDIgZGltZW50aW9ucwoKLSBVc2luZyBgW11gIHdpdGggMiBhcmd1bWVudHMgZm9yIFtyb3dzLCBjb2x1bW5zXQotIEludHJvZHVjaW5nIGBzZWxlY3RgIGZvciBjb2x1bW5zLCBhbmQgYGZpbHRlcmAgZm9yIHJvd3MgZnJvbSBgZHBseXJgIHBhY2thZ2UKICAtIENob29zaW5nIGFuZCByZW9yZGVyaW5nIGNvbHVtbnMgd2l0aCBgc2VsZWN0YAogIC0gVXNlIG9mIGBiZXR3ZWVuYCB3aXRoIGBmaWx0ZXJgCgojIyBQaXBpbmcgZGF0YSBiZXR3ZWVuIGZ1bmN0aW9ucwoKLSBVc2Ugb2YgdGhlIGAlPiVgICJwaXBlIiBmcm9tIHRoZSBgbWFncml0dHJgIHBhY2thZ2UKCiMjIERhdGEgbWFuaXB1bGF0aW9ucwoKLSBDcmVhdGluZyBuZXcgY29sdW1ucwogIC0gVXNpbmcgYCRgCiAgLSBVc2luZyBgbXV0YXRlYAotIFN1bW1hcmlzaW5nIGRhdGEKICAtIGBzdW1tYXJpc2VgIGZyb20gYGRwbHlyYAogIC0gdXNpbmcgYGdyb3VwX2J5YCB0byBzdW1tYXJpc2UgYnkgYSBjYXRlZ29yaWNhbCB2YXJpYWJsZQotIFNvcnRpbmcgZGF0YQogIC0gYGFycmFuZ2VgCiAgLSBVc2Ugb2YgYGRlc2NgIHRvIGFycmFuZ2UgaW4gZGVzY2VuZGluZyBvcmRlcgogIAojIyBXb3JrZmxvd3MKCkRhdGEgc3Vic2V0dGluZyBhbmQgbWFuaXB1bGF0aW9ucyBjb21iaW5lZCB0b2dldGhlciB3aXRoIHBpcGVzIHRvIHRoZW4gZ28gaW50byBnZ3Bsb3QuCgoKIyMgRXhlcmNpc2VzCgoxLiBDcmVhdGUgdGhlIGZvbGxvd2luZyB2ZWN0b3IgYW5kIHJlbW92ZSB0aGUgbWlzc2luZyB2YWx1ZXMgZnJvbSBpdApgYGB7ciBldmFsID0gRkFMU0V9Cm1pc3NpbmdfdmVjIDwtIGMoNSwgMzIsIE5BLCA5NCwgTkEsIDEpCmBgYAoKCjIuIExvYWQgdGhlIFBhbG1lciBQZW5ndWlucyBkYXRhc2V0IGFzIGJlbG93IGFuZCByZW1vdmUgYWxsIHRoZSBtaXNzaW5nIHZhbHVlcywgc2F2ZSB0byBhIHZhcmlhYmxlIGNhbGxlZCAqcGVuZ3VpbnNfY29tcGxldGUqLgoKYGBge3IsIGV2YWw9RkFMU0V9CiMgaWYgeW91IGRvbid0IGhhdmUgaXQgaW5zdGFsbGVkCiMgaW5zdGFsbC5wYWNrYWdlcygncGFsbWVycGVuZ3VpbnMnKQoKbGlicmFyeSh0aWR5dmVyc2UpCmxpYnJhcnkocGFsbWVycGVuZ3VpbnMpCnBlbmd1aW5zCmBgYAoKCjMuIEhvdyBtYW55IHBlbmd1aW5zIGluICpwZW5naXVuc19jb21wbGV0ZSogaGF2ZSBhIGJpbGxfbGVuZ3RoX21tIGxhcmdlciB0aGFuIDM4IG1tICh0aGUgYG4oKWAgZnJvbSBgZHBseXJgIG1pZ2h0IHByb3ZlIHVzZWZ1bCkuIERvZXMgdGhpcyBudW1iZXIgY2hhbmdlIGJ5CiAgICBhLiBzcGVjaWVzPwogICAgYi4gaXNsYW5kPwoKNC4gd2l0aCAqcGVuZ3VpbnNfY29tcGxldGUqLCBtYWtlIGEgcGxvdCBjb21wYXJpbmcgYm9keSBtYXNzIChpbiBrZykgdmVyc3VzIGZsaXBwZXIgbGVuZ3RoIGZvciBvbmx5IHRoZSBDaGluc3RyYXAgcGVuZ3VpbnMuIENyZWF0ZSBuaWNlIGxhYmVscy4KICAKNS4gV2l0aCB0aGUgc2FtZSBkYXRhIGFzIDQpLCBjcmVhdGUgYSBuZXcgY29sdW1uIGBsb25nX2ZsaXBwZXJzYCB0aGF0IHNwZWNpZmllcyBUUlVFL0ZBTFNFIGlmIHRoZSBmbGlwcGVyIGxlbmd0aCBpcyBsb25nZXIgdGhhbiAyMDAgbW0sIGFuZCB1c2UgdGhpcyBjb2x1bW4gdG8gY29sb3VyIHlvdXIgcGxvdCBzbyB0aGF0IHRoZSBsb25nIGZsaXBwZXIgcGVuZ3VpbnMgZ2V0IGhpZ2hsaWdodGVkCgoKIyMjIEV4YW1wbGUgc29sdXRpb25zCgoxLgoKYGBge3Igem4wM19zb2xuMSwgY2xhc3Muc291cmNlID0gImZvbGQtaGlkZSJ9Cm1pc3NpbmdfdmVjIDwtIGMoNSwgMzIsIE5BLCA5NCwgTkEsIDEpCgptaXNzaW5nX3ZlY1shaXMubmEobWlzc2luZ192ZWMpXQpgYGAKCi0tLS0tCgoyLgoKYGBge3Igem4wM19zb2xuMiwgY2xhc3Muc291cmNlID0gImZvbGQtaGlkZSJ9CnBlbmd1aW5zX2NvbXBsZXRlIDwtIHBlbmd1aW5zICU+JSAKICBmaWx0ZXIoIWlzLm5hKGJpbGxfbGVuZ3RoX21tKSB8IAogICAgICAgICAgICFpcy5uYShiaWxsX2RlcHRoX21tKSB8IAogICAgICAgICAgICFpcy5uYShmbGlwcGVyX2xlbmd0aF9tbSkgfAogICAgICAgICAgICFpcy5uYShib2R5X21hc3NfZyl8IAogICAgICAgICAgICFpcy5uYShzZXgpKQpgYGAKCgotLS0tLQoKMy4gCgpgYGB7ciB6bjAzX3NvbG4zLCBjbGFzcy5zb3VyY2UgPSAiZm9sZC1oaWRlIn0KcGVuZ3VpbnNfY29tcGxldGUgJT4lIAogIGZpbHRlcihiaWxsX2xlbmd0aF9tbSA+IDM4KSAlPiUgCiAgc3VtbWFyaXNlKG4gPSBuKCkpCgojIGEpCnBlbmd1aW5zX2NvbXBsZXRlICU+JSAKICBmaWx0ZXIoYmlsbF9sZW5ndGhfbW0gPiAzOCkgJT4lIAogIGdyb3VwX2J5KHNwZWNpZXMpICU+JSAKICBzdW1tYXJpc2UobiA9IG4oKSkKCiMgYikKcGVuZ3VpbnNfY29tcGxldGUgJT4lIAogIGZpbHRlcihiaWxsX2xlbmd0aF9tbSA+IDM4KSAlPiUgCiAgZ3JvdXBfYnkoaXNsYW5kKSAlPiUgCiAgc3VtbWFyaXNlKG4gPSBuKCkpCmBgYAoKLS0tLS0KCjQuCgpgYGB7ciB6bjAzX3NvbG40LCBjbGFzcy5zb3VyY2UgPSAiZm9sZC1oaWRlIn0KcGVuZ3VpbnNfY29tcGxldGUgJT4lIAogIG11dGF0ZShib2R5X21hc3Nfa2cgPSBib2R5X21hc3NfZy8xMDAwKSAlPiUgCiAgZmlsdGVyKHNwZWNpZXMgPT0gIkNoaW5zdHJhcCIpICU+JSAKICBnZ3Bsb3QobWFwcGluZyA9IGFlcyh4ID0gYm9keV9tYXNzX2tnLCB5ID0gZmxpcHBlcl9sZW5ndGhfbW0pKSArCiAgZ2VvbV9wb2ludCgpICsKICBsYWJzKHggPSAiQm9keSBNYXNzIChLZykiLAogICAgICAgeSA9ICJGbGlwcGVyIExlbmd0aCAobW0pIiwKICAgICAgIHRpdGxlID0gIkJvZHkgTWFzcyB2cyBGbGlwcGVyIExlbmd0aCIsCiAgICAgICBzdWJ0aXRsZSA9ICJpbiBDaGluc3RyYXAgUGVuZ3VpbnMiKQpgYGAKCi0tLS0tCgo1LiAKCmBgYHtyIHpuMDNfc29sbjUsIGNsYXNzLnNvdXJjZSA9ICJmb2xkLWhpZGUifQpwZW5ndWluc19jb21wbGV0ZSAlPiUgCiAgbXV0YXRlKGJvZHlfbWFzc19rZyA9IGJvZHlfbWFzc19nLzEwMDAsCiAgICAgICAgIGxvbmdfZmxpcHBlcnMgPSBmbGlwcGVyX2xlbmd0aF9tbSA+IDIwMCkgJT4lIAogIGZpbHRlcihzcGVjaWVzID09ICJDaGluc3RyYXAiKSAlPiUgCiAgZ2dwbG90KG1hcHBpbmcgPSBhZXMoeCA9IGJvZHlfbWFzc19rZywgeSA9IGZsaXBwZXJfbGVuZ3RoX21tLCBjb2xvdXIgPSBsb25nX2ZsaXBwZXJzKSkgKwogIGdlb21fcG9pbnQoKSArCiAgbGFicyh4ID0gIkJvZHkgTWFzcyAoS2cpIiwKICAgICAgIHkgPSAiRmxpcHBlciBMZW5ndGggKG1tKSIsCiAgICAgICB0aXRsZSA9ICJCb2R5IE1hc3MgdnMgRmxpcHBlciBMZW5ndGgiLAogICAgICAgc3VidGl0bGUgPSAiaW4gQ2hpbnN0cmFwIFBlbmd1aW5zIiwKICAgICAgIGNvbG91ciA9ICJGbGlwcGVycyA+IDIwMCBtbSIpCgpgYGAK</div>
 
 
 </div>

@@ -91,6 +91,7 @@ some_numbers[c(TRUE, TRUE, FALSE, FALSE)]
 some_numbers[c(FALSE, TRUE)]
 ```
 
+\
 
 ### Subsetting by condition
 
@@ -134,7 +135,7 @@ my_pets %in% c("frog", "dog", "rabbit", "horse")
 my_pets[my_pets %in% c("frog", "dog", "rabbit")]
 ```
 
-
+\
 
 #### Missing data
 
@@ -175,7 +176,9 @@ missing_example[!is.na(missing_example)]
 
 Remember `is.na` will be `TRUE` when there is `NA`, so we can use the `!` (not) operator to invert the logic.
 
+\
 
+\
 
 ## Subsetting in 2-dimensions
 
@@ -270,6 +273,8 @@ Again, not supplying the `subset` argument or `select` argument will keep all ro
 
 Sub-setting isn't usually done performed in isolation. Usually there is a workflow that we're working through as part of our data analysis. We're now going to take look at some functions from the Tidyverse - specifically `dplyr` that are part of that data analysis workflow, and we'll also provide the equivalent base R approach.
 
+\
+
 ### Selecting columns
 
 So far we've covered methods that will let us subset both rows and columns at the same time. 
@@ -324,6 +329,8 @@ year_month_day_cols_base
 -->
 
 
+\
+
 ### Filtering rows
 
 The `dplyr` function `filter` is analogous to the base R function `subset`. The two functions have identical syntax. We can see how some of the `dplyr` filter operations from the previous section would be written using base R. If you wish, run this code in RStudio, and inspect the results of each statement.
@@ -369,6 +376,7 @@ summer_base_03 <- subset(flights, month >=7 & month <= 9)
 
 When you have multiple options for performing a computation, the general goal is to strike a balance between **parsimony** (not too much typing) and **readability** (your code is easy *for other people* to understand). When working on group projects, or in a professional software development context, readability is considered the more critical of the two features.\
 
+\
 
 ## Arranging (sorting)
 
@@ -412,6 +420,8 @@ desc_dep_delay_base
 
 ```
 
+\
+
 ## Creating new columns
 
 In `dplyr` we use function `mutate` to create new columns. In base R, we simply assign the new column directly to the data frame, using \$. Each new column must be created in a separate statement. In the code below, we will compare the two techniques. In both approaches we will begin by making a copy of data frame flights, before we start to modify it. This is common practice so that you always have a clean copy of your original data.
@@ -443,6 +453,8 @@ flights_base$speed <- distance / air_time * 60
 flights_dplyr[1:5, c("gain", "speed")]
 flights_base[1:5, c("gain", "speed")]
 ```
+
+\
 
 ## Grouping and Summarising
 
@@ -523,11 +535,13 @@ mean_month_origin_base <- aggregate(x = flights$arr_delay,
 mean_month_origin_base
 ```
 
+\
 
 ## Workflows and data pipelines
 
 Traditionally data analysis workflows in R have consisted of either many nested operations, or the use of assigning intermediate steps to variables. One of the key differences in approach between the Tidyverse and base R (until very recently with R v4.1+) is the idea of 'pipes' which allow us to 'chain' operations together, with the key benefit being readability of code. When reading code, it can be useful to read the pipe as the word "then".
 
+\
 
 ### Pipes
 
@@ -603,6 +617,9 @@ flights %>%
   ggplot(aes(x = origin, y = air_time)) + geom_boxplot()
 ```
 
+\
+
+\
 
 ## Conclusion
 
