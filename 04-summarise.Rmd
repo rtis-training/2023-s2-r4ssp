@@ -33,7 +33,7 @@ knitr::opts_chunk$set(
 
 \
 
-## Introduction
+# Introduction
 
 We do scientific research to test hypotheses, answer questions, or just learn something about the world. After the often labourious process of data collection, we may have hundreds (or even thousands) of data points, but we haven't actually learned anything. To squeeze the knowledge out of our raw data, we must use statistics.
 
@@ -43,11 +43,15 @@ There are two general types of statistical analyses -- descriptive statistics, w
 
 For this module, we will use two data sets -- the Palmers Penguins data we have seen previously, and a data set containing Chlorophyll A (ChlA) readings from three New Zealand lakes (data provided by the local Regional Councils). ChlA levels are an indicator of phytoplankton biomass, and provide a general measure of lake health -- more ChlA indicates poorer health. The "toxic algal blooms" that occur occasionally in New Zealand lakes are accompanied by a dramatic spike in measured ChlA.
 
-## Loading the data
+# Loading the data
 
 ```{r load the data, warning=FALSE, message=FALSE}
+#===============================================
+# The Penguin Data:
+#===============================================
 
 # Install palmerpenguins once on any computer
+
 # install.packages("palmerspenguins")
 
 # After loading the library, a tibble
@@ -56,6 +60,10 @@ library(palmerpenguins)
 
 # Check the structure
 str(penguins)
+
+#===============================================
+# The Lake Data:
+#===============================================
 
 # Read in the lakes data file, parsing the lake 
 # name column as a factor
@@ -70,8 +78,7 @@ lakes$Month <- as.factor(lakes$Month)
 str(lakes)
 ```
 
-
-## Visualise the data (revision)
+# Visualise the data (revision)
 
 When faced with a new data set, my first step is invariably to start making graphs. These "pictures" of your data provide an easy way to see large-scale patterns that will help guide your further analysis. They also help you to catch any problems in your data (see the skewness exercise in the Zoom Notes for this module) that must be addressed before proceeding to more complex analyses.
 
@@ -79,7 +86,7 @@ An excellent first graph for continuous (i.e. not categorical) data is the **fre
 
 The `penguins` data set contains values for 344 different penguins. We can begin by looking at how the penguins' body weights are distributed. 
 
-### With Base R
+## Histogram with base R
 
 ```{r 04-histograms, warning=FALSE, message=FALSE}
 # The 'breaks' argument controls the number of bars drawn
@@ -88,7 +95,7 @@ hist(penguins$body_mass_g,
      main="Distribution of Penguin Body Mass", xlab = "Body mass (g)", ylab = "Frequency")
 ```
 
-### With ggplot
+## Histogram with ggplot
 
 ```{r ggplot histo, , warning=FALSE, message=FALSE}
 # Load the library before your first call to ggplot
@@ -96,17 +103,20 @@ library(ggplot2)
 
 # The values provided to 'colour' and 'fill' are hexidecimal colour codes. Note the 
 # hash mark prefix. It is required.
-# The 'labs' layer controls graph title and axis labels
 ggplot(data = penguins, mapping = aes(x = body_mass_g)) +
   geom_histogram(colour = "#7133ff", fill="#bbbbff") +
-  labs(title = "Distribution of Penguin Body Mass", x = "Body Mass (g)", y = "Frequency") + theme_bw()
+  labs(title = "Distribution of Penguin Body Mass", 
+       x = "Body Mass (g)", 
+       y = "Frequency") + theme_bw()
 ```
 
-### Illustrating Groups
+## Illustrating Groups
 
 Using ggplot, we can illustrate group effects in histograms by defining a mapping from a grouping (i.e. categorical) variable to the `fill` property of function `geom_histogram`. For example, the code below will make histograms of all the ChlA values in data frame `lakes`, with each lake in a different colour
 
 By default, geom_histogram produces a stacked plot -- that is, the different groups are shown stacked up in a single bar, separated by their colour. To make the plot with side-by-side bars, set geom_histogram's `position` argument to `dodge`. Note that this is not a mapping, it is simply an argument to function geom_histogram. What does this simple graph tell you about the health of these three lakes?
+
+### For continuous data
 
 ```{r 04-lake_hists, warning=FALSE, message=FALSE}
 # Stacked grouped histogram
@@ -119,11 +129,9 @@ ggplot(data = lakes, mapping = aes(x = ChlA)) +
 
 ```
 
-
-## Distribution graphs for categorical data
+### For categorical data
 
 The functions `hist` and `geom_histogram` are appropriate for **continuous** (numerical) data. For **categorical** variables (e.g. Species and Island in the penguin data set) one often uses the more general `geom_bar` function (geom_histogram is a special case of geom_bar). The example code below shows how to generate a bar graph in ggplot, modifying the default ggplot colour palette to something more accessible to viewers with atypical colour vision:
-
 
 ```{r 04-categorical_distribution}
 # "Colour-blind friendly" palette from #https://personal.sron.nl/~pault/
@@ -153,7 +161,7 @@ ggplot(data = penguins, mapping = aes(x = island, fill=species)) +
 Even a simple graph like this helps you to get to know your data. Just by inspection we see that Biscoe island has the largest population, Torgersen has only Adelie penguins, Dream Island has nearly equal numbers of Chinstrap and Gentoo, etc. When first approaching a big data set, always think about starting with some graphs.
 
 
-## Measures of Central Tendency
+# Measures of Central Tendency
 
 Look at the graph you made earlier showing the distributions of ChlA for the three lakes. You might describe the Lake Ellesmere ChlA readings as "mostly between 50 and 100" and the Lake Rotorua readings as "mostly around 10".  Statements like this are attempts to describe a **typical** score from a large data set. They allow us to capture the fact that, for example, *overall*, Lake Ellesmere has higher ChlA readings than Lake Rotorua. It is not the case that *every* Ellesmere reading is higher than *every* Rotorua reading, but **typically** this is the case. 
 
@@ -162,7 +170,7 @@ In statistics, a precise measure of such typicality is called a **Measure of Cen
 Note that the penguins data has some missing some values (cf. Module 03 - Subsetting), The functions for mean and median will not work if the input data have any `NA` (missing) values. The most common solution is to omit those scores from the computation by setting the `na.rm` argument to `TRUE` as shown:
 
 
-### Mean
+## Mean
 
 ```{r mean, warning=FALSE, message=FALSE}
 # We have seen this code before... We pass the column of interest
@@ -170,14 +178,14 @@ Note that the penguins data has some missing some values (cf. Module 03 - Subset
 mean(penguins$body_mass_g, na.rm=TRUE)
 ```
 
-### Median
+## Median
 
 ```{r median, warning=FALSE, message=FALSE}
 # The familiar pattern....
 median(penguins$body_mass_g, na.rm = TRUE)
 ```
 
-### Mode
+## Mode
 
 Base R has no built-in function for mode. After Module 08 you will be able to write your own Mode function. Or you can use one of several available in auxiliary libraries. The DescTools library is a good one.
 
@@ -204,33 +212,38 @@ When you have a very large number of data measures, you may wish to compute MCTs
 summary(penguins)
 ```
 
-### Exercise 3
+### Exercise
 
 The results for column `year` may not be what you expected. Function `summary` has computed an *average value* for `year`. Does this seem like the appropriate analysis? (Answer => No.) Modify `penguins` to make `summary` treat the `year` data correctly, and rerun `summary`.
 
 
-## Measures of Variability
+# Measures of Variability
 
 In the histograms for ChlA from each of three New Zealand lakes, the three groups of scores did not overlap completely, indicating that the typical values -- the central tendencies -- were different for the three lakes. We can confirm this observation by comparing the means. We can use function `aggregate` in base R, or `group_by` and `summarise`, from library dplyr.
 
-```{r lake means}
+### Using `aggregate`
+
+```{r lake means 01}
 # Using aggregate. compute the group means
 aggregate(lakes$ChlA, by = list(Lake = lakes$LakeName), FUN=mean)
+```
 
+### Using `group_by` and `summarise`
 
-# Using group_by and summarise
+```{r lake means 02}
+# Using `group_by` and `summarise`
 library(dplyr)
 
 lakes %>% 
   group_by(LakeName) %>%
   summarise(MeanChlA = mean(ChlA))
-
-
 ```
 
 However, not only do the central points of the three lakes' distributions differ, so do the amounts of "spread". Lake Taupo's distribution is very "skinny"; all its readings are similar. Lake Ellesmere is squashed and spread out; its readings vary a lot. Lake Rotorua is intermediate. To illustrate this more clearly, we can use ggplot to make separate graphs for each lake, using function `facet_grid`. 
 
 Note the `scales` argument to `facet_grid`. This allows each graph to adjust its y-axis to its data domain, which makes the comparison visually easier; this should be mentioned in the discussion of the figure in a manuscript.
+
+## Using `facet_grid`
 
 ```{r facet_graphs, warning=FALSE, message=FALSE}
 ggplot(data = lakes) +
@@ -245,22 +258,23 @@ We can capture variability more precisely with measures of the **range** of the 
 In earlier modules we have seen two techniques for selecting out just the rows from one lake (using [] or using `filter`). To run function `summary` on each lake separately, we could select the subset for each lake in turn, and pass each subset to `summary`. However, we can achieve the same result more parsimoniously by using function `aggregate`. Above we used aggregate with `FUN = mean` to get the mean ChlA for each lake. We can use `FUN = summary` to call function `summary` separately for the records of each lake. 
 
 ```{r aggregate summary}
-
-# Using aggregate
+# Apply function summary by group
 aggregate(lakes$ChlA, by = list(Lake = lakes$LakeName), FUN=summary)
 
 ```
 
 We can also measure the variablity in a data set with the **standard deviation**. The standard deviation is the most commonly used measure of variability, and it plays an important mathematical role in inferential statistics (ask your stats lecturer for details -- it's very interesting). Conceptually, the standard deviation is *almost* equal to the average distance from the mean across all the values in a data set -- it doesn't equal *exactly* that value, because of how it is computed, but it is close, and it can be helpful to think of it with this approximation. Big standard deviation shows that scores are spread far from their mean; small standard deviation shows that scores tend to huddle close to their mean. Compute standard deviation with function `sd`.
 
-```{r sd}
+### Using `aggregate`
 
+```{r sd}
 # Using aggregate. compute the group sds
 aggregate(lakes$ChlA, by = list(Lake = lakes$LakeName), FUN=sd)
+```
 
+### Using `group_by` and `summarise`
 
-# Using group_by and summarise
-
+```{r sd dplyr}
 lakes %>% 
   group_by(LakeName) %>%
   summarise(StdDev = sd(ChlA))
@@ -270,10 +284,9 @@ lakes %>%
 The histograms, the measures of range, and the standard deviations all indicate that Taupo has very stable ChlA measures, Rotorua is a little noisier, and Ellesmere is all over the place. This phytoplankton biomass stability is an important indicator of lake health -- a stable lake is at much lower risk of a toxic algal bloom.
 
 
-## Efficient code for descriptive statistics
+# Efficient code for descriptive statistics
 
 The function `describeBy` in package `psych` will  compute all the descriptive summaries we have seen (and a few more) in one statement. When you are exploring a single data column and a single grouping column (so the output doesn't get too large), this is a very useful function. 
-
 
 ```{r psych}
 # Install once on any computer
@@ -288,11 +301,13 @@ describeBy(lakes$ChlA, lakes$LakeName)
 
 Package `psych` contains many other interesting statistical tools, especially for multivariate data sets commonly found in psychological and ecological research. Ask Google or your lecturer for details.
 
-## Exploring the relationship between two variables
+# Exploring the relationship between two variables
+
 The preceding descriptive statistics all looked at data measures -- ChlA, bill length, body weight, etc. -- individually, summarising their distribution, central tendency and variability. Often, however, we are interested in describing **the relationship between data measures**. For example, we might want to know if heavier penguins also tend to have longer bills. This type of relationship is called a **correlation**. When we have more than one measure for each experimental participant (or each penguin, or each lake) we can explore correlations between pairs of measures graphically with a **scatterplot**. A scatterplot has one measure on each axis, and one point for each participant's pair of scores.
 
 In the code example below we make a scatterplot with ggplot (cf. Module 02), and show how to add a **linear trend line**. Conceptually, this is the line that runs through the center of the scatterplot points, and it helps us to see the direction of the relationship. Mathematically, trend lines are actually very complicated things, and we generate them with the powerful function `lm`,(for **linear model**). You will learn about the many fascinating things you can do with linear modeling if you take advanced statistics papers.
 
+## Scatterplot with linear trend line
 
 ```{r 04-scatterplot, warning=FALSE, message=FALSE}
 # geom_point plots the points of the scatterplot 
@@ -311,6 +326,8 @@ ggplot(data = penguins, mapping = aes(x = body_mass_g, y = bill_length_mm)) +
 The scatterplot gives us a very clear picture: those penguins with higher body weights tend to also have longer bills, and this is reflected in the positive slope of the trendline. Note however that this is not an absolute rule. Is it easy to find pairs of points such that the lighter of two penguins has the longer bill. This is typical of correlational data. 
 
 There are various statistical measures that capture the strength of a correlation (i.e. how close it is to being an absolute rule). For continuous, numerical data (such as bill length and body weight) use the R function `cor` to compute the numerical correlation value. As with means and medians, we must tell `cor` how to cope with missing data (NA scores). Unfortunately the syntax is not consistent across the functions. For function `mean` we set argument `na.rm = TRUE`. For function `cor` we must set argument `use = "complete.obs"`, meaning that we want the function to use only those rows that are complete (i.e. have both values). These idiosyncracies occur from time to time in R; you just have to learn them.
+
+## Correlation coefficient
 
 ```{r cor}
 
@@ -339,6 +356,6 @@ cor(penguins$body_mass_g, penguins$bill_length_mm, use="complete.obs")
 cor(penguins$body_mass_g, penguins$flipper_length_mm, use="complete.obs")
 ```
 
-### Exercise 4
+## Exercise
 
 For one of the scatterplots above, the computed correlation score is 0.60. For the other, it is 0.87. First, predict which is which. Second, write the necessary R code to confirm your prediction.
