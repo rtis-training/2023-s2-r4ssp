@@ -31,4 +31,58 @@ knitr::opts_chunk$set(
 >
 > - [R for Data Science - Chapter 7](https://r4ds.had.co.nz/exploratory-data-analysis.html)
 
-<!-- Patricia to populate -->
+
+### Exercise 5
+
+5.1. Many scientific data sets have histograms that are "bell-shaped". That is, most of the values cluster in the middle, and the frequency drops off symmetrically toward smaller and larger scores. The distribution of penguin body mass is a good example of a data set that is approximately bell-shaped.
+
+Many inferential statistical techniques require data sets to be close to a very specific bell-shape called the **normal curve**. If your data deviate too far from **normal**, the inferential tests will give incorrect results. The most serious such deviation is **skew**, which is when the bell-shape tilts to one side, with a long tail in either the smaller or larger direction. 
+
+The penguin body mass graph is not perfectly symmetrical. It shows a bit of skewness with a longer tail toward the heavier penguins. But many data sets from nature are *extremely* skewed. We can see this in the lakes data. 
+
+Observe Lake Ellesmere in the histogram of the three lake's ChlA readings. Although most of the readings are clustered below 100, there are some much larger values -- one reading is more than 500 -- creating a long "tail" to the right. The ChlA measure in Lake Ellesmere is skewed. 
+
+We can compute an exact numerical value for the skewness of a distribution using function `skewness` from package `e1071`. As in the examples above, we can compute the skewness for each lake using `aggregate` or, if we are using `dplyr`, using `group_by` and `summarise`. Alternatively, we can use `describeBy` as above. It includes skewness among its summary statistics.
+
+With the method of your choice, compute the skewness value for each lake. What does the pattern of results tell you about the health of the three lakes?
+
+```{r skewness, echo = FALSE, include = FALSE, warning=FALSE, message=FALSE}
+
+# Install package once for each machine
+# install.packages("e1071")
+
+# Load library once for each R session
+library(e1071)
+
+# Using base R
+aggregate(lakes$ChlA, by = list(Lake = lakes$LakeName), FUN = skewness)
+
+
+# Using dplyr
+library(dplyr)
+by_lake <- group_by(lakes, LakeName)
+summarise(by_lake, Skewness = skewness(ChlA))
+```
+
+5.2. A perfectly symmetrical distribution will have a skewness of 0. As a distribution tilts further and further from normal, the absolute value of the skewness measure goes up. What consititutes "too much skew" varies between disciplines, and for an assignment you will want to check with your lecturer. However, a common rule of thumb is that any value greater than 1 (or less than -1) has enough skew that you need to think about dealing with it. A value greater than 3 (as found with the Lake Ellesmere data) is *definitely* skewed.
+
+As mentioned earlier, many inferential tests give inaccurate results with skewed data, so in cases like the lakes data, we must "unskew" our values. A common approach is to compute the natural logarithm of each data value (using R function `log`), and analyse those logs (ask your lecturer about alternative approaches). The logarithm computation pulls extreme scores in, reducing the skew, without changing the overall relationships between data values. 
+
+In Module 04 you saw how to add a new computed column to a data frame using either function `mutate` or the `$` operator. Using the technique of your choice, add a column to data frame lakes that holds the natural log of each ChlA reading.
+
+
+```{r 04-logs_solution, echo=FALSE, include=FALSE, warning=FALSE, message=FALSE}
+
+# Add a new column to the data frame that holds the log of the raw ChlA
+# This can also be done with dplyr::mutate
+lakes$log_ChlA <- log(lakes$ChlA)
+
+# Plot the histogram
+
+ggplot(data = lakes) +
+  geom_histogram(aes(x = log_ChlA, color = LakeName, fill=LakeName), position="dodge")
+```
+
+3. Using ggplot, make a histogram of all the log ChlA values in data frame lakes, with each lake in a different colour. This code is *extremely* similar to the code you wrote for the earlier exercise. How would you describe these distributions. Are Lake Ellesmere's log ChlA values skewed? What can you provide as evidence for your answer?
+
+
