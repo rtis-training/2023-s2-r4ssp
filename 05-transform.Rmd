@@ -68,3 +68,32 @@ combining datasets through joins/binds
 - full/inner/left/right joins
 - bind_rows
 - bind_cols
+
+This module is about transforming data, taking what we have and transforming in into something different. In our case, we're going to touch on three aspects - 
+
+1. Cleaning and tidying our data using R
+2. Changing the 'shape' of our data
+3. Combining data together
+
+
+## Cleaning and Tidying Data
+
+Data cleaning and tidying is an integral part of data analysis and usually accounts for a significant proportion of time of the entire data -> report workflow.
+In module 2 we introduced how to work with tabular data. This type of data is rectangular in nature - all rows are the same length, and all columns are the same length. Usually real life data is messy and so we have to clean and tidy it up before it is ready for use.
+
+### Tidy Data
+
+The three principles of tidy tabular data are:
+
+1. Each column is a variable or property that is being measured 
+2. Each row is an observation
+3. A single cell should contain a single piece of information
+
+Ideally these principles are followed from the very start when data collection is occurring
+
+## Shaping Data
+
+
+
+
+## Combining Data
