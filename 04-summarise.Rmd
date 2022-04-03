@@ -360,7 +360,7 @@ by_lake <- group_by(lakes, LakeName)
 summarise(by_lake, Skewness = skewness(ChlA))
 ```
 
-5.2. A perfectly symmetrical distribution will have a skewness of 0. As a distribution tilts further and further from normal, the absolute value of the skewness measure goes up. What consititutes "too much skew" varies between disciplines, and for an assignment you will want to check with your lecturer. However, a common rule of thumb is that any value greater than 1 (or less than -1) has enough skew that you need to think about dealing with it. A value greater than 3 (as found with the Lake Ellesmere data) is *definitely* skewed.
+5.2. A perfectly symmetrical distribution will have a skewness of 0. As a distribution tilts further and further from normal, the absolute value of the skewness measure goes up. What constitutes "too much skew" varies between disciplines, and for an assignment you will want to check with your lecturer. However, a common rule of thumb is that any value greater than 1 (or less than -1) has enough skew that you need to think about dealing with it. A value greater than 3 (as found with the Lake Ellesmere data) is *definitely* skewed.
 
 As mentioned earlier, many inferential tests give inaccurate results with skewed data, so in cases like the lakes data, we must "unskew" our values. A common approach is to compute the natural logarithm of each data value (using R function `log`), and analyse those logs (ask your lecturer about alternative approaches). The logarithm computation pulls extreme scores in, reducing the skew, without changing the overall relationships between data values. 
 
