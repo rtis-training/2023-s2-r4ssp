@@ -202,7 +202,7 @@ Mode(penguins$body_mass_g, na.rm=TRUE)
 
 ```
 
-Note that DescTools::Mode returns the modal (i.e. most common value) with an attached **attribute** called "freq" equal to the number of occurences.
+Note that DescTools::Mode returns the modal (i.e. most common value) with an attached **attribute** called "freq" equal to the number of occurrences.
 
 ## Using function `summary`
 

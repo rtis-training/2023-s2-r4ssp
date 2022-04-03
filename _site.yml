@@ -17,7 +17,7 @@ navbar:
         - text: "Part 2: Subsetting"
           href: 03-subset.html
         - text: "Part 3: Summarising"
-          # href: 04-summarise.html
+          href: 04-summarise.html
         - text: "Part 4: Transforming"
           # href: 05-transform.html
         - text: "Part 5: Communicating"
@@ -38,8 +38,8 @@ navbar:
           href: zoom_notes_02.html
         - text: "03 - Subsetting data"
           href: zoom_notes_03.html
-        # - text: "04 - Summarising data"
-        #   href: zoom_notes_04.html
+        - text: "04 - Summarising data"
+          href: zoom_notes_04.html
         # - text: "05 - Transforming data"
         #   href: zoom_notes_05.html
     #     - text: "Handout 6"
