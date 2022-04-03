@@ -25,7 +25,7 @@ knitr::opts_chunk$set(
 
 > #### Associated Material
 >
-> Module: [Module 04 - Summarising data](04-summarising.html)
+> Module: [Module 04 - Summarising](docs/04-summarise.html)
 >
 > Readings
 >
