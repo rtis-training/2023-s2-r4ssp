@@ -36,8 +36,6 @@ knitr::opts_chunk$set(
 
 \
 
-The main purpose of module is to cover data/tidying (inside R), how to reshape data, and how to combine datasets together using a common identifier
-
 Main topics to cover:
 
 'tidying' data through string manipulations
@@ -54,34 +52,132 @@ Main topics to cover:
 - (possibly) {janitor} for clean column names
 - (possibly) {broom} for turning base R stat output into nice rectangles
 
-pivoting data long/wide -> useful for ggplot
 
-- pivot_wider
-- pivot_longer
+The pre-processing of data as a proportion of a data analysis workflow can be quite substantial, but this step is extremely vital - poor data in = poor results out. The main purpose of this module is transforming our data into something worthy of analysis and will cover data cleaning, tidying and 'reshaping'. This will be followed by how to increase the utility of our data by combining it with other datasets.
+
+Let us first delve into the data cleaning and tidying.
+
+\
+
+## Cleaning/Tidying
+
+The goal of cleaning and tidying our data is to deal with the imperfections that exist with real-world datasets and make them ready for analysis. Because we're focusing on how to do this inside R we're going to assume that you are already starting with 'rectangular' data - all rows are the same length, and all columns are the same length. Sometimes there is a 'pre-R' phase which requires you to make the data rectangular - check out this material from [Data Carpentry](https://datacarpentry.org/spreadsheet-ecology-lesson/) if this is something you first need to do.
+
+If you have humans as part of the data collecting process it's only a matter of time before there is a data entry issue that needs to be 'cleaned' out.
+
+Some common tasks at this stage include:
+
+- ensuring that missing data is coded correctly
+- dealing with typos
+- removing unneeded whitespace
+- converting columns to be the correct data type
+- making nice column names
+
+Unless you are in a fortunate position to inherit 'cleaned' data these jobs will fall on you to ensure that later on they don't cause issues when it comes time to do your statistics.
+
+For this section we're going to make use of the following packages that are part of the Tidyverse: `readr` for reading in and parsing data, `tidyr` which has functions for dealing with missing data, and `stringr` which has functions relating to dealing with character vectors.
+
+All are loaded as part of 
+```{r}
+library(tidyverse)
+```
+
+An extra package is `janitor`, which designed for cleaning.
+
+```{r}
+# install.packages("janitor")
+library(janitor)
+```
 
 
-combining datasets through joins/binds
+> The data for this section is derived from [untidy-portal-data.
+xlsx](https://figshare.com/ndownloader/files/24469424). It is part of the [Portal Project Teaching Database](https://figshare.com/articles/Portal_Project_Teaching_Database/1314459) https://doi.org/10.6084/m9.figshare.1314459.v10 available on FigShare under a CC-0 license.
+> 
+> The original file does not have the data in a rectangular format so we have organised the data so it can be read into R and made it available to download either from XXXXXX or by:
+> 
+> ```{r, eval = FALSE}
+> download.file(url = "XXXXXXX", 
+>       destfile = "data/rodents_untidy.csv")
+> ```
 
-- rbind
-- cbind
-- merge
-- full/inner/left/right joins
-- bind_rows
-- bind_cols
+Until now we've been using the `read.csv` ("read-dot-csv") function that is part of base R, but `readr` has equivalent functions, namely `read_csv` ("read-underscore-csv") which provides some extra features such as a progress bar, displaying the data types of all the columns as part of the reading, and it will create the special version of a data.frame called a `tibble`. For more in-depth details about `tibbles` check out the [R for Data Science - Tibbles](https://r4ds.had.co.nz/tibbles.html) chapter. The main benefit we'll utilise is the way it prints to the screen which includes some formatting and inclusion of the column data types under the column names.
 
-This module is about transforming data, taking what we have and transforming in into something different. In our case, we're going to touch on three aspects - 
+```{r}
+# note the use of the "read-underscore-csv"
+rodents <- read_csv("data/rodents_untidy.csv")
+```
 
-1. Cleaning and tidying our data using R
-2. Changing the 'shape' of our data
-3. Combining data together
+The first thing we can look at as part of the data loading is the column names and what the datatype `read_csv` had a best guess at the type of data the column had.
+
+```{r}
+rodents %>% head()
+```
+
+It can be difficult if you have many columns to see them all, so instead you can see exactly what each column was loaded in as using `spec`.
+
+```{r}
+spec(rodents)
+```
+
+From this list of columns, without knowing much about the data itself, _Weight_ might seen odd that it is a character type, rather than a numeric, so we'll focus in on this column to start with
+
+```{r}
+rodents$Weight
+```
+
+From this we can see that we have come "?" characters, is what has caused the column to be read in as characters instead of numbers (remember that a vector must be all the same data type).
+
+Lets change the "?" to be a `NA`. We'll do this through sub-setting, where we find the elements that are "?" and assign them to now be `NA`.
+
+```{r}
+rodents$Weight[rodents$Weight == "?"] <- NA
+
+rodents$Weight
+```
 
 
-## Cleaning and Tidying Data
+Now that we have removed the characters, lets turn `rodents$Weight` in a numeric datatype
 
-Data cleaning and tidying is an integral part of data analysis and usually accounts for a significant proportion of time of the entire data -> report workflow.
-In module 2 we introduced how to work with tabular data. This type of data is rectangular in nature - all rows are the same length, and all columns are the same length. Usually real life data is messy and so we have to clean and tidy it up before it is ready for use.
+```{r}
+rodents$Weight <- as.numeric(rodents$Weight)
+```
 
-### Tidy Data
+
+
+#### Exercise 1
+
+Change the `-999` entries of rodents$Weight to be `NA`
+
+```{r, class.source = "fold-hide"}
+rodents$Weight[rodents$Weight == -999] <- NA
+
+rodents$Weight
+```
+
+\
+
+### Cleaning names
+
+You many have noticed that `read_csv` has kept the column names as they were in the file, and they actually violate the rules we have for variables in R - namely they contain a space - which can make dealing with them problematic.
+
+```{r}
+names(rodents)
+```
+
+We're now going to clean the names up, and this is where the `janitor` package is extremely helpful. Because we're only going to use a single function from the package we can call is directly using the `<package>::<function>` notation, rather than using `library`.
+
+
+```{r}
+rodents <- rodents %>% janitor::clean_names()
+
+names(rodents)
+```
+
+> `janitor` has many options for how it cleans the names with the default being 'snake', but many others can be selected and supplied as the `case` parameter e.g. clean_names(case = 'lower_camel') for camel case starting with a lower case letter.
+
+\
+
+### Tidying
 
 The three principles of tidy tabular data are:
 
@@ -91,9 +187,81 @@ The three principles of tidy tabular data are:
 
 Ideally these principles are followed from the very start when data collection is occurring
 
+In our rodents dataset, the *plot_location* column violates rule number 3, it contains more than a single piece of information.
+
+We can use the `separate` function from `tidyr` to split this column into 2 columns using the '_' as our field delimiter.
+
+```{r}
+rodents <- rodents %>% separate(plot_location, into = c("plot", "location"), sep = '_')
+```
+
+Notice how the final 7 rows didn't have a location, and so were automatically filled with `NA`s. There is still more that could be done to clean and tidy this particular dataset but we'll leave it for now.
+
+\
+
+\
+
+
 ## Shaping Data
 
+When we're thinking about the 'shape' of the data, we're thinking about in which direction are we adding observations - are we adding them as new columns onto the side making the data **wider**, or are we adding them as rows onto the bottom making the data **longer**?
 
+In our framework for making tidy data we created a system that made **long** data, in that each row was an observation. Sometimes however we need to reshape this data into a **wide** format.
+
+```{r}
+# install.packages(nycflights13)
+library(nycflights13)
+
+glimpse(flights)
+```
+
+For our example we want to create a table that will let us see distances between an origin and a destination within 500 miles of each other.
+
+First lets select those three columns we need and filter so that the distance is within 500 miles.
+```{r}
+flights_long <- flights %>% select(origin, dest, distance) %>% 
+  filter(distance <= 500)
+```
+
+Next we want remove duplicate rows, this can be done using `distinct()`
+```{r}
+flights_long <- flights_long %>%  distinct()
+```
+
+You can see that our data has `ncol(flights_long)` columns, and `nrow(flights_long)` rows.
+
+```{r}
+dim(flights_long)
+```
+We now want to make each of our destinations its own column and fill in the corresponding air time as the value. To do this, we can use `pivot_wider`. The main arguments are `names_from` which is the column you want take the new column names from, and `values_from` which is the column that will be used to fill in the new column values.
+
+```{r}
+flights_long %>% pivot_wider(origin, names_from = "dest", values_from = "distance")
+```
 
 
 ## Combining Data
+
+
+### Binds
+
+- rbind/bind_rows
+- cbind/bind_cols
+  - caution on making sure the rows are in the same order
+  
+  
+### Joins
+
+As part of the `nycflights13` package we also have some other dataframes available, `airports`, `planes`, and `airlines`. We can use these datasets to add on extra information to our tables 
+
+```{r}
+glimpse(airports)
+
+glimpse(planes)
+
+glimpse(airlines)
+```
+
+Now we have this extra information, we want to use it to find out which airports had flights that use planes with a speed > 400 mph, and what were the names of the airlines that flew them.
+
+In order to answer this question, we first need to cover how to combine different data together using **joins** or **merges**. In order for us to join two dataframes together, we need to have a way of linking the information between the two tables, we need an common-identifier or **key** that is shared between them.
