@@ -350,8 +350,12 @@ div.tocify {
     <li>
       <a href="03-subset.html">Part 2: Subsetting</a>
     </li>
-    <li class="dropdown-header">Part 3: Summarising</li>
-    <li class="dropdown-header">Part 4: Transforming</li>
+    <li>
+      <a href="04-summarise.html">Part 3: Summarising</a>
+    </li>
+    <li>
+      <a href="05-transform.html">Part 4: Transforming</a>
+    </li>
     <li class="dropdown-header">Part 5: Communicating</li>
     <li class="divider"></li>
     <li class="dropdown-header">Programming focus</li>
@@ -375,6 +379,12 @@ div.tocify {
     </li>
     <li>
       <a href="zoom_notes_03.html">03 - Subsetting data</a>
+    </li>
+    <li>
+      <a href="zoom_notes_04.html">04 - Summarising data</a>
+    </li>
+    <li>
+      <a href="zoom_notes_05.html">05 - Transforming data</a>
     </li>
   </ul>
 </li>
@@ -427,38 +437,56 @@ Science Chapter 13</a></li>
 Chapter 14</a></li>
 </ul>
 </blockquote>
-<p>Main topics to cover:</p>
-<p>‘tidying’ data through string manipulations</p>
-<ul>
-<li>read_csv and column defs + tibbles</li>
-<li>unite</li>
-<li>separate</li>
-<li>str_sub</li>
-<li>str_split</li>
-<li>trimws</li>
-<li>paste/paste0</li>
-<li>replace_na</li>
-<li>parse_numeric/as.numeric</li>
-<li>drop_na</li>
-<li>{janitor} for clean column names</li>
-<li>{broom} for turning base R stat output into nice rectangles</li>
-</ul>
-<p>pivoting data long/wide -&gt; useful for ggplot</p>
-<ul>
-<li>pivot_wider</li>
-<li>pivot_longer</li>
-</ul>
-<p>combining datasets through joins/binds</p>
-<ul>
-<li>rbind</li>
-<li>cbind</li>
-<li>merge</li>
-<li>full/inner/left/right joins</li>
-<li>bind_rows</li>
-<li>bind_cols</li>
-</ul>
+<div id="cleaning" class="section level2">
+<h2>Cleaning</h2>
+<div id="cleaning-data-values" class="section level3">
+<h3>Cleaning data values</h3>
+</div>
+<div id="cleaning-dataframe-column-names" class="section level3">
+<h3>Cleaning dataframe column names</h3>
+</div>
+<div id="tidying" class="section level3">
+<h3>Tidying</h3>
+</div>
+</div>
+<div id="reshaping" class="section level2">
+<h2>Reshaping</h2>
+<div id="wide-to-long" class="section level3">
+<h3>Wide to long</h3>
+</div>
+<div id="long-to-wide" class="section level3">
+<h3>Long to wide</h3>
+</div>
+</div>
+<div id="combining-data" class="section level2">
+<h2>Combining Data</h2>
+<div id="binding" class="section level3">
+<h3>Binding</h3>
+<div id="row-binds" class="section level4">
+<h4>Row binds</h4>
+</div>
+<div id="column-binds" class="section level4">
+<h4>Column binds</h4>
+</div>
+</div>
+<div id="joining" class="section level3">
+<h3>Joining</h3>
+<div id="inner-join" class="section level4">
+<h4>Inner join</h4>
+</div>
+<div id="leftright-joins" class="section level4">
+<h4>Left/Right joins</h4>
+</div>
+<div id="full-joins" class="section level4">
+<h4>Full joins</h4>
+</div>
+</div>
+</div>
+<div id="excercises" class="section level2">
+<h2>Excercises</h2>
+</div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiWm9vbSBOb3RlczogVHJhbnNmb3JtaW5nIERhdGEiCmRhdGU6ICJTZW1lc3RlciAxLCAyMDIyIgpvdXRwdXQ6CiAgaHRtbF9kb2N1bWVudDoKICAgIHRvYzogdHJ1ZQogICAgdG9jX2Zsb2F0OiB0cnVlCiAgICB0b2NfZGVwdGg6IDMKICAgIGNvZGVfZG93bmxvYWQ6IHRydWUKICAgIGNvZGVfZm9sZGluZzogc2hvdwotLS0KCj4gIyMjIyBBc3NvY2lhdGVkIE1hdGVyaWFsCj4KPiBNb2R1bGU6IFtNb2R1bGUgMDUgLSBUcmFuc2Zvcm1pbmcgZGF0YV0oMDUtdHJhbnNmb3JtLmh0bWwpCj4KPiBSZWFkaW5ncwo+Cj4gLSBbUiBmb3IgRGF0YSBTY2llbmNlIENoYXB0ZXIgMTBdKGh0dHBzOi8vcjRkcy5oYWQuY28ubnovdGliYmxlcy5odG1sKQo+IC0gW1IgZm9yIERhdGEgU2NpZW5jZSBDaGFwdGVyIDExXShodHRwczovL3I0ZHMuaGFkLmNvLm56L2RhdGEtaW1wb3J0Lmh0bWwpCj4gLSBbUiBmb3IgRGF0YSBTY2llbmNlIENoYXB0ZXIgMTJdKGh0dHBzOi8vcjRkcy5oYWQuY28ubnovdGlkeS1kYXRhLmh0bWwpCj4gLSBbUiBmb3IgRGF0YSBTY2llbmNlIENoYXB0ZXIgMTNdKGh0dHBzOi8vcjRkcy5oYWQuY28ubnovcmVsYXRpb25hbC1kYXRhLmh0bWwpCj4gLSBbUiBmb3IgRGF0YSBTY2llbmNlIENoYXB0ZXIgMTRdKGh0dHBzOi8vcjRkcy5oYWQuY28ubnovc3RyaW5ncy5odG1sKQoKYGBge3Igc2V0dXAsIGluY2x1ZGU9RkFMU0V9CmxpYnJhcnkoa25pdHIpCgprbml0cjo6b3B0c19jaHVuayRzZXQoCiAgY29tbWVudCA9ICIjPiIsCiAgZmlnLnBhdGggPSAiZmlndXJlcy8iLCAjIHVzZSBvbmx5IGZvciBzaW5nbGUgUm1kIGZpbGVzCiAgY29sbGFwc2UgPSBUUlVFLAogIGVjaG8gPSBUUlVFCikKCgpgYGAKCgpNYWluIHRvcGljcyB0byBjb3ZlcjoKCid0aWR5aW5nJyBkYXRhIHRocm91Z2ggc3RyaW5nIG1hbmlwdWxhdGlvbnMKCi0gcmVhZF9jc3YgYW5kIGNvbHVtbiBkZWZzICsgdGliYmxlcwotIHVuaXRlCi0gc2VwYXJhdGUKLSBzdHJfc3ViCi0gc3RyX3NwbGl0Ci0gdHJpbXdzCi0gcGFzdGUvcGFzdGUwCi0gcmVwbGFjZV9uYQotIHBhcnNlX251bWVyaWMvYXMubnVtZXJpYwotIGRyb3BfbmEKLSB7amFuaXRvcn0gZm9yIGNsZWFuIGNvbHVtbiBuYW1lcwotIHticm9vbX0gZm9yIHR1cm5pbmcgYmFzZSBSIHN0YXQgb3V0cHV0IGludG8gbmljZSByZWN0YW5nbGVzCgpwaXZvdGluZyBkYXRhIGxvbmcvd2lkZSAtPiB1c2VmdWwgZm9yIGdncGxvdAoKLSBwaXZvdF93aWRlcgotIHBpdm90X2xvbmdlcgoKCmNvbWJpbmluZyBkYXRhc2V0cyB0aHJvdWdoIGpvaW5zL2JpbmRzCgotIHJiaW5kCi0gY2JpbmQKLSBtZXJnZQotIGZ1bGwvaW5uZXIvbGVmdC9yaWdodCBqb2lucwotIGJpbmRfcm93cwotIGJpbmRfY29scwoKCgoKCgoKCgo=</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiWm9vbSBOb3RlczogVHJhbnNmb3JtaW5nIERhdGEiCmRhdGU6ICJTZW1lc3RlciAxLCAyMDIyIgpvdXRwdXQ6CiAgaHRtbF9kb2N1bWVudDoKICAgIHRvYzogdHJ1ZQogICAgdG9jX2Zsb2F0OiB0cnVlCiAgICB0b2NfZGVwdGg6IDMKICAgIGNvZGVfZG93bmxvYWQ6IHRydWUKICAgIGNvZGVfZm9sZGluZzogc2hvdwotLS0KCj4gIyMjIyBBc3NvY2lhdGVkIE1hdGVyaWFsCj4KPiBNb2R1bGU6IFtNb2R1bGUgMDUgLSBUcmFuc2Zvcm1pbmcgZGF0YV0oMDUtdHJhbnNmb3JtLmh0bWwpCj4KPiBSZWFkaW5ncwo+Cj4gLSBbUiBmb3IgRGF0YSBTY2llbmNlIENoYXB0ZXIgMTBdKGh0dHBzOi8vcjRkcy5oYWQuY28ubnovdGliYmxlcy5odG1sKQo+IC0gW1IgZm9yIERhdGEgU2NpZW5jZSBDaGFwdGVyIDExXShodHRwczovL3I0ZHMuaGFkLmNvLm56L2RhdGEtaW1wb3J0Lmh0bWwpCj4gLSBbUiBmb3IgRGF0YSBTY2llbmNlIENoYXB0ZXIgMTJdKGh0dHBzOi8vcjRkcy5oYWQuY28ubnovdGlkeS1kYXRhLmh0bWwpCj4gLSBbUiBmb3IgRGF0YSBTY2llbmNlIENoYXB0ZXIgMTNdKGh0dHBzOi8vcjRkcy5oYWQuY28ubnovcmVsYXRpb25hbC1kYXRhLmh0bWwpCj4gLSBbUiBmb3IgRGF0YSBTY2llbmNlIENoYXB0ZXIgMTRdKGh0dHBzOi8vcjRkcy5oYWQuY28ubnovc3RyaW5ncy5odG1sKQoKYGBge3Igc2V0dXAsIGluY2x1ZGU9RkFMU0V9CmxpYnJhcnkoa25pdHIpCgprbml0cjo6b3B0c19jaHVuayRzZXQoCiAgY29tbWVudCA9ICIjPiIsCiAgZmlnLnBhdGggPSAiZmlndXJlcy8iLCAjIHVzZSBvbmx5IGZvciBzaW5nbGUgUm1kIGZpbGVzCiAgY29sbGFwc2UgPSBUUlVFLAogIGVjaG8gPSBUUlVFCikKCgpgYGAKCiMjIENsZWFuaW5nCgojIyMgQ2xlYW5pbmcgZGF0YSB2YWx1ZXMKCiMjIyBDbGVhbmluZyBkYXRhZnJhbWUgY29sdW1uIG5hbWVzCgojIyMgVGlkeWluZwoKCiMjIFJlc2hhcGluZwoKIyMjIFdpZGUgdG8gbG9uZwoKCiMjIyBMb25nIHRvIHdpZGUKCgojIyBDb21iaW5pbmcgRGF0YQoKIyMjIEJpbmRpbmcKCiMjIyMgUm93IGJpbmRzCgojIyMjIENvbHVtbiBiaW5kcwoKIyMjIEpvaW5pbmcKCiMjIyMgSW5uZXIgam9pbgoKIyMjIyBMZWZ0L1JpZ2h0IGpvaW5zCgojIyMjIEZ1bGwgam9pbnMKCiMjIEV4Y2VyY2lzZXMKCgoKCgoK</div>
 
 
 </div>

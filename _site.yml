@@ -19,7 +19,7 @@ navbar:
         - text: "Part 3: Summarising"
           href: 04-summarise.html
         - text: "Part 4: Transforming"
-          # href: 05-transform.html
+          href: 05-transform.html
         - text: "Part 5: Communicating"
           # href: 06-communicate.html
         - text: "-------------"
@@ -40,8 +40,8 @@ navbar:
           href: zoom_notes_03.html
         - text: "04 - Summarising data"
           href: zoom_notes_04.html
-        # - text: "05 - Transforming data"
-        #   href: zoom_notes_05.html
+        - text: "05 - Transforming data"
+          href: zoom_notes_05.html
     #     - text: "Handout 6"
     #       href: zoom_notes_06.html
     #     - text: "Handout 7"

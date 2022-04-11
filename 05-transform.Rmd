@@ -36,22 +36,6 @@ knitr::opts_chunk$set(
 
 \
 
-Main topics to cover:
-
-'tidying' data through string manipulations
-
-- read_csv and column defs + tibbles
-- unite/separate
-- str_sub
-- str_split
-- trimws
-- paste/paste0
-- replace_na
-- parse_numeric/as.numeric
-- drop_na
-- (possibly) {janitor} for clean column names
-- (possibly) {broom} for turning base R stat output into nice rectangles
-
 
 The pre-processing of data as a proportion of a data analysis workflow can be quite substantial, but this step is extremely vital - poor data in = poor results out. The main purpose of this module is transforming our data into something worthy of analysis and will cover data cleaning, tidying and 'reshaping'. This will be followed by how to increase the utility of our data by combining it with other datasets.
 
@@ -93,10 +77,10 @@ library(janitor)
 > The data for this section is derived from [untidy-portal-data.
 xlsx](https://figshare.com/ndownloader/files/24469424). It is part of the [Portal Project Teaching Database](https://figshare.com/articles/Portal_Project_Teaching_Database/1314459) https://doi.org/10.6084/m9.figshare.1314459.v10 available on FigShare under a CC-0 license.
 > 
-> The original file does not have the data in a rectangular format so we have organised the data so it can be read into R and made it available to download either from XXXXXX or by:
+> The original file does not have the data in a rectangular format so we have organised the data so it can be read into R and made it available to download either by navigating to [https://raw.githubusercontent.com/rtis-training/2022-s1-r4ssp/main/data/rodents_untidy.csv](https://raw.githubusercontent.com/rtis-training/2022-s1-r4ssp/main/data/rodents_untidy.csv) and using `Save As` "rodents_untidy.csv" in you data directory or by using the folowing R command (ensure you match the directory name to your directory set up):
 > 
 > ```{r, eval = FALSE}
-> download.file(url = "XXXXXXX", 
+> download.file(url = "https://raw.githubusercontent.com/rtis-training/2022-s1-r4ssp/main/data/rodents_untidy.csv", 
 >       destfile = "data/rodents_untidy.csv")
 > ```
 
@@ -119,6 +103,8 @@ It can be difficult if you have many columns to see them all, so instead you can
 spec(rodents)
 ```
 
+### Cleaning data values
+
 From this list of columns, without knowing much about the data itself, _Weight_ might seen odd that it is a character type, rather than a numeric, so we'll focus in on this column to start with
 
 ```{r}
@@ -136,7 +122,7 @@ rodents$Weight
 ```
 
 
-Now that we have removed the characters, lets turn `rodents$Weight` in a numeric datatype
+Now that we have removed the characters, lets turn `rodents$Weight` into a numeric datatype
 
 ```{r}
 rodents$Weight <- as.numeric(rodents$Weight)
@@ -144,11 +130,9 @@ rodents$Weight <- as.numeric(rodents$Weight)
 
 
 
-#### Exercise 1
+Next as part of our cleaning we might want to change the `-999` entries in rodents$Weight to be `NA`
 
-Change the `-999` entries of rodents$Weight to be `NA`
-
-```{r, class.source = "fold-hide"}
+```{r}
 rodents$Weight[rodents$Weight == -999] <- NA
 
 rodents$Weight
@@ -193,6 +177,8 @@ We can use the `separate` function from `tidyr` to split this column into 2 colu
 
 ```{r}
 rodents <- rodents %>% separate(plot_location, into = c("plot", "location"), sep = '_')
+
+head(rodents)
 ```
 
 Notice how the final 7 rows didn't have a location, and so were automatically filled with `NA`s. There is still more that could be done to clean and tidy this particular dataset but we'll leave it for now.
@@ -208,6 +194,55 @@ When we're thinking about the 'shape' of the data, we're thinking about in which
 
 In our framework for making tidy data we created a system that made **long** data, in that each row was an observation. Sometimes however we need to reshape this data into a **wide** format.
 
+
+In the first example of this section we'll look at, we have yearly population data downloaded from Gapminder. 
+
+> This data was originally downloaded from [Gapminder](https://www.gapminder.org/data/) and selecting the indicator "Population", then "Total population"
+> 
+> Either go to [this page](https://raw.githubusercontent.com/rtis-training/2022-s1-r4ssp/main/data/gapminder_yearly_population_total.csv) and use `Save As` "gapminder_yearly_population_total.csv", saving it into your `data/` directory or by using the R command (adjust the directory "data" to match your directory name exactly):
+> 
+> ```{r, eval = FALSE}
+> download.file(url = "https://raw.githubusercontent.com/rtis-training/2022-s1-r4ssp/main/data/gapminder_yearly_population_total.csv", 
+>       destfile = "data/gapminder_yearly_population_total.csv")
+> ```
+
+```{r}
+gapminder_yearly_pop <- read_csv("data/gapminder_yearly_population_total.csv")
+dim(gapminder_yearly_pop)
+head(gapminder_yearly_pop)
+```
+
+### Wide to long
+
+You can see that in this case we have a column for each year, and our rows relate to a particular country. This might be a valid for a final table, however it will cause some challenges if we want to perform some analysis or visualisation on it. While it is possible to perform operations across a row, it fights against how the dataframe structure itself is constructed - each column is a single vector and therefore has to be the same datatype, but a row is made of multiple vectors each of which could be a different datatype. Hence the majority of operations in R are column focused. 
+
+E.g If we want to plot the change in population across time for a country is that in the current format we can't do it because we use a single column for each axis.
+
+If we think to our tidy data principles, year is a variable that is being measured alongside population, so we should have a column 'year' into which we can store the year values.
+
+
+
+The operation that will take us from a wide format to a long format is `pivot_longer` from `tidyr`. It has a `cols` parameter where we specify the columns that will be gathered into 2 named columns - one that will contain the names from the columns - `names_to`, the second, will contain the values that were in the columns - `values_to`. `cols` uses the same syntax as `select` from `dplyr` and if a `-` is used it will use all the columns _not_ specified.
+
+```{r}
+# Using the 'positive' selection of columns
+gapminder_yearly_pop_long <- gapminder_yearly_pop %>% pivot_longer(cols = `1800`:`2100`, names_to = "year", values_to = "population")
+gapminder_yearly_pop_long
+
+# Using the 'negative' selection of columns
+gapminder_yearly_pop_long <- gapminder_yearly_pop %>% pivot_longer(cols = -country, names_to = "year", values_to = "population")
+gapminder_yearly_pop_long
+```
+
+Note that because the column names violate the rules for R variables in that they start with a number, we have to deal with the problematic names by enclosing them with backticks ``` ` ```.
+
+### Long to wide
+
+Sometimes we would like to take our data from a long format and into a wide format. For our example we want to create a table that will let us see distances between an origin and a destination within 500 miles of each other. To do this we're going to use the `flights` data from the `nycflights13` package.
+
+The table that we create will essentially be a look-up table that will let us quickly reference the distance between origin/destination pairs. 
+
+
 ```{r}
 # install.packages(nycflights13)
 library(nycflights13)
@@ -215,7 +250,7 @@ library(nycflights13)
 glimpse(flights)
 ```
 
-For our example we want to create a table that will let us see distances between an origin and a destination within 500 miles of each other.
+
 
 First lets select those three columns we need and filter so that the distance is within 500 miles.
 ```{r}
@@ -225,14 +260,15 @@ flights_long <- flights %>% select(origin, dest, distance) %>%
 
 Next we want remove duplicate rows, this can be done using `distinct()`
 ```{r}
-flights_long <- flights_long %>%  distinct()
+flights_long <- flights_long %>% distinct()
 ```
 
-You can see that our data has `ncol(flights_long)` columns, and `nrow(flights_long)` rows.
+You can see that our long data has `ncol(flights_long)` columns, and `nrow(flights_long)` rows.
 
 ```{r}
 dim(flights_long)
 ```
+
 We now want to make each of our destinations its own column and fill in the corresponding air time as the value. To do this, we can use `pivot_wider`. The main arguments are `names_from` which is the column you want take the new column names from, and `values_from` which is the column that will be used to fill in the new column values.
 
 ```{r}
@@ -242,17 +278,86 @@ flights_long %>% pivot_wider(origin, names_from = "dest", values_from = "distanc
 
 ## Combining Data
 
+Often we'll find ourselves in the situation where we have some data but we want to increase its usefulness by adding on additional data. This section will cover the various ways we can take two dataframes and combine them together into a single dataframe.
 
 ### Binds
 
-- rbind/bind_rows
-- cbind/bind_cols
-  - caution on making sure the rows are in the same order
-  
+Sometimes we have datasets that contain the same columns, or the same rows but might are in two separate files or variables because they were collected that way or some other reason, and we want to bring them back together.
+
+#### Row binds
+
+In the situation where we have new observations (rows) but the same variables (columns) that we want to add onto our existing dataframe, we call this row binding.
+
+```{r}
+dogs_dunedin <- data.frame(names = c("zippo", "sky", "nova"), dog_breed = c("poodle", "labrador", "bulldog"))
+dogs_dunedin
+
+dogs_christchurch <- data.frame(names = c("flash", "dog", "jess"), dog_breed = c("terrier", "collie", "collie"))
+dogs_christchurch
+```
+
+
+```{r}
+dogs <- rbind(dogs_dunedin, dogs_christchurch)
+dogs
+```
+
+Note that if your column names don't match between your dataframes you will get an error when you try to do your row bind.
+
+\
+
+#### Column binding
+
+**Caution needs to be applied when using column binding.** Column binding relies entirely upon the rows being in the correct order and there is no enforcement of relationships that may have been present and it's entirely possible for the row order to have been changed in one or both dataframes prior to the bind. 
+
+
+```{r}
+pet_weights <- data.frame(animal = c("dog", "cat", "turtle"), weight_kg = c(21, 3, 14) )
+pet_weights
+
+
+pet_names <- data.frame(name = c("tbone", "slink", "speedy"), animal_type = c("dog", "cat", "turtle"))
+pet_names
+
+
+pets <- cbind(pet_weights, pet_names)
+pets
+```
+Here is the same data, except one has had the rows reordered prior to the bind to demonstrate 
+
+```{r}
+pet_weights_ordered <- pet_weights %>% arrange(weight_kg)
+pet_weights_ordered
+
+pets2 <- cbind(pet_weights_ordered, pet_names)
+pets2
+```
+
+It's also entirey possible to end up with duplicate column names, making future subsetting more challenging.
+
+```{r}
+pet_weights <- data.frame(animal = c("dog", "cat", "turtle"), weight_kg = c(21, 3, 14) )
+pet_weights
+
+
+pet_names <- data.frame(name = c("tbone", "slink", "speedy"), animal = c("collie", "short hair", "snapping"))
+pet_names
+
+
+pets3 <- cbind(pet_weights, pet_names)
+pets3
+
+# pulls out first instance of column name
+pets3$animal
+```
+It's for this reason that when we're wanting to add columns that we are better off doing so in way where we can specify the relationship between the datasets. This is where **joins** come in.
+\  
   
 ### Joins
 
-As part of the `nycflights13` package we also have some other dataframes available, `airports`, `planes`, and `airlines`. We can use these datasets to add on extra information to our tables 
+Joins are used when we have relationships between our data.
+
+As part of the `nycflights13` package we also have some other dataframes available, `airports`, `planes`, and `airlines`. We can use these datasets to add on extra information to our tables: 
 
 ```{r}
 glimpse(airports)
@@ -260,8 +365,118 @@ glimpse(airports)
 glimpse(planes)
 
 glimpse(airlines)
+
+glimpse(weather)
 ```
 
-Now we have this extra information, we want to use it to find out which airports had flights that use planes with a speed > 400 mph, and what were the names of the airlines that flew them.
+Ultimately we want to use the relationships between the data to find out the name of the airline that flew the total furthest distance using single engine planes.
 
-In order to answer this question, we first need to cover how to combine different data together using **joins** or **merges**. In order for us to join two dataframes together, we need to have a way of linking the information between the two tables, we need an common-identifier or **key** that is shared between them.
+But before we tackle that question, we first need to cover how to combine different data together using **joins** or **merges**. In order for us to join two dataframes together, we need to have a way of linking the information between the two tables, we need an common-identifier or **key** that is shared between them. Let's examine how joins work using some examples first
+
+```{r}
+df_a <- data.frame(names = c("A", "B","C"), animals = c("cat", "dog","mouse"))
+df_a
+
+
+df_b <- data.frame(names = c("A", "C", "D"), counts = c(1, 2, 3))
+df_b
+```
+For joins, we use an identifier column (key) that has entires in common between the two dataframes. The values in this column are then used to match rows between the dataframes and the corresponding columns are brought together. There are three main types of joins we'll look at:
+
+
+
+#### Inner Joins
+
+Inner joins will only keep rows that have matching values in the identifier column between the two dataframes. Rows that cannot be matched are removed.
+
+```{r}
+inner_join(df_a, df_b, by = "names")
+```
+#### Directional joins
+
+Directional joins will keep all of the rows with the dataframe specified by the direction, and add on data that matches from the second dataframe. The most commonly used is the left join, but right joins are also used. These joins are usually used when you want to keep all of the data in your starting dataset but you want to add on more information where you can.
+
+```{r}
+left_join(df_a, df_b, by = "names")
+
+right_join(df_a, df_b, by = "names")
+```
+
+
+#### Full Joins
+
+Full joins will match by the identifying column, where rows cannot be matched they are filled in with missing data in the columns that are new for the respective dataframe. This type of joins will keep all data.
+
+```{r}
+full_join(df_a, df_b, by = "names")
+```
+
+#### Joining nycflights
+
+Now that we have an idea about how joins work, lets set about answering our question of which airline flew the total furthest distance using single engine planes.
+
+Here is a diagram from [R for Data Science - Relational Data](https://r4ds.had.co.nz/relational-data.html) chapter showing the relationships between the `nycflights13` dataframes.
+
+![R for Data Science - nycflights13 data relationships](https://d33wubrfki0l68.cloudfront.net/245292d1ea724f6c3fd8a92063dcd7bfb9758d02/5751b/diagrams/relational-nycflights.png)
+
+\
+
+We can now begin to solve our question in pieces:
+
+\
+
+1. We need to know which planes were single engine
+```{r}
+single_engine <- planes %>% filter(engines == 1)
+```
+
+\
+
+2.  We need to identify which column can be used to link our single engine data with our flights data.
+
+```{r}
+# identify column names in common between single_engine and flights
+names(single_engine)[names(single_engine) %in% names(flights)]
+```
+
+Tailnum is going to identify our planes between our two datasets. It is possible to use multiple keys in joins - however in our case `flights$year` refers to the year of the flight, but `single_engine$year` refers to the year of the aircraft. 
+
+\
+
+3. We now need to join with our flights data so that only the flights involving planes with single engines remain.
+
+```{r}
+single_engine_flights <- inner_join(flights, single_engine, by = "tailnum")
+
+names(single_engine_flights)
+```
+
+Notice that we have year.x and year.y columns, this is because there were columns that had the same name in our datasets, but were not representing the same data. We can make these more informative going forward by redoing our join and this time supplying a `suffix` parameter so we know which dataset the columns originally were from
+
+
+```{r}
+single_engine_flights <- inner_join(flights, single_engine, by = "tailnum", suffix = c("_flight", "_plane"))
+
+names(single_engine_flights)
+```
+
+\
+
+4. Now we'll find the total distance for each carrier
+
+```{r}
+total_single_engine_carrier_distance <- single_engine_flights %>% 
+  group_by(carrier) %>% 
+  summarise(total_distance = sum(distance))
+```
+
+
+5. And now we need to add on the carrier names and sort the result so the longest distance is first. This time we'll do it using pipe.
+
+```{r}
+total_single_engine_carrier_distance %>% 
+  inner_join(airlines, by = 'carrier') %>% 
+  arrange(desc(total_distance))
+```
+
+From this we can see that JetBlue Airways flew the longest distance using single-engine planes.

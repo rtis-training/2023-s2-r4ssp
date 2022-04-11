@@ -1,0 +1,42 @@
+Plot location,Date collected,Family,Genus,Species,Weight
+1_slope,01/09/14,Heteromyidae,Dipodomys,merriami,40
+1_slope,01/09/14,Heteromyidae,Dipodomys,merriami,36
+1_slope,01/09/14,Heteromyidae,Dipodomys,spectabilis,135
+1_rocks,01/09/14,Heteromyidae,Dipodomys,merriami,39
+1_grass,01/20/14,Heteromyidae,Dipodomys,merriami,43
+1_rocks,01/20/14,Heteromyidae,Dipodomys,spectabilis,144
+1_rocks,03/13/14,Heteromyidae,Dipodomys,merriami,51
+1_fence,03/13/14,Heteromyidae,Dipodomys,merriami,44
+1_fence,03/13/14,Heteromyidae,Dipodomys,spectabilis,146
+2_rocks,01/08/14,Cricetidae,Neotoma,albigula,-999
+2_rocks,01/08/14,Heteromyidae,Dipodomys,?,44
+2_slope,01/08/14,Heteromyidae,Dipodomys,unknown,38
+2_slope,01/08/14,Cricetidae,Neotoma,albigula,-999
+2_grass,01/08/14,Cricetidae,Neotoma,albigula,220
+2_rocks,01/08/14,Heteromyidae,Dipodomys,merriami,38
+2_sand,01/08/14,,,merriami,48
+2_sand,01/08/14,,,spectabilis,143
+2_sand,01/08/14,,,merriami,35
+2_rocks,01/08/14,,,ordii,43
+2_rocks,01/08/14,,,ordii,37
+2_sand,01/08/14,,,spectabilis,150
+2_sand,01/08/14,,,merriami,45
+2_slope,01/08/14,Cricetidae,Neotoma,albigula,-999
+2_slope,01/08/14,Heteromyidae,Dipodomys,spectabilis,157
+2_grass,01/08/14,Heteromyidae,Dipodomys,sp.,-999
+2_grass,02/18/14,Cricetidae,Neotoma,albigula,218
+2_grass,02/18/14,Heteromyidae,Dipodomys,spectabilis,127
+2_slope,02/18/14,Heteromyidae,Dipodomys,merriami,52
+3_dirt,1/8,,,Dipodomys ordii*,42
+3_dirt,2/18,,,Onychomys torridus,24
+3_rocks,2/18,,,Onychomys torridus,23
+3_dirt,3/11,,,Neotoma albigula,232
+3_rocks,3/11,,,Onychomys torridus,22
+3_dirt,3/11,,,Onychomys torridus,?
+3,3/11,,,Dipodomys ordii,?
+3,4/8,,,Neotoma albigula,
+3,4/8,,,,
+3,4/8,,,Neotoma albigula,182
+3,4/8,,,Dipodomys ordii*,42
+3,4/8,,,Neotoma albigula,115
+3,4/8,,,Neotoma albigula,190

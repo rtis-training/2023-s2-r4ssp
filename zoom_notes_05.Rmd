@@ -35,41 +35,40 @@ knitr::opts_chunk$set(
 
 ```
 
+## Cleaning
 
-Main topics to cover:
+### Cleaning data values
 
-'tidying' data through string manipulations
+### Cleaning dataframe column names
 
-- read_csv and column defs + tibbles
-- unite
-- separate
-- str_sub
-- str_split
-- trimws
-- paste/paste0
-- replace_na
-- parse_numeric/as.numeric
-- drop_na
-- {janitor} for clean column names
-- {broom} for turning base R stat output into nice rectangles
-
-pivoting data long/wide -> useful for ggplot
-
-- pivot_wider
-- pivot_longer
+### Tidying
 
 
-combining datasets through joins/binds
+## Reshaping
 
-- rbind
-- cbind
-- merge
-- full/inner/left/right joins
-- bind_rows
-- bind_cols
+### Wide to long
 
 
+### Long to wide
 
+
+## Combining Data
+
+### Binding
+
+#### Row binds
+
+#### Column binds
+
+### Joining
+
+#### Inner join
+
+#### Left/Right joins
+
+#### Full joins
+
+## Excercises
 
 
 
