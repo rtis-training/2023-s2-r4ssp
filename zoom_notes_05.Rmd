@@ -35,38 +35,66 @@ knitr::opts_chunk$set(
 
 ```
 
-## Cleaning
+## Cleaning and Tidying
 
 ### Cleaning data values
 
+- Checking data types on data import
+- Creating consistent missing data
+- Converting characters to numeric with `as.numeric`
+
 ### Cleaning dataframe column names
+
+- Using the `janitor` package to create cleaned dataframe column names
 
 ### Tidying
 
+Tidy data principles:
 
-## Reshaping
+1. Each column is a variable or property that is being measured 
+2. Each row is an observation
+3. A single cell should contain a single piece of information
+
+## Reshaping data
 
 ### Wide to long
 
+- Use `pivot_longer` from the `tidyr` package
 
 ### Long to wide
 
+- Use `pivot_wider` from the `tidyr` package
 
 ## Combining Data
 
+How to combine datasets together
+
+- rows
+- columns
+- using data relationships
+
 ### Binding
 
-#### Row binds
-
-#### Column binds
+- Combining rows of datasets with same column names together with `rbind`
+- Combining columns of datasets together with `cbind`
+  - caution on using `cbind` and maintaining data integrity
+  - use joins if possible
 
 ### Joining
 
+Adding additional columns onto data sets by using a common identifier (key) between datasets to maintain data relationships
+
 #### Inner join
+
+- `inner_join` from `dplyr` will join datasets on a key and at the same time filter so that only rows where there is a matching key will be kept
 
 #### Left/Right joins
 
+- `left_join` and `right_join` from `dplyr` will join datasets on a key and keep all rows from the specified 'side' of the join, and filling in the non-matching entries with `NA`
+
 #### Full joins
+
+- `full_join` from `dplyr` will join datasets on a key and keep all rows from both datasets filling in columns of non-matching entries with `NA`
 
 ## Excercises
 

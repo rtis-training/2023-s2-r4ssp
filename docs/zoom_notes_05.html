@@ -437,48 +437,99 @@ Science Chapter 13</a></li>
 Chapter 14</a></li>
 </ul>
 </blockquote>
-<div id="cleaning" class="section level2">
-<h2>Cleaning</h2>
+<div id="cleaning-and-tidying" class="section level2">
+<h2>Cleaning and Tidying</h2>
 <div id="cleaning-data-values" class="section level3">
 <h3>Cleaning data values</h3>
+<ul>
+<li>Checking data types on data import</li>
+<li>Creating consistent missing data</li>
+<li>Converting characters to numeric with <code>as.numeric</code></li>
+</ul>
 </div>
 <div id="cleaning-dataframe-column-names" class="section level3">
 <h3>Cleaning dataframe column names</h3>
+<ul>
+<li>Using the <code>janitor</code> package to create cleaned dataframe
+column names</li>
+</ul>
 </div>
 <div id="tidying" class="section level3">
 <h3>Tidying</h3>
+<p>Tidy data principles:</p>
+<ol style="list-style-type: decimal">
+<li>Each column is a variable or property that is being measured</li>
+<li>Each row is an observation</li>
+<li>A single cell should contain a single piece of information</li>
+</ol>
 </div>
 </div>
-<div id="reshaping" class="section level2">
-<h2>Reshaping</h2>
+<div id="reshaping-data" class="section level2">
+<h2>Reshaping data</h2>
 <div id="wide-to-long" class="section level3">
 <h3>Wide to long</h3>
+<ul>
+<li>Use <code>pivot_longer</code> from the <code>tidyr</code>
+package</li>
+</ul>
 </div>
 <div id="long-to-wide" class="section level3">
 <h3>Long to wide</h3>
+<ul>
+<li>Use <code>pivot_wider</code> from the <code>tidyr</code>
+package</li>
+</ul>
 </div>
 </div>
 <div id="combining-data" class="section level2">
 <h2>Combining Data</h2>
+<p>How to combine datasets together</p>
+<ul>
+<li>rows</li>
+<li>columns</li>
+<li>using data relationships</li>
+</ul>
 <div id="binding" class="section level3">
 <h3>Binding</h3>
-<div id="row-binds" class="section level4">
-<h4>Row binds</h4>
-</div>
-<div id="column-binds" class="section level4">
-<h4>Column binds</h4>
-</div>
+<ul>
+<li>Combining rows of datasets with same column names together with
+<code>rbind</code></li>
+<li>Combining columns of datasets together with <code>cbind</code>
+<ul>
+<li>caution on using <code>cbind</code> and maintaining data
+integrity</li>
+<li>use joins if possible</li>
+</ul></li>
+</ul>
 </div>
 <div id="joining" class="section level3">
 <h3>Joining</h3>
+<p>Adding additional columns onto data sets by using a common identifier
+(key) between datasets to maintain data relationships</p>
 <div id="inner-join" class="section level4">
 <h4>Inner join</h4>
+<ul>
+<li><code>inner_join</code> from <code>dplyr</code> will join datasets
+on a key and at the same time filter so that only rows where there is a
+matching key will be kept</li>
+</ul>
 </div>
 <div id="leftright-joins" class="section level4">
 <h4>Left/Right joins</h4>
+<ul>
+<li><code>left_join</code> and <code>right_join</code> from
+<code>dplyr</code> will join datasets on a key and keep all rows from
+the specified ‘side’ of the join, and filling in the non-matching
+entries with <code>NA</code></li>
+</ul>
 </div>
 <div id="full-joins" class="section level4">
 <h4>Full joins</h4>
+<ul>
+<li><code>full_join</code> from <code>dplyr</code> will join datasets on
+a key and keep all rows from both datasets filling in columns of
+non-matching entries with <code>NA</code></li>
+</ul>
 </div>
 </div>
 </div>
@@ -486,7 +537,7 @@ Chapter 14</a></li>
 <h2>Excercises</h2>
 </div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiWm9vbSBOb3RlczogVHJhbnNmb3JtaW5nIERhdGEiCmRhdGU6ICJTZW1lc3RlciAxLCAyMDIyIgpvdXRwdXQ6CiAgaHRtbF9kb2N1bWVudDoKICAgIHRvYzogdHJ1ZQogICAgdG9jX2Zsb2F0OiB0cnVlCiAgICB0b2NfZGVwdGg6IDMKICAgIGNvZGVfZG93bmxvYWQ6IHRydWUKICAgIGNvZGVfZm9sZGluZzogc2hvdwotLS0KCj4gIyMjIyBBc3NvY2lhdGVkIE1hdGVyaWFsCj4KPiBNb2R1bGU6IFtNb2R1bGUgMDUgLSBUcmFuc2Zvcm1pbmcgZGF0YV0oMDUtdHJhbnNmb3JtLmh0bWwpCj4KPiBSZWFkaW5ncwo+Cj4gLSBbUiBmb3IgRGF0YSBTY2llbmNlIENoYXB0ZXIgMTBdKGh0dHBzOi8vcjRkcy5oYWQuY28ubnovdGliYmxlcy5odG1sKQo+IC0gW1IgZm9yIERhdGEgU2NpZW5jZSBDaGFwdGVyIDExXShodHRwczovL3I0ZHMuaGFkLmNvLm56L2RhdGEtaW1wb3J0Lmh0bWwpCj4gLSBbUiBmb3IgRGF0YSBTY2llbmNlIENoYXB0ZXIgMTJdKGh0dHBzOi8vcjRkcy5oYWQuY28ubnovdGlkeS1kYXRhLmh0bWwpCj4gLSBbUiBmb3IgRGF0YSBTY2llbmNlIENoYXB0ZXIgMTNdKGh0dHBzOi8vcjRkcy5oYWQuY28ubnovcmVsYXRpb25hbC1kYXRhLmh0bWwpCj4gLSBbUiBmb3IgRGF0YSBTY2llbmNlIENoYXB0ZXIgMTRdKGh0dHBzOi8vcjRkcy5oYWQuY28ubnovc3RyaW5ncy5odG1sKQoKYGBge3Igc2V0dXAsIGluY2x1ZGU9RkFMU0V9CmxpYnJhcnkoa25pdHIpCgprbml0cjo6b3B0c19jaHVuayRzZXQoCiAgY29tbWVudCA9ICIjPiIsCiAgZmlnLnBhdGggPSAiZmlndXJlcy8iLCAjIHVzZSBvbmx5IGZvciBzaW5nbGUgUm1kIGZpbGVzCiAgY29sbGFwc2UgPSBUUlVFLAogIGVjaG8gPSBUUlVFCikKCgpgYGAKCiMjIENsZWFuaW5nCgojIyMgQ2xlYW5pbmcgZGF0YSB2YWx1ZXMKCiMjIyBDbGVhbmluZyBkYXRhZnJhbWUgY29sdW1uIG5hbWVzCgojIyMgVGlkeWluZwoKCiMjIFJlc2hhcGluZwoKIyMjIFdpZGUgdG8gbG9uZwoKCiMjIyBMb25nIHRvIHdpZGUKCgojIyBDb21iaW5pbmcgRGF0YQoKIyMjIEJpbmRpbmcKCiMjIyMgUm93IGJpbmRzCgojIyMjIENvbHVtbiBiaW5kcwoKIyMjIEpvaW5pbmcKCiMjIyMgSW5uZXIgam9pbgoKIyMjIyBMZWZ0L1JpZ2h0IGpvaW5zCgojIyMjIEZ1bGwgam9pbnMKCiMjIEV4Y2VyY2lzZXMKCgoKCgoK</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiWm9vbSBOb3RlczogVHJhbnNmb3JtaW5nIERhdGEiCmRhdGU6ICJTZW1lc3RlciAxLCAyMDIyIgpvdXRwdXQ6CiAgaHRtbF9kb2N1bWVudDoKICAgIHRvYzogdHJ1ZQogICAgdG9jX2Zsb2F0OiB0cnVlCiAgICB0b2NfZGVwdGg6IDMKICAgIGNvZGVfZG93bmxvYWQ6IHRydWUKICAgIGNvZGVfZm9sZGluZzogc2hvdwotLS0KCj4gIyMjIyBBc3NvY2lhdGVkIE1hdGVyaWFsCj4KPiBNb2R1bGU6IFtNb2R1bGUgMDUgLSBUcmFuc2Zvcm1pbmcgZGF0YV0oMDUtdHJhbnNmb3JtLmh0bWwpCj4KPiBSZWFkaW5ncwo+Cj4gLSBbUiBmb3IgRGF0YSBTY2llbmNlIENoYXB0ZXIgMTBdKGh0dHBzOi8vcjRkcy5oYWQuY28ubnovdGliYmxlcy5odG1sKQo+IC0gW1IgZm9yIERhdGEgU2NpZW5jZSBDaGFwdGVyIDExXShodHRwczovL3I0ZHMuaGFkLmNvLm56L2RhdGEtaW1wb3J0Lmh0bWwpCj4gLSBbUiBmb3IgRGF0YSBTY2llbmNlIENoYXB0ZXIgMTJdKGh0dHBzOi8vcjRkcy5oYWQuY28ubnovdGlkeS1kYXRhLmh0bWwpCj4gLSBbUiBmb3IgRGF0YSBTY2llbmNlIENoYXB0ZXIgMTNdKGh0dHBzOi8vcjRkcy5oYWQuY28ubnovcmVsYXRpb25hbC1kYXRhLmh0bWwpCj4gLSBbUiBmb3IgRGF0YSBTY2llbmNlIENoYXB0ZXIgMTRdKGh0dHBzOi8vcjRkcy5oYWQuY28ubnovc3RyaW5ncy5odG1sKQoKYGBge3Igc2V0dXAsIGluY2x1ZGU9RkFMU0V9CmxpYnJhcnkoa25pdHIpCgprbml0cjo6b3B0c19jaHVuayRzZXQoCiAgY29tbWVudCA9ICIjPiIsCiAgZmlnLnBhdGggPSAiZmlndXJlcy8iLCAjIHVzZSBvbmx5IGZvciBzaW5nbGUgUm1kIGZpbGVzCiAgY29sbGFwc2UgPSBUUlVFLAogIGVjaG8gPSBUUlVFCikKCgpgYGAKCiMjIENsZWFuaW5nIGFuZCBUaWR5aW5nCgojIyMgQ2xlYW5pbmcgZGF0YSB2YWx1ZXMKCi0gQ2hlY2tpbmcgZGF0YSB0eXBlcyBvbiBkYXRhIGltcG9ydAotIENyZWF0aW5nIGNvbnNpc3RlbnQgbWlzc2luZyBkYXRhCi0gQ29udmVydGluZyBjaGFyYWN0ZXJzIHRvIG51bWVyaWMgd2l0aCBgYXMubnVtZXJpY2AKCiMjIyBDbGVhbmluZyBkYXRhZnJhbWUgY29sdW1uIG5hbWVzCgotIFVzaW5nIHRoZSBgamFuaXRvcmAgcGFja2FnZSB0byBjcmVhdGUgY2xlYW5lZCBkYXRhZnJhbWUgY29sdW1uIG5hbWVzCgojIyMgVGlkeWluZwoKVGlkeSBkYXRhIHByaW5jaXBsZXM6CgoxLiBFYWNoIGNvbHVtbiBpcyBhIHZhcmlhYmxlIG9yIHByb3BlcnR5IHRoYXQgaXMgYmVpbmcgbWVhc3VyZWQgCjIuIEVhY2ggcm93IGlzIGFuIG9ic2VydmF0aW9uCjMuIEEgc2luZ2xlIGNlbGwgc2hvdWxkIGNvbnRhaW4gYSBzaW5nbGUgcGllY2Ugb2YgaW5mb3JtYXRpb24KCiMjIFJlc2hhcGluZyBkYXRhCgojIyMgV2lkZSB0byBsb25nCgotIFVzZSBgcGl2b3RfbG9uZ2VyYCBmcm9tIHRoZSBgdGlkeXJgIHBhY2thZ2UKCiMjIyBMb25nIHRvIHdpZGUKCi0gVXNlIGBwaXZvdF93aWRlcmAgZnJvbSB0aGUgYHRpZHlyYCBwYWNrYWdlCgojIyBDb21iaW5pbmcgRGF0YQoKSG93IHRvIGNvbWJpbmUgZGF0YXNldHMgdG9nZXRoZXIKCi0gcm93cwotIGNvbHVtbnMKLSB1c2luZyBkYXRhIHJlbGF0aW9uc2hpcHMKCiMjIyBCaW5kaW5nCgotIENvbWJpbmluZyByb3dzIG9mIGRhdGFzZXRzIHdpdGggc2FtZSBjb2x1bW4gbmFtZXMgdG9nZXRoZXIgd2l0aCBgcmJpbmRgCi0gQ29tYmluaW5nIGNvbHVtbnMgb2YgZGF0YXNldHMgdG9nZXRoZXIgd2l0aCBgY2JpbmRgCiAgLSBjYXV0aW9uIG9uIHVzaW5nIGBjYmluZGAgYW5kIG1haW50YWluaW5nIGRhdGEgaW50ZWdyaXR5CiAgLSB1c2Ugam9pbnMgaWYgcG9zc2libGUKCiMjIyBKb2luaW5nCgpBZGRpbmcgYWRkaXRpb25hbCBjb2x1bW5zIG9udG8gZGF0YSBzZXRzIGJ5IHVzaW5nIGEgY29tbW9uIGlkZW50aWZpZXIgKGtleSkgYmV0d2VlbiBkYXRhc2V0cyB0byBtYWludGFpbiBkYXRhIHJlbGF0aW9uc2hpcHMKCiMjIyMgSW5uZXIgam9pbgoKLSBgaW5uZXJfam9pbmAgZnJvbSBgZHBseXJgIHdpbGwgam9pbiBkYXRhc2V0cyBvbiBhIGtleSBhbmQgYXQgdGhlIHNhbWUgdGltZSBmaWx0ZXIgc28gdGhhdCBvbmx5IHJvd3Mgd2hlcmUgdGhlcmUgaXMgYSBtYXRjaGluZyBrZXkgd2lsbCBiZSBrZXB0CgojIyMjIExlZnQvUmlnaHQgam9pbnMKCi0gYGxlZnRfam9pbmAgYW5kIGByaWdodF9qb2luYCBmcm9tIGBkcGx5cmAgd2lsbCBqb2luIGRhdGFzZXRzIG9uIGEga2V5IGFuZCBrZWVwIGFsbCByb3dzIGZyb20gdGhlIHNwZWNpZmllZCAnc2lkZScgb2YgdGhlIGpvaW4sIGFuZCBmaWxsaW5nIGluIHRoZSBub24tbWF0Y2hpbmcgZW50cmllcyB3aXRoIGBOQWAKCiMjIyMgRnVsbCBqb2lucwoKLSBgZnVsbF9qb2luYCBmcm9tIGBkcGx5cmAgd2lsbCBqb2luIGRhdGFzZXRzIG9uIGEga2V5IGFuZCBrZWVwIGFsbCByb3dzIGZyb20gYm90aCBkYXRhc2V0cyBmaWxsaW5nIGluIGNvbHVtbnMgb2Ygbm9uLW1hdGNoaW5nIGVudHJpZXMgd2l0aCBgTkFgCgojIyBFeGNlcmNpc2VzCgoKCgoKCg==</div>
 
 
 </div>
