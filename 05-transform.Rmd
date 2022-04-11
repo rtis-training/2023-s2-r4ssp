@@ -61,7 +61,8 @@ Unless you are in a fortunate position to inherit 'cleaned' data these jobs will
 
 For this section we're going to make use of the following packages that are part of the Tidyverse: `readr` for reading in and parsing data, `tidyr` which has functions for dealing with missing data, and `stringr` which has functions relating to dealing with character vectors.
 
-All are loaded as part of 
+All are loaded as part of loading the `tidyverse` package. You can see under the "Attaching packages" heading exactly which packages are being loaded.
+
 ```{r}
 library(tidyverse)
 ```
@@ -199,15 +200,16 @@ In the first example of this section we'll look at, we have yearly population da
 
 > This data was originally downloaded from [Gapminder](https://www.gapminder.org/data/) and selecting the indicator "Population", then "Total population"
 > 
-> Either go to [this page](https://raw.githubusercontent.com/rtis-training/2022-s1-r4ssp/main/data/gapminder_yearly_population_total.csv) and use `Save As` "gapminder_yearly_population_total.csv", saving it into your `data/` directory or by using the R command (adjust the directory "data" to match your directory name exactly):
+> Either go to [this page](https://raw.githubusercontent.com/rtis-training/2022-s1-r4ssp/main/data/gapminder_yearly_population_millions_total.csv) and use `Save As` "gapminder_yearly_population_total.csv", saving it into your `data/` directory or by using the R command (adjust the directory "data" to match your directory name exactly):
 > 
 > ```{r, eval = FALSE}
-> download.file(url = "https://raw.githubusercontent.com/rtis-training/2022-s1-r4ssp/main/data/gapminder_yearly_population_total.csv", 
->       destfile = "data/gapminder_yearly_population_total.csv")
+> download.file(url = "https://raw.githubusercontent.com/rtis-training/2022-s1-r4ssp/main/data/gapminder_yearly_population_millions_total.csv", 
+>       destfile = "data/gapminder_yearly_population_millions_total.csv")
 > ```
 
+
 ```{r}
-gapminder_yearly_pop <- read_csv("data/gapminder_yearly_population_total.csv")
+gapminder_yearly_pop <- read_csv("data/gapminder_yearly_population_millions_total.csv")
 dim(gapminder_yearly_pop)
 head(gapminder_yearly_pop)
 ```

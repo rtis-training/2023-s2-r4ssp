@@ -479,6 +479,8 @@ package</li>
 <li>Use <code>pivot_wider</code> from the <code>tidyr</code>
 package</li>
 </ul>
+<p><br />
+</p>
 </div>
 </div>
 <div id="combining-data" class="section level2">
@@ -530,14 +532,171 @@ entries with <code>NA</code></li>
 a key and keep all rows from both datasets filling in columns of
 non-matching entries with <code>NA</code></li>
 </ul>
+<p><br />
+</p>
 </div>
 </div>
 </div>
 <div id="excercises" class="section level2">
 <h2>Excercises</h2>
+<ol style="list-style-type: decimal">
+<li>Using the rodents_untidy.csv, read the data in and then:
+<ol style="list-style-type: lower-alpha">
+<li>use janitor to change the column names to the “small_camel”
+case</li>
+<li>clean the data “weight” column
+<ul>
+<li>convert “?” and -999 to NA</li>
+<li>convert the column to numeric</li>
+</ul></li>
+<li>split the plotLocation column into two columns: “plot” and
+“location”</li>
+<li>make the “plot” column into a numeric</li>
+<li><strong>challenge</strong>: fix the data in the species column for
+plot 3. The genus and species columns had accidentally been
+combined</li>
+</ol></li>
+</ol>
+<p><br />
+</p>
+<ol start="2" style="list-style-type: decimal">
+<li>Using <code>flights</code> and <code>planes</code> from the
+<code>nycflights13</code> package, how many flights were flown in April
+2013 by aircraft with each engine type? e.g. Turbo-fan, Turbo-jet,
+etc.</li>
+</ol>
+<p><br />
+</p>
+<ol start="3" style="list-style-type: decimal">
+<li>Using the gapminder_yearly_population_total.csv data create “long” a
+format dataset for
+<ol style="list-style-type: lower-alpha">
+<li>New Zealand’s population from 1900 to 2000</li>
+<li>a country of your choice for the same time range</li>
+</ol></li>
+</ol>
+<p><br />
+</p>
+<ol start="4" style="list-style-type: decimal">
+<li>Using the datasets you created in 3, create:
+<ol style="list-style-type: lower-alpha">
+<li>a line plot for each</li>
+<li>combine the datasets and create a facet plot using country with 1
+column and 2 rows (hint look up <code>facet_grid</code>)</li>
+</ol></li>
+</ol>
+<div id="example-solutions" class="section level3">
+<h3>Example solutions</h3>
+<ol style="list-style-type: decimal">
+<li></li>
+</ol>
+<pre class="r fold-hide"><code>library(tidyverse)
+rodents &lt;- read_csv(&quot;data/rodents_untidy.csv&quot;)
+#&gt; Rows: 41 Columns: 6
+#&gt; ── Column specification ────────────────────────────────────────────────────────
+#&gt; Delimiter: &quot;,&quot;
+#&gt; chr (6): Plot location, Date collected, Family, Genus, Species, Weight
+#&gt; 
+#&gt; ℹ Use `spec()` to retrieve the full column specification for this data.
+#&gt; ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+# a)
+rodents &lt;- rodents %&gt;% janitor::clean_names(case = &quot;small_camel&quot;)
+
+# b)
+rodents$weight[rodents$weight %in% c(&quot;-999&quot;, &quot;?&quot;)] &lt;- NA
+rodents$weight &lt;- as.numeric(rodents$weight)
+
+# c)
+rodents &lt;- rodents %&gt;% separate(plotLocation, into = c(&quot;plot&quot;, &quot;location&quot;), sep = &quot;_&quot;)
+#&gt; Warning: Expected 2 pieces. Missing pieces filled with `NA` in 7 rows [35, 36,
+#&gt; 37, 38, 39, 40, 41].
+
+# d)
+rodents$plot &lt;- as.numeric(rodents$plot)
+
+# e)
+plot1_2 &lt;- rodents %&gt;% 
+  filter(plot ==1 | plot == 2)
+
+plot_3 &lt;- rodents %&gt;% 
+  filter(plot == 3) %&gt;% 
+  select(-genus) %&gt;% 
+  separate(species, into = c(&quot;genus&quot;, &quot;species&quot;), sep=&quot; &quot;)
+
+rodents_clean &lt;- rbind(plot1_2, plot_3)
+rodents_clean
+#&gt; # A tibble: 41 × 7
+#&gt;     plot location dateCollected family       genus     species     weight
+#&gt;    &lt;dbl&gt; &lt;chr&gt;    &lt;chr&gt;         &lt;chr&gt;        &lt;chr&gt;     &lt;chr&gt;        &lt;dbl&gt;
+#&gt;  1     1 slope    01/09/14      Heteromyidae Dipodomys merriami        40
+#&gt;  2     1 slope    01/09/14      Heteromyidae Dipodomys merriami        36
+#&gt;  3     1 slope    01/09/14      Heteromyidae Dipodomys spectabilis    135
+#&gt;  4     1 rocks    01/09/14      Heteromyidae Dipodomys merriami        39
+#&gt;  5     1 grass    01/20/14      Heteromyidae Dipodomys merriami        43
+#&gt;  6     1 rocks    01/20/14      Heteromyidae Dipodomys spectabilis    144
+#&gt;  7     1 rocks    03/13/14      Heteromyidae Dipodomys merriami        51
+#&gt;  8     1 fence    03/13/14      Heteromyidae Dipodomys merriami        44
+#&gt;  9     1 fence    03/13/14      Heteromyidae Dipodomys spectabilis    146
+#&gt; 10     2 rocks    01/08/14      Cricetidae   Neotoma   albigula        NA
+#&gt; # … with 31 more rows</code></pre>
+<hr />
+<ol start="2" style="list-style-type: decimal">
+<li></li>
+</ol>
+<pre class="r fold-hide"><code>library(tidyverse)
+library(nycflights13)
+
+flights %&gt;% 
+  filter(month == 3 &amp; year == 2013 &amp; !is.na(arr_time)) %&gt;%
+  inner_join(planes, by = &quot;tailnum&quot;) %&gt;% 
+  group_by(engine) %&gt;% 
+  summarise(n_flights = n())
+#&gt; # A tibble: 6 × 2
+#&gt;   engine        n_flights
+#&gt;   &lt;chr&gt;             &lt;int&gt;
+#&gt; 1 4 Cycle               3
+#&gt; 2 Reciprocating       165
+#&gt; 3 Turbo-fan         20114
+#&gt; 4 Turbo-jet          3391
+#&gt; 5 Turbo-prop            9
+#&gt; 6 Turbo-shaft          48</code></pre>
+<hr />
+<ol start="3" style="list-style-type: decimal">
+<li></li>
+</ol>
+<pre class="r fold-hide"><code>library(tidyverse)
+gapminder_yearly_pop &lt;- read_csv(&quot;data/gapminder_yearly_population_millions_total.csv&quot;) %&gt;% mutate(across(-country, ))
+
+gapminder_yearly_pop_long &lt;- gapminder_yearly_pop %&gt;% pivot_longer(-country, names_to = &quot;year&quot;, values_to = &quot;population_millions&quot;) %&gt;% mutate(year = as.numeric(year))
+
+# a)
+nz_1900_2000 &lt;- gapminder_yearly_pop_long %&gt;% 
+  filter(between(year, 1900, 2000)) %&gt;% 
+  filter(country == &quot;New Zealand&quot;)
+
+# b)
+jamaica_1900_2000 &lt;- gapminder_yearly_pop_long %&gt;% 
+  filter(between(year, 1900, 2000)) %&gt;% 
+  filter(country == &quot;Jamaica&quot;)</code></pre>
+<hr />
+<ol start="4" style="list-style-type: decimal">
+<li></li>
+</ol>
+<pre class="r fold-hide"><code># a)
+nz_1900_2000 %&gt;% ggplot(aes(x = year, y = population_millions)) + geom_line() + labs(title = &quot;NZ population 1900-2000&quot;)
+
+jamaica_1900_2000 %&gt;% ggplot(aes(x = year, y = population_millions)) + geom_line() + labs(title = &quot;Jamaica population 1900-2000&quot;)
+
+# b)
+rbind(nz_1900_2000, jamaica_1900_2000) %&gt;% 
+  ggplot(aes(x = year, y = population_millions)) + 
+  geom_line() + 
+  facet_grid(rows = &quot;country&quot;) + 
+  labs(title = &quot; NZ vs Jamaica population 1900-2000&quot;)</code></pre>
+</div>
 </div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiWm9vbSBOb3RlczogVHJhbnNmb3JtaW5nIERhdGEiCmRhdGU6ICJTZW1lc3RlciAxLCAyMDIyIgpvdXRwdXQ6CiAgaHRtbF9kb2N1bWVudDoKICAgIHRvYzogdHJ1ZQogICAgdG9jX2Zsb2F0OiB0cnVlCiAgICB0b2NfZGVwdGg6IDMKICAgIGNvZGVfZG93bmxvYWQ6IHRydWUKICAgIGNvZGVfZm9sZGluZzogc2hvdwotLS0KCj4gIyMjIyBBc3NvY2lhdGVkIE1hdGVyaWFsCj4KPiBNb2R1bGU6IFtNb2R1bGUgMDUgLSBUcmFuc2Zvcm1pbmcgZGF0YV0oMDUtdHJhbnNmb3JtLmh0bWwpCj4KPiBSZWFkaW5ncwo+Cj4gLSBbUiBmb3IgRGF0YSBTY2llbmNlIENoYXB0ZXIgMTBdKGh0dHBzOi8vcjRkcy5oYWQuY28ubnovdGliYmxlcy5odG1sKQo+IC0gW1IgZm9yIERhdGEgU2NpZW5jZSBDaGFwdGVyIDExXShodHRwczovL3I0ZHMuaGFkLmNvLm56L2RhdGEtaW1wb3J0Lmh0bWwpCj4gLSBbUiBmb3IgRGF0YSBTY2llbmNlIENoYXB0ZXIgMTJdKGh0dHBzOi8vcjRkcy5oYWQuY28ubnovdGlkeS1kYXRhLmh0bWwpCj4gLSBbUiBmb3IgRGF0YSBTY2llbmNlIENoYXB0ZXIgMTNdKGh0dHBzOi8vcjRkcy5oYWQuY28ubnovcmVsYXRpb25hbC1kYXRhLmh0bWwpCj4gLSBbUiBmb3IgRGF0YSBTY2llbmNlIENoYXB0ZXIgMTRdKGh0dHBzOi8vcjRkcy5oYWQuY28ubnovc3RyaW5ncy5odG1sKQoKYGBge3Igc2V0dXAsIGluY2x1ZGU9RkFMU0V9CmxpYnJhcnkoa25pdHIpCgprbml0cjo6b3B0c19jaHVuayRzZXQoCiAgY29tbWVudCA9ICIjPiIsCiAgZmlnLnBhdGggPSAiZmlndXJlcy8iLCAjIHVzZSBvbmx5IGZvciBzaW5nbGUgUm1kIGZpbGVzCiAgY29sbGFwc2UgPSBUUlVFLAogIGVjaG8gPSBUUlVFCikKCgpgYGAKCiMjIENsZWFuaW5nIGFuZCBUaWR5aW5nCgojIyMgQ2xlYW5pbmcgZGF0YSB2YWx1ZXMKCi0gQ2hlY2tpbmcgZGF0YSB0eXBlcyBvbiBkYXRhIGltcG9ydAotIENyZWF0aW5nIGNvbnNpc3RlbnQgbWlzc2luZyBkYXRhCi0gQ29udmVydGluZyBjaGFyYWN0ZXJzIHRvIG51bWVyaWMgd2l0aCBgYXMubnVtZXJpY2AKCiMjIyBDbGVhbmluZyBkYXRhZnJhbWUgY29sdW1uIG5hbWVzCgotIFVzaW5nIHRoZSBgamFuaXRvcmAgcGFja2FnZSB0byBjcmVhdGUgY2xlYW5lZCBkYXRhZnJhbWUgY29sdW1uIG5hbWVzCgojIyMgVGlkeWluZwoKVGlkeSBkYXRhIHByaW5jaXBsZXM6CgoxLiBFYWNoIGNvbHVtbiBpcyBhIHZhcmlhYmxlIG9yIHByb3BlcnR5IHRoYXQgaXMgYmVpbmcgbWVhc3VyZWQgCjIuIEVhY2ggcm93IGlzIGFuIG9ic2VydmF0aW9uCjMuIEEgc2luZ2xlIGNlbGwgc2hvdWxkIGNvbnRhaW4gYSBzaW5nbGUgcGllY2Ugb2YgaW5mb3JtYXRpb24KCiMjIFJlc2hhcGluZyBkYXRhCgojIyMgV2lkZSB0byBsb25nCgotIFVzZSBgcGl2b3RfbG9uZ2VyYCBmcm9tIHRoZSBgdGlkeXJgIHBhY2thZ2UKCiMjIyBMb25nIHRvIHdpZGUKCi0gVXNlIGBwaXZvdF93aWRlcmAgZnJvbSB0aGUgYHRpZHlyYCBwYWNrYWdlCgojIyBDb21iaW5pbmcgRGF0YQoKSG93IHRvIGNvbWJpbmUgZGF0YXNldHMgdG9nZXRoZXIKCi0gcm93cwotIGNvbHVtbnMKLSB1c2luZyBkYXRhIHJlbGF0aW9uc2hpcHMKCiMjIyBCaW5kaW5nCgotIENvbWJpbmluZyByb3dzIG9mIGRhdGFzZXRzIHdpdGggc2FtZSBjb2x1bW4gbmFtZXMgdG9nZXRoZXIgd2l0aCBgcmJpbmRgCi0gQ29tYmluaW5nIGNvbHVtbnMgb2YgZGF0YXNldHMgdG9nZXRoZXIgd2l0aCBgY2JpbmRgCiAgLSBjYXV0aW9uIG9uIHVzaW5nIGBjYmluZGAgYW5kIG1haW50YWluaW5nIGRhdGEgaW50ZWdyaXR5CiAgLSB1c2Ugam9pbnMgaWYgcG9zc2libGUKCiMjIyBKb2luaW5nCgpBZGRpbmcgYWRkaXRpb25hbCBjb2x1bW5zIG9udG8gZGF0YSBzZXRzIGJ5IHVzaW5nIGEgY29tbW9uIGlkZW50aWZpZXIgKGtleSkgYmV0d2VlbiBkYXRhc2V0cyB0byBtYWludGFpbiBkYXRhIHJlbGF0aW9uc2hpcHMKCiMjIyMgSW5uZXIgam9pbgoKLSBgaW5uZXJfam9pbmAgZnJvbSBgZHBseXJgIHdpbGwgam9pbiBkYXRhc2V0cyBvbiBhIGtleSBhbmQgYXQgdGhlIHNhbWUgdGltZSBmaWx0ZXIgc28gdGhhdCBvbmx5IHJvd3Mgd2hlcmUgdGhlcmUgaXMgYSBtYXRjaGluZyBrZXkgd2lsbCBiZSBrZXB0CgojIyMjIExlZnQvUmlnaHQgam9pbnMKCi0gYGxlZnRfam9pbmAgYW5kIGByaWdodF9qb2luYCBmcm9tIGBkcGx5cmAgd2lsbCBqb2luIGRhdGFzZXRzIG9uIGEga2V5IGFuZCBrZWVwIGFsbCByb3dzIGZyb20gdGhlIHNwZWNpZmllZCAnc2lkZScgb2YgdGhlIGpvaW4sIGFuZCBmaWxsaW5nIGluIHRoZSBub24tbWF0Y2hpbmcgZW50cmllcyB3aXRoIGBOQWAKCiMjIyMgRnVsbCBqb2lucwoKLSBgZnVsbF9qb2luYCBmcm9tIGBkcGx5cmAgd2lsbCBqb2luIGRhdGFzZXRzIG9uIGEga2V5IGFuZCBrZWVwIGFsbCByb3dzIGZyb20gYm90aCBkYXRhc2V0cyBmaWxsaW5nIGluIGNvbHVtbnMgb2Ygbm9uLW1hdGNoaW5nIGVudHJpZXMgd2l0aCBgTkFgCgojIyBFeGNlcmNpc2VzCgoKCgoKCg==</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiWm9vbSBOb3RlczogVHJhbnNmb3JtaW5nIERhdGEiCmRhdGU6ICJTZW1lc3RlciAxLCAyMDIyIgpvdXRwdXQ6CiAgaHRtbF9kb2N1bWVudDoKICAgIHRvYzogdHJ1ZQogICAgdG9jX2Zsb2F0OiB0cnVlCiAgICB0b2NfZGVwdGg6IDMKICAgIGNvZGVfZG93bmxvYWQ6IHRydWUKICAgIGNvZGVfZm9sZGluZzogc2hvdwotLS0KCj4gIyMjIyBBc3NvY2lhdGVkIE1hdGVyaWFsCj4KPiBNb2R1bGU6IFtNb2R1bGUgMDUgLSBUcmFuc2Zvcm1pbmcgZGF0YV0oMDUtdHJhbnNmb3JtLmh0bWwpCj4KPiBSZWFkaW5ncwo+Cj4gLSBbUiBmb3IgRGF0YSBTY2llbmNlIENoYXB0ZXIgMTBdKGh0dHBzOi8vcjRkcy5oYWQuY28ubnovdGliYmxlcy5odG1sKQo+IC0gW1IgZm9yIERhdGEgU2NpZW5jZSBDaGFwdGVyIDExXShodHRwczovL3I0ZHMuaGFkLmNvLm56L2RhdGEtaW1wb3J0Lmh0bWwpCj4gLSBbUiBmb3IgRGF0YSBTY2llbmNlIENoYXB0ZXIgMTJdKGh0dHBzOi8vcjRkcy5oYWQuY28ubnovdGlkeS1kYXRhLmh0bWwpCj4gLSBbUiBmb3IgRGF0YSBTY2llbmNlIENoYXB0ZXIgMTNdKGh0dHBzOi8vcjRkcy5oYWQuY28ubnovcmVsYXRpb25hbC1kYXRhLmh0bWwpCj4gLSBbUiBmb3IgRGF0YSBTY2llbmNlIENoYXB0ZXIgMTRdKGh0dHBzOi8vcjRkcy5oYWQuY28ubnovc3RyaW5ncy5odG1sKQoKYGBge3Igc2V0dXAsIGluY2x1ZGU9RkFMU0V9CmxpYnJhcnkoa25pdHIpCmxpYnJhcnkodGlkeXZlcnNlKQoKa25pdHI6Om9wdHNfY2h1bmskc2V0KAogIGNvbW1lbnQgPSAiIz4iLAogIGZpZy5wYXRoID0gImZpZ3VyZXMvIiwgIyB1c2Ugb25seSBmb3Igc2luZ2xlIFJtZCBmaWxlcwogIGNvbGxhcHNlID0gVFJVRSwKICBlY2hvID0gVFJVRQopCgoKYGBgCgojIyBDbGVhbmluZyBhbmQgVGlkeWluZwoKIyMjIENsZWFuaW5nIGRhdGEgdmFsdWVzCgotIENoZWNraW5nIGRhdGEgdHlwZXMgb24gZGF0YSBpbXBvcnQKLSBDcmVhdGluZyBjb25zaXN0ZW50IG1pc3NpbmcgZGF0YQotIENvbnZlcnRpbmcgY2hhcmFjdGVycyB0byBudW1lcmljIHdpdGggYGFzLm51bWVyaWNgCgojIyMgQ2xlYW5pbmcgZGF0YWZyYW1lIGNvbHVtbiBuYW1lcwoKLSBVc2luZyB0aGUgYGphbml0b3JgIHBhY2thZ2UgdG8gY3JlYXRlIGNsZWFuZWQgZGF0YWZyYW1lIGNvbHVtbiBuYW1lcwoKIyMjIFRpZHlpbmcKClRpZHkgZGF0YSBwcmluY2lwbGVzOgoKMS4gRWFjaCBjb2x1bW4gaXMgYSB2YXJpYWJsZSBvciBwcm9wZXJ0eSB0aGF0IGlzIGJlaW5nIG1lYXN1cmVkIAoyLiBFYWNoIHJvdyBpcyBhbiBvYnNlcnZhdGlvbgozLiBBIHNpbmdsZSBjZWxsIHNob3VsZCBjb250YWluIGEgc2luZ2xlIHBpZWNlIG9mIGluZm9ybWF0aW9uCgojIyBSZXNoYXBpbmcgZGF0YQoKIyMjIFdpZGUgdG8gbG9uZwoKLSBVc2UgYHBpdm90X2xvbmdlcmAgZnJvbSB0aGUgYHRpZHlyYCBwYWNrYWdlCgojIyMgTG9uZyB0byB3aWRlCgotIFVzZSBgcGl2b3Rfd2lkZXJgIGZyb20gdGhlIGB0aWR5cmAgcGFja2FnZQoKXAoKIyMgQ29tYmluaW5nIERhdGEKCkhvdyB0byBjb21iaW5lIGRhdGFzZXRzIHRvZ2V0aGVyCgotIHJvd3MKLSBjb2x1bW5zCi0gdXNpbmcgZGF0YSByZWxhdGlvbnNoaXBzCgojIyMgQmluZGluZwoKLSBDb21iaW5pbmcgcm93cyBvZiBkYXRhc2V0cyB3aXRoIHNhbWUgY29sdW1uIG5hbWVzIHRvZ2V0aGVyIHdpdGggYHJiaW5kYAotIENvbWJpbmluZyBjb2x1bW5zIG9mIGRhdGFzZXRzIHRvZ2V0aGVyIHdpdGggYGNiaW5kYAogIC0gY2F1dGlvbiBvbiB1c2luZyBgY2JpbmRgIGFuZCBtYWludGFpbmluZyBkYXRhIGludGVncml0eQogIC0gdXNlIGpvaW5zIGlmIHBvc3NpYmxlCgojIyMgSm9pbmluZwoKQWRkaW5nIGFkZGl0aW9uYWwgY29sdW1ucyBvbnRvIGRhdGEgc2V0cyBieSB1c2luZyBhIGNvbW1vbiBpZGVudGlmaWVyIChrZXkpIGJldHdlZW4gZGF0YXNldHMgdG8gbWFpbnRhaW4gZGF0YSByZWxhdGlvbnNoaXBzCgojIyMjIElubmVyIGpvaW4KCi0gYGlubmVyX2pvaW5gIGZyb20gYGRwbHlyYCB3aWxsIGpvaW4gZGF0YXNldHMgb24gYSBrZXkgYW5kIGF0IHRoZSBzYW1lIHRpbWUgZmlsdGVyIHNvIHRoYXQgb25seSByb3dzIHdoZXJlIHRoZXJlIGlzIGEgbWF0Y2hpbmcga2V5IHdpbGwgYmUga2VwdAoKIyMjIyBMZWZ0L1JpZ2h0IGpvaW5zCgotIGBsZWZ0X2pvaW5gIGFuZCBgcmlnaHRfam9pbmAgZnJvbSBgZHBseXJgIHdpbGwgam9pbiBkYXRhc2V0cyBvbiBhIGtleSBhbmQga2VlcCBhbGwgcm93cyBmcm9tIHRoZSBzcGVjaWZpZWQgJ3NpZGUnIG9mIHRoZSBqb2luLCBhbmQgZmlsbGluZyBpbiB0aGUgbm9uLW1hdGNoaW5nIGVudHJpZXMgd2l0aCBgTkFgCgojIyMjIEZ1bGwgam9pbnMKCi0gYGZ1bGxfam9pbmAgZnJvbSBgZHBseXJgIHdpbGwgam9pbiBkYXRhc2V0cyBvbiBhIGtleSBhbmQga2VlcCBhbGwgcm93cyBmcm9tIGJvdGggZGF0YXNldHMgZmlsbGluZyBpbiBjb2x1bW5zIG9mIG5vbi1tYXRjaGluZyBlbnRyaWVzIHdpdGggYE5BYAoKXAoKIyMgRXhjZXJjaXNlcwoKMS4gVXNpbmcgdGhlIHJvZGVudHNfdW50aWR5LmNzdiwgcmVhZCB0aGUgZGF0YSBpbiBhbmQgdGhlbjoKICAgIGEuIHVzZSBqYW5pdG9yIHRvIGNoYW5nZSB0aGUgY29sdW1uIG5hbWVzIHRvIHRoZSAic21hbGxfY2FtZWwiIGNhc2UKICAgIGIuIGNsZWFuIHRoZSBkYXRhICJ3ZWlnaHQiIGNvbHVtbgogICAgICAgIC0gY29udmVydCAiPyIgYW5kIC05OTkgdG8gTkEKICAgICAgICAtIGNvbnZlcnQgdGhlIGNvbHVtbiB0byBudW1lcmljCiAgICBjLiBzcGxpdCB0aGUgcGxvdExvY2F0aW9uIGNvbHVtbiBpbnRvIHR3byBjb2x1bW5zOiAicGxvdCIgYW5kICJsb2NhdGlvbiIKICAgIGQuIG1ha2UgdGhlICJwbG90IiBjb2x1bW4gaW50byBhIG51bWVyaWMKICAgIGUuICoqY2hhbGxlbmdlKio6IGZpeCB0aGUgZGF0YSBpbiB0aGUgc3BlY2llcyBjb2x1bW4gZm9yIHBsb3QgMy4gVGhlIGdlbnVzIGFuZCBzcGVjaWVzIGNvbHVtbnMgaGFkIGFjY2lkZW50YWxseSBiZWVuIGNvbWJpbmVkCiAgICAKXAoKMi4gVXNpbmcgYGZsaWdodHNgIGFuZCBgcGxhbmVzYCBmcm9tIHRoZSBgbnljZmxpZ2h0czEzYCBwYWNrYWdlLCBob3cgbWFueSBmbGlnaHRzIHdlcmUgZmxvd24gaW4gQXByaWwgMjAxMyBieSBhaXJjcmFmdCB3aXRoIGVhY2ggZW5naW5lIHR5cGU/IGUuZy4gVHVyYm8tZmFuLCBUdXJiby1qZXQsIGV0Yy4KClwKCjMuIFVzaW5nIHRoZSBnYXBtaW5kZXJfeWVhcmx5X3BvcHVsYXRpb25fdG90YWwuY3N2IGRhdGEgY3JlYXRlICJsb25nIiBhIGZvcm1hdCBkYXRhc2V0IGZvciAKICAgIGEuIE5ldyBaZWFsYW5kJ3MgcG9wdWxhdGlvbiBmcm9tIDE5MDAgdG8gMjAwMAogICAgYi4gYSBjb3VudHJ5IG9mIHlvdXIgY2hvaWNlIGZvciB0aGUgc2FtZSB0aW1lIHJhbmdlCgpcCgo0LiBVc2luZyB0aGUgZGF0YXNldHMgeW91IGNyZWF0ZWQgaW4gMywgY3JlYXRlOgogICAgYS4gYSBsaW5lIHBsb3QgZm9yIGVhY2gKICAgIGIuIGNvbWJpbmUgdGhlIGRhdGFzZXRzIGFuZCBjcmVhdGUgYSBmYWNldCBwbG90IHVzaW5nIGNvdW50cnkgd2l0aCAxIGNvbHVtbiBhbmQgMiByb3dzIChoaW50IGxvb2sgdXAgYGZhY2V0X2dyaWRgKQoKIyMjIEV4YW1wbGUgc29sdXRpb25zCgoxLgoKYGBge3Igem4wNS1zb2xuMSwgY2xhc3Muc291cmNlID0gImZvbGQtaGlkZSJ9CmxpYnJhcnkodGlkeXZlcnNlKQpyb2RlbnRzIDwtIHJlYWRfY3N2KCJkYXRhL3JvZGVudHNfdW50aWR5LmNzdiIpCiMgYSkKcm9kZW50cyA8LSByb2RlbnRzICU+JSBqYW5pdG9yOjpjbGVhbl9uYW1lcyhjYXNlID0gInNtYWxsX2NhbWVsIikKCiMgYikKcm9kZW50cyR3ZWlnaHRbcm9kZW50cyR3ZWlnaHQgJWluJSBjKCItOTk5IiwgIj8iKV0gPC0gTkEKcm9kZW50cyR3ZWlnaHQgPC0gYXMubnVtZXJpYyhyb2RlbnRzJHdlaWdodCkKCiMgYykKcm9kZW50cyA8LSByb2RlbnRzICU+JSBzZXBhcmF0ZShwbG90TG9jYXRpb24sIGludG8gPSBjKCJwbG90IiwgImxvY2F0aW9uIiksIHNlcCA9ICJfIikKCiMgZCkKcm9kZW50cyRwbG90IDwtIGFzLm51bWVyaWMocm9kZW50cyRwbG90KQoKIyBlKQpwbG90MV8yIDwtIHJvZGVudHMgJT4lIAogIGZpbHRlcihwbG90ID09MSB8IHBsb3QgPT0gMikKCnBsb3RfMyA8LSByb2RlbnRzICU+JSAKICBmaWx0ZXIocGxvdCA9PSAzKSAlPiUgCiAgc2VsZWN0KC1nZW51cykgJT4lIAogIHNlcGFyYXRlKHNwZWNpZXMsIGludG8gPSBjKCJnZW51cyIsICJzcGVjaWVzIiksIHNlcD0iICIpCgpyb2RlbnRzX2NsZWFuIDwtIHJiaW5kKHBsb3QxXzIsIHBsb3RfMykKcm9kZW50c19jbGVhbgpgYGAKCi0tLQoKMi4KCmBgYHtyIHpuMDUtc29sbjIsIGNsYXNzLnNvdXJjZSA9ICJmb2xkLWhpZGUifQpsaWJyYXJ5KHRpZHl2ZXJzZSkKbGlicmFyeShueWNmbGlnaHRzMTMpCgpmbGlnaHRzICU+JSAKICBmaWx0ZXIobW9udGggPT0gMyAmIHllYXIgPT0gMjAxMyAmICFpcy5uYShhcnJfdGltZSkpICU+JQogIGlubmVyX2pvaW4ocGxhbmVzLCBieSA9ICJ0YWlsbnVtIikgJT4lIAogIGdyb3VwX2J5KGVuZ2luZSkgJT4lIAogIHN1bW1hcmlzZShuX2ZsaWdodHMgPSBuKCkpCmBgYAoKLS0tCgozLgoKYGBge3Igem4wNS1zb2xuMywgY2xhc3Muc291cmNlID0gImZvbGQtaGlkZSIsIGV2YWwgPSBGQUxTRX0KbGlicmFyeSh0aWR5dmVyc2UpCmdhcG1pbmRlcl95ZWFybHlfcG9wIDwtIHJlYWRfY3N2KCJkYXRhL2dhcG1pbmRlcl95ZWFybHlfcG9wdWxhdGlvbl9taWxsaW9uc190b3RhbC5jc3YiKSAlPiUgbXV0YXRlKGFjcm9zcygtY291bnRyeSwgKSkKCmdhcG1pbmRlcl95ZWFybHlfcG9wX2xvbmcgPC0gZ2FwbWluZGVyX3llYXJseV9wb3AgJT4lIHBpdm90X2xvbmdlcigtY291bnRyeSwgbmFtZXNfdG8gPSAieWVhciIsIHZhbHVlc190byA9ICJwb3B1bGF0aW9uX21pbGxpb25zIikgJT4lIG11dGF0ZSh5ZWFyID0gYXMubnVtZXJpYyh5ZWFyKSkKCiMgYSkKbnpfMTkwMF8yMDAwIDwtIGdhcG1pbmRlcl95ZWFybHlfcG9wX2xvbmcgJT4lIAogIGZpbHRlcihiZXR3ZWVuKHllYXIsIDE5MDAsIDIwMDApKSAlPiUgCiAgZmlsdGVyKGNvdW50cnkgPT0gIk5ldyBaZWFsYW5kIikKCiMgYikKamFtYWljYV8xOTAwXzIwMDAgPC0gZ2FwbWluZGVyX3llYXJseV9wb3BfbG9uZyAlPiUgCiAgZmlsdGVyKGJldHdlZW4oeWVhciwgMTkwMCwgMjAwMCkpICU+JSAKICBmaWx0ZXIoY291bnRyeSA9PSAiSmFtYWljYSIpCmBgYAoKLS0tCgo0LgoKYGBge3Igem4wNS1zb2xuNCwgY2xhc3Muc291cmNlID0gImZvbGQtaGlkZSIsIGV2YWwgPSBGQUxTRX0KIyBhKQpuel8xOTAwXzIwMDAgJT4lIGdncGxvdChhZXMoeCA9IHllYXIsIHkgPSBwb3B1bGF0aW9uX21pbGxpb25zKSkgKyBnZW9tX2xpbmUoKSArIGxhYnModGl0bGUgPSAiTlogcG9wdWxhdGlvbiAxOTAwLTIwMDAiKQoKamFtYWljYV8xOTAwXzIwMDAgJT4lIGdncGxvdChhZXMoeCA9IHllYXIsIHkgPSBwb3B1bGF0aW9uX21pbGxpb25zKSkgKyBnZW9tX2xpbmUoKSArIGxhYnModGl0bGUgPSAiSmFtYWljYSBwb3B1bGF0aW9uIDE5MDAtMjAwMCIpCgojIGIpCnJiaW5kKG56XzE5MDBfMjAwMCwgamFtYWljYV8xOTAwXzIwMDApICU+JSAKICBnZ3Bsb3QoYWVzKHggPSB5ZWFyLCB5ID0gcG9wdWxhdGlvbl9taWxsaW9ucykpICsgCiAgZ2VvbV9saW5lKCkgKyAKICBmYWNldF9ncmlkKHJvd3MgPSAiY291bnRyeSIpICsgCiAgbGFicyh0aXRsZSA9ICIgTlogdnMgSmFtYWljYSBwb3B1bGF0aW9uIDE5MDAtMjAwMCIpCmBgYAoK</div>
 
 
 </div>

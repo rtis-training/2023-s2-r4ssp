@@ -24,6 +24,7 @@ output:
 
 ```{r setup, include=FALSE}
 library(knitr)
+library(tidyverse)
 
 knitr::opts_chunk$set(
   comment = "#>",
@@ -65,6 +66,8 @@ Tidy data principles:
 
 - Use `pivot_wider` from the `tidyr` package
 
+\
+
 ## Combining Data
 
 How to combine datasets together
@@ -96,10 +99,119 @@ Adding additional columns onto data sets by using a common identifier (key) betw
 
 - `full_join` from `dplyr` will join datasets on a key and keep all rows from both datasets filling in columns of non-matching entries with `NA`
 
+\
+
 ## Excercises
 
+1. Using the rodents_untidy.csv, read the data in and then:
+    a. use janitor to change the column names to the "small_camel" case
+    b. clean the data "weight" column
+        - convert "?" and -999 to NA
+        - convert the column to numeric
+    c. split the plotLocation column into two columns: "plot" and "location"
+    d. make the "plot" column into a numeric
+    e. **challenge**: fix the data in the species column for plot 3. The genus and species columns had accidentally been combined
+    
+\
 
+2. Using `flights` and `planes` from the `nycflights13` package, how many flights were flown in April 2013 by aircraft with each engine type? e.g. Turbo-fan, Turbo-jet, etc.
 
+\
 
+3. Using the gapminder_yearly_population_total.csv data create "long" a format dataset for 
+    a. New Zealand's population from 1900 to 2000
+    b. a country of your choice for the same time range
 
+\
+
+4. Using the datasets you created in 3, create:
+    a. a line plot for each
+    b. combine the datasets and create a facet plot using country with 1 column and 2 rows (hint look up `facet_grid`)
+
+### Example solutions
+
+1.
+
+```{r zn05-soln1, class.source = "fold-hide"}
+library(tidyverse)
+rodents <- read_csv("data/rodents_untidy.csv")
+# a)
+rodents <- rodents %>% janitor::clean_names(case = "small_camel")
+
+# b)
+rodents$weight[rodents$weight %in% c("-999", "?")] <- NA
+rodents$weight <- as.numeric(rodents$weight)
+
+# c)
+rodents <- rodents %>% separate(plotLocation, into = c("plot", "location"), sep = "_")
+
+# d)
+rodents$plot <- as.numeric(rodents$plot)
+
+# e)
+plot1_2 <- rodents %>% 
+  filter(plot ==1 | plot == 2)
+
+plot_3 <- rodents %>% 
+  filter(plot == 3) %>% 
+  select(-genus) %>% 
+  separate(species, into = c("genus", "species"), sep=" ")
+
+rodents_clean <- rbind(plot1_2, plot_3)
+rodents_clean
+```
+
+---
+
+2.
+
+```{r zn05-soln2, class.source = "fold-hide"}
+library(tidyverse)
+library(nycflights13)
+
+flights %>% 
+  filter(month == 3 & year == 2013 & !is.na(arr_time)) %>%
+  inner_join(planes, by = "tailnum") %>% 
+  group_by(engine) %>% 
+  summarise(n_flights = n())
+```
+
+---
+
+3.
+
+```{r zn05-soln3, class.source = "fold-hide", eval = FALSE}
+library(tidyverse)
+gapminder_yearly_pop <- read_csv("data/gapminder_yearly_population_millions_total.csv") %>% mutate(across(-country, ))
+
+gapminder_yearly_pop_long <- gapminder_yearly_pop %>% pivot_longer(-country, names_to = "year", values_to = "population_millions") %>% mutate(year = as.numeric(year))
+
+# a)
+nz_1900_2000 <- gapminder_yearly_pop_long %>% 
+  filter(between(year, 1900, 2000)) %>% 
+  filter(country == "New Zealand")
+
+# b)
+jamaica_1900_2000 <- gapminder_yearly_pop_long %>% 
+  filter(between(year, 1900, 2000)) %>% 
+  filter(country == "Jamaica")
+```
+
+---
+
+4.
+
+```{r zn05-soln4, class.source = "fold-hide", eval = FALSE}
+# a)
+nz_1900_2000 %>% ggplot(aes(x = year, y = population_millions)) + geom_line() + labs(title = "NZ population 1900-2000")
+
+jamaica_1900_2000 %>% ggplot(aes(x = year, y = population_millions)) + geom_line() + labs(title = "Jamaica population 1900-2000")
+
+# b)
+rbind(nz_1900_2000, jamaica_1900_2000) %>% 
+  ggplot(aes(x = year, y = population_millions)) + 
+  geom_line() + 
+  facet_grid(rows = "country") + 
+  labs(title = " NZ vs Jamaica population 1900-2000")
+```
 
