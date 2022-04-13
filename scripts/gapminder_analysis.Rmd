@@ -1,0 +1,31 @@
+---
+title: "Abridged Gapminder Analysis"
+date: 2022-04-13
+output: html_document
+---
+
+```{r setup, include = FALSE}
+library(tidyverse)
+```
+
+# Introduction
+
+Load in the Gapminder dataset so that it is ready for analysis
+
+```{r read.csv}
+# Save an imported data frame into a named variable
+gapminder_data <- read_csv("gapminder_data_2007.csv")
+```
+
+There are `r nrow(gapminder_data)` rows to the dataset.
+
+## Visualise Life Expectancy
+
+This is a histogram of the life expectancy.
+
+```{r hist}
+# Histogram of life expectancy values from gapminder
+gapminder_data %>% 
+  ggplot(aes(x = lifeExp)) + 
+  geom_histogram()
+```

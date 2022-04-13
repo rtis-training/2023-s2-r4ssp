@@ -21,7 +21,7 @@ navbar:
         - text: "Part 4: Transforming"
           href: 05-transform.html
         - text: "Part 5: Communicating"
-          # href: 06-communicate.html
+          href: 06-communicate.html
         - text: "-------------"
         - text: "Programming focus"
         - text: "Functions and Choices"
@@ -42,8 +42,8 @@ navbar:
           href: zoom_notes_04.html
         - text: "05 - Transforming data"
           href: zoom_notes_05.html
-    #     - text: "Handout 6"
-    #       href: zoom_notes_06.html
+        - text: "Handout 6"
+          href: zoom_notes_06.html
     #     - text: "Handout 7"
     #       href: zoom_notes_07.html
     #     - text: "Handout 8"

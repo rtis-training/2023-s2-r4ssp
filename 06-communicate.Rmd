@@ -31,12 +31,12 @@ knitr::opts_chunk$set(
 >
 > Readings:
 >
-> [R for Data Science - Chapter 27](https://r4ds.had.co.nz/r-markdown.html)
-> [R for Data Science - Chapter 29](https://r4ds.had.co.nz/r-markdown-formats.html)
-> [Reference: RMarkdown - the definitive guide](https://bookdown.org/yihui/rmarkdown/)
+> - [R for Data Science - Chapter 27](https://r4ds.had.co.nz/r-markdown.html)
+> - [R for Data Science - Chapter 29](https://r4ds.had.co.nz/r-markdown-formats.html)
+> - [Reference: RMarkdown - the definitive guide](https://bookdown.org/yihui/rmarkdown/)
 
 
-
+<!--
 This module is going to cover: 
 
 - using the {here} package to manage paths for scripts and rmarkdown
@@ -81,18 +81,108 @@ Making tables
 - knitr::kable
   - customising tables with the {kableExtra} package
 
+-----
+-->
+
+## Introducing RMarkdown
+
+So far through this course we've been using Rscripts for analysis which let us save and run our R code and include comments to let us know what we're doing along the way. We're now going to introduce RMarkdown documents - which are like Rscripts on steroids!
+
+RMarkdown is a framework that enables the creation of reproducible documents which are a combination of text, R code, and the evaluated output from the code all embedded in a single document. Not only that, but from a single RMarkdown source document, multiple different output formats can be produced such as html, pdf, and Word doc.
+
+Below is an example of an RMarkdown source document
+
+```{r echo = FALSE, comment = ""}
+cat(htmltools::includeText("scripts/gapminder_analysis.Rmd"))
+```
 
 
+There are three main components to this document
 
+1. The **YAML** header which is surrounded by `---`s and provides information for the compiling process
+2. R code **chunks** which are surrounded by ```` ``` ````s
+3. Text which can be formatted using the Markdown language.
 
+\
 
+### Example RMarkdown
 
+Before we delve into explaining each part of the RMarkdown file we're going to create our own from the included template that comes with RStudio.
 
+Lets create our own RMarkdown document now from the template. To do this go `File` -> `New File` -> `R Markdown`. You'll then be presented with a window that looks like this
 
+```{r, out.width="100%", echo = FALSE}
+include_graphics("images/06-new_rmd.png")
+```
 
+Take the opportunity to fill in your name and title then click `OK`.
+
+You should now have a document that looks like the following:
+
+```{r echo = FALSE, comment = ""}
+cat(htmltools::includeText("scripts/rmd_template.Rmd"))
+```
+
+\
+
+### Knitting
+
+In order to get our output document, we need to do a compiling step or **knit** the document - behind the scenes the text portions are formatted based on the markdown syntax, the R code is run and the results generated, and then the formatted text, code, and results are "**knitted**" together as a single output.
+
+One of the key benefits on a reproducibility side is that RMarkdown is evaluated from top to bottom externally from your session and so it needs to be self-reliant and have all the commands from reading your data in, processing it, and making your awesome tables and plots like in the [Visualisation Module](02-visualise.html).
+
+To knit the document look for the `knit` button in the top left of the "source" panel. The keyboard shortcut is <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>K</kbd> on PC or <kbd>Apple</kbd> + <kbd>Shift</kbd> + <kbd>K</kbd> on MacOS.
+
+```{r, out.width = "100%", echo = FALSE}
+include_graphics("images/01-markdown_knit_button.png")
+```
+You will then be prompted to save this script, call it "r_markdown_example.Rmd" as save it in your `scripts/` directory within your project directory. Once you have knitted a window should pop-up containing your brand new analysis document!
+
+Take a few minutes to read from top to bottom through your script and identifying the same features in your outputted HTML document.
+
+\
+
+## Markdown syntax
+
+- headers
+- bold/italics
+- lists
+- verbatim code
+
+## Code Chunks
+
+- working directory
+  - use of {here} package
+
+### Code Chunk Options
+
+- echo
+- eval
+- include
+- warning
+- message
+- fig
+- results
+- inline code
+
+## Figures and Tables
+
+### Images
+
+- \![alt text](url)
+- knitr::include_graphics()
+
+### Tables
+
+- markdown tables
+- creating tables with kable
+- modifying kable tables with kableExtra
+
+-----
 
 The below content is copy/pasted from appendix of module 1
------
+
+
 
 
 
