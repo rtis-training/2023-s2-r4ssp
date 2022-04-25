@@ -10,7 +10,6 @@ output:
     code_folding: show
 ---
 
-
 ```{r setup, include=FALSE}
 library(knitr)
 
@@ -24,18 +23,18 @@ knitr::opts_chunk$set(
 
 ```
 
-
 > #### Associated Material
 >
 > Zoom notes: [Zoom Notes 06 - Communicate](zoom_notes_06.html)
 >
 > Readings:
 >
-> - [R for Data Science - Chapter 27](https://r4ds.had.co.nz/r-markdown.html)
-> - [R for Data Science - Chapter 29](https://r4ds.had.co.nz/r-markdown-formats.html)
-> - [Reference: RMarkdown - the definitive guide](https://bookdown.org/yihui/rmarkdown/)
+> -   [R for Data Science - Chapter 27](https://r4ds.had.co.nz/r-markdown.html)
+> -   [R for Data Science - Chapter 29](https://r4ds.had.co.nz/r-markdown-formats.html)
+> -   [Reference: RMarkdown - the definitive guide](https://bookdown.org/yihui/rmarkdown/)
+> -   [RMarkdown Cheatsheet](https://www.rstudio.org/links/r_markdown_cheat_sheet)
 
-
+```{=html}
 <!--
 This module is going to cover: 
 
@@ -83,12 +82,16 @@ Making tables
 
 -----
 -->
-
+```
 ## Introducing RMarkdown
 
 So far through this course we've been using Rscripts for analysis which let us save and run our R code and include comments to let us know what we're doing along the way. We're now going to introduce RMarkdown documents - which are like Rscripts on steroids!
 
 RMarkdown is a framework that enables the creation of reproducible documents which are a combination of text, R code, and the evaluated output from the code all embedded in a single document. Not only that, but from a single RMarkdown source document, multiple different output formats can be produced such as html, pdf, and Word doc.
+
+In fact this entire course has been written using RMarkdown! At the top right of each page is a `Code` button that will let you download the RMarkdown code that created the page.
+
+\
 
 Below is an example of an RMarkdown source document
 
@@ -96,12 +99,11 @@ Below is an example of an RMarkdown source document
 cat(htmltools::includeText("scripts/gapminder_analysis.Rmd"))
 ```
 
-
 There are three main components to this document
 
-1. The **YAML** header which is surrounded by `---`s and provides information for the compiling process
-2. R code **chunks** which are surrounded by ```` ``` ````s
-3. Text which can be formatted using the Markdown language.
+1.  The **YAML** header which is surrounded by `---`s and provides information for the compiling process
+2.  R code **chunks** which are surrounded by ```` ``` ````s
+3.  Text which can be formatted using the Markdown language.
 
 \
 
@@ -109,7 +111,7 @@ There are three main components to this document
 
 Before we delve into explaining each part of the RMarkdown file we're going to create our own from the included template that comes with RStudio.
 
-Lets create our own RMarkdown document now from the template. To do this go `File` -> `New File` -> `R Markdown`. You'll then be presented with a window that looks like this
+Lets create our own RMarkdown document now from the template. To do this go `File` -\> `New File` -\> `R Markdown`. You'll then be presented with a window that looks like this
 
 ```{r, out.width="100%", echo = FALSE}
 include_graphics("images/06-new_rmd.png")
@@ -122,6 +124,25 @@ You should now have a document that looks like the following:
 ```{r echo = FALSE, comment = ""}
 cat(htmltools::includeText("scripts/rmd_template.Rmd"))
 ```
+
+### RStudio Visual Editor
+
+From Rstudio v1.2 there has been the inclusion of a live-preview editor that can be turned on that provides a graphical point-and-click method of editing Markdown.
+
+```{r, echo = FALSE, out.width = "75%", fig.align='center', fig.cap="Source view"}
+include_graphics("images/06-rmd-editor.png")
+```
+
+\
+
+```{r, echo = FALSE, out.width = "90%", fig.align='center', fig.cap="Visual view"}
+include_graphics("images/06-rstudio-rmd-visual.png")
+```
+
+
+\
+
+Documentation for how to use the editor and its functionality can be found at [https://rstudio.github.io/visual-markdown-editing/](https://rstudio.github.io/visual-markdown-editing/)
 
 \
 
@@ -136,6 +157,7 @@ To knit the document look for the `knit` button in the top left of the "source" 
 ```{r, out.width = "100%", echo = FALSE}
 include_graphics("images/01-markdown_knit_button.png")
 ```
+
 You will then be prompted to save this script, call it "r_markdown_example.Rmd" as save it in your `scripts/` directory within your project directory. Once you have knitted a window should pop-up containing your brand new analysis document!
 
 Take a few minutes to read from top to bottom through your script and identifying the same features in your outputted HTML document.
@@ -144,69 +166,211 @@ Take a few minutes to read from top to bottom through your script and identifyin
 
 ## Markdown syntax
 
-- headers
-- bold/italics
-- lists
-- verbatim code
+Markdown is a simplified language that uses symbols to encode formatting of text in a compiled document. Markdown documents can be converted to HTML or LaTeX (used for pdf) through Pandoc (which comes bundled with RStudio).
+
+We'll cover some of the common text formatting now:
+
+### Headings
+
+Headers - these use the \# for the largest heading (header 1) through to \###### the smallest heading (level 6) and correspond to the h1 to h6 heading tags in HTML.
+
+    # Level 1 heading
+
+    ## level 2 heading
+
+    ### level 3 heading
+
+    #### level 4 heading
+
+    ##### level 5 heading
+
+    ###### level 6 heading
+
+\
+
+### Bold/Italics
+
+*Italics* is encoded by surrounding word(s) with with a single asterix (\*) or underscore (\_), **bold** uses double asterix \*\* or underscores \_\_. To ^super^script something, surround it with carets (\^), and to ~sub~script surround it with tilde (\~). Surrounding with double tildes will ~~strikethrough~~.
+
+    *Italics* is encoded by surrounding word(s) with with a single asterix (\*) or underscore (_), **bold** uses double asterix ** or underscores __. To ^super^script something, surround it with carets (^), and to ~sub~script surround it with tilde (~). Surrounding with double tildes will ~~strikethrough~~.
+
+\
+
+### Lists
+
+Unordered lists can be made by starting a line with either a dash (-) or an asterix (\*) and if you want to nest items use a tab or two spaces to indent per layer.
+
+-   item 1
+-   item 2
+-   item 3
+    -   subitem 1
+    -   subitem 2
+        -   sub sub item 1
+-   item 4
+
+<!-- -->
+
+    - item 1
+    - item 2
+    - item 3
+      - subitem 1
+      - subitem 2
+        - sub sub item 1
+    - item 4
+
+Ordered lists start the line with a number followed by a fullstop. It is possible to nest unordered and ordered lists within the same list
+
+1.  item 1
+2.  item 2
+3.  item 3
+
+<!-- -->
+
+    1. item 1
+    2. item 2
+    3. item 3
+
+\
+
+### Block quotes
+
+> block quotes are a way of including blocks of text from someone else. To use these that the line with a \>
+
+    > block quotes are a way of including blocks of text from someone else. To use these that the line with a > 
+
+\
+
+### Links
+
+Links can be done as either the full url e.g. <https://www.google.com>, or you can [link words](https://www.google.com) by surrounding them with [] followed immediately by the url in parentheses.
+
+    Links can be done as either the full url e.g. https://www.google.com, or you can [link words](https://www.google.com) by surrounding them with [] followed immediately by the url in parentheses.
+
+\
+
+### Verbatim code
+
+    If you want to include code in your document, the use of verbatim blocks will stop the symbols being interpretted for markdown and will be reproduced asis in the document.
+    Theses blocks are started and ended with three backticks ```
+
+    ```
+    If you want to include code in your document as has been done to demonstrate the markdown code that generated each of the example paragraphs, the use of verbatim blocks will stop the symbols being interpreted for markdown and will be reproduced asis in the document.
+    Theses blocks are started and ended with three backticks ```
+    ```
+
+You can also do `inline verbatim` by surrounding the text with a single backtick
+
+    You can also do `inline verbatim` by surrounding the text with a single backtick
 
 ## Code Chunks
 
-- working directory
-  - use of {here} package
+Markdown provides verbatim code chunks, however where RMarkdown really comes into it's own is the ability to have the code that is included evaluated and the results also embedded directly below the code that was created them. While it's called RMarkdown you're also not just limited to R but other languages can be included and run (so long as the underlying engines are set up)
+
+A code chunk takes this format, similar to to the verbatim code chunk but following the first three backticks are curly braces, and inside the name of the language in lowercase - in this case "r"
+
+```{r echo = FALSE, comment = ""}
+cat(htmltools::includeText("scripts/code_chunk.Rmd"))
+```
+
+Would produce
+
+```{r}
+1 + 2
+```
+
+### Working directory
+
+The working directory or location that R is going to start looking for specified files (e.g. a csv to read in) for an RMarkdown will default to the location the RMarkdown file is saved. This can be a common source of errors in compiling an RMarkdown document if your RMarkdown is saved in a subdirectory and you don't have your file paths correct.
+
+If you are using an RStudio project and structure as introduced in [Introducing R and Rstudio](01-intro.html) you can make use of the [`here`](https://here.r-lib.org/articles/here.html) package which provides a nice way of dealing with relative file paths as if you were navigating from the top of your project directory.
 
 ### Code Chunk Options
 
-- echo
-- eval
-- include
-- warning
-- message
-- fig
-- results
-- inline code
+The behaviour of the code chunks can be modified with options. These options are provided inside the {}'s of the code chunk and are comma separated.
 
-## Figures and Tables
+The defaults for a chunk are:
+
+```{r echo = FALSE, comment = ""}
+cat(htmltools::includeText("scripts/code_chunk_defaults.Rmd"))
+```
+
+-   `echo=TRUE` will "echo" the code that is run above the results
+-   `eval=TRUE` means the code inside the chunk will be evaluated (run)
+-   `include=TRUE` means the code and the results will be included in the document
+-   `warning=TRUE` will include any warnings as output in the document
+-   `message=TRUE` will include messages as output in the document
+
+These can individually be specified and set to `FALSE` to disable the specific behaviour.
+
+## Images, Figures and Tables
 
 ### Images
 
-- \![alt text](url)
-- knitr::include_graphics()
+Inserting images into RMarkdown documents can be done in two main ways
+
+1.  Through markdown with ![alt text](url%20to%20image)
+2.  using a code chunk and the `include_graphics()` function from `knitr`
+
+The second method give you more control over the display of the image in the output because you can use the code chunk options to such as
+
+-   `fig.align` to control the alignment on the page of the image
+-   `fig.cap` to provide a figure caption
+-   `out.width` controls the output width
+-   `out.height` controls the output height
+
+### Figures
+
+Images generated through code such as plots will automatically be included as the output underneath the code that created them.
+
+The figure placement and size can be controlled through the code chunk options
+
+-   `fig.align` to control the alignment on the page of the image
+-   `fig.cap` to provide a figure caption
+-   `fig.width` controls the output width
+-   `fig.height` controls the output height
+-   `fig.asp` can be used to scale a figure
 
 ### Tables
 
-- markdown tables
-- creating tables with kable
-- modifying kable tables with kableExtra
+Tables can be created manually through markdown using the following syntax
 
------
+    col 1 | col 2 | col 3
+    ---|---|---
+    row 1 | a | 1
+    row 2 | b | 2
 
-The below content is copy/pasted from appendix of module 1
+which creates the following table:
 
+| col 1 | col 2 | col 3 |
+|-------|-------|-------|
+| row 1 | a     | 1     |
+| row 2 | b     | 2     |
 
+But these table can be quite laborious to create and customise. They also will need to be manually updated if your data changes. A better option is to create tables directly from your data using the `kable()` function from `knitr` which will take a dataframe and automatically create the markdown for it.
 
+```{r}
+library(palmerpenguins)
+library(knitr)
 
+penguins_small <- head(penguins, n = 10)
 
-## Some more R Markdown
-
-Let's look more closely at how you can use R Markdown to generate well-formatted research reports.
-
-1\. Following the procedure described in Handout 2 - Get Started with R, create an R Markdown file
-
-2\. The new file contains some template text. In the *second shaded block* replace the command `summary(cars)` with some of the code you have just written. Be careful not to delete either of the lines that begin with ```. Those symbols signal to RStudio that the contents is R code, not text. 
-
-For example, I made this replacement:
-
-```{r, fig.align='center', out.width = "50%", fig.cap = "Replace the template code with yours", fig.pos = "H", echo = FALSE, eval=FALSE}
-include_graphics("images/markdown_replace_code.png")
+kable(penguins_small)
 ```
 
-3\. You might also want to replace some of the text (in the non-shaded areas), to match your new code. 
+These kable tables can be further customised from the function parameters such as `col.names` to provide a vector of column names for the table, `digits` to round numbers, and `align` to control the alignment of the columns.
 
-4\. Knit the document (click the Knit button). Wait while R processes the document. It will generate output to the console, but you can ignore that for now.
+The additional customisation can be achieved through the use of the [`kableExtra` package](https://github.com/haozhu233/kableExtra) which provides numerous extra function for the the customisation of tables in both [HTML](https://cran.r-project.org/web/packages/kableExtra/vignettes/awesome_table_in_html.html) and [LaTeX](https://cran.r-project.org/web/packages/kableExtra/vignettes/awesome_table_in_pdf.pdf) which differ slightly in what is possible in each format. But they both include features such as row/column/cell colouring, text formatting, groupings, and footnotes.
 
-5\. Admire the result.
+\
 
-## Exercise - R Markdown
+## Citations
 
-1. Figure out how to generate a Word document with R Markdown (Hint: look at the dropdown list beside the Knit button, by clicking the small triangle).
-2. Some lines in the text areas of the R Markdown template start with ##, and the text is coloured Blue. What does the ## do? What do you think prefacing a line of text with ### would do? Test your theory.
+Citations can be inserted into an RMarkdown document. [This document from RStudio](https://rstudio.github.io/visual-markdown-editing/citations.html) goes through how to do it using ether Markdown or with the visual editor which can be linked with a citation manager such as Zotero, or by searching DOIs and more.
+
+\
+
+## Conclusion
+
+This module has only scratched the surface of what is possible with the highly versatile format that is RMarkdown. The main benefit that RMarkdown is that it provides a mechanism to create reproducible analysis documents that include prose, code, and generated outputs.
+
+Make sure to check out [RMarkdown - the definitive guide](https://bookdown.org/yihui/rmarkdown/) for a comprehensive introduction and guide to the possibilities of RMarkdown.
