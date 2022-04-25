@@ -160,6 +160,8 @@ include_graphics("images/01-markdown_knit_button.png")
 
 You will then be prompted to save this script, call it "r_markdown_example.Rmd" as save it in your `scripts/` directory within your project directory. Once you have knitted a window should pop-up containing your brand new analysis document!
 
+> RMarkdown scripts generally have the file extension `.Rmd`.
+
 Take a few minutes to read from top to bottom through your script and identifying the same features in your outputted HTML document.
 
 \
@@ -362,6 +364,39 @@ These kable tables can be further customised from the function parameters such a
 The additional customisation can be achieved through the use of the [`kableExtra` package](https://github.com/haozhu233/kableExtra) which provides numerous extra function for the the customisation of tables in both [HTML](https://cran.r-project.org/web/packages/kableExtra/vignettes/awesome_table_in_html.html) and [LaTeX](https://cran.r-project.org/web/packages/kableExtra/vignettes/awesome_table_in_pdf.pdf) which differ slightly in what is possible in each format. But they both include features such as row/column/cell colouring, text formatting, groupings, and footnotes.
 
 \
+Here is an example of some extra customisations that could be done to the original table that was demonstrated above with `kable`. If your customisations on your table rely on the data staying the same they might need tobe redone if you update the data in the table. 
+
+```{r}
+library(palmerpenguins)
+library(knitr)
+library(kableExtra)
+
+penguins_small <- head(penguins, n = 10)
+
+# kbl comes from kableExtra and is a version of kable()
+kableExtra::kbl(penguins_small, 
+    col.names = c("Species", 
+                  "Island", 
+                  "Bill Length", 
+                  "Bill Depth", 
+                  "Flipper Length", 
+                  "Body Mass (g)", 
+                  "Sex", 
+                  "Year"), 
+    align = "llrrrrcr",
+    caption = "A table showing the measurements of the first 10 penguins from the Palmers Penguins dataset.") %>% 
+  kableExtra::kable_styling(full_width = TRUE,
+                            position = 'center',
+                            font_size = 16,
+                            bootstrap_options = 'striped') %>% 
+  # add in a grouping header for the columns using mm
+  kableExtra::add_header_above(header = c("","", "Measurements (mm)" = 3, "", "", ""))
+  
+```
+
+\
+
+
 
 ## Citations
 
