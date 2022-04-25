@@ -310,8 +310,8 @@ These can individually be specified and set to `FALSE` to disable the specific b
 
 Inserting images into RMarkdown documents can be done in two main ways
 
-1.  Through markdown with ![alt text](url%20to%20image)
-2.  using a code chunk and the `include_graphics()` function from `knitr`
+1.  Through markdown with `![alt text](path/to/image)`
+2.  Using a code chunk and the `include_graphics()` function from `knitr`
 
 The second method give you more control over the display of the image in the output because you can use the code chunk options to such as
 
@@ -390,7 +390,12 @@ kableExtra::kbl(penguins_small,
                             font_size = 16,
                             bootstrap_options = 'striped') %>% 
   # add in a grouping header for the columns using mm
-  kableExtra::add_header_above(header = c("","", "Measurements (mm)" = 3, "", "", ""))
+  kableExtra::add_header_above(header = c("",
+                                          "", 
+                                          "Measurements (mm)" = 3, 
+                                          "", 
+                                          "", 
+                                          ""))
   
 ```
 
