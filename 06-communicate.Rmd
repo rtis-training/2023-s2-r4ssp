@@ -32,7 +32,7 @@ knitr::opts_chunk$set(
 > -   [R for Data Science - Chapter 27](https://r4ds.had.co.nz/r-markdown.html)
 > -   [R for Data Science - Chapter 29](https://r4ds.had.co.nz/r-markdown-formats.html)
 > -   [Reference: RMarkdown - the definitive guide](https://bookdown.org/yihui/rmarkdown/)
-> -   [RMarkdown Cheatsheet](https://www.rstudio.org/links/r_markdown_cheat_sheet)
+> -   [RMarkdown Reference Guide](https://www.rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf)
 
 ```{=html}
 <!--
@@ -85,9 +85,9 @@ Making tables
 ```
 ## Introducing RMarkdown
 
-So far through this course we've been using Rscripts for analysis which let us save and run our R code and include comments to let us know what we're doing along the way. We're now going to introduce RMarkdown documents - which are like Rscripts on steroids!
+So far through this course we've been using Rscripts for analysis which lets us save and run our R code, including comments about what we're doing along the way. We're now going to introduce RMarkdown documents - which are like Rscripts on steroids!
 
-RMarkdown is a framework that enables the creation of reproducible documents which are a combination of text, R code, and the evaluated output from the code all embedded in a single document. Not only that, but from a single RMarkdown source document, multiple different output formats can be produced such as html, pdf, and Word doc.
+RMarkdown is a framework that enables the creation of reproducible documents which are a combination of text, R code, and the evaluated output from the code all embedded in a single document. Not only that, but from a single RMarkdown source document, multiple different output formats can be produced such as HTML, PDF, and Word docs.
 
 In fact this entire course has been written using RMarkdown! At the top right of each page is a `Code` button that will let you download the RMarkdown code that created the page.
 
@@ -104,6 +104,9 @@ There are three main components to this document
 1.  The **YAML** header which is surrounded by `---`s and provides information for the compiling process
 2.  R code **chunks** which are surrounded by ```` ``` ````s
 3.  Text which can be formatted using the Markdown language.
+
+
+A reference guide of RMarkdown syntax can be found through `Help` -> `Cheat Sheets` -> `R Markdown Reference Guide` in the RStudio menu.
 
 \
 
@@ -168,77 +171,85 @@ Take a few minutes to read from top to bottom through your script and identifyin
 
 ## Markdown syntax
 
-Markdown is a simplified language that uses symbols to encode formatting of text in a compiled document. Markdown documents can be converted to HTML or LaTeX (used for pdf) through Pandoc (which comes bundled with RStudio).
-
-We'll cover some of the common text formatting now:
+Markdown is a simplified language that uses symbols to encode formatting of text in a compiled document. Markdown documents can be converted to HTML or LaTeX (used for PDF) through Pandoc (which comes bundled with RStudio).
 
 ### Headings
 
 Headers - these use the \# for the largest heading (header 1) through to \###### the smallest heading (level 6) and correspond to the h1 to h6 heading tags in HTML.
 
-    # Level 1 heading
+```
+# Level 1 heading
 
-    ## level 2 heading
+## level 2 heading
 
-    ### level 3 heading
+### level 3 heading
 
-    #### level 4 heading
+#### level 4 heading
 
-    ##### level 5 heading
+##### level 5 heading
 
-    ###### level 6 heading
+###### level 6 heading
+```
 
 \
 
+We'll cover some more of the common text formatting now, where you'll see the rendered paragraph followed by the markdown syntax that was used to generate it:
+
 ### Bold/Italics
 
-*Italics* is encoded by surrounding word(s) with with a single asterix (\*) or underscore (\_), **bold** uses double asterix \*\* or underscores \_\_. To ^super^script something, surround it with carets (\^), and to ~sub~script surround it with tilde (\~). Surrounding with double tildes will ~~strikethrough~~.
 
-    *Italics* is encoded by surrounding word(s) with with a single asterix (\*) or underscore (_), **bold** uses double asterix ** or underscores __. To ^super^script something, surround it with carets (^), and to ~sub~script surround it with tilde (~). Surrounding with double tildes will ~~strikethrough~~.
+*Italics* is encoded by surrounding word(s) with with a single asterisk (\*) or underscore (\_), **bold** uses double asterisks \*\* or underscores \_\_. To ^super^script something, surround it with carets (\^), and to ~sub~script surround it with tilde (\~). Surrounding with double tildes will ~~strikethrough~~.
+
+```
+*Italics* is encoded by surrounding word(s) with with a single asterisk (\*) or underscore (_), **bold** uses double asterisks ** or underscores __. To ^super^script something, surround it with carets (^), and to ~sub~script surround it with tilde (~). Surrounding with double tildes will ~~strikethrough~~.
+```
 
 \
 
 ### Lists
 
-Unordered lists can be made by starting a line with either a dash (-) or an asterix (\*) and if you want to nest items use a tab or two spaces to indent per layer.
+Unordered lists can be made by starting a line with either a dash (-) or an asterisk (\*) and if you want to nest items use a tab or two spaces to indent per layer.
 
--   item 1
--   item 2
--   item 3
-    -   subitem 1
-    -   subitem 2
-        -   sub sub item 1
--   item 4
-
-<!-- -->
-
-    - item 1
-    - item 2
-    - item 3
-      - subitem 1
-      - subitem 2
+- item 1
+- item 2
+- item 3
+    - subitem 1
+    - subitem 2
         - sub sub item 1
-    - item 4
+- item 4
 
+
+```
+- item 1
+- item 2
+- item 3
+  - subitem 1
+  - subitem 2
+    - sub sub item 1
+- item 4
+```
 Ordered lists start the line with a number followed by a fullstop. It is possible to nest unordered and ordered lists within the same list
 
 1.  item 1
 2.  item 2
 3.  item 3
 
-<!-- -->
 
-    1. item 1
-    2. item 2
-    3. item 3
+```
+1. item 1
+2. item 2
+3. item 3
+```
 
 \
 
 ### Block quotes
 
-> block quotes are a way of including blocks of text from someone else. To use these that the line with a \>
+> block quotes are a way of including blocks of text from someone else. To use these that the line with a \> angle bracket
 
-    > block quotes are a way of including blocks of text from someone else. To use these that the line with a > 
+```
+> block quotes are a way of including blocks of text from someone else. To use these begin the line with a > angle bracket
+```
 
 \
 
@@ -246,29 +257,37 @@ Ordered lists start the line with a number followed by a fullstop. It is possibl
 
 Links can be done as either the full url e.g. <https://www.google.com>, or you can [link words](https://www.google.com) by surrounding them with [] followed immediately by the url in parentheses.
 
-    Links can be done as either the full url e.g. https://www.google.com, or you can [link words](https://www.google.com) by surrounding them with [] followed immediately by the url in parentheses.
-
+```
+Links can be done as either the full url e.g. https://www.google.com, or you can [link words](https://www.google.com) by surrounding them with [] followed immediately by the url in parentheses.
+```
 \
 
 ### Verbatim code
 
-    If you want to include code in your document, the use of verbatim blocks will stop the symbols being interpretted for markdown and will be reproduced asis in the document.
-    Theses blocks are started and ended with three backticks ```
+````
+If you want to include code in your document, the use of verbatim blocks will stop the symbols being interpreted for markdown and will be reproduced asis in the document.
+These blocks are started and ended with three backticks ```
+````
 
-    ```
-    If you want to include code in your document as has been done to demonstrate the markdown code that generated each of the example paragraphs, the use of verbatim blocks will stop the symbols being interpreted for markdown and will be reproduced asis in the document.
-    Theses blocks are started and ended with three backticks ```
-    ```
+````
+
+```
+If you want to include code in your document as has been done to demonstrate the markdown code that generated each of the example paragraphs, the use of verbatim blocks will stop the symbols being interpreted for markdown and will be reproduced as is in the document.
+Theses blocks are started and ended with three backticks ```
+```
+````
 
 You can also do `inline verbatim` by surrounding the text with a single backtick
 
-    You can also do `inline verbatim` by surrounding the text with a single backtick
+```
+You can also do `inline verbatim` by surrounding the text with a single backtick
+```
 
 ## Code Chunks
 
-Markdown provides verbatim code chunks, however where RMarkdown really comes into it's own is the ability to have the code that is included evaluated and the results also embedded directly below the code that was created them. While it's called RMarkdown you're also not just limited to R but other languages can be included and run (so long as the underlying engines are set up)
+Markdown provides verbatim code chunks, however where RMarkdown really comes into its own is the ability to have the code that is included evaluated and the results also embedded directly below the code that was created them. While it's called RMarkdown you're also not just limited to R but other languages can be included and run (so long as the underlying engines are set up)
 
-A code chunk takes this format, similar to to the verbatim code chunk but following the first three backticks are curly braces, and inside the name of the language in lowercase - in this case "r"
+A code chunk takes this format, similar to to the verbatim code chunk but following the first three backticks are curly braces, and inside the name of the language in lower case - in this case "r"
 
 ```{r echo = FALSE, comment = ""}
 cat(htmltools::includeText("scripts/code_chunk.Rmd"))
@@ -280,11 +299,44 @@ Would produce
 1 + 2
 ```
 
+\
+
 ### Working directory
 
 The working directory or location that R is going to start looking for specified files (e.g. a csv to read in) for an RMarkdown will default to the location the RMarkdown file is saved. This can be a common source of errors in compiling an RMarkdown document if your RMarkdown is saved in a subdirectory and you don't have your file paths correct.
 
+> Don't use `setwd()` in an RMarkdown. It will cause issues.
+
 If you are using an RStudio project and structure as introduced in [Introducing R and Rstudio](01-intro.html) you can make use of the [`here`](https://here.r-lib.org/articles/here.html) package which provides a nice way of dealing with relative file paths as if you were navigating from the top of your project directory.
+
+For instance given the following project setup:
+
+```
+my_project/
+  |- data/
+      \- my_csv.csv
+  |- docs/
+  |- outputs/
+  |- scripts/
+      \- my_rmd.Rmd
+  \ - my_project.Rproj
+  
+```
+
+If we were working on the file `my_rmd.Rmd` without the use of `here` we would need to use relative paths from `scripts/` (we want to use relative paths within our project because they aren't dependant on any particular computer making our project transferable) and the command to read data in would look like this:
+
+```{r , eval = FALSE}
+my_data <- read_csv("../data/my_csv.csv")
+```
+
+Using `here` everything is relative from the `.Rproj` file which can be easier to think of since it follows a relative path the same structure as the project, not relative to where the file you're currently working on lives - `here` works all that out for you:
+
+```{r, eval=FALSE}
+library(here)
+my_data <- read_csv(here("data/my_csv.csv"))
+```
+
+\
 
 ### Code Chunk Options
 
@@ -364,7 +416,8 @@ These kable tables can be further customised from the function parameters such a
 The additional customisation can be achieved through the use of the [`kableExtra` package](https://github.com/haozhu233/kableExtra) which provides numerous extra function for the the customisation of tables in both [HTML](https://cran.r-project.org/web/packages/kableExtra/vignettes/awesome_table_in_html.html) and [LaTeX](https://cran.r-project.org/web/packages/kableExtra/vignettes/awesome_table_in_pdf.pdf) which differ slightly in what is possible in each format. But they both include features such as row/column/cell colouring, text formatting, groupings, and footnotes.
 
 \
-Here is an example of some extra customisations that could be done to the original table that was demonstrated above with `kable`. If your customisations on your table rely on the data staying the same they might need tobe redone if you update the data in the table. 
+
+Here is an example of some extra customisations that could be done to the original table that was demonstrated above with `kable`. If your customisations on your table rely on the data staying the same they might need to be redone if you update the data in the table. 
 
 ```{r}
 library(palmerpenguins)
@@ -413,4 +466,4 @@ Citations can be inserted into an RMarkdown document. [This document from RStudi
 
 This module has only scratched the surface of what is possible with the highly versatile format that is RMarkdown. The main benefit that RMarkdown is that it provides a mechanism to create reproducible analysis documents that include prose, code, and generated outputs.
 
-Make sure to check out [RMarkdown - the definitive guide](https://bookdown.org/yihui/rmarkdown/) for a comprehensive introduction and guide to the possibilities of RMarkdown.
+Make sure to check out [RMarkdown - the definitive guide](https://bookdown.org/yihui/rmarkdown/) for a comprehensive introduction and guide to the possibilities of RMarkdown. There are also packages for creating multi-document RMarkdown outputs such as entire websites (`packagedown`, `distill`), blogs (`blogdown`), and books (`bookdown`).

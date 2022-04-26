@@ -28,29 +28,64 @@ knitr::opts_chunk$set(
 >
 > Readings:
 >
-> [R for Data Science - Chapter 27](https://r4ds.had.co.nz/r-markdown.html)
-> [R for Data Science - Chapter 29](https://r4ds.had.co.nz/r-markdown-formats.html)
-> [Reference: RMarkdown - the definitive guide](https://bookdown.org/yihui/rmarkdown/)
+> -   [R for Data Science - Chapter 27](https://r4ds.had.co.nz/r-markdown.html)
+> -   [R for Data Science - Chapter 29](https://r4ds.had.co.nz/r-markdown-formats.html)
+> -   [Reference: RMarkdown - the definitive guide](https://bookdown.org/yihui/rmarkdown/)
+> -   [RMarkdown Reference Guide](https://www.rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf)
+
+## What is RMarkdown
+
+There are three main components to an RMarkdown document
+
+1.  The **YAML** header which is surrounded by `---`s and provides information for the compiling process
+2.  R code **chunks** which are surrounded by ```` ``` ````s
+3.  Text which can be formatted using the Markdown language.
 
 
-Scripts
+A reference guide of RMarkdown syntax can be found through `Help` -> `Cheat Sheets` -> `R Markdown Reference Guide` in the RStudio menu.
 
-Rmarkdown
+### Example Rmd
 
-- yaml
-- markdown
-- code chunks
-  - eval
-  - include
-  - warning
-  - message
-  - fig
-  - results
-- images
-  - include_graphics
-  - `![]()`
-- tables
-  - kable
-  - {kableExtra}
+Create your own RMarkdown document now from the template. To do this go `File` -\> `New File` -\> `R Markdown`.
 
-- {here}
+### Knitting
+
+"Knit" or compile the document using the `knit` button or <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>K</kbd>.
+
+\
+
+## Markdown syntax
+
+Refer to the [RMarkdown Reference Guide](https://www.rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf)
+
+\
+
+## Code Chunks
+
+Code chunks look like:
+
+```{r echo = FALSE, comment = ""}
+cat(htmltools::includeText("scripts/code_chunk.Rmd"))
+```
+
+- Code chunks are executed as part of the document "knitting" and the code and output embedded in the document
+
+- Be aware of the working directory (don't use `setwd()`). Ideally use the `here` package to manage paths.
+
+\
+
+## Images, Figures, and Tables
+
+- Images can be included though markdown, or by using the `include_graphics()` from `knitr` in a code chunk - the latter provides more options for customising for size/position.
+
+- Figures are created from code chunks and chunk options are used to control size/position
+
+- Tables can be manually created using the markdown syntax or created automatically from your data using the `kable()` from `knitr`.
+
+Further customising of `kable` tables can be done with the `kableExtra` package.
+
+\
+
+## Citations
+
+Citations can be inserted into an RMarkdown document. [This document from RStudio](https://rstudio.github.io/visual-markdown-editing/citations.html) goes through how to do it
