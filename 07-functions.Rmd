@@ -35,72 +35,176 @@ knitr::opts_chunk$set(
 
 # Introduction
 
-These next two modules are going to introduce the idea of modularity of code. What does this actually mean in practice though? What this means is that we're going to be looking out for where we are copy and pasting the same code, and looking to turn this into a reusable function instead -- giving ourselves a single place to make updates/changes, rather than having to track down all duplications and making the changes to them. There is an upfront 'cost' to doing this because we have to put more effort in initially but this pays off in the long run as we benefit from less maintenance burden, and we gain more trust that our code is behaving how we want it.
+As the work you do in R becomes more complex, your R scripts will get longer, and may become difficult to manage. You may find that it is difficult to locate particular bits of code, or that you seem to be writing the same, or very similar bits of code, over and over again. If you want to modify those bits, there are multiple place in the script you have to edit, typos start to creep in, and the whole process becomes unpleasant.
 
-Largely up until this point all the functions in R for what you want to do have been provided through either "Base R" or packages that have needed to be installed such as the tidyverse. In this module and the next, we're going to learn how to create our own functions within R so that we can do exactly what we want to do. The content for this module is covered well by [R4DS chapter 19 (https://r4ds.had.co.nz/functions.html)](https://r4ds.had.co.nz/functions.html), so make sure to have a read of that chapter. Part of making functions requires us to make our code be able to make choices, this module will also cover this or as it is also know "flow of control".
+To prevent this, large programs need to be organised into **logical modules**. Sections of code that perform a clearly delineated task can be enacapsulated and named. The encapsulated code can be invoked simply by typing the name -- no need to cut and paste, no need to modify multiple copies. Scripts are shorter and easier to manage. Code that is organised this way is said to be **modular**. Modular code is better code.
 
-<!-- [Previous course of Murray](https://github.com/murraycadzow/R_functions_and_iterators/blob/master/Code/functions.Rmd) -->
+In R, the main code module is the **function**. We have already used many functions, like `read.csv` and `sqrt' and `ggplot`. We invoke them in our code as single commands, but each of these commands actually ecapsulates many, many (add another "many" for ggplot) lines of code. We call the function by name, and all the associated code is executed.
+
+### Exercise
+
+Many functions in R will display their code in the console. Type the function name **without the engine ()** into the console, and the encapsulated command will be shown. Look at the code for function `filter`.
+
+To make our own code modular, we can define our own functions. We write the code for a function somewhere in our script file. We can then **call** the function by name anywhere else in our script file and all the code is executed. Just as with functions like `read-csv` we can pass data into our function so it know what to operate on. Just like `sqrt` we can arrange for our function to return a result that we can store in a variable. 
 
 
-
-**Learning Objectives**
-
--  Be able to create custom functions
-    -   Define arguments
-    -   Input check
-    -   Return results
-- Use control statements to perform input checking on functions
-
-# Functions
-
-Firstly, you might be wondering "Why would I want to create my own functions when I can find a package that already does what I want?" It's great if someone else has made something that does what you want, but sometimes it doesn't fit your exact purpose. Another reason to learn about functions is for modularity and maintainability of your own code/analysis. From [R for Data Science](https://r4ds.had.co.nz/functions.html):
-
-> One of the best ways to improve your reach as a data scientist is to write functions. Functions allow you to automate common tasks in a more powerful and general way than copy-and-pasting. Writing a function has three big advantages over using copy-and-paste:
->
-> 1.  You can give a function an evocative name that makes your code easier to understand.
-> 2.  As requirements change, you only need to update code in one place, instead of many.
-> 3.  You eliminate the chance of making incidental mistakes when you copy and paste (i.e. updating a variable name in one place, but not in another).
->
-> You should consider writing a function whenever you've copied and pasted a block of code more than twice (i.e. you now have three copies of the same code).
-
-## Composition of a function
+# Function Declaration Syntax
 
 A function in R is comprised of four parts:
 
 1. a name
-2. inputs (arguments/variables)
-3. the body (the code that does something)
-4. output (what gets returned after the body has run)
+2. the body (the code that does something)
+3. (optionally) inputs
+4. (optionally) output
 
-As you have been using R you will have noticed that many tasks have a particular function already available for you to use, such as `mean` or `sd`. In this section we are going to learn how to make our own functions. We can define our own functions using the `function()` function.
 
-Inside the parenthesis we define what variables are going to be passed to our function and curly braces contain the body of the function. If we want to return a value from our function  R will automatically return the result of the last line of the function body or we end can do so explicitly with `return()`.
+## Defining a function
 
-We can assign this new function to a variable so that we call on it later, it is possible to have an _anonymous_ function but these are usually found as part of `map` or the apply family (introduced in Module 8) but we won't be covering anonymous functions in this course. 
+We will begin with the simplest function, one that accepts no input data, and returns no result. We **declare** the function using keyword `function`:
 
-To call our new function we now use the variable name and pass any required arguments.
+*name_of_function* <- **function()**
+{
+  *Code body*
+}
 
-Here is an example of how to create a function:
-```{r}
-# an example function skeleton
-name <- function(variables) {
-  # body
+Subesquently we **call** the function as:
+
+*name_of_function*()
+
+At that point, all the commands in the code body are executed.
+
+For example, in the current public health situation, we often see discussions of normal body temperature (for detection of fever). We might want to be able to translate the normal temperature from Celsius to Fahreneit (as used in the North American literature). This is a logically well-delineated computation, so it makes sense to encapsulate it in a function.
+
+```{r declare a function}
+
+# Declare/define the function
+fever_in_fahrenheit <- function()
+{
+  fever_in_celsius <- 37.5
+  converted_to_fahrenheit <-(fever_in_celsius*9/5) + 32
+  print(converted_to_fahrenheit)
 }
 ```
 
-**NB:** in RStudio you can get a code snippet/template by typing "fun" and hitting `<tab>`
-
-Here is an example function that will double the value of the provided number:
-```{r, eval = TRUE, echo = TRUE}
-# Doubles the provided number
-double <- function( num ){
-  num * 2
-}
-
-double(2)
+```{r call}
+# Call a user-defined function by name
+fever_in_fahrenheit()
 ```
 
-**Important: Functions don't auto-update when you modify the code that creates them, you must re-run the entire function code block.**
+Some things to note:
+
+-  Typing out the function declaration is not actually enough to make the function available for calling. The declaration code (from the start of the name to the closing curly bracket) **must first be executed**. Execute this code in a script as we always do, by selecting all the code (with the mouse) and typing ctrl-Enter (Windows) or cmd-Enter (Mac).
+- When you execute a function declaration, **nothing happens**. In our example, you will not see the output of the print statement when you execute the declaration code. Executing a declaration **does not run the code body**. It simply parses the code body and, if there are no errors, stores it in the environment. Effectively, it informs RStudio that a function with this name exists, and defines the code which it encapsulates, so it can be called later.
+- To execute the code body, state the name of the function followed by (), with no intervening spaces. This **calls** the function; we think of () as the **call operator**. Whether the code body contains 1 line or 1,000 lines or more, simply calling the function by name runs all the encapsulated code.
+
+
+In R a function cannot be called until after the function declaration has been executed, as described above. Consider the following example:
+
+```{r clear, echo=FALSE}
+rm(list = ls())
+```
+
+```{r wrong order}
+
+# If you try to call the function before it is declared....
+fever_in_fahrenheit()
+
+fever_in_fahrenheit <- function()
+{
+  fever_in_celsius <- 37.5
+  converted_to_fahrenheit <-(fever_in_celsius*9/5) + 32
+  print(converted_to_fahrenheit)
+}
+
+```
+
+There are more advanced techniques that allow us to call functions contained in other script files where we cannot directly select and execute the declaration code. See the reading for discussion.
+
+
+# Providing data to a function
+
+Consider the following function, which demonstrated how to compute BMI (body mass index) in R, using the given values for height (in metres) and weight (in kg):
+
+```{r calc BMI}
+
+# Declare function calc_BMI
+calc_BMI <- function()
+{
+  weight <- 73
+  height <- 1.68
+  bmi <- weight/height^2 # ^ is the exponentiation operator
+  
+  print(bmi)
+}
+
+# Call function calc_BMI
+calc_BMI()
+
+```
+This function contains nice tidy code and is mathematically correct, but unless we happen to want the BMI of a person with exactly this height and weight, it is of no use to us. A useful function describes the computation (in this case taking the ratio or weight to height squared), and **accepts the data values** when it is called.
+
+We have seen this many times when writing R code, when we call a function repeatedly on different input values:
+
+```{r inputs}
+
+sqrt(14)
+
+sqrt(820)
+
+sqrt(0.65)
+
+```
+
+To declare a function that can accept input arguments, perform these steps:
+
+1. Between the round brackets that follow the keyword `function`, place a **variable name** for each piece of data you wish to input when the function is called.
+2. In the function body refer to the input variables **by the name you placed between the round brackets**. You DO NOT need to initialise the variables inside the code body -- in fact you MUST NOT do so. Variables with those names are automatically created for you when the function is called. 
+3. When calling the function, provide **a value** for each input variable. You do not need to repeat the variable name, just provide values, separated by commas, in the same order as the variables are listed in the declatration.
+4. When the function is called, the system creates the input variables, assigns them the corresponding values from the call statement, and executes the code body, using those variables.
+
+We can modify our calc_BMI function to accept weight and height as input variables, as shown. Compare this version to the earlier version. Note that we *do not* declare and initialise weight and height inside the code body.
+
+```{r inputs}
+
+# Declare function calc_BMI
+calc_BMI <- function(weight, height)
+{
+  bmi <- weight/height^2 # ^ is the exponentiation operator
+  
+  print(bmi)
+}
+
+# Call function calc_BMI
+calc_BMI(73, 1.68)
+
+```
+
+## Exercise
+
+Declaring a function with inputs defines the required **interface** of the function. That is, it defines what you have to provide if you want to call the function. If the caller violates the interface, the code is not guaranteed to work. For example:
+
+```{r bad args 1}
+calc_BMI()
+```
+
+```{r bad_args 2}
+calc_BMI(16)
+```
+
+```{r bad args 3}
+calc_BMI(73, 168, 42)
+```
+
+In some programming languages, one is required to specify the data type (e.g. number, string, data frame, etc.) of each input argument. Code that tries to pass in the wrong type of data will not compile. In R this is not required. R will try to run your code no matter what sort of data it gets. However, if it tries to operate on the wrong type of data, it will throw an error:
+
+
+```{r bad args 4}
+calc_BMI(42, "fred")
+```
+
+Naturally, R doesn't understand how to apply the exponentiation operator to "fred", and it is telling you so.
+
+
 
 
 We can also have multiple arguments for our functions:
