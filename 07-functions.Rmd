@@ -179,7 +179,7 @@ calc_BMI(73, 1.68)
 
 ```
 
-## Exercise
+## Following the rules
 
 Declaring a function with inputs defines the required **interface** of the function. That is, it defines what you have to provide if you want to call the function. If the caller violates the interface, the code is not guaranteed to work. For example:
 
@@ -204,7 +204,45 @@ calc_BMI(42, "fred")
 
 Naturally, R doesn't understand how to apply the exponentiation operator to "fred", and it is telling you so.
 
-#STOPPED HERE
+
+
+## More on the rules
+
+Consider the following code:
+
+```{r args 2, eval = false}
+
+# Declare the function
+compute_area <- function(width)
+{
+  area <- width * height
+  print(area)
+}
+
+# Call the function
+compute_area(35)
+```
+
+
+The function `compute_area` is defined with one argument, named **width**. When it is called, we must provide one value between the round brackets. In the call, we have correctly provided one argument, of the correct data type. Will the call `compute_area(35)` work correctly, or will it throw an error? What error will it throw?
+
+When `compute_area(35)` is executed, it produces an error message: `Error in compute_area(35) : object 'height' not found`. In the code body of compute_area, we refer to an entity `height`. Since that entity is not surrounded by double-quotes, R expects to find a variable named **height** existing in the environment, and no such variable exists, because we have neither created one directly (with an assignment statement) nor passed one in as an argument to the function. 
+
+In the same line of code, we also refer to an entity `weight`. Note that R does not complain about being unable to find `weight`. That is because we defined an input argument called **weight**. 
+
+1. How would you modify function `compute_area` to eliminate the error?
+2. How would this change the form of the call to `compute_area`.
+
+
+## Taking your time with argument passing
+
+Traditionally, new programmers find the syntax of argument passing *extremely* confusing. There are too many interacting parts: we have variable names in the declaration, variables used in the code body, and values passed in the call. At first exposure, it can be unclear how all these parts work. If this is the first time you have seen this syntax, it is worth taking some time to experiment with it to solidify your understanding. You might like to make up some simple user defined functions of your own to practice managing input data.
+
+
+
+
+
+
 
 
 
