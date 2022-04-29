@@ -204,6 +204,8 @@ calc_BMI(42, "fred")
 
 Naturally, R doesn't understand how to apply the exponentiation operator to "fred", and it is telling you so.
 
+#STOPPED HERE
+
 
 
 
