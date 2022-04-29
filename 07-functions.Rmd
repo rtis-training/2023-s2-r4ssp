@@ -239,111 +239,54 @@ In the same line of code, we also refer to an entity `weight`. Note that R does 
 Traditionally, new programmers find the syntax of argument passing *extremely* confusing. There are too many interacting parts: we have variable names in the declaration, variables used in the code body, and values passed in the call. At first exposure, it can be unclear how all these parts work. If this is the first time you have seen this syntax, it is worth taking some time to experiment with it to solidify your understanding. You might like to make up some simple user defined functions of your own to practice managing input data.
 
 
+# Getting output from a function
 
+In all of our examples so far, we have used a print statement to show the result of the function's computation. This is, of course, not adequate in real programming, as a print statement simply writes to the console. The computed value is not available to use later in our script. We usually want to be able to save the result of a function into a variable, as we have done with the built-in functions we have used earlier in the course. For example, we might say `x <- sqrt(22)`, creating a variable called *x* that stores the square root of 22. 
 
+When a function makes its result available for storage, we say it is **returning** it's result. The command `sqrt(22)` **returns** the square root of 22, and we can store it in a variable using the assignment statement.
 
+We can make our user-defined function behave in the same way, by using `return` instead of `print`. For example, we can modify `calc_bmi`:
 
-
-
-
-
-We can also have multiple arguments for our functions:
-
-```{r, eval = TRUE, echo = TRUE}
-# Calculates BMI on a supplied height (m) and weight (kg)
-calcBMI <- function(height, weight){
-  weight / height ^ 2
+```{r return}
+# Declare function calc_BMI
+calc_BMI <- function(weight, height)
+{
+  bmi <- weight/height^2 # ^ is the exponentiation operator
+  
+  return(bmi)
 }
-
-
-calcBMI(height = 1.68, weight = 73)
 ```
 
-**NB:** Variables declared only inside a function don't exist outside of the function -- see the _Scope_ section.
+With this change to the function, we can store the result of the BMI computation in a variable for later use.
 
-We'll now go into some more explanation about the each part of the function composition. 
+```{r saving a return}
 
-### Naming
+# Save the return value in a variable.
+bmi_result <- calc_BMI(75, 1.75)
 
-Naming things is really hard. A helpful tip for naming of functions is the name should give the user an idea of what the function *does*, so should contain a verb. Try not to choose a name of a variable or function that already exists, as this will prevent you from being able to call upon the other version by using it's short name that you'll be used to e.g. `filter()`, `mean()` and instead you'll have to access the other versions with their full name which looks like this _package::function_name()_ e.g. `dplyr::filter()` or `base::mean()`. This full name method is also how you can refer exact functions from particular packages if packages have functions of the same name and you have loaded them with `library`.
+# Display by name, as we always can do in R with variables
+bmi_result
+```
 
-### Defining arguments
+# CAUTION
 
-Usually there are two categories of variables for a function. The first category are *data* and is often called `x`. A nice practice is to define your arguments for your input data first. The second category is *behaviour modifiers*, i.e. they control the details of the computation. A common behaviour modifier is what to do with `NA`'s e.g. `na.rm`.
+In R, the `return` keyword is actually optional. By default, R functions just return the value of their last line. So technically, you can write the function above like this without changing its behaviour:
 
-At the time of declaring your arguments, you can also assign defaults. It is a good idea to set the defaults of your behaviour modifying arguments to something sensible. When the function is called by the user if they don't supply a value for the argument the value provided by the default is used.
-
-Here is an example function that could be used if you wanted to duplicate your data:
-```{r}
-# duplicates a vector n times
-duplicate <- function(x, n = 2) {
- rep(x, n)
+```{r blank return}
+# Declare function calc_BMI
+calc_BMI <- function(weight, height)
+{
+  bmi <- weight/height^2 # ^ is the exponentiation operator
+  
+  # Omitting the explicit call to return
+  # Don't do this.
+  bmi
 }
-
-my_nums <- c(1,2,3)
-
-# duplicates twice (default)
-duplicate(my_nums)
-
-# duplicates 4 times
-duplicate(my_nums, n = 4)
 ```
 
-Something that you may have noticed is the use of the argument name is not required for the function to run. This is because R will fill in the values of the arguments based on position. You can run arguments in any order, so long as the names are provided. Best practice is to use the names when calling functions because it provides better readability of code, especially for the behaviour modifying ones.
-
-Another important thing to note is that we haven't explicitly covered is the use of `=` rather than `<-` when defining arguments. Technically `=` can be used for assignment of variables and you may have already seen this being done:
-
-```{r}
-# using '=' for assignment to a variable
-a = 3
-
-a
-```
-
-However, the key difference between `=` and `<-` comes to the use of defining arguments to a function. `=` will pass the value to the argument without creating a variable in your global environment, `<-` can be used (but strongly recommended against) as it will pass the value to the argument, but also create a variable in the global environment of the same name:
-
-```{r, error = TRUE}
-mean(x = 3)
-# x shouldn't exist so gives an error
-x
-
-# don't do this:
-mean(x <- 3)
-# x now exists
-x
-```
+You will see this shortcut used in R code in the wild. However, it is an old-fashioned syntax, and it can lead to subtle errors in complex R programs. We suggest that you avoid it. Make the behaviour of your functions clear by explicitly  identifying the return value with function `return`.
 
 
-**NB:** For more on environments see the __Scope__ section.
-
-### Outputs
-
-Usually the reason for calling a function is to have it provide some output, however, providing an output isn't necessary. The last line of the function is usually what gets returned back to the user but it is possible to be explicit about what is returned by using `return()`, or to exit from the body earlier than the final line -- this situation usually arises when using control statements (explained later in this handout).
-
-Here is an example of using the last line:
-
-```{r}
-double <- function( num ){
-  # the result of the next line will be automatically returned
-  num * 2
-}
-
-double(4)
-```
-
-And using `return()`:
-
-```{r}
-double <- function( num ){
-  # the result of the next line will be automatically returned
-  result <- num * 2
-  return(result)
-}
-
-double(5)
-```
-
-This particular example of using return does create extra steps such as making and assigning to a local variable. The most useful time to use `return()` is in the body of a control flow statement to exit out the function early if a condition is met -- see the **If and Else** section.
 
 
 ## Scope
