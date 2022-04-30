@@ -453,6 +453,49 @@ This behaviour can lead to subtle errors in your code. For example, earlier in t
 
 
 
+# Complex program behaviour
+
+In very simple programs, we write a set of commands which are executed in sequence -- first statement, second statement, third statement, etc. Each time we run the code, the exact same set of commands are executed, in the exact same sequence. 
+
+However, as computational problems become more complex, the behaviour of our code solutions must also become more complex. We may have sections of code that we want to repeat some varying number times depending on our data, or sections of code that we only want to execute under certain conditions.
+
+The specific time course of program execution is called **flow of control** and R provides many syntactic features that allow us to manage it. Flow of control generally depends on the program's **state** -- the specific set of variables and their values at each point during program execution. When we import a csv file into a data frame, that data frame is part of the state. We may want to execute a function once for each row in the data frame. If we import a data frame with 53 rows, we want the function to be called 53 times. Thus the number of times the function is called (the flow of control) depends on the state. 
+
+When we write a function that accepts data input arguments, the value of those arguments passed in at function call are part of the state, and can be different each time the function is called. Frequently we will want to take a different action in the function depending on that state. 
+
+We have described the three primary flow of control constructs:
+
+-  Sequential execution: Statements are executed in order
+-  Iteration: A set of statements is repeated a number of times
+-  Conditional execution: A set of statements may or may not be executed, depending on the state.
+
+We have already seen, and written, code that contains only sequential exection. We will not look at the syntactic tools for conditional execution. In our next module, we will cover iteration which is syntactically more complex.
+
+# If statements
+
+All modern programming languages allow you to wrap a block of code in an **if statement**. If statements contain a **condition**, which is an expression which evaluates to either true of false. At runtime, the condition is evaluated. If it is true, the block of code is executed; if it is false, the block of code is not executed. As for functions, the conditional code block in R is delineated with curly brackets. The conditional expression is delineated with round brackets.
+
+Consider this toy example:
+
+```{r simple if}
+did_I_pass_the_paper <- function(my_mark)
+{
+  if (my_mark > 50) {
+    print("You passed!")
+  }
+}
+
+# This call generates no output
+did_I_pass_the_paper(14)
+
+# This call generates output
+did_I_pass_the_paper(73)
+```
+
+
+
+
+
 # Control Statements
 
 Control statements allow us to use conditions to execute particular pieces of code based on the input. In the context of functions, often if we are creating a behaviour modifying argument, we want certain blocks of code to run depending on the value supplied to the argument. These statements rely on a test (condition/comparison) that results in a boolean (`TRUE`/`FALSE`) to determine what gets run. Boolean logic operators can be used in to modify or combine tests to result in a single `TRUE` or `FALSE`.
