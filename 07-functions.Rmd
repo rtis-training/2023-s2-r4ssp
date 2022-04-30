@@ -471,7 +471,7 @@ We have described the three primary flow of control constructs:
 
 We have already seen, and written, code that contains only sequential exection. We will not look at the syntactic tools for conditional execution. In our next module, we will cover iteration which is syntactically more complex.
 
-# If statements
+## If statements
 
 All modern programming languages allow you to wrap a block of code in an **if statement**. If statements contain a **condition**, which is an expression which evaluates to either true of false. At runtime, the condition is evaluated. If it is true, the block of code is executed; if it is false, the block of code is not executed. As for functions, the conditional code block in R is delineated with curly brackets. The conditional expression is delineated with round brackets.
 
@@ -493,12 +493,73 @@ did_I_pass_the_paper(73)
 ```
 
 
+## Adding an alternative with `else`
+
+Frequently we wish to define two behaviours for a conditional -- one for when it is true and another for when it is false. In R we do this with the keyword `else`
 
 
+```{r simple if}
+did_I_pass_the_paper <- function(my_mark)
+{
+  if (my_mark > 50) {
+    print("You passed! :)")
+  } else {
+    print("Sorry, you didn't pass. :(")
+  }
+}
 
-# Control Statements
+# This call runs the else block
+did_I_pass_the_paper(14)
 
-Control statements allow us to use conditions to execute particular pieces of code based on the input. In the context of functions, often if we are creating a behaviour modifying argument, we want certain blocks of code to run depending on the value supplied to the argument. These statements rely on a test (condition/comparison) that results in a boolean (`TRUE`/`FALSE`) to determine what gets run. Boolean logic operators can be used in to modify or combine tests to result in a single `TRUE` or `FALSE`.
+# This call runs the if block
+did_I_pass_the_paper(73)
+```
+
+
+NB: Pay careful attention to the placement of the curly brackets for both the if block and the else block. The first curly bracket *must sit on the same line as the if statement*. The `else` keyword must be on the same line as the closing curly bracket of the `if` block, and must be followed, on that same line, by the opening curly bracket of the `else` block. It is a known peculiarity of the R language that it is **extremely fussy** about this rule. No use fighting it; just follow the rule.
+
+An extension of `else` is the `else if` construct that lets you link a series of conditions in a single statement:
+
+The following example creates a series of conditions. The conditions are tested one at a time from the top and the first condition that evaluates to `TRUE` is the only code block that gets run.
+
+
+```{r if else}
+bmi_category <- function(bmi)
+{
+    if(bmi > 30){
+      print("obese")
+    } else if (bmi > 25){
+      print("overweight")
+    } else if (bmi > 20){
+      print("healthy")
+    } else {
+      print("underweight")
+  }
+}
+
+
+bmi_category(22)
+
+bmi_category(18)
+```
+
+Conditional statements can be nested. That is, inside the `if` or `else` block, you can have more conditional statements, each of which can have `if` and `else` blocks, each of which can in turn have nested conditional statements, and so on. For complex computations, the conditional logic can become very elaborate, and needs to be approached very carefully. I find it helpful in these cases to sketch out a flow chart showing all the different outcomes based on state, and use that as a pattern for writing and arranging the various code blocks.
+
+
+# Conditional Expressions
+
+In our previous examples, we wrote conditional expressions using the > (greater than) operator. The expression `my_mark > 50` evaluates to either true or false (i.e. a **boolean value**). If variable my_mark is greater than 50, it returns true, otherwise it returns false. Greater than is an **comparison operator**. The R comparison operators are:
+
+Operator | Meaning
+`==` | equal to
+`!=` | not equal to
+`<` | less than
+`<=` | less than or equal to
+`>` | greater than
+`>=` | greater than or equal to
+
+
+The **Boolean logic operators** can be used in to modify or combine conditional expressions.
 
 
 Boolean Operation | Symbol in R
@@ -507,7 +568,33 @@ NOT | !
 OR | \|
 AND | &
 
-These can be combined with the comparison operators we saw previously (`==`, `!=`, `<`, `<=`, `>`, `>=`) to combine statements together into more complex logic statements. The result of the NOT, AND, and OR can be seen in the below logic table:
+
+For example, the following function might be used to check that a value entered as a penguin body mass was within the expected weight range for the species.
+
+```{r compound conditional}
+# Chinstrap penguins weight between 3 and 5 kg
+
+check_chinstrap_weight <- function(weight_to_check)
+{
+  if ((weight_to_check >= 3000) & (weight_to_check <= 5000)) {
+    print("Weight ok")
+  } else {
+    print("That's probably a typo")
+  }
+}
+
+
+check_chinstrap_weight(4100)
+
+
+check_chinstrap_weight(410)
+
+```
+
+
+
+
+The result of the NOT, AND, and OR can be seen in the below logic table:
 
 Statement | Becomes
 ---|---|---|---
@@ -521,6 +608,9 @@ TRUE \| TRUE | `r TRUE | TRUE`
 TRUE \| FALSE | `r TRUE | FALSE`
 FALSE \| TRUE | `r FALSE | TRUE`
 FALSE \| FALSE | `r FALSE | FALSE`
+
+
+
 
 
 
@@ -546,21 +636,7 @@ if (condition) {
 
 ```
 
-The following example shows how you can create a series of conditions, where the conditions are run one at a time from the top and the first condition that evaluates to `TRUE` is the only code block that gets run.
 
-
-```{r}
-bmi <- 21
-if(bmi > 30){
-  print("obese")
-} else if (bmi > 25){
-  print("overweight")
-} else if (bmi > 20){
-  print("healthy")
-} else {
-  print("underweight")
-}
-```
 
 
 # Exercise
