@@ -39,13 +39,11 @@ As the work you do in R becomes more complex, your R scripts will get longer, an
 
 To prevent this, large programs need to be organised into **logical modules**. Sections of code that perform a clearly delineated task can be enacapsulated and named. The encapsulated code can be invoked simply by typing the name -- no need to cut and paste, no need to modify multiple copies. Scripts are shorter and easier to manage. Code that is organised this way is said to be **modular**. Modular code is better code.
 
-In R, the main code module is the **function**. We have already used many functions, like `read.csv` and `sqrt' and `ggplot`. We invoke them in our code as single commands, but each of these commands actually ecapsulates many, many (add another "many" for ggplot) lines of code. We call the function by name, and all the associated code is executed.
+In R, the main code module is the **function**. We have already used many functions, like `read.csv` and `sqrt` and `ggplot`. We invoke them in our code as single commands, but each of these commands actually ecapsulates many, many (add another "many" for ggplot) lines of code. We call the function by name, and all the associated code is executed.
 
-### Exercise
+Many functions in R will display their code in the console. Type the function name **without the ()** into the console, and the encapsulated commands will be shown. (Look at the code for function `filter`.)
 
-Many functions in R will display their code in the console. Type the function name **without the engine ()** into the console, and the encapsulated command will be shown. Look at the code for function `filter`.
-
-To make our own code modular, we can define our own functions. We write the code for a function somewhere in our script file. We can then **call** the function by name anywhere else in our script file and all the code is executed. Just as with functions like `read-csv` we can pass data into our function so it know what to operate on. Just like `sqrt` we can arrange for our function to return a result that we can store in a variable. 
+To make our own code modular, we can define our own functions. We write the code for a function somewhere in our script file. We can then **call** the function by name anywhere else in our script file, and all the code is executed. Just as with built-in functions, we can pass data into our function, and it can operate on those data. We can also arrange for our function to **return a result** that we can store in a variable. 
 
 
 # Function Declaration Syntax
@@ -54,29 +52,33 @@ A function in R is comprised of four parts:
 
 1. a name
 2. the body (the code that does something)
-3. (optionally) inputs
-4. (optionally) output
+3. (optionally) input data
+4. (optionally) an output that can be stored
 
 
-## Defining a function
+# Defining a function
 
-We will begin with the simplest function, one that accepts no input data, and returns no result. We **declare** the function using keyword `function`:
+We will begin with the simplest function, one that accepts no input data, and returns no result. We **declare** the function using keyword `function`. Schematically, a user-defined function is created as:
 
-*name_of_function* <- **function()**
+```
+name_of_function <- function()
 {
-  *Code body*
+   Code Body
 }
+``` 
+
+The curly braces enclose the code body.
+
 
 Subesquently we **call** the function as:
 
 *name_of_function*()
 
-At that point, all the commands in the code body are executed.
+When the call is executed, all the commands in the code body are run.
 
-For example, in the current public health situation, we often see discussions of normal body temperature (for detection of fever). We might want to be able to translate the normal temperature from Celsius to Fahreneit (as used in the North American literature). This is a logically well-delineated computation, so it makes sense to encapsulate it in a function.
+For example, in the current public health situation, we often see discussions of what body temperature constitutes a fever. We might want to be able to translate that temperature from Celsius to Fahrenheit (as used in the North American literature). This is a logically well-delineated computation, so we might encapsulate it in a function.
 
 ```{r declare a function}
-
 # Declare/define the function
 fever_in_fahrenheit <- function()
 {
@@ -93,20 +95,20 @@ fever_in_fahrenheit()
 
 Some things to note:
 
--  Typing out the function declaration is not actually enough to make the function available for calling. The declaration code (from the start of the name to the closing curly bracket) **must first be executed**. Execute this code in a script as we always do, by selecting all the code (with the mouse) and typing ctrl-Enter (Windows) or cmd-Enter (Mac).
-- When you execute a function declaration, **nothing happens**. In our example, you will not see the output of the print statement when you execute the declaration code. Executing a declaration **does not run the code body**. It simply parses the code body and, if there are no errors, stores it in the environment. Effectively, it informs RStudio that a function with this name exists, and defines the code which it encapsulates, so it can be called later.
-- To execute the code body, state the name of the function followed by (), with no intervening spaces. This **calls** the function; we think of () as the **call operator**. Whether the code body contains 1 line or 1,000 lines or more, simply calling the function by name runs all the encapsulated code.
+-  Typing out the function declaration is not enough to make the function available for calling. The declaration code (from the start of the name to the closing curly bracket, inclusive) **must first be executed**. Execute this code in a script as we always do, by selecting all the code (with the mouse) and typing ctrl-Enter (Windows) or cmd-Enter (Mac). This is called *sourcing* the function.
+- When you source a function, **nothing happens**. In our example, you will not see the output of the print statement when you execute the declaration code. Sourcing a function declaration **does not run the code body**. It simply *parses* the code body and, if there are no errors, stores it in the environment. Effectively, it informs RStudio that a function with this name exists, and defines the code which it encapsulates, so it can be called later.
+- To execute the code body, state the name of the function followed by (), with no intervening spaces. This **calls** the function; we think of () as the **call operator**. Whether the code body contains 1 line or 1,000 lines or more, calling the function by name runs all the encapsulated code.
 
 
-In R a function cannot be called until after the function declaration has been executed, as described above. Consider the following example:
+In R a function cannot be called until *after* the function has been source. Consider the following example:
 
 ```{r clear, echo=FALSE}
 rm(list = ls())
 ```
 
-```{r wrong order}
+```{r wrong order, error=TRUE}
 
-# If you try to call the function before it is declared....
+# If you try to call the function before it is declared and sourced
 fever_in_fahrenheit()
 
 fever_in_fahrenheit <- function()
@@ -123,7 +125,7 @@ There are more advanced techniques that allow us to call functions contained in 
 
 # Providing data to a function
 
-Consider the following function, which demonstrated how to compute BMI (body mass index) in R, using the given values for height (in metres) and weight (in kg):
+Consider the following function, which demonstrates how to compute BMI (body mass index) in R, using the given values for height (in metres) and weight (in kg):
 
 ```{r calc BMI}
 
@@ -141,11 +143,11 @@ calc_BMI <- function()
 calc_BMI()
 
 ```
-This function contains nice tidy code and is mathematically correct, but unless we happen to want the BMI of a person with exactly this height and weight, it is of no use to us. A useful function describes the computation (in this case taking the ratio or weight to height squared), and **accepts the data values** when it is called.
+This function contains nice tidy code and is mathematically correct, but unless we happen to want the BMI of a person with exactly this height and weight, it is of no use to us. A useful function defines the computation (in this case taking the ratio or weight to height squared), and **accepts the data values** when it is called.
 
 We have seen this many times when writing R code, when we call a function repeatedly on different input values:
 
-```{r inputs}
+```{r built in inputs}
 
 sqrt(14)
 
@@ -165,7 +167,6 @@ To declare a function that can accept input arguments, perform these steps:
 We can modify our calc_BMI function to accept weight and height as input variables, as shown. Compare this version to the earlier version. Note that we *do not* declare and initialise weight and height inside the code body.
 
 ```{r inputs}
-
 # Declare function calc_BMI
 calc_BMI <- function(weight, height)
 {
@@ -183,35 +184,32 @@ calc_BMI(73, 1.68)
 
 Declaring a function with inputs defines the required **interface** of the function. That is, it defines what you have to provide if you want to call the function. If the caller violates the interface, the code is not guaranteed to work. For example:
 
-```{r bad args 1}
+```{r bad args 1, error=TRUE}
 calc_BMI()
 ```
 
-```{r bad_args 2}
+```{r bad_args 2, error=TRUE}
 calc_BMI(16)
 ```
 
-```{r bad args 3}
+```{r bad args 3, error=TRUE}
 calc_BMI(73, 168, 42)
 ```
 
 In some programming languages, one is required to specify the data type (e.g. number, string, data frame, etc.) of each input argument. Code that tries to pass in the wrong type of data will not compile. In R this is not required. R will try to run your code no matter what sort of data it gets. However, if it tries to operate on the wrong type of data, it will throw an error:
 
 
-```{r bad args 4}
+```{r bad args 4, error=TRUE}
 calc_BMI(42, "fred")
 ```
 
 Naturally, R doesn't understand how to apply the exponentiation operator to "fred", and it is telling you so.
 
-
-
 ## More on the rules
 
 Consider the following code:
 
-```{r args 2, eval = false}
-
+```{r args 2, error=TRUE}
 # Declare the function
 compute_area <- function(width)
 {
@@ -224,24 +222,24 @@ compute_area(35)
 ```
 
 
-The function `compute_area` is defined with one argument, named **width**. When it is called, we must provide one value between the round brackets. In the call, we have correctly provided one argument, of the correct data type. Will the call `compute_area(35)` work correctly, or will it throw an error? What error will it throw?
+The function `compute_area` is defined with one argument. Therefore, when it is called, we must provide one value between the round brackets. In the call, we have correctly provided one argument, of the correct data type. Will the call `compute_area(35)` work correctly, or will it throw an error? What error will it throw?
 
-When `compute_area(35)` is executed, it produces an error message: `Error in compute_area(35) : object 'height' not found`. In the code body of compute_area, we refer to an entity `height`. Since that entity is not surrounded by double-quotes, R expects to find a variable named **height** existing in the environment, and no such variable exists, because we have neither created one directly (with an assignment statement) nor passed one in as an argument to the function. 
+When `compute_area(35)` is executed, it produces an error message: `Error in compute_area(35) : object 'height' not found`. In the code body of `compute_area`, we refer to an entity `height`. Since that entity is not surrounded by double-quotes, R expects to find a variable named **height** existing in the environment, and no such variable exists, because we have neither created one directly (with an assignment statement) nor passed one in as an argument to the function. 
 
 In the same line of code, we also refer to an entity `weight`. Note that R does not complain about being unable to find `weight`. That is because we defined an input argument called **weight**. 
 
 1. How would you modify function `compute_area` to eliminate the error?
-2. How would this change the form of the call to `compute_area`.
+2. How would this change the form of the call to `compute_area`?
 
 
-## Taking your time with argument passing
+## Taking your time with input argument passing
 
-Traditionally, new programmers find the syntax of argument passing *extremely* confusing. There are too many interacting parts: we have variable names in the declaration, variables used in the code body, and values passed in the call. At first exposure, it can be unclear how all these parts work. If this is the first time you have seen this syntax, it is worth taking some time to experiment with it to solidify your understanding. You might like to make up some simple user defined functions of your own to practice managing input data.
+Traditionally, new programmers find the syntax of argument passing *extremely* confusing. There are too many interacting parts: we have variable names in the declaration, variables used in the code body, and values passed in the call. At first exposure, it can be unclear how all these parts work together. If this is the first time you have seen this syntax, take some time to experiment with it to solidify your understanding. Make up some simple user defined functions of your own to practice managing input data.
 
 
 # Getting output from a function
 
-In all of our examples so far, we have used a print statement to show the result of the function's computation. This is, of course, not adequate in real programming, as a print statement simply writes to the console. The computed value is not available to use later in our script. We usually want to be able to save the result of a function into a variable, as we have done with the built-in functions we have used earlier in the course. For example, we might say `x <- sqrt(22)`, creating a variable called *x* that stores the square root of 22. 
+In all of our examples so far, we have used a print statement to show the result of the function's computation. This is, of course, not adequate in real programming, as a print statement simply writes to the console. The computed value is not available for use later in our script. We want to be able to save the result of a function into a variable, as we have done with the built-in functions we have used earlier in the course. For example, we might say `x <- sqrt(22)`, creating a variable called *x* that stores the square root of 22. We can then use `x` in subsequent computations, as needed.
 
 When a function makes its result available for storage, we say it is **returning** it's result. The command `sqrt(22)` **returns** the square root of 22, and we can store it in a variable using the assignment statement.
 
@@ -268,9 +266,9 @@ bmi_result <- calc_BMI(75, 1.75)
 bmi_result
 ```
 
-# CAUTION
+## CAUTION
 
-In R, the `return` keyword is actually optional. By default, R functions just return the value of their last line. So technically, you can write the function above like this without changing its behaviour:
+In R, the `return` keyword is actually optional. By default, R functions just return the value of their last line of code. So technically, you can write the function above like this without changing its behaviour:
 
 ```{r blank return}
 # Declare function calc_BMI
@@ -278,15 +276,129 @@ calc_BMI <- function(weight, height)
 {
   bmi <- weight/height^2 # ^ is the exponentiation operator
   
-  # Omitting the explicit call to return
-  # Don't do this.
+  # Omitting the explicit call to return. Don't do this.
   bmi
 }
 ```
 
-You will see this shortcut used in R code in the wild. However, it is an old-fashioned syntax, and it can lead to subtle errors in complex R programs. We suggest that you avoid it. Make the behaviour of your functions clear by explicitly  identifying the return value with function `return`.
+You will see this shortcut used in R code in the wild. However, it is an old-fashioned syntax, and it can lead to subtle errors in complex R programs. We suggest that you avoid it. Make the behaviour of your functions clear by explicitly identifying the return value with function `return`.
 
 
+# Exercise
+
+Returning to the Plamers Penguins data, and using the techniques we have seen for performing descriptive statistics, consider the following code, which computes summaries of the body mass measure (i.e. the dependent variable in this summary is  column *body_mass_g*).
+
+```{r summarising, warning=FALSE, message=FALSE}
+library(palmerpenguins)
+
+dv_vector <- penguins$body_mass_g
+
+mean_dv <- mean(dv_vector, na.rm = TRUE)
+sd_dv <- sd(dv_vector, na.rm = TRUE)
+min_dv <- min(dv_vector, na.rm = TRUE)
+max_dv <- max(dv_vector, na.rm = TRUE)
+
+```
+
+
+This code fragment creates four new variables that we could use in later computations, or in generating reports. 
+
+Imagine that we wish to do the same summary for flipper length. We could copy and paste the code, changing the line where we assign variable `dv_vector`. Then if we wanted to do the same summary on bill length, we could copy and paste the code again, and again change the assignment to `dv_vector`. By now, we are bored of this, and our script is getting needlessly big and messy. If we later decide we need to include the median, we will need to go back and add the `median` command multiple times, greatly increasing the chance of errors (and also being boring).
+
+Computing this set of descriptive stats is a logically delineated task, and we should therefore encapsulate it into a user defined function. Each time we do this summary, the computation (the four calls to `mean`, `sd`, `min` and `max`) remains the same, but the data we wish to process changes. Each time we call the function, we want to be able to provide it with the data to process. We must therefore pass the data in as an input argument.
+
+## Make a function with input arguments
+
+Convert this code into a function that accepts a single input argument, which will be the vector of data to be analysed. For now, use print statements to display the results, not return statements, so we can concentrate on getting the data in. Call your function `desc_stats`.
+
+```{r summarising function}
+library(palmerpenguins)
+
+desc_stats <- function(dv_vector)
+{
+  mean_dv <- mean(dv_vector, na.rm = TRUE)
+  sd_dv <- sd(dv_vector, na.rm = TRUE)
+  min_dv <- min(dv_vector, na.rm = TRUE)
+  max_dv <- max(dv_vector, na.rm = TRUE)
+
+  print(mean_dv)
+  print(sd_dv)
+  print(min_dv)
+  print(max_dv)
+}  
+```
+
+Source the function by selecting all the code (from before `desc_stats` down to and including the closing curly bracket) and typing ctrl-Enter or cmd-Enter. Test your function by calling it on the body mass data, the flipper length data, and the bill length data.
+
+```{r calling}
+desc_stats(penguins$body_mass_g)
+desc_stats(penguins$flipper_length_mm)
+desc_stats(penguins$bill_length_mm)
+```
+
+Stop to admire how tidy and succinct your code is. Note that if you now decide to add the median, you only need to make the change in one place -- in the function declaration itself -- regardless of how many different data sets you have processed.
+
+**NB: If you do change the function, you must source the function again (i.e. you must repeat the "select all the function code and type ctrl-enter" step) to update R's stored copy of the function. You will not see any change in behaviour until the modified function code is sourced.**
+
+## Get output from the function
+
+As discussed earlier, displaying function output via print statements is of limited utility; it is preferable to return the results of a function, so it can be stored in a variable. We would like, therefore, to return the output of function `desc_stats`. Unfortunately, a function in R **can only return a single data object** and our function computes *four* values.
+
+To resolve this, we can bundle up our four computed values into a single data object, called a **list**. An R **list** is like a vector, except that each element has a name as well as an ordinal position, and elements can be retrieved (using the [] operator) either by name or position. Consider this example:
+
+```{r list}
+# Create a list
+character_list <- list(Name = "Snoopy", Breed = "Beagle", Owner = "Charlie Brown")
+
+# Display the entire list
+character_list
+
+# Some examples of selection from the list
+character_list["Name"]
+character_list["Breed"]
+
+character_list[2]
+character_list[3]
+
+character_list$Name
+character_list$Owner
+```
+
+A list is considered a single data object, so it can be returned from a function via a `return` statement.
+Modify function `desc_stats` to **return** its four outputs, rather than printing them. Call your function and use any of the syntactic options above to explore the contents of the returned object. 
+
+My solution is:
+
+```{r output multiple items}
+# Modify the function to return a list
+desc_stats <- function(dv_vector)
+{
+  mean_dv <- mean(dv_vector, na.rm = TRUE)
+  sd_dv <- sd(dv_vector, na.rm = TRUE)
+  min_dv <- min(dv_vector, na.rm = TRUE)
+  max_dv <- max(dv_vector, na.rm = TRUE)
+
+  result_list <- list(Mean = mean_dv,
+                      Sd = sd_dv,
+                      Min = min_dv,
+                      Max = max_dv)
+  
+  return(result_list)
+}
+
+
+flipper_desc_stats <- desc_stats(penguins$flipper_length_mm)
+
+flipper_desc_stats$Mean
+
+flipper_desc_stats[2]
+
+min_max <- c(flipper_desc_stats["Min"], flipper_desc_stats["Max"])
+
+print(min_max)
+
+
+```
 
 
 ## Scope
@@ -335,32 +447,11 @@ n <- 10
 multiply_by_n(x = 3, n = 2)
 ```
  
-The value of `n` that was used was the value supplied as the argument, rather than the version that was defined in the global environment. What this tells us is that functions will use a locally defined variable, but if it can't find one, it will start to look wider.
+The value of `n` that was used was the value supplied as the argument, rather than the version that was defined in the global environment. Thus a function will use a locally defined variable when one exists, but if it can't find one, it will look in the global environment.
 
-Another example that demonstrates that functions operate locally (inside the body) is trying to modify variables that exist in the global environment:
-
-```{r}
-# assign the value provided to x to the variable a
-modify_a <- function(x){
-  a <- x
-}
-```
-
-This function looks like it should assign the value of `x` into `a`. To demonstrate that the function is only working on the _function_ version of `a`, we'll define `a` globally, run the function, then see what the value in `a` is afterwards:
-
-```{r}
-# define a global version of a
-a <- 12
-
-# we want a to become 5
-modify_a(x = 5)
+This behaviour can lead to subtle errors in your code. For example, earlier in this module we wrote a version of user-defined function `calc_area` that tried to reference variable `height` without having passed it in as an argument. When R was unable to find `height`, it alerted us with an error message, and we were able to identify and correct the error in the code (the missing input argument `height`). If, at that point, we had already created a variable `height` outside the function (for any reason), R would have happily **used that existing variable when executing the function code body** and we would not have realise there was an error. Of course, if we ever called the bad function when we hadn't previously created `height` our program would crash. Some programmers use special variable coding styles -- for example prefixing all input arguents with underscore -- to prevent confusion between local and global variables. It is very important, when working in R to be constantly aware of which variables exist in the global environment. Keep your eye on the Environment tab as you write functions.
 
 
-# output the value of a
-a
-```
-
-The value of `a` has remained `r a` rather than `5` like we had hoped. This shows again that the function is creating variables that only exist inside the function, and isn't modifying the global environment.
 
 # Control Statements
 
@@ -373,7 +464,7 @@ NOT | !
 OR | \|
 AND | &
 
-These can be combined with the comparison operators you saw in Module 3 (`==`, `!=`, `<`, `<=`, `>`, `>=`) to combine statements together into more complex logic statements. The result of the NOT, AND, and OR can be seen in the below logic table:
+These can be combined with the comparison operators we saw previously (`==`, `!=`, `<`, `<=`, `>`, `>=`) to combine statements together into more complex logic statements. The result of the NOT, AND, and OR can be seen in the below logic table:
 
 Statement | Becomes
 ---|---|---|---
@@ -429,17 +520,45 @@ if(bmi > 30){
 ```
 
 
+# Exercise
+Write and test a function that determines whether a student receives a passing grade on an assesment. The function should accept two input args: the number of marks earned, and the total number of marks possible for the assessment. The student must earn 50% of the available marks in order to pass. For example, if a student earns 18 marks on a 20 mark assessment they pass, but if they earn only 8 marks, they fail. Your function should print "Pass" or "Fail" as appropriate based on the input data. 
+
+```{r exercise solution}
+
+pass_check <- function(earned, possible)
+{
+  mark <- earned/possible
+  
+  if (mark > 0.5){
+    print("Pass")
+  } else {
+    print("Fail")
+  }
+  
+}
+
+
+pass_check(18, 20)
+pass_check(8,20)
+pass_check(18,100)
+pass_check(8,10)
+
+```
+
+
+
+
+
 ## Improving functions
 
-Now that we have looked at control statements and how they operate, we're going to look at how we can use them to make our functions better.
+We can use conditional control statements to provide error checking in user-defined functions.
 
 ### Failing
 
-One of the saying in programming is "if it's going to fail, it's best to fail early". What this means in practice is that if we know that our function can only handle a specific input or it will cause issues i.e. `1 + 2` is fine but `1 + "a"` causes an error, we want to program **defensively** so that our function "fails" before it encounters the error. R also provides notoriously difficult error messages to understand. As part of our defensive programming we can provide some messages that are user friendly instead.
+One of the sayings in programming is "if it's going to fail, it's best to fail early". That is, if we know that our function requires a specific input data type, we want to program **defensively** so that our function "fails" before it encounters the error. As part of our defensive programming we can provide informative error messages, rather than rely on R's generic ones.
 
-- data type check functions
-- stop()
-Here is an example of how we can check that the data coming into our function is the correct data type:
+
+In the following example, we check that the data coming into our function is numeric. If it is not, we use function `stop`, to exit the function displaying our informative message.
 
 
 ```{r, error=TRUE}
@@ -459,24 +578,15 @@ double_number("a")
 
 N.B. Check the appendix for more on data types.
 
-Following the principles of fail fast and early, we want to have our checks as some of the very first code in the function body, so that if the wrong input is given we 'fail' out of the function without any further code running. We can do this using the control statement `if` to check the condition. First we're checking if `x` is a `numeric` type, `is.numeric` returns `TRUE` if it is and `FALSE` if it isn't. But we want to enter the `if` body when `x` is not numeric so perform a boolean `NOT` using the `!`.
-
-Once we have determined that `x` isn't numeric we want the function to exit but also provide a message to the user as to why. This is done using `stop()` which causes the function to exit and provides the error message that is provided - ideally something useful for the user.
-
-
-
-
-
 # Conclusion
-
-This document has presented an introduction to creating your own functions and implementing control flow into your code. We covered concepts such as 'failing fast and early', and scoping of variables. If you would like to take your understanding of functions further then some good places to refer to are the free online books [Advanced R](https://adv-r.hadley.nz) and [R packages](https://r-pkgs.org).
+This document has presented an introduction to creating your own functions and implementing conditional flow of control. For more detail, see the free online books [Advanced R](https://adv-r.hadley.nz) and [R packages](https://r-pkgs.org).
 
 
 ## What's Next
 
 Fill in the module feedback form [https://tinyurl.com/r4ssp-module-fb](https://tinyurl.com/r4ssp-module-fb).
 
-Next move onto [R for Data Science Chapter 21 - Iteration (https://r4ds.had.co.nz/iteration.html)](https://r4ds.had.co.nz/iteration.html) to learn about how we can start to reduce code duplication, and start to repeat what we do efficiently through iteration or 'loops'. As always, if you run into trouble, let us know.
+Next move onto [R for Data Science Chapter 21 - Iteration (https://r4ds.had.co.nz/iteration.html)](https://r4ds.had.co.nz/iteration.html) to learn about how we can reduce code duplication, by repeating code efficiently through iteration or 'loops'. As always, if you run into trouble, let us know.
 
 # Appendix
 
