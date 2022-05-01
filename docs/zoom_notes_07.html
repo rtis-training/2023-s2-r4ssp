@@ -350,9 +350,15 @@ div.tocify {
     <li>
       <a href="03-subset.html">Part 2: Subsetting</a>
     </li>
-    <li class="dropdown-header">Part 3: Summarising</li>
-    <li class="dropdown-header">Part 4: Transforming</li>
-    <li class="dropdown-header">Part 5: Communicating</li>
+    <li>
+      <a href="04-summarise.html">Part 3: Summarising</a>
+    </li>
+    <li>
+      <a href="05-transform.html">Part 4: Transforming</a>
+    </li>
+    <li>
+      <a href="06-communicate.html">Part 5: Communicating</a>
+    </li>
     <li class="divider"></li>
     <li class="dropdown-header">Programming focus</li>
     <li class="dropdown-header">Functions and Choices</li>
@@ -375,6 +381,15 @@ div.tocify {
     </li>
     <li>
       <a href="zoom_notes_03.html">03 - Subsetting data</a>
+    </li>
+    <li>
+      <a href="zoom_notes_04.html">04 - Summarising data</a>
+    </li>
+    <li>
+      <a href="zoom_notes_05.html">05 - Transforming data</a>
+    </li>
+    <li>
+      <a href="zoom_notes_06.html">06 - Communicating data</a>
     </li>
   </ul>
 </li>
@@ -409,9 +424,98 @@ div.tocify {
 </div>
 
 
+<blockquote>
+<h4 id="associated-material">Associated Material</h4>
+<p>Zoom notes: <a href="07-functions.html">Module 07 - Functions and Choices</a></p>
+<p>Readings:</p>
+<ul>
+<li><a href="https://r4ds.had.co.nz/functions.html">R for Data Science - Chapter 19</a></li>
+</ul>
+</blockquote>
+<p><br />
+</p>
+<div id="topics" class="section level1">
+<h1>Topics</h1>
+<div id="user-defined-functions" class="section level2">
+<h2>User-Defined Functions</h2>
+<ul>
+<li>Declaration</li>
+<li>Input arguments</li>
+<li>Returning a result</li>
+</ul>
+</div>
+<div id="scope" class="section level2">
+<h2>Scope</h2>
+</div>
+<div id="flow-of-control" class="section level2">
+<h2>Flow of Control</h2>
+<ul>
+<li>Types</li>
+<li>Conditional execution (branching)</li>
+<li>if, else, and else if</li>
+<li>Comparison operators</li>
+<li>Boolean logic operators</li>
+<li>Complex conditionals</li>
+</ul>
+</div>
+<div id="exercise" class="section level2">
+<h2>Exercise</h2>
+<p>Even seemingly simple programs can involve elaborate flow of control. The simple game Rock, Paper, Scissors (<a href="https://www.wikihow.com/Play-Rock,-Paper,-Scissors" class="uri">https://www.wikihow.com/Play-Rock,-Paper,-Scissors</a>) can be implemented with a complex conditional structure. Write a function to play the game.</p>
+<p>In the example solution below, we use the R function <code>sample</code> to randomly select a move for each of two players (<a href="https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/sample" class="uri">https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/sample</a>). Alternatively, the players’ choices could be passed in as input arguments.</p>
+<p>Note that there are many ways that the conditional logic can be implemented, so your solution may be different. The general rule is that we try to keep our conditional logic as succinct as possible, while still making it easy for someone reading your code to understand.</p>
+<pre class="r"><code>
+rock_paper_scissors &lt;- function()
+{
+  # Vector of the three possible moves
+  moves &lt;- c(&quot;rock&quot;, &quot;paper&quot;, &quot;scissors&quot;)
+  
+  # Randomly select a move for Bob
+  bob_move &lt;- sample(moves,1)
+  
+  # Randomly select a move for Fred
+  fred_move &lt;- sample(moves,1)
+  
+  
+  # Work through the game win conditions
+  if (bob_move == fred_move){
+    winner = &quot;draw&quot;
+  }
+  
+  if( bob_move == &quot;rock&quot;){
+    if (fred_move == &quot;paper&quot;){
+      winner = &quot;fred&quot;
+    }
+    if (fred_move == &quot;scissors&quot;){
+      winner = &quot;bob&quot;
+    }
+      
+  }
+  
+  if (bob_move == &quot;paper&quot;){
+    if (fred_move == &quot;rock&quot;){
+      winner = &quot;bob&quot;
+    }
+    if (fred_move == &quot;scissors&quot;){
+      winner = &quot;fred&quot;
+    }
+  }
+  
+  if (bob_move == &quot;scissors&quot;) {
+    if (fred_move == &quot;rock&quot;){
+      winner = &quot;fred&quot;
+    }
+    if (fred_move == &quot;paper&quot;){
+      winner = &quot;bob&quot;
+    }
+  }
+  
+  # Return the winner
+  return(winner)
+} # end rock_paper_scissors</code></pre>
+</div>
+</div>
 
-
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiWm9vbSBOb3RlczogRnVuY3Rpb25zIGFuZCBDaG9pY2VzIgpkYXRlOiAiU2VtZXN0ZXIgMSwgMjAyMiIKb3V0cHV0OgogIGh0bWxfZG9jdW1lbnQ6CiAgICB0b2M6IHRydWUKICAgIHRvY19mbG9hdDogdHJ1ZQogICAgdG9jX2RlcHRoOiAzCiAgICBjb2RlX2Rvd25sb2FkOiB0cnVlCiAgICBjb2RlX2ZvbGRpbmc6IHNob3cKLS0tCgpgYGB7ciBzZXR1cCwgaW5jbHVkZT1GQUxTRX0KbGlicmFyeShrbml0cikKCmtuaXRyOjpvcHRzX2NodW5rJHNldCgKICBjb21tZW50ID0gIiM+IiwKICBmaWcucGF0aCA9ICJmaWd1cmVzLzA3LyIsICMgdXNlIG9ubHkgZm9yIHNpbmdsZSBSbWQgZmlsZXMKICBjb2xsYXBzZSA9IFRSVUUsCiAgZWNobyA9IFRSVUUKKQpgYGAKCgo=</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIlpvb20gTm90ZXM6IEZ1bmN0aW9ucyBhbmQgQ2hvaWNlcyINCmRhdGU6ICJTZW1lc3RlciAxLCAyMDIyIg0Kb3V0cHV0Og0KICBodG1sX2RvY3VtZW50Og0KICAgIHRvYzogdHJ1ZQ0KICAgIHRvY19mbG9hdDogdHJ1ZQ0KICAgIHRvY19kZXB0aDogMw0KICAgIGNvZGVfZG93bmxvYWQ6IHRydWUNCiAgICBjb2RlX2ZvbGRpbmc6IHNob3cNCi0tLQ0KDQpgYGB7ciBzZXR1cCwgaW5jbHVkZT1GQUxTRX0NCmxpYnJhcnkoa25pdHIpDQoNCmtuaXRyOjpvcHRzX2NodW5rJHNldCgNCiAgY29tbWVudCA9ICIjPiIsDQogIGZpZy5wYXRoID0gImZpZ3VyZXMvMDcvIiwgIyB1c2Ugb25seSBmb3Igc2luZ2xlIFJtZCBmaWxlcw0KICBjb2xsYXBzZSA9IFRSVUUsDQogIGVjaG8gPSBUUlVFDQopDQpgYGANCg0KPiAjIyMjIEFzc29jaWF0ZWQgTWF0ZXJpYWwNCj4NCj4gWm9vbSBub3RlczogW01vZHVsZSAwNyAtIEZ1bmN0aW9ucyBhbmQgQ2hvaWNlc10oMDctZnVuY3Rpb25zLmh0bWwpDQo+IA0KPiBSZWFkaW5nczoNCj4NCj4gLSBbUiBmb3IgRGF0YSBTY2llbmNlIC0gQ2hhcHRlciAxOV0oaHR0cHM6Ly9yNGRzLmhhZC5jby5uei9mdW5jdGlvbnMuaHRtbCkNCg0KXA0KDQojIFRvcGljcw0KDQojIyBVc2VyLURlZmluZWQgRnVuY3Rpb25zDQoNCi0gIERlY2xhcmF0aW9uDQotICBJbnB1dCBhcmd1bWVudHMNCi0gIFJldHVybmluZyBhIHJlc3VsdA0KDQojIyBTY29wZQ0KDQojIyBGbG93IG9mIENvbnRyb2wNCg0KLSAgVHlwZXMNCi0gIENvbmRpdGlvbmFsIGV4ZWN1dGlvbiAoYnJhbmNoaW5nKQ0KLSAgaWYsIGVsc2UsIGFuZCBlbHNlIGlmDQotICBDb21wYXJpc29uIG9wZXJhdG9ycw0KLSAgQm9vbGVhbiBsb2dpYyBvcGVyYXRvcnMNCi0gIENvbXBsZXggY29uZGl0aW9uYWxzDQoNCiMjIEV4ZXJjaXNlDQoNCkV2ZW4gc2VlbWluZ2x5IHNpbXBsZSBwcm9ncmFtcyBjYW4gaW52b2x2ZSBlbGFib3JhdGUgZmxvdyBvZiBjb250cm9sLiBUaGUgc2ltcGxlIGdhbWUgUm9jaywgUGFwZXIsIFNjaXNzb3JzIChodHRwczovL3d3dy53aWtpaG93LmNvbS9QbGF5LVJvY2ssLVBhcGVyLC1TY2lzc29ycykgY2FuIGJlIGltcGxlbWVudGVkIHdpdGggYSBjb21wbGV4IGNvbmRpdGlvbmFsIHN0cnVjdHVyZS4gV3JpdGUgYSBmdW5jdGlvbiB0byBwbGF5IHRoZSBnYW1lLiANCg0KSW4gdGhlIGV4YW1wbGUgc29sdXRpb24gYmVsb3csIHdlIHVzZSB0aGUgUiBmdW5jdGlvbiBgc2FtcGxlYCB0byByYW5kb21seSBzZWxlY3QgYSBtb3ZlIGZvciBlYWNoIG9mIHR3byBwbGF5ZXJzIChodHRwczovL3d3dy5yZG9jdW1lbnRhdGlvbi5vcmcvcGFja2FnZXMvYmFzZS92ZXJzaW9ucy8zLjYuMi90b3BpY3Mvc2FtcGxlKS4gQWx0ZXJuYXRpdmVseSwgdGhlIHBsYXllcnMnIGNob2ljZXMgY291bGQgYmUgcGFzc2VkIGluIGFzIGlucHV0IGFyZ3VtZW50cy4gDQoNCk5vdGUgdGhhdCB0aGVyZSBhcmUgbWFueSB3YXlzIHRoYXQgdGhlIGNvbmRpdGlvbmFsIGxvZ2ljIGNhbiBiZSBpbXBsZW1lbnRlZCwgc28geW91ciBzb2x1dGlvbiBtYXkgYmUgZGlmZmVyZW50LiBUaGUgZ2VuZXJhbCBydWxlIGlzIHRoYXQgd2UgdHJ5IHRvIGtlZXAgb3VyIGNvbmRpdGlvbmFsIGxvZ2ljIGFzIHN1Y2NpbmN0IGFzIHBvc3NpYmxlLCB3aGlsZSBzdGlsbCBtYWtpbmcgaXQgZWFzeSBmb3Igc29tZW9uZSByZWFkaW5nIHlvdXIgY29kZSB0byB1bmRlcnN0YW5kLg0KDQoNCmBgYHtyIHJvY2tfcGFwZXJfc2Npc3NvcnN9DQoNCnJvY2tfcGFwZXJfc2Npc3NvcnMgPC0gZnVuY3Rpb24oKQ0Kew0KICAjIFZlY3RvciBvZiB0aGUgdGhyZWUgcG9zc2libGUgbW92ZXMNCiAgbW92ZXMgPC0gYygicm9jayIsICJwYXBlciIsICJzY2lzc29ycyIpDQogIA0KICAjIFJhbmRvbWx5IHNlbGVjdCBhIG1vdmUgZm9yIEJvYg0KICBib2JfbW92ZSA8LSBzYW1wbGUobW92ZXMsMSkNCiAgDQogICMgUmFuZG9tbHkgc2VsZWN0IGEgbW92ZSBmb3IgRnJlZA0KICBmcmVkX21vdmUgPC0gc2FtcGxlKG1vdmVzLDEpDQogIA0KICANCiAgIyBXb3JrIHRocm91Z2ggdGhlIGdhbWUgd2luIGNvbmRpdGlvbnMNCiAgaWYgKGJvYl9tb3ZlID09IGZyZWRfbW92ZSl7DQogICAgd2lubmVyID0gImRyYXciDQogIH0NCiAgDQogIGlmKCBib2JfbW92ZSA9PSAicm9jayIpew0KICAgIGlmIChmcmVkX21vdmUgPT0gInBhcGVyIil7DQogICAgICB3aW5uZXIgPSAiZnJlZCINCiAgICB9DQogICAgaWYgKGZyZWRfbW92ZSA9PSAic2Npc3NvcnMiKXsNCiAgICAgIHdpbm5lciA9ICJib2IiDQogICAgfQ0KICAgICAgDQogIH0NCiAgDQogIGlmIChib2JfbW92ZSA9PSAicGFwZXIiKXsNCiAgICBpZiAoZnJlZF9tb3ZlID09ICJyb2NrIil7DQogICAgICB3aW5uZXIgPSAiYm9iIg0KICAgIH0NCiAgICBpZiAoZnJlZF9tb3ZlID09ICJzY2lzc29ycyIpew0KICAgICAgd2lubmVyID0gImZyZWQiDQogICAgfQ0KICB9DQogIA0KICBpZiAoYm9iX21vdmUgPT0gInNjaXNzb3JzIikgew0KICAgIGlmIChmcmVkX21vdmUgPT0gInJvY2siKXsNCiAgICAgIHdpbm5lciA9ICJmcmVkIg0KICAgIH0NCiAgICBpZiAoZnJlZF9tb3ZlID09ICJwYXBlciIpew0KICAgICAgd2lubmVyID0gImJvYiINCiAgICB9DQogIH0NCiAgDQogICMgUmV0dXJuIHRoZSB3aW5uZXINCiAgcmV0dXJuKHdpbm5lcikNCn0gIyBlbmQgcm9ja19wYXBlcl9zY2lzc29ycw0KYGBgDQoNCg==</div>
 
 
 </div>
