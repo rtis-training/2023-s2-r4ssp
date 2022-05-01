@@ -25,7 +25,7 @@ navbar:
         - text: "-------------"
         - text: "Programming focus"
         - text: "Functions and Choices"
-          # href: 07-functions.html
+          href: 07-functions.html
         - text: "Repeating Code"
           # href: 08-iterate.html
         - text: "Workflows"
@@ -44,8 +44,8 @@ navbar:
           href: zoom_notes_05.html
         - text: "06 - Communicating data"
           href: zoom_notes_06.html
-    #     - text: "Handout 7"
-    #       href: zoom_notes_07.html
+        - text: "07 - Functions and Choices"
+          href: zoom_notes_07.html
     #     - text: "Handout 8"
     #       href: zoom_notes_08.html
     #     - text: "Handout 9"
