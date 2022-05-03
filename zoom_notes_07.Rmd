@@ -21,4 +21,93 @@ knitr::opts_chunk$set(
 )
 ```
 
+> #### Associated Material
+>
+> Zoom notes: [Module 07 - Functions and Choices](07-functions.html)
+> 
+> Readings:
+>
+> - [R for Data Science - Chapter 19](https://r4ds.had.co.nz/functions.html)
+
+\
+
+# Topics
+
+## User-Defined Functions
+
+-  Declaration
+-  Input arguments
+-  Returning a result
+
+## Scope
+
+## Flow of Control
+
+-  Types
+-  Conditional execution (branching)
+-  if, else, and else if
+-  Comparison operators
+-  Boolean logic operators
+-  Complex conditionals
+
+## Exercise
+
+Even seemingly simple programs can involve elaborate flow of control. The simple game Rock, Paper, Scissors (https://www.wikihow.com/Play-Rock,-Paper,-Scissors) can be implemented with a complex conditional structure. Write a function to play the game. 
+
+In the example solution below, we use the R function `sample` to randomly select a move for each of two players (https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/sample). Alternatively, the players' choices could be passed in as input arguments. 
+
+Note that there are many ways that the conditional logic can be implemented, so your solution may be different. The general rule is that we try to keep our conditional logic as succinct as possible, while still making it easy for someone reading your code to understand.
+
+
+```{r rock_paper_scissors}
+
+rock_paper_scissors <- function()
+{
+  # Vector of the three possible moves
+  moves <- c("rock", "paper", "scissors")
+  
+  # Randomly select a move for Bob
+  bob_move <- sample(moves,1)
+  
+  # Randomly select a move for Fred
+  fred_move <- sample(moves,1)
+  
+  
+  # Work through the game win conditions
+  if (bob_move == fred_move){
+    winner = "draw"
+  }
+  
+  if( bob_move == "rock"){
+    if (fred_move == "paper"){
+      winner = "fred"
+    }
+    if (fred_move == "scissors"){
+      winner = "bob"
+    }
+      
+  }
+  
+  if (bob_move == "paper"){
+    if (fred_move == "rock"){
+      winner = "bob"
+    }
+    if (fred_move == "scissors"){
+      winner = "fred"
+    }
+  }
+  
+  if (bob_move == "scissors") {
+    if (fred_move == "rock"){
+      winner = "fred"
+    }
+    if (fred_move == "paper"){
+      winner = "bob"
+    }
+  }
+  
+  # Return the winner
+  return(winner)
+} # end rock_paper_scissors
+```
 
