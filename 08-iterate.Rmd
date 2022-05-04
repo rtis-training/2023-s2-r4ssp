@@ -39,7 +39,7 @@ In the previous module we saw how to make our code more **modular** by organisin
 
 We can also achieve code reuse through **iteration**. Iterative constructs, more casually called **loops** allow us to write out some commands once, then instruct R to execute them a specified number of times. The number of iterations can be made to vary, depending on the **state**. (Recall that **state** is the set of values of all the variables in the environment when a command is executed.) For example, we can write a loop that iterates as many times as there are rows in a data frame that we read from a file before the loop starts.
 
-In R, as in most modern programming languages, there are different types of loops, with subtle differences in behaviour. See the recommended reading for details. In this module, we will concentrate on the most general kind of loop -- the **for loop**.
+In R, as in most modern programming languages, there are different types of loops, with subtle differences in behaviour. See the recommended reading for details. We begin with the most general kind of loop -- the **for loop**.
 
 
 # Schematic
@@ -154,8 +154,8 @@ internal_marks <- c(87, 85, 62)
 exam_marks <- c(93, 84, 85)
 
 marks_df <- data.frame(PaperCode = paper_codes,
-                       InternalMark = internal_marks,
-                       ExamMarks = exam_marks)
+                       InternalMark = as.numeric(internal_marks),
+                       ExamMark = as.numeric(exam_marks))
 
 ```
 
@@ -194,7 +194,9 @@ for (index in 1:nrow(marks_df))
 }
 
 # Add a row to the data frame
-marks_df <- rbind(marks_df, c("ZOOL316", 83, 90))
+marks_df <- rbind(marks_df, data.frame(PaperCode = "ZOOL316", 
+                                       InternalMark = 83, 
+                                       ExamMark = 90))
 
 
 # Repeat the loop -- see four rows
@@ -206,13 +208,80 @@ for (index in 1:nrow(marks_df))
 }
 ```
 
+## Exercise
+
+1. Write a for-loop that iterates over marks_df printing **each column** in turn.
+2. Your final mark in each paper is computed as 40% of your internal mark plus 60% of your exam mark. Using the technique of your choice, add a new column to marks_df
+3. Run you for-loop again and confirm that it displays *all* the columns, including the new one.
+
+```{r ex 1 solution}
+# Display all columns
+for (index in 1:ncol(marks_df))
+{
+  # Use the loop driver to index into the data frame
+  selected_col <- marks_df[ , index]
+  print(selected_col)
+}
 
 
+# Add a new column
+marks_df$TotalMark <- (0.40 * marks_df$InternalMark) + (0.60 * marks_df$ExamMark) 
 
 
-### Nesting of loops
+# Confirm that we display all four columns
+for (index in 1:ncol(marks_df))
+{
+  # Use the loop driver to index into the data frame
+  selected_col <- marks_df[ , index]
+  print(selected_col)
+}
+```
 
-It's generally recommended to avoid the nesting of loops within other loops. Let's say the outer loop has a total of `n` iterations to get through and an inner loop has `m`. Every time we add one extra iteration of the outer loop we end up adding an extra `m` iterations of the inner loop, so the total number of iterations is `n * m`. Depending on how big `m` is, this could be adding thousands or millions of extra iterations, causing your code to take longer to run. Some times however, nesting is unavoidable but it's a good idea to keep an eye out for nesting if your code is taking a while to run as this is usually the first place things can be sped up.
+## Nested Loops
+
+In the preceding examples, we have iterated over a data frame processing complete rows, or complete columns. Frequently, it is necessary to iterate over a data frame (or matrix) processing each cell in turn. That is, instead of using the [, col] or [row, ] forms of selection, we need to specify both a row index and a column index (i.e. [row, col]). This is very common processing technique in simulation, computer graphics, artifical intelligence, and other problems requiring matrix algebra.
+
+We iterate over tabular date in an orderly fashion. For example, if we have a 3x3 matrix or data frame we would process the cells in the first row from left to right ([1,1], [1,2], [1,3]), then the cells in the second row ([2,1], [2,2], [2,3]), and finally the cells in the third row ([3,1], [3,1], [3,3]). You can view this pattern as using **two loop drivers**, one for the row index and one for the column index. While the row driver is 1, we want the column driver to loop through values 1, 2, and 3. Then, we want the row driver to take on 2, and again want the column driver to loop through 1, 2, and 3. Finally we want the row driver to be 3, and the column driver to loop again. We can achieve this by **nesting** a for-loop for columns **inside** a for loop for rows, as shown below. Note that each for loop has its own loop driver, its own sequence and its own round and curly brackets. The style of indenting the **inner** is very important for maintaining code readability.
+
+```{r nested for row-wise}
+
+# Outer loop.
+for (row_index in 1:nrow(marks_df))
+{
+  # Inner loop -- makes all iterations for each pass through outer loop
+  for (col_index in 1:ncol(marks_df))
+  {
+    # Use both loop drivers to select
+    cell_value <- marks_df[row_index, col_index]
+    print(cell_value)
+  }
+}
+```
+
+
+## Exercise
+The preceding example prints *row-wise*. That is, it prints all the values for each row (i.e. for a single paper) before moving to the next row (paper). Modify the code to print *column-wise*. That is, print down the columns: all the paper names, then all the internal marks, then all the exam marks, then all the final marks.
+
+```{r nested for col-wise}
+
+# Outer loop.
+for (col_index in 1:ncol(marks_df))
+{
+  # Inner loop -- makes all iterations for each pass through outer loop
+  for (row_index in 1:nrow(marks_df))
+  {
+    # Use both loop drivers to select
+    cell_value <- marks_df[row_index, col_index]
+    print(cell_value)
+  }
+}
+```
+
+### CAUTION
+Using a nested for-loop to visit every cell in a table is a very common, and very powerful code pattern. However, be aware that it can be computationally expensive (i.e. it can take a long time to run). If your outer loop runs `n` passes and your inner loop runs `m` passes, you make a total of `n * m` passes. When processing a 1000 row x 1000 column table with a nested for-loop, the code body of the inner loop is executed one million times, which may be intractable. If you have large data sets that take a long time to process, you should consider leveraging R's advanced vector processing techniques that provide more efficient processing than an interior for loop. See, for example, https://rstudio-pubs-static.s3.amazonaws.com/72295_692737b667614d369bd87cb0f51c9a4b.html or http://www.john-ros.com/Rcourse/memory.html for discussions.
+
+
+#########
 
 ## While loop
 
