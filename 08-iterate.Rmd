@@ -382,11 +382,33 @@ The variable x is initialised to 10, and incremented at each pass through the co
 
 # Map
 
-From the package `purrr` (part of the tidyverse), there are a collection of `map` functions which are a method of iterating over a collection of things applying a function. This is known as _functional programming_, and allows us to extract the code that is in common for a loop, into a function, so rather than being concerned about the set-up of the loop, we can focus on the contents of the loop. This idea of mapping a function onto data is extremely similar to the concept underlying the `for` loop.
+From the package `purrr` (part of the tidyverse), there are a collection of `map` functions which iterate over a collection, applying a function to each element. This is a very succinct syntax, which achieves the same result as calling the function inside a for loop without the syntactic overhead of writing out the loop structure.
+
+```{r simple map}
+library(purrr)
+
+farenheit_to_celcius <- function(temp_f){
+  temp_c <- (temp_f - 32) * 5/9
+  return(temp_c)
+}
+
+my_temps_f <- c(90, 78, 88, 89, 77)
+
+# map applies the function (2nd argument) to each element of the vector (1st argument) 
+# and returns the results as a list. 
+my_temps_c_list <- map(my_temps_f, farenheit_to_celcius)
+my_temps_c_list
+
+```
+
+The argument names are `.x` and `.f`, so the call to map above could also be written as `my_temps_c_list <- map(.x = my_temps_f, .f = farenheit_to_celcius)`
+
+Note that when providing a function as an argument, give **only the function name**. Do not follow the function name with () as for a function call.
+
 
 ## Map and friends
 
-The package `purrr` within the tidyverse provides the `map` functions that take a vector or list as the first argument, and the second argument is the function to be run on each item in the vector or list. The object that is returned back with the results depends on the exact version of `map` that is called, the default `map()` returns the results as items in a list, but there are suffix versions of `map` that will return the results back in a specified data type.
+The default `map()` above, returns the results as items in a list. There are suffix versions of `map` that return the results as a specific data type.
 
 - `map()` makes a list.
 - `map_lgl()` makes a logical vector.
@@ -394,40 +416,13 @@ The package `purrr` within the tidyverse provides the `map` functions that take 
 - `map_dbl()` makes a double vector.
 - `map_chr()` makes a character vector.
 
-These suffix versions will give an error if the data type of the results doesn't match. This is useful for being able to program with, as it means that you can be sure that you have a particular data type for future code. Some of the base R functions that you will meet in the next section don't provide this guarantee. The arguments to the `map` functions are `.x` which is the vector or list input, and `.f` which is the name of the function. if the supplied function takes multiple arguments these can be passed in as extra arguments to `map`.
-
-We could use the example of converting some temperatures to demonstrate
-```{r}
-library(purrr)
-
-farenheit_to_celcius <- function(temp_f){
-  temp_c <- (temp_f -32) * 5/9
-  return(temp_c)
-}
-
-my_temps_f <- c(90, 78, 88, 89, 77)
-
-# gives back a list
-my_temps_c_list <- map(.x = my_temps_f, .f = farenheit_to_celcius)
-my_temps_c_list
-
-# gives back a vector of type numeric/double
-my_temps_c_dbl <- map_dbl(.x = my_temps_f, .f = farenheit_to_celcius)
-my_temps_c_dbl
-```
-
-When using `map` and variants, don't include the `()`'s on the function name, if you do you'll get this error:
-```{r, error = TRUE}
-map(.x = my_temps_f, .f = farenheit_to_celcius())
-```
-
+These suffix versions will give an error if the data type of the results doesn't match the intended return type. This is useful because you can write code to process the results further, confident that they are of a specific data type. 
 
 # Apply
 
-Base R has built in functions for applying a function to a vector, list or data frame. There is `apply` which will apply a function to either columns or rows of a data frame, `lapply` for applying to a list or vector - it's analogous to `map()`, and `vapply` which can takes the return data type as one of the arguments so can be thought of as analogous to the suffix versions of `map`. The `apply()` function is very similar to `map()`
+Base R has a family of built in functions that duplicate the behaviour of `purrr:map` and its suffix functions. These are the **apply family**: `apply`, `lapply`, `sapply`, `mapply`, and `tapply`. The functions differ primarily in the structure of the data they return. 
 
-
-The equivalent example of what we did above with `map()` `and map_dbl()` is as follows:
+Function `lapply` is analogous to `purrr:map()`:
 
 ```{r}
 farenheit_to_celcius <- function(temp_f){
@@ -441,30 +436,19 @@ my_temps_f <- c(90, 78, 88, 89, 77)
 lapply_my_temps_c <- lapply(X = my_temps_f, FUN = farenheit_to_celcius)
 lapply_my_temps_c
 
-# vapply example. FUN.VALUE defines the type and length size of each of the returned results. 
-vapply_my_temps_c <- vapply(X = my_temps_f, FUN = farenheit_to_celcius, FUN.VALUE = numeric(1))
-vapply_my_temps_c
 ```
 
-We can see that there is a difference in the results that R returns between `lapply` and `vapply` by using `str` to look at the structure.
-
-```{r}
-str(lapply_my_temps_c)
-str(vapply_my_temps_c)
-```
-
-`lapply_my_temps_c` is a _list_ with each item being a numeric vector, whereas `sapply_my_temps_c` is single a _numeric_ vector of (the data type that we specified). When we specified the data type for `vapply` we used `numeric(1)` as an argument. What this meant was that each time our function specified for `FUN = ` is run, it was expected to return a vector of length 1 of type numeric. If this wasn't the case, an error would occur. One thing to be aware of is that `vapply` doesn't always return a vector, the data structure that it returns depends on the data going in. This can make it challenging to know beforehand what the output is going to look like - unlike the suffix versions of `map` from `purrr`.
-
+Note that some of the apply family return different data structure depending on the type of the input data. This can make it challenging to know beforehand what the output is going to look like - unlike the suffix versions of `map` from `purrr`. See, for example, http://adv-r.had.co.nz/Functionals.html for more detail. 
 
 
 # Conclusion
 
-In this module we covered how repeat tasks efficiently. Combining iteration with part 1 - functions and flow and control - you now have the knowledge to be able to create code that is modular and reusable, and maintainable. This will enable you to be more efficient going forward with your programming and analysis.
+In this module we covered how to repeat tasks efficiently. Combining iteration with functions conditinal flow of control from our previous module - you can create code that is modular, reusable, and maintainable. 
 
 
-## What's Next
+# What's Next
+Next week we conclude the formal content of R4SSP with a discussion of R workflows including project structure, incremental development and effective debugging techniques.
 
-Congratulations on finishing the course! This doesn't have to be the end of your learning journey with R though. There are many free online resources to delve further in. If you haven't already, a good place to start is the chapters of [R for Data Science](https://r4ds.had.co.nz) that weren't covered in the course. And if you want to get more in-depth with the R language the online book [Advanced R](https://adv-r.hadley.nz) covers more of the R language and programming.
 
 Please fill in the module feedback form [https://tinyurl.com/r4ssp-module-fb](https://tinyurl.com/r4ssp-module-fb).
 
