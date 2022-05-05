@@ -109,13 +109,14 @@ for (cheer in 1:10)
 
 # The Loop Driver
 
-Recall the schematic for an R for loop:
+Recall the schematic for a for loop in R:
 
 | **for** (*variable_name* **in** *some_kind_of_sequence*)
 | {
 |     *Code to be repeated. Can be as long as required.*
 | }
 
+\
 The *variable_name* element can be any legal R variable name. This element is called the **loop driver**. Inside the code body of the for loop, the loop driver variable **is always available**. For example, in our "Aussie!, Aussie! Aussie!" example, our loop driver was called *cheer*. In our code body we could have referred to variable `cheer`. 
 
 As discussed above, the for loop code body is executed as many times as there are elements in the sequence in the header. At each pass through the loop, the loop driver variable automatically takes on **the value of the corresponding element of the sequence**. That is, in the first pass of the loop, the loop driver holds the value of the first element of the sequence; in the second pass of the loop, the loop driver holds the value of the second element of the sequence, and so on.
@@ -156,7 +157,6 @@ Throughout the course we have seen that R relies heavily on managing data in ord
 For example, assume you have a data frame containing one student's internal and exam marks for the papers taken in one semester: 
 
 ```{r make data frame}
-
 paper_codes <- c("HUBS192", "ECOL212", "STAT260")
 internal_marks <- c(87, 85, 62)
 exam_marks <- c(93, 84, 85)
@@ -195,7 +195,6 @@ for (index in 1:3)
 Note that if we made our data frame longer than three rows by adding more papers to it, the preceding for loop **would not** print all the rows; the sequence in that example is always `1, 2, 3` so we see only rows 1, 2, and 3. We can make the loop more general by determining the for loop sequence **dynamically** using function `nrow`, which accepts a data frame as an argument, and returns the number of rows in the data frame:
 
 ```{r using nrow}
-
 # Display all rows
 for (index in 1:nrow(marks_df))
 {
@@ -218,6 +217,8 @@ for (index in 1:nrow(marks_df))
   print(selected_row)
 }
 ```
+
+\
 
 # Exercise
 
@@ -248,6 +249,8 @@ for (index in 1:ncol(marks_df))
 }
 ```
 
+\
+
 # Nested for loops
 
 In the preceding examples, we have iterated over a data frame processing complete rows, or complete columns. Frequently, it is necessary to iterate over a data frame (or matrix) processing each *individual cell* in turn. That is, instead of using the `[, col]` or `[row, ]` forms of selection, we need to specify both a row index and a column index (i.e. `[row, col]`). This is very common processing technique in simulation, computer graphics, artificial intelligence, and computational problems requiring matrix algebra.
@@ -268,6 +271,7 @@ for (row_index in 1:nrow(marks_df))
 }
 ```
 
+\
 
 ## Exercise
 The preceding example prints *row-wise*. That is, it prints all the values for each row (i.e. for a single paper) before moving to the next row (paper). Modify the code to print *column-wise*. That is, print down the columns: all the paper names, then all the internal marks, then all the exam marks, then all the final marks.
@@ -286,6 +290,8 @@ for (col_index in 1:ncol(marks_df))
 }
 ```
 
+\
+
 ### CAUTION
 
 Using a nested for loop to visit every cell in a table is a very common, and very powerful code pattern. However, be aware that it can be computationally expensive (i.e. it can take a long time to run). If your outer loop runs `n` passes and your inner loop runs `m` passes, you make a total of `n * m` passes. When processing a 1000 row x 1000 column table with a nested for loop, the code body of the inner loop is executed one million times, which may be intractable. If you have large tabular data sets that take a long time to process, you should consider leveraging R's advanced vector processing techniques that can be more efficient than an interior for loop. See, for example, https://rstudio-pubs-static.s3.amazonaws.com/72295_692737b667614d369bd87cb0f51c9a4b.html or http://www.john-ros.com/Rcourse/memory.html for discussions.
@@ -303,7 +309,7 @@ while (condition)
 }
 ```
 
-In an earlier module, we used function `rnorm` to randomly select a value from a random distribution with a known mean and standard deviation. Imagine that you want to explore the probability of randomly selecting a number from such a distribution that is more than two standard deviations above the mean (i.e. had a z-score of 2 or more). You could estimate this by repeatedly selecting a number until you achieved the criterion, and counting the number of times you had to select. We wish to loop repeatedly over some logic (selecting and counting), but we don't know exactly how many times the loop should run, so a for loop is not appropriate. In this situation, we use a **while loop**.
+In an earlier module, we used function `rnorm` to randomly select a value from a normal distribution with a known mean and standard deviation. Imagine that you want to explore the probability of randomly selecting a number from such a distribution that is more than two standard deviations above the mean (i.e. has a z-score of 2 or more). You could estimate this by repeatedly selecting a number until you achieved the criterion, and counting the number of times you had to select. We wish to loop repeatedly over some logic (selecting and counting), but we don't know exactly how many times the loop should run, so a for loop is not appropriate. In this situation, we use a **while loop**.
 
 **Before looking at the code sample below, try to work out what the while loop condition will be.**
 
@@ -365,6 +371,8 @@ while (nheads < 3) {
 flips
 
 ```
+
+\
 
 ## Infinite while loops
 
