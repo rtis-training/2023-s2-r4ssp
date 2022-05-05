@@ -35,22 +35,24 @@ knitr::opts_chunk$set(
 
 # Introduction
 
-In the previous module we saw how to make our code more **modular** by organising it into functions, each of which encapsulates some logically distinct task. By repeatedly calling a function, we can execute the same code many times, while only having to type it out once. This is **code reuse** and is an important goal in efficient software development.
+In the previous module we learned to make our code more **modular** by organising it into functions, each of which encapsulates some logically distinct task. By repeatedly calling a function, we can execute the same code many times, while only having to type it out once. This is **code reuse** and is an important goal in efficient software development.
 
-We can also achieve code reuse through **iteration**. Iterative constructs, more casually called **loops** allow us to write out some commands once, then instruct R to execute them a specified number of times. The number of iterations can be made to vary, depending on the **state**. (Recall that **state** is the set of values of all the variables in the environment when a command is executed.) For example, we can write a loop that iterates as many times as there are rows in a data frame that we read from a file before the loop starts.
+We can also achieve code reuse through **iteration**. Iterative constructs (more casually called **loops**) allow us to write a code block once, then instruct R to execute it a specified number of times. The number of iterations can be made to vary depending on the **state**. (Recall that **state** is the set of values of all the variables in the environment when a command is executed.) For example, we can write a loop that iterates as many times as there are rows in a data frame that we read from a file before the loop starts.
 
-In R, as in most modern programming languages, there are different types of loops, with subtle differences in behaviour. See the recommended reading for details. We begin with the most general kind of loop -- the **for loop**.
+In R, as in most modern programming languages, there are different types of loops, with subtle differences in behaviour. We begin with the most general kind of loop -- the **for loop**.
 
 
 # Syntax
 
-In R a for loop has this structure:
+In R a **for loop** has the following structure:
 
-for (*variable_name* in *some_kind_of_sequence*)
-{
-  *Code to be repeated. Can be as long as required.*
-}
 
+| **for** (*variable_name* **in** *some_kind_of_sequence*)
+| {
+|     *Code block to be repeated. Can be as long as required.*
+| }
+
+\
 
 The keywords **for** and **in** are required, as are the round brackets in the **loop header**, and the curly brackets that delineate the code body.
 
@@ -70,7 +72,8 @@ print("Aussie!")
 print("Aussie!")
 print("Aussie!")
 ```
-You are executing the identical line of code three times. Having to type the same line of code many times is boring, and simply multiplies the number of opportunities for typos and bugs to sneak in. (And in this toy example, we are only repeating one line of code three times; in a real computational situation we might need to repeats dozens of lines of code hundreds of times.) Using a for loop, we can achieve the same output while only typing the command once.
+
+You are executing the identical line of code three times. Having to type the same line of code multiple times is boring, and increases the number of opportunities for typos and bugs to sneak in. (In this toy example, we are only repeating one line of code three times; in a real computational situation we might need to repeat dozens of lines of code hundreds of times.) Using a **for loop**, we can achieve the same output while only typing the command once.
 
 ```{r basic loop}
 for (cheer in c(1,2,3))
@@ -79,11 +82,11 @@ for (cheer in c(1,2,3))
 }
 ```
 
-Match the parts of this loop to the schematic, noting the position of the keywords **for** and **in**, the brackets, and the *some_kind_of_sequence* element which is, in this case, the vector created by `c(1,2,3)`. Since there are three elements in the vector, the code body is executed three times. 
+Match the parts of this loop to the schematic, noting the position of the keywords **for** and **in**, the round brackets, and the curly brackets. Note the *some_kind_of_sequence* element which, in this case, is the vector created by `c(1,2,3)`. Since there are three elements in the vector, the code body is executed three times. 
 
 ## Vector sequences
 
-If we wanted to print "Aussie!" 5 times, we could increase the length of the vector to 5. If we wanted to print it 100 times (could happen) we could increase the length of the vector to 100, but using function `c()` for this is too cumbersome. In R, we have an alternative for generating a sequence of numbers using the `:` operator.
+If we wanted to print "Aussie!" 5 times, we could increase the length of the vector to 5. If we wanted to print it 100 times (could happen) we could increase the length of the vector to 100, but using function `c()` for this is too cumbersome. In R, we have an alternative for generating a sequence of numbers -- the `:` operator.
 
 ```{r seq }
 small_seq <- 1:5
@@ -93,28 +96,29 @@ big_seq <- 1:50
 big_seq
 ```
 
-There are more powerful functions for generating sequences (see, for example `seq` and `rep`) but for basic for loops, the `:` operator is sufficient. We can extend our cheer-printing for loop:
+There are more powerful R functions for generating sequences (see, for example `seq` and `rep`) but for basic for loops, the `:` operator is sufficient. We can extend our cheer-printing for loop:
 
 ```{r long cheer}
-for (cheer in 1:15)
+for (cheer in 1:10)
 {
   print("Aussie")
 }
 ```
 
-# The Loop Driver
+\
 
+# The Loop Driver
 
 Recall the schematic for an R for loop:
 
-for (*variable_name* in *some_kind_of_sequence*)
-{
-  *Code to be repeated. Can be as long as required.*
-}
+| **for** (*variable_name* **in** *some_kind_of_sequence*)
+| {
+|     *Code to be repeated. Can be as long as required.*
+| }
 
-The *variable_name* element can be any legal R variable name. This element is called the **loop driver**. Inside the code body of the for loop the loop driver variable is always available. For example, in our "Aussie!, Aussie! Aussie!" example, our loop driver was called *cheer*. In our code body we could have referred to variable `cheer`. 
+The *variable_name* element can be any legal R variable name. This element is called the **loop driver**. Inside the code body of the for loop, the loop driver variable **is always available**. For example, in our "Aussie!, Aussie! Aussie!" example, our loop driver was called *cheer*. In our code body we could have referred to variable `cheer`. 
 
-As discussed above, the for loop code body is executed as many times as there are elements in the sequence in the header. At each pass through the loop, the loop driver automatically takes on **the value of the corresponding element of the sequence**. That is, in the first pass of the loop, the loop driver variable is assigned the value of the first element of the sequence; in the second pass of the loop, the loop driver variable is assigned the value of the second element of the sequence, and so on.
+As discussed above, the for loop code body is executed as many times as there are elements in the sequence in the header. At each pass through the loop, the loop driver variable automatically takes on **the value of the corresponding element of the sequence**. That is, in the first pass of the loop, the loop driver holds the value of the first element of the sequence; in the second pass of the loop, the loop driver holds the value of the second element of the sequence, and so on.
 
 We illustrate this by extending our previous example to print the value of loop driver `cheer` inside the code body:
 
@@ -126,7 +130,7 @@ for (cheer in 1:3)
 }
 ```
 
-Note that you **never assign** a value to the loop driver -- it takes on its values automatically as the for loop runs.
+Note that you **never assign a value to the loop driver** -- it takes on its values automatically as the for loop runs.
 
 In all our examples so far, the sequence in the for loop header has been numbers from 1 to *n*. In R, the sequence can be a vector of any type, and the loop driver will take on whatever values the sequence contains. For example, we can drive a for loop with a vector of string:
 
@@ -143,11 +147,13 @@ for (current_sport in sports)
   
 ```
 
+\
+
 ## Loop driver as index
 
-Throughout the course we have seen that R relies heavily on managing data in ordered collections (vectors, lists, and data frames). We select elements from those collections using [], providing the ordinal position of the element of interest. Since loop driver variables take on each value in their sequence, we can use a for loop to step through each element of a collection in turn.
+Throughout the course we have seen that R relies heavily on managing data in ordered collections (vectors, lists, and data frames). We select elements from those collections using the selection operator `[]`, providing the ordinal position of the element of interest. Since loop driver variables take on each value in their sequence, we can use a for loop to step through each element of a collection in turn.
 
-For example, assume a data frame containing a student's internal and exam marks for the papers taken in one semester: 
+For example, assume you have a data frame containing one student's internal and exam marks for the papers taken in one semester: 
 
 ```{r make data frame}
 
@@ -159,31 +165,34 @@ marks_df <- data.frame(PaperCode = paper_codes,
                        InternalMark = as.numeric(internal_marks),
                        ExamMark = as.numeric(exam_marks))
 
+marks_df
+
 ```
 
-We know that we can select all columns from a single row in that data frame using the syntax [*row number*, ]
+We know that we can select all columns from a single row in that data frame using the syntax [*row number*,  ]
 
 ```{r select row}
 # Select and print row 2
-
 selected_row <- marks_df[2, ]
 print(selected_row)
 
 ```
-With a for loop we can use the loop driver to iterate over all the rows, processing each in turn:
 
+With a for loop, we can use the loop driver to iterate over all the rows, processing each in turn:
 
 ```{r simple driver as index}
 for (index in 1:3)
 {
-  # Use the loop driver to index into the data frame
+  # Use the loop driver to select a row from the data frame
   selected_row <- marks_df[index, ]
+  
+  # Process the row (just printing in this example)
   print(selected_row)
 }
 
 ```
 
-Note that if we made our data frame longer than three rows by adding more papers to it, the preceding for loop **would not** print all the rows; the sequence in that exmaple is always `1, 2, 3` so we see only rows 1, 2, and 3. We can make the loop more general by determining the for loop sequence **dynamically** using function `nrows`, which accepts a data frame as an argument, and returns the number of rows in the data frame:
+Note that if we made our data frame longer than three rows by adding more papers to it, the preceding for loop **would not** print all the rows; the sequence in that example is always `1, 2, 3` so we see only rows 1, 2, and 3. We can make the loop more general by determining the for loop sequence **dynamically** using function `nrow`, which accepts a data frame as an argument, and returns the number of rows in the data frame:
 
 ```{r using nrow}
 
@@ -213,7 +222,7 @@ for (index in 1:nrow(marks_df))
 # Exercise
 
 1. Write a for loop that iterates over marks_df printing **each column** in turn.
-2. Your final mark in each paper is computed as 40% of your internal mark plus 60% of your exam mark. Using the technique of your choice, add a new column to marks_df
+2. Your final mark in each paper is computed as 40% of your internal mark plus 60% of your exam mark. Using the technique of your choice, add a new column to data frame marks_df which contains the computed final mark for each paper.
 3. Run your for loop again and confirm that it displays *all* the columns, including the new one.
 
 ```{r ex 1 solution}
@@ -241,12 +250,11 @@ for (index in 1:ncol(marks_df))
 
 # Nested for loops
 
-In the preceding examples, we have iterated over a data frame processing complete rows, or complete columns. Frequently, it is necessary to iterate over a data frame (or matrix) processing each cell in turn. That is, instead of using the [, col] or [row, ] forms of selection, we need to specify both a row index and a column index (i.e. [row, col]). This is very common processing technique in simulation, computer graphics, artifical intelligence, and other problems requiring matrix algebra.
+In the preceding examples, we have iterated over a data frame processing complete rows, or complete columns. Frequently, it is necessary to iterate over a data frame (or matrix) processing each *individual cell* in turn. That is, instead of using the `[, col]` or `[row, ]` forms of selection, we need to specify both a row index and a column index (i.e. `[row, col]`). This is very common processing technique in simulation, computer graphics, artificial intelligence, and computational problems requiring matrix algebra.
 
-We iterate over tabular date in an orderly fashion. For example, if we have a 3x3 matrix or data frame we would process the cells in the first row from left to right ([1,1], [1,2], [1,3]), then the cells in the second row ([2,1], [2,2], [2,3]), and finally the cells in the third row ([3,1], [3,1], [3,3]). You can view this pattern as using **two loop drivers**, one for the row index and one for the column index. While the row driver is 1, we want the column driver to loop through values 1, 2, and 3. Then, we want the row driver to take on 2, and again want the column driver to loop through 1, 2, and 3. Finally we want the row driver to be 3, and the column driver to loop again. We can achieve this by **nesting** a for loop for columns **inside** a for loop for rows, as shown below. Note that each for loop has its own loop driver, its own sequence and its own round and curly brackets. The style of indenting the **inner** is very important for maintaining code readability.
+We iterate over tabular date in an orderly fashion. For example, if we have a 3x3 matrix or data frame we would process the cells in the first row from left to right ([1,1], [1,2], [1,3]), then the cells in the second row ([2,1], [2,2], [2,3]), and finally the cells in the third row ([3,1], [3,1], [3,3]). You can view this pattern as using **two loop drivers**, one for the row index and one for the column index. While the row driver is 1, we want the column driver to loop through values 1, 2, and 3. Then, we want the row driver to take on 2, and again want the column driver to loop through 1, 2, and 3. Finally we want the row driver to be 3, and the column driver to loop again. We can achieve this by **nesting** a for loop for columns **inside** a for loop for rows, as shown below. Note that each for loop has its own loop driver, its own sequence and its own round and curly brackets. The style of indenting the **inner for loop** is important for maintaining code readability.
 
 ```{r nested for row-wise}
-
 # Outer loop.
 for (row_index in 1:nrow(marks_df))
 {
@@ -265,7 +273,6 @@ for (row_index in 1:nrow(marks_df))
 The preceding example prints *row-wise*. That is, it prints all the values for each row (i.e. for a single paper) before moving to the next row (paper). Modify the code to print *column-wise*. That is, print down the columns: all the paper names, then all the internal marks, then all the exam marks, then all the final marks.
 
 ```{r nested for col-wise}
-
 # Outer loop.
 for (col_index in 1:ncol(marks_df))
 {
@@ -280,14 +287,12 @@ for (col_index in 1:ncol(marks_df))
 ```
 
 ### CAUTION
-Using a nested for loop to visit every cell in a table is a very common, and very powerful code pattern. However, be aware that it can be computationally expensive (i.e. it can take a long time to run). If your outer loop runs `n` passes and your inner loop runs `m` passes, you make a total of `n * m` passes. When processing a 1000 row x 1000 column table with a nested for loop, the code body of the inner loop is executed one million times, which may be intractable. If you have large data sets that take a long time to process, you should consider leveraging R's advanced vector processing techniques that provide more efficient processing than an interior for loop. See, for example, https://rstudio-pubs-static.s3.amazonaws.com/72295_692737b667614d369bd87cb0f51c9a4b.html or http://www.john-ros.com/Rcourse/memory.html for discussions.
 
-
-#########
+Using a nested for loop to visit every cell in a table is a very common, and very powerful code pattern. However, be aware that it can be computationally expensive (i.e. it can take a long time to run). If your outer loop runs `n` passes and your inner loop runs `m` passes, you make a total of `n * m` passes. When processing a 1000 row x 1000 column table with a nested for loop, the code body of the inner loop is executed one million times, which may be intractable. If you have large tabular data sets that take a long time to process, you should consider leveraging R's advanced vector processing techniques that can be more efficient than an interior for loop. See, for example, https://rstudio-pubs-static.s3.amazonaws.com/72295_692737b667614d369bd87cb0f51c9a4b.html or http://www.john-ros.com/Rcourse/memory.html for discussions.
 
 # While loop
 
-The **for loop** is used when you want to execute a code body a specific number of times, or iterate over a specific sequence of values. An alternative loop structure -- the **while loop** continues to loop as long as some condition evaluates to true.
+The **for loop** is used when you want to execute a code body a specific number of times, or iterate over a specific sequence of values. An alternative loop structure -- the **while loop** repeats as long as a given condition evaluates to true.
 
 The schematic for a `while` loop is as follows:
 
@@ -298,13 +303,12 @@ while (condition)
 }
 ```
 
-In an earlier module, we used function `rnorm` to randomly select a value from a random distribution with a known mean and standard deviation. Imagine that you want to explore the probability of randomly selecting a number from such a distribution that was more than two standard deviations above the mean (i.e. had a z-score of 2 or more). You could estimate this by repeatedly selecting a number until you achieved this criterion and counting the number of times you had to select. We wish to loop repeatedly over some logic (selecting and counting), but we don't know exactly how many times the loop should run, so a for loop is not appropriate. In this situation, we use a **while loop**.
+In an earlier module, we used function `rnorm` to randomly select a value from a random distribution with a known mean and standard deviation. Imagine that you want to explore the probability of randomly selecting a number from such a distribution that is more than two standard deviations above the mean (i.e. had a z-score of 2 or more). You could estimate this by repeatedly selecting a number until you achieved the criterion, and counting the number of times you had to select. We wish to loop repeatedly over some logic (selecting and counting), but we don't know exactly how many times the loop should run, so a for loop is not appropriate. In this situation, we use a **while loop**.
 
 **Before looking at the code sample below, try to work out what the while loop condition will be.**
 
 
 ```{r while looop with rnorm}
-
 # Define the parameters
 distribution_mean <- 100
 distribution_sd <- 10
@@ -362,7 +366,9 @@ flips
 
 ```
 
-NB: It is essential **that your condition will eventually evaluate to false**. Consider the following code sample (which we will not try to run).
+## Infinite while loops
+
+NB: It is essential that your while loop condition will **eventually evaluate to false**. Consider the following code sample (which we will *not* run).
 
 ```{r infinite loop, eval = FALSE}
 # Set a starting value so we can check the condition on the first pass
@@ -377,12 +383,11 @@ while (x > 0)
 
 ```
 
-The variable x is initialised to 10, and incremented at each pass through the code body. Its value will therefore always be greater than or equal to 10. The loop condition is `x > 0`. Since x starts at 10 and increases at each pass, it will always be greater than 0, so the loop condition will always be true, and the loop will never finish. This is an **infinite loop**. When your code is in an infinite loop, the only way to stop it is to forcibly terminate the program (assuming you recognise what has occurred). In R you can usually do this by clicking the red stop sign in the top right corner of the console window. An infinite loop that produces a lot of variables can consume memory to the point where the machine will crash. This is bad. Always check that your loop condition is guaranteed to fail before running code with a while loop.
-
+The variable x is initialised to 10, and incremented at each pass through the code body. Its value will therefore always be greater than or equal to 10. The loop condition is `x > 0`. Since x starts at 10 and increases at each pass, it will always be greater than 0, so the loop condition will always be true, and the loop will never stop. This is an **infinite loop**. When your code is in an infinite loop, the only way to stop it is to forcibly terminate the program (assuming you recognise what has occurred). In R you can usually do this by clicking the red stop sign in the top right corner of the console window. An infinite loop that produces a lot of variables can consume memory to the point where the machine will crash. This is bad. Always check that your loop condition is guaranteed to eventually evaluate to false before running code with a while loop.
 
 # Map
 
-From the package `purrr` (part of the tidyverse), there are a collection of `map` functions which iterate over a collection, applying a function to each element. This is a very succinct syntax, which achieves the same result as calling the function inside a for loop without the syntactic overhead of writing out the loop structure.
+In the package `purrr` (part of package tidyverse), there are a collection of `map` functions which iterate over a vector or list, applying a function to each element. This is a very succinct syntax, which achieves the same result as calling the function inside a for loop, without the overhead of writing out the loop structure.
 
 ```{r simple map}
 library(purrr)
@@ -401,14 +406,14 @@ my_temps_c_list
 
 ```
 
-The argument names are `.x` and `.f`, so the call to map above could also be written as `my_temps_c_list <- map(.x = my_temps_f, .f = farenheit_to_celcius)`
+The `map` argument names are `.x` and `.f`, so the call to `map` above could also be written as `my_temps_c_list <- map(.x = my_temps_f, .f = farenheit_to_celcius)`
 
 Note that when providing a function as an argument, give **only the function name**. Do not follow the function name with () as for a function call.
 
 
 ## Map and friends
 
-The default `map()` above, returns the results as items in a list. There are suffix versions of `map` that return the results as a specific data type.
+The basic form of `map` above, returns the results in a list. There are suffix versions of `map` that return the results as a specific data type.
 
 - `map()` makes a list.
 - `map_lgl()` makes a logical vector.
@@ -420,9 +425,9 @@ These suffix versions will give an error if the data type of the results doesn't
 
 # Apply
 
-Base R has a family of built in functions that duplicate the behaviour of `purrr:map` and its suffix functions. These are the **apply family**: `apply`, `lapply`, `sapply`, `mapply`, and `tapply`. The functions differ primarily in the structure of the data they return. 
+Base R has a set of built in functions that duplicate the behaviour of `purrr::map` and its suffix functions. These are the **apply family**: `apply`, `lapply`, `sapply`, `mapply`, and `tapply`. The functions differ primarily in the structure of the data they return. See, for example, http://adv-r.had.co.nz/Functionals.html for more detail.
 
-Function `lapply` is analogous to `purrr:map()`:
+Function `lapply` is analogous to `purrr::map()`:
 
 ```{r}
 farenheit_to_celcius <- function(temp_f){
@@ -438,16 +443,14 @@ lapply_my_temps_c
 
 ```
 
-Note that some of the apply family return different data structure depending on the type of the input data. This can make it challenging to know beforehand what the output is going to look like - unlike the suffix versions of `map` from `purrr`. See, for example, http://adv-r.had.co.nz/Functionals.html for more detail. 
-
+Note that some of the apply family return different data structures depending on the type of the input data. This can make it challenging to know beforehand what the output is going to look like - unlike the suffix versions of `purrr::map`
 
 # Conclusion
 
-In this module we covered how to repeat tasks efficiently. Combining iteration with functions conditinal flow of control from our previous module - you can create code that is modular, reusable, and maintainable. 
-
+In this module we covered using for and while loops to repeat code fragments efficiently. We saw that functions in the map and apply families provide an equivalent, yet more succinct syntax, when the repeated code is a single function. Combining loops with functions and conditional flow of control from last week's session, you can create code that is modular, reusable, and maintainable. 
 
 # What's Next
-Next week we conclude the formal content of R4SSP with a discussion of R workflows including project structure, incremental development and effective debugging techniques.
+Next week we conclude the formal content of R4SSP with a discussion of R workflows, including project structure, incremental development, and effective debugging techniques.
 
 
 Please fill in the module feedback form [https://tinyurl.com/r4ssp-module-fb](https://tinyurl.com/r4ssp-module-fb).
