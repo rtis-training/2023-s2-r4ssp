@@ -13,7 +13,7 @@
 
 <title>Zoom Notes: Repeating Code</title>
 
-<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
@@ -60,6 +60,7 @@ if (window.hljs) {
 
 
 
+
 <style type="text/css">
 #rmd-source-code {
   display: none;
@@ -91,6 +92,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -319,7 +323,7 @@ div.tocify {
 <div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -332,7 +336,7 @@ div.tocify {
   <a href="index.html">Home</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Modules
      
     <span class="caret"></span>
@@ -364,12 +368,14 @@ div.tocify {
     <li>
       <a href="07-functions.html">Functions and Choices</a>
     </li>
-    <li class="dropdown-header">Repeating Code</li>
+    <li>
+      <a href="08-iterate.html">Repeating Code</a>
+    </li>
     <li class="dropdown-header">Workflows</li>
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Zoom Notes
      
     <span class="caret"></span>
@@ -396,6 +402,9 @@ div.tocify {
     <li>
       <a href="zoom_notes_07.html">07 - Functions and Choices</a>
     </li>
+    <li>
+      <a href="zoom_notes_08.html">08 - Repeating Code</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -412,7 +421,7 @@ div.tocify {
 <div id="header">
 
 <div class="btn-group pull-right float-right">
-<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
 <ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
 <li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
 <li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
@@ -434,7 +443,8 @@ div.tocify {
 <p>Module: <a href="04-iterate.html">Module 08 - Iteration</a></p>
 <p>Readings</p>
 <ul>
-<li><a href="https://r4ds.had.co.nz/iteration.html">R for Data Science - Chapter 21</a></li>
+<li><a href="https://r4ds.had.co.nz/iteration.html">R for Data Science -
+Chapter 21</a></li>
 </ul>
 </blockquote>
 <div id="topics" class="section level1">
@@ -471,13 +481,44 @@ div.tocify {
 <h1>Exercises</h1>
 <div id="loop-driver-practice" class="section level3">
 <h3>Loop Driver Practice</h3>
-<p>Write a for loop that prints <strong>the even numbers</strong> between 2 and 20. That is, you should print 2, 4, 6, 8… There are multiple ways to achieve this outcome. Get more practice working with loop driver variables by trying to find two different solutions. Hint: If you’ve never used the <strong>modulo operator</strong>, this is a good time to learn (see for example, <a href="https://www.geeksforgeeks.org/r-operators/" class="uri">https://www.geeksforgeeks.org/r-operators/</a>). Repeat the exercise, with a while loop.</p>
+<p>Write a for loop that prints <strong>the even numbers</strong>
+between 2 and 20. That is, you should print 2, 4, 6, 8… There are
+multiple ways to achieve this outcome. Get more practice working with
+loop driver variables by trying to find two different solutions. Hint:
+If you’ve never used the <strong>modulo operator</strong>, this is a
+good time to learn (see for example, <a
+href="https://www.geeksforgeeks.org/r-operators/"
+class="uri">https://www.geeksforgeeks.org/r-operators/</a>). Repeat the
+exercise, with a while loop.</p>
 </div>
-<div id="modeling-and-simulation-with-stochasticity" class="section level3">
+<div id="modeling-and-simulation-with-stochasticity"
+class="section level3">
 <h3>Modeling and simulation with stochasticity</h3>
-<p><strong>Mathematical modeling</strong> is a discipline of study where complex, stochastic phenomena are described using deterministic, empirically testable systems. These systems often involve advanced mathematical techniques. For example, one can define a mathematical model for the response of an architectural design to ground disturbances, and use it to predict the ability of the building to withstand earthquakes of varying intensity. Or one can model the effect of habitat loss on a prey species and use that to predict impacts on an entire food chain.</p>
-<p>Because such systems are generally stochastic (i.e. there is random variability in their behaviour), modeled effects are usually simulated many, many times, and a distribution of outcomes produced. While the code required to simulate a system can be very complex, the process of running it many times and accruing the results is easy – just use a for loop.</p>
-<p>For example, we have used the function <code>rnorm</code> to randomly select a single value from a normal distribution. In a mature language like R, we can assume that this function behaves correctly, but this is a testable claim. If we were to select many, many single values with <code>rnorm</code> and plot them, we would expect them to be normally distributed. (Note that is is actually possible to select multiple values with rnorm without looping, but we will ignore that small fact for this example.) This simple simulation illustrates the <strong>loop-compute-accrue</strong> computational pattern, which forms the basis of much modern computer modelling and simulation.</p>
+<p><strong>Mathematical modeling</strong> is a discipline of study where
+complex, stochastic phenomena are described using deterministic,
+empirically testable systems. These systems often involve advanced
+mathematical techniques. For example, one can define a mathematical
+model for the response of an architectural design to ground
+disturbances, and use it to predict the ability of the building to
+withstand earthquakes of varying intensity. Or one can model the effect
+of habitat loss on a prey species and use that to predict impacts on an
+entire food chain.</p>
+<p>Because such systems are generally stochastic (i.e. there is random
+variability in their behaviour), modeled effects are usually simulated
+many, many times, and a distribution of outcomes produced. While the
+code required to simulate a system can be very complex, the process of
+running it many times and accruing the results is easy – just use a for
+loop.</p>
+<p>For example, we have used the function <code>rnorm</code> to randomly
+select a single value from a normal distribution. In a mature language
+like R, we can assume that this function behaves correctly, but this is
+a testable claim. If we were to select many, many single values with
+<code>rnorm</code> and plot them, we would expect them to be normally
+distributed. (Note that is is actually possible to select multiple
+values with rnorm without looping, but we will ignore that small fact
+for this example.) This simple simulation illustrates the
+<strong>loop-compute-accrue</strong> computational pattern, which forms
+the basis of much modern computer modelling and simulation.</p>
 <pre class="r"><code># Number of trials to run -- more is generally better
 n_trials &lt;- 10000
 
@@ -506,7 +547,12 @@ for (trial in 1:n_trials)
 
 hist(sample_value_vector)</code></pre>
 <p><img src="figures/08/rnorm%20test-1.png" width="672" /></p>
-<p>Last week, we wrote a function to play Rock-Paper-Scissors, where each player selected randomly from the three possible moves. (If you didn’t write that function, you can use the version shown below.) Use the loop-compute-accrue pattern to determine the probability of the game ending in a draw (i.e. both players make the same move) if both players are selecting their move randomly.</p>
+<p>Last week, we wrote a function to play Rock-Paper-Scissors, where
+each player selected randomly from the three possible moves. (If you
+didn’t write that function, you can use the version shown below.) Use
+the loop-compute-accrue pattern to determine the probability of the game
+ending in a draw (i.e. both players make the same move) if both players
+are selecting their move randomly.</p>
 <div id="the-game" class="section level4">
 <h4>The game</h4>
 <pre class="r"><code>rock_paper_scissors &lt;- function()
@@ -585,17 +631,26 @@ fd &lt;- table(game_result_vector)
 print(fd)
 #&gt; game_result_vector
 #&gt;   bob  draw  fred 
-#&gt; 33109 33489 33402</code></pre>
-<p>Our simulation shows that, when both players select their moves randomly, the probability of a draw is approximately 1/3, as is the probability of each player winning. That is, all outcomes are equally likely.</p>
+#&gt; 33045 33550 33405</code></pre>
+<p>Our simulation shows that, when both players select their moves
+randomly, the probability of a draw is approximately 1/3, as is the
+probability of each player winning. That is, all outcomes are equally
+likely.</p>
 </div>
 <div id="comparing-strategies" class="section level4">
 <h4>Comparing strategies</h4>
-<p>When very small children play Rock-Paper-Scissors, they often pick one move and use it every time. This makes them extremely easy to beat. Modify your game function so that one of the players (e.g. “bob” in my solution) always picks Scissors. What outcome probabilities would you predict under this new strategy, where one player’s move is fixed? Repeat your simulation. Was your prediction confirmed? If not, explain the unexpected result.</p>
+<p>When very small children play Rock-Paper-Scissors, they often pick
+one move and use it every time. This makes them extremely easy to beat.
+Modify your game function so that one of the players (e.g. “bob” in my
+solution) always picks Scissors. What outcome probabilities would you
+predict under this new strategy, where one player’s move is fixed?
+Repeat your simulation. Was your prediction confirmed? If not, explain
+the unexpected result.</p>
 </div>
 </div>
 </div>
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIlpvb20gTm90ZXM6IFJlcGVhdGluZyBDb2RlIg0KZGF0ZTogIlNlbWVzdGVyIDEsIDIwMjIiDQpvdXRwdXQ6DQogIGh0bWxfZG9jdW1lbnQ6DQogICAgdG9jOiB0cnVlDQogICAgdG9jX2Zsb2F0OiB0cnVlDQogICAgdG9jX2RlcHRoOiAzDQogICAgY29kZV9kb3dubG9hZDogdHJ1ZQ0KICAgIGNvZGVfZm9sZGluZzogc2hvdw0KLS0tDQoNCmBgYHtyIHNldHVwLCBpbmNsdWRlPUZBTFNFfQ0KbGlicmFyeShrbml0cikNCg0Ka25pdHI6Om9wdHNfY2h1bmskc2V0KA0KICBjb21tZW50ID0gIiM+IiwNCiAgZmlnLnBhdGggPSAiZmlndXJlcy8wOC8iLCAjIHVzZSBvbmx5IGZvciBzaW5nbGUgUm1kIGZpbGVzDQogIGNvbGxhcHNlID0gVFJVRSwNCiAgZWNobyA9IFRSVUUNCikNCmBgYA0KDQoNCj4gIyMjIyBBc3NvY2lhdGVkIE1hdGVyaWFsDQo+DQo+IE1vZHVsZTogW01vZHVsZSAwOCAtIEl0ZXJhdGlvbl0oMDQtaXRlcmF0ZS5odG1sKQ0KPg0KPiBSZWFkaW5ncw0KPg0KPiAtIFtSIGZvciBEYXRhIFNjaWVuY2UgLSBDaGFwdGVyIDIxXShodHRwczovL3I0ZHMuaGFkLmNvLm56L2l0ZXJhdGlvbi5odG1sKQ0KDQoNCiMgVG9waWNzDQoNCiMjIEl0ZXJhdGlvbiBVc2UgQ2FzZXMNCg0KIyMgRm9yIGxvb3BzDQoNCi0gIFN5bnRheA0KLSAgU2VxdWVuY2Ugb3B0aW9ucw0KLSAgTG9vcCBkcml2ZXIgdmFyaWFibGUNCi0gIE5lc3RlZCBmb3IgbG9vcHMNCg0KIyMgV2hpbGUgbG9vcHMNCg0KLSAgU3ludGF4DQotICBMb29wIGNvbmRpdGlvbnMNCi0gIEluZmluaXRlIHdoaWxlIGxvb3BzDQoNCiMjIEFsdGVybmF0aXZlcyBmb3Igc2luZ2xlIGZ1bmN0aW9uIGxvb3BzDQoNCi0gIE1hcCBmYW1pbHkNCi0gIEFwcGx5IGZhbWlseQ0KDQojIEV4ZXJjaXNlcw0KDQojIyMgTG9vcCBEcml2ZXIgUHJhY3RpY2UNCg0KV3JpdGUgYSBmb3IgbG9vcCB0aGF0IHByaW50cyAqKnRoZSBldmVuIG51bWJlcnMqKiBiZXR3ZWVuIDIgYW5kIDIwLiBUaGF0IGlzLCB5b3Ugc2hvdWxkIHByaW50IDIsIDQsIDYsIDguLi4gVGhlcmUgYXJlIG11bHRpcGxlIHdheXMgdG8gYWNoaWV2ZSB0aGlzIG91dGNvbWUuIEdldCBtb3JlIHByYWN0aWNlIHdvcmtpbmcgd2l0aCBsb29wIGRyaXZlciB2YXJpYWJsZXMgYnkgdHJ5aW5nIHRvIGZpbmQgdHdvIGRpZmZlcmVudCBzb2x1dGlvbnMuIEhpbnQ6IElmIHlvdSd2ZSBuZXZlciB1c2VkIHRoZSAqKm1vZHVsbyBvcGVyYXRvcioqLCB0aGlzIGlzIGEgZ29vZCB0aW1lIHRvIGxlYXJuIChzZWUgZm9yIGV4YW1wbGUsIGh0dHBzOi8vd3d3LmdlZWtzZm9yZ2Vla3Mub3JnL3Itb3BlcmF0b3JzLykuIFJlcGVhdCB0aGUgZXhlcmNpc2UsIHdpdGggYSB3aGlsZSBsb29wLg0KDQoNCiMjIyBNb2RlbGluZyBhbmQgc2ltdWxhdGlvbiB3aXRoIHN0b2NoYXN0aWNpdHkNCg0KKipNYXRoZW1hdGljYWwgbW9kZWxpbmcqKiBpcyBhIGRpc2NpcGxpbmUgb2Ygc3R1ZHkgd2hlcmUgY29tcGxleCwgc3RvY2hhc3RpYyBwaGVub21lbmEgYXJlIGRlc2NyaWJlZCB1c2luZyBkZXRlcm1pbmlzdGljLCBlbXBpcmljYWxseSB0ZXN0YWJsZSBzeXN0ZW1zLiBUaGVzZSBzeXN0ZW1zIG9mdGVuIGludm9sdmUgYWR2YW5jZWQgbWF0aGVtYXRpY2FsIHRlY2huaXF1ZXMuIEZvciBleGFtcGxlLCBvbmUgY2FuIGRlZmluZSBhIG1hdGhlbWF0aWNhbCBtb2RlbCBmb3IgdGhlIHJlc3BvbnNlIG9mIGFuIGFyY2hpdGVjdHVyYWwgZGVzaWduIHRvIGdyb3VuZCBkaXN0dXJiYW5jZXMsIGFuZCB1c2UgaXQgdG8gcHJlZGljdCB0aGUgYWJpbGl0eSBvZiB0aGUgYnVpbGRpbmcgdG8gd2l0aHN0YW5kIGVhcnRocXVha2VzIG9mIHZhcnlpbmcgaW50ZW5zaXR5LiBPciBvbmUgY2FuIG1vZGVsIHRoZSBlZmZlY3Qgb2YgaGFiaXRhdCBsb3NzIG9uIGEgcHJleSBzcGVjaWVzIGFuZCB1c2UgdGhhdCB0byBwcmVkaWN0IGltcGFjdHMgb24gYW4gZW50aXJlIGZvb2QgY2hhaW4uDQoNCkJlY2F1c2Ugc3VjaCBzeXN0ZW1zIGFyZSBnZW5lcmFsbHkgc3RvY2hhc3RpYyAoaS5lLiB0aGVyZSBpcyByYW5kb20gdmFyaWFiaWxpdHkgaW4gdGhlaXIgYmVoYXZpb3VyKSwgbW9kZWxlZCBlZmZlY3RzIGFyZSB1c3VhbGx5IHNpbXVsYXRlZCBtYW55LCBtYW55IHRpbWVzLCBhbmQgYSBkaXN0cmlidXRpb24gb2Ygb3V0Y29tZXMgcHJvZHVjZWQuIFdoaWxlIHRoZSBjb2RlIHJlcXVpcmVkIHRvIHNpbXVsYXRlIGEgc3lzdGVtIGNhbiBiZSB2ZXJ5IGNvbXBsZXgsIHRoZSBwcm9jZXNzIG9mIHJ1bm5pbmcgaXQgbWFueSB0aW1lcyBhbmQgYWNjcnVpbmcgdGhlIHJlc3VsdHMgaXMgZWFzeSAtLSBqdXN0IHVzZSBhIGZvciBsb29wLg0KDQpGb3IgZXhhbXBsZSwgd2UgaGF2ZSB1c2VkIHRoZSBmdW5jdGlvbiBgcm5vcm1gIHRvIHJhbmRvbWx5IHNlbGVjdCBhIHNpbmdsZSB2YWx1ZSBmcm9tIGEgbm9ybWFsIGRpc3RyaWJ1dGlvbi4gSW4gYSBtYXR1cmUgbGFuZ3VhZ2UgbGlrZSBSLCB3ZSBjYW4gYXNzdW1lIHRoYXQgdGhpcyBmdW5jdGlvbiBiZWhhdmVzIGNvcnJlY3RseSwgYnV0IHRoaXMgaXMgYSB0ZXN0YWJsZSBjbGFpbS4gSWYgd2Ugd2VyZSB0byBzZWxlY3QgbWFueSwgbWFueSBzaW5nbGUgdmFsdWVzIHdpdGggYHJub3JtYCBhbmQgcGxvdCB0aGVtLCB3ZSB3b3VsZCBleHBlY3QgdGhlbSB0byBiZSBub3JtYWxseSBkaXN0cmlidXRlZC4gKE5vdGUgdGhhdCBpcyBpcyBhY3R1YWxseSBwb3NzaWJsZSB0byBzZWxlY3QgbXVsdGlwbGUgdmFsdWVzIHdpdGggcm5vcm0gd2l0aG91dCBsb29waW5nLCBidXQgd2Ugd2lsbCBpZ25vcmUgdGhhdCBzbWFsbCBmYWN0IGZvciB0aGlzIGV4YW1wbGUuKSBUaGlzIHNpbXBsZSBzaW11bGF0aW9uIGlsbHVzdHJhdGVzIHRoZSAqKmxvb3AtY29tcHV0ZS1hY2NydWUqKiBjb21wdXRhdGlvbmFsIHBhdHRlcm4sIHdoaWNoIGZvcm1zIHRoZSBiYXNpcyBvZiBtdWNoIG1vZGVybiBjb21wdXRlciBtb2RlbGxpbmcgYW5kIHNpbXVsYXRpb24uDQoNCmBgYHtyIHJub3JtIHRlc3R9DQojIE51bWJlciBvZiB0cmlhbHMgdG8gcnVuIC0tIG1vcmUgaXMgZ2VuZXJhbGx5IGJldHRlcg0Kbl90cmlhbHMgPC0gMTAwMDANCg0KIyBWZWN0b3IgdG8gc3RvcmUgcmVzdWx0cyBpbg0Kc2FtcGxlX3ZhbHVlX3ZlY3RvciA8LSBjKCkNCg0KIyBTaW11bGF0aW9uIHBhcmFtZXRlcnMNCnNpbV9tZWFuIDwtIDEwMA0Kc2ltX3NkIDwtIDEwDQoNCiMgTG9vcCwgY29tcHV0ZSwgYWNjcnVlDQpmb3IgKHRyaWFsIGluIDE6bl90cmlhbHMpDQp7DQogICMgQ29tcHV0ZSAtLSBJUkwgY2FuIGJlIDEwMDBzIG9mIGxpbmVzIG9mIGNvZGUgaGVyZQ0KICBzYW1wbGVfdmFsdWUgPC0gcm5vcm0oMSwgc2ltX21lYW4sIHNpbV9zZCkNCiAgDQogICMgQWNjcnVlIHJlc3VsdHMsIHVzaW5nIHRoZSBsb29wIGRyaXZlciB0byBhZGQgZWFjaA0KICAjIHZhbHVlIG9uIHRvIHRoZSBlbmQgb2YgdGhlIHZlY3Rvcg0KICBzYW1wbGVfdmFsdWVfdmVjdG9yW3RyaWFsXSA8LSBzYW1wbGVfdmFsdWUNCn0NCg0KDQojIEF0IHRoZSBlbmQgb2YgdGhlIGZvciBsb29wLCB3ZSBoYXZlIDEwLDAwMCB2YWx1ZXMNCiMgZ2F0aGVyZWQgaW4gc2FtcGxlX3ZhbHVlX3ZlY3RvciwgYW5kIHdlIGNhbiBwbG90IHRoZW0NCiMgdG8gY29uZmlybSB0aGF0IHRoZXkgYXJlLCBpbiBmYWN0LCBkaXN0cmlidXRlZCBub3JtYWxseQ0KDQpoaXN0KHNhbXBsZV92YWx1ZV92ZWN0b3IpDQpgYGANCg0KTGFzdCB3ZWVrLCB3ZSB3cm90ZSBhIGZ1bmN0aW9uIHRvIHBsYXkgUm9jay1QYXBlci1TY2lzc29ycywgd2hlcmUgZWFjaCBwbGF5ZXIgc2VsZWN0ZWQgcmFuZG9tbHkgZnJvbSB0aGUgdGhyZWUgcG9zc2libGUgbW92ZXMuIChJZiB5b3UgZGlkbid0IHdyaXRlIHRoYXQgZnVuY3Rpb24sIHlvdSBjYW4gdXNlIHRoZSB2ZXJzaW9uIHNob3duIGJlbG93LikgVXNlIHRoZSBsb29wLWNvbXB1dGUtYWNjcnVlIHBhdHRlcm4gdG8gZGV0ZXJtaW5lIHRoZSBwcm9iYWJpbGl0eSBvZiB0aGUgZ2FtZSBlbmRpbmcgaW4gYSBkcmF3IChpLmUuIGJvdGggcGxheWVycyBtYWtlIHRoZSBzYW1lIG1vdmUpIGlmIGJvdGggcGxheWVycyBhcmUgc2VsZWN0aW5nIHRoZWlyIG1vdmUgcmFuZG9tbHkuDQoNCg0KIyMjIyBUaGUgZ2FtZQ0KYGBge3IgZ2FtZX0NCnJvY2tfcGFwZXJfc2Npc3NvcnMgPC0gZnVuY3Rpb24oKQ0Kew0KICAjIFZlY3RvciBvZiB0aGUgdGhyZWUgcG9zc2libGUgbW92ZXMNCiAgbW92ZXMgPC0gYygicm9jayIsICJwYXBlciIsICJzY2lzc29ycyIpDQogIA0KICAjIFJhbmRvbWx5IHNlbGVjdCBhIG1vdmUgZm9yIEJvYg0KICBib2JfbW92ZSA8LSBzYW1wbGUobW92ZXMsMSkNCiAgDQogICMgUmFuZG9tbHkgc2VsZWN0IGEgbW92ZSBmb3IgRnJlZA0KICBmcmVkX21vdmUgPC0gc2FtcGxlKG1vdmVzLDEpDQogIA0KICANCiAgIyBXb3JrIHRocm91Z2ggdGhlIGdhbWUgd2luIGNvbmRpdGlvbnMNCiAgaWYgKGJvYl9tb3ZlID09IGZyZWRfbW92ZSl7DQogICAgd2lubmVyID0gImRyYXciDQogIH0NCiAgDQogIGlmKCBib2JfbW92ZSA9PSAicm9jayIpew0KICAgIGlmIChmcmVkX21vdmUgPT0gInBhcGVyIil7DQogICAgICB3aW5uZXIgPSAiZnJlZCINCiAgICB9DQogICAgaWYgKGZyZWRfbW92ZSA9PSAic2Npc3NvcnMiKXsNCiAgICAgIHdpbm5lciA9ICJib2IiDQogICAgfQ0KICAgICAgDQogIH0NCiAgDQogIGlmIChib2JfbW92ZSA9PSAicGFwZXIiKXsNCiAgICBpZiAoZnJlZF9tb3ZlID09ICJyb2NrIil7DQogICAgICB3aW5uZXIgPSAiYm9iIg0KICAgIH0NCiAgICBpZiAoZnJlZF9tb3ZlID09ICJzY2lzc29ycyIpew0KICAgICAgd2lubmVyID0gImZyZWQiDQogICAgfQ0KICB9DQogIA0KICBpZiAoYm9iX21vdmUgPT0gInNjaXNzb3JzIikgew0KICAgIGlmIChmcmVkX21vdmUgPT0gInJvY2siKXsNCiAgICAgIHdpbm5lciA9ICJmcmVkIg0KICAgIH0NCiAgICBpZiAoZnJlZF9tb3ZlID09ICJwYXBlciIpew0KICAgICAgd2lubmVyID0gImJvYiINCiAgICB9DQogIH0NCiAgDQogICMgUmV0dXJuIHRoZSB3aW5uZXINCiAgcmV0dXJuKHdpbm5lcikNCn0gIyBlbmQgcm9ja19wYXBlcl9zY2lzc29ycw0KDQpgYGANCg0KDQojIyMjIFRoZSBzaW11bGF0aW9uDQpgYGB7ciBzaW11bGF0aW9ufQ0KIyBOdW1iZXIgb2YgdHJpYWxzIHRvIHJ1biAtLSBtb3JlIGlzIHVzdWFsbHkgYmV0dGVyDQpuX3RyaWFscyA8LSAxMDAwMDANCg0KIyBWZWN0b3IgdG8gYWNjcnVlIHJlc3VsdHMNCmdhbWVfcmVzdWx0X3ZlY3RvciA8LSBjKCkNCg0KIyBMb29wDQpmb3IgKGkgaW4gMTpuX3RyaWFscykNCnsNCiAgIyBDb21wdXRlIHRoZSB3aW5uZXINCiAgZ2FtZV9yZXN1bHQgPC0gcm9ja19wYXBlcl9zY2lzc29ycygpDQogIA0KICAjIEFjY3J1ZQ0KICBnYW1lX3Jlc3VsdF92ZWN0b3JbaV0gPC0gZ2FtZV9yZXN1bHQNCn0NCg0KDQojIEF0IHRoZSBlbmQgb2YgdGhlIGZvciBsb29wLCB3ZSBoYXZlIDEwMCwwMDAgZ2FtZSByZXN1bHRzLg0KIyBXZSBjYW4gZmluZCB0aGUgZnJlcXVlbmN5IGRpc3RyaWJ1dGlvbiBvZiB0aGVzZSBjYXRlZ29yaWNhbA0KIyBkYXRhIHVzaW5nIGZ1bmN0aW9uIHRhYmxlDQoNCmZkIDwtIHRhYmxlKGdhbWVfcmVzdWx0X3ZlY3RvcikNCnByaW50KGZkKQ0KDQoNCmBgYA0KDQpPdXIgc2ltdWxhdGlvbiBzaG93cyB0aGF0LCB3aGVuIGJvdGggcGxheWVycyBzZWxlY3QgdGhlaXIgbW92ZXMgcmFuZG9tbHksIHRoZSBwcm9iYWJpbGl0eSBvZiBhIGRyYXcgaXMgYXBwcm94aW1hdGVseSAxLzMsIGFzIGlzIHRoZSBwcm9iYWJpbGl0eSBvZiBlYWNoIHBsYXllciB3aW5uaW5nLiBUaGF0IGlzLCBhbGwgb3V0Y29tZXMgYXJlIGVxdWFsbHkgbGlrZWx5Lg0KDQoNCiMjIyMgQ29tcGFyaW5nIHN0cmF0ZWdpZXMNCg0KV2hlbiB2ZXJ5IHNtYWxsIGNoaWxkcmVuIHBsYXkgUm9jay1QYXBlci1TY2lzc29ycywgdGhleSBvZnRlbiBwaWNrIG9uZSBtb3ZlIGFuZCB1c2UgaXQgZXZlcnkgdGltZS4gVGhpcyBtYWtlcyB0aGVtIGV4dHJlbWVseSBlYXN5IHRvIGJlYXQuIE1vZGlmeSB5b3VyIGdhbWUgZnVuY3Rpb24gc28gdGhhdCBvbmUgb2YgdGhlIHBsYXllcnMgKGUuZy4gImJvYiIgaW4gbXkgc29sdXRpb24pIGFsd2F5cyBwaWNrcyBTY2lzc29ycy4gV2hhdCBvdXRjb21lIHByb2JhYmlsaXRpZXMgd291bGQgeW91IHByZWRpY3QgdW5kZXIgdGhpcyBuZXcgc3RyYXRlZ3ksIHdoZXJlIG9uZSBwbGF5ZXIncyBtb3ZlIGlzIGZpeGVkPyBSZXBlYXQgeW91ciBzaW11bGF0aW9uLiBXYXMgeW91ciBwcmVkaWN0aW9uIGNvbmZpcm1lZD8gSWYgbm90LCBleHBsYWluIHRoZSB1bmV4cGVjdGVkIHJlc3VsdC4gDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0K</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiWm9vbSBOb3RlczogUmVwZWF0aW5nIENvZGUiCmRhdGU6ICJTZW1lc3RlciAxLCAyMDIyIgpvdXRwdXQ6CiAgaHRtbF9kb2N1bWVudDoKICAgIHRvYzogdHJ1ZQogICAgdG9jX2Zsb2F0OiB0cnVlCiAgICB0b2NfZGVwdGg6IDMKICAgIGNvZGVfZG93bmxvYWQ6IHRydWUKICAgIGNvZGVfZm9sZGluZzogc2hvdwotLS0KCmBgYHtyIHNldHVwLCBpbmNsdWRlPUZBTFNFfQpsaWJyYXJ5KGtuaXRyKQoKa25pdHI6Om9wdHNfY2h1bmskc2V0KAogIGNvbW1lbnQgPSAiIz4iLAogIGZpZy5wYXRoID0gImZpZ3VyZXMvMDgvIiwgIyB1c2Ugb25seSBmb3Igc2luZ2xlIFJtZCBmaWxlcwogIGNvbGxhcHNlID0gVFJVRSwKICBlY2hvID0gVFJVRQopCmBgYAoKCj4gIyMjIyBBc3NvY2lhdGVkIE1hdGVyaWFsCj4KPiBNb2R1bGU6IFtNb2R1bGUgMDggLSBJdGVyYXRpb25dKDA0LWl0ZXJhdGUuaHRtbCkKPgo+IFJlYWRpbmdzCj4KPiAtIFtSIGZvciBEYXRhIFNjaWVuY2UgLSBDaGFwdGVyIDIxXShodHRwczovL3I0ZHMuaGFkLmNvLm56L2l0ZXJhdGlvbi5odG1sKQoKCiMgVG9waWNzCgojIyBJdGVyYXRpb24gVXNlIENhc2VzCgojIyBGb3IgbG9vcHMKCi0gIFN5bnRheAotICBTZXF1ZW5jZSBvcHRpb25zCi0gIExvb3AgZHJpdmVyIHZhcmlhYmxlCi0gIE5lc3RlZCBmb3IgbG9vcHMKCiMjIFdoaWxlIGxvb3BzCgotICBTeW50YXgKLSAgTG9vcCBjb25kaXRpb25zCi0gIEluZmluaXRlIHdoaWxlIGxvb3BzCgojIyBBbHRlcm5hdGl2ZXMgZm9yIHNpbmdsZSBmdW5jdGlvbiBsb29wcwoKLSAgTWFwIGZhbWlseQotICBBcHBseSBmYW1pbHkKCiMgRXhlcmNpc2VzCgojIyMgTG9vcCBEcml2ZXIgUHJhY3RpY2UKCldyaXRlIGEgZm9yIGxvb3AgdGhhdCBwcmludHMgKip0aGUgZXZlbiBudW1iZXJzKiogYmV0d2VlbiAyIGFuZCAyMC4gVGhhdCBpcywgeW91IHNob3VsZCBwcmludCAyLCA0LCA2LCA4Li4uIFRoZXJlIGFyZSBtdWx0aXBsZSB3YXlzIHRvIGFjaGlldmUgdGhpcyBvdXRjb21lLiBHZXQgbW9yZSBwcmFjdGljZSB3b3JraW5nIHdpdGggbG9vcCBkcml2ZXIgdmFyaWFibGVzIGJ5IHRyeWluZyB0byBmaW5kIHR3byBkaWZmZXJlbnQgc29sdXRpb25zLiBIaW50OiBJZiB5b3UndmUgbmV2ZXIgdXNlZCB0aGUgKiptb2R1bG8gb3BlcmF0b3IqKiwgdGhpcyBpcyBhIGdvb2QgdGltZSB0byBsZWFybiAoc2VlIGZvciBleGFtcGxlLCBodHRwczovL3d3dy5nZWVrc2ZvcmdlZWtzLm9yZy9yLW9wZXJhdG9ycy8pLiBSZXBlYXQgdGhlIGV4ZXJjaXNlLCB3aXRoIGEgd2hpbGUgbG9vcC4KCgojIyMgTW9kZWxpbmcgYW5kIHNpbXVsYXRpb24gd2l0aCBzdG9jaGFzdGljaXR5CgoqKk1hdGhlbWF0aWNhbCBtb2RlbGluZyoqIGlzIGEgZGlzY2lwbGluZSBvZiBzdHVkeSB3aGVyZSBjb21wbGV4LCBzdG9jaGFzdGljIHBoZW5vbWVuYSBhcmUgZGVzY3JpYmVkIHVzaW5nIGRldGVybWluaXN0aWMsIGVtcGlyaWNhbGx5IHRlc3RhYmxlIHN5c3RlbXMuIFRoZXNlIHN5c3RlbXMgb2Z0ZW4gaW52b2x2ZSBhZHZhbmNlZCBtYXRoZW1hdGljYWwgdGVjaG5pcXVlcy4gRm9yIGV4YW1wbGUsIG9uZSBjYW4gZGVmaW5lIGEgbWF0aGVtYXRpY2FsIG1vZGVsIGZvciB0aGUgcmVzcG9uc2Ugb2YgYW4gYXJjaGl0ZWN0dXJhbCBkZXNpZ24gdG8gZ3JvdW5kIGRpc3R1cmJhbmNlcywgYW5kIHVzZSBpdCB0byBwcmVkaWN0IHRoZSBhYmlsaXR5IG9mIHRoZSBidWlsZGluZyB0byB3aXRoc3RhbmQgZWFydGhxdWFrZXMgb2YgdmFyeWluZyBpbnRlbnNpdHkuIE9yIG9uZSBjYW4gbW9kZWwgdGhlIGVmZmVjdCBvZiBoYWJpdGF0IGxvc3Mgb24gYSBwcmV5IHNwZWNpZXMgYW5kIHVzZSB0aGF0IHRvIHByZWRpY3QgaW1wYWN0cyBvbiBhbiBlbnRpcmUgZm9vZCBjaGFpbi4KCkJlY2F1c2Ugc3VjaCBzeXN0ZW1zIGFyZSBnZW5lcmFsbHkgc3RvY2hhc3RpYyAoaS5lLiB0aGVyZSBpcyByYW5kb20gdmFyaWFiaWxpdHkgaW4gdGhlaXIgYmVoYXZpb3VyKSwgbW9kZWxlZCBlZmZlY3RzIGFyZSB1c3VhbGx5IHNpbXVsYXRlZCBtYW55LCBtYW55IHRpbWVzLCBhbmQgYSBkaXN0cmlidXRpb24gb2Ygb3V0Y29tZXMgcHJvZHVjZWQuIFdoaWxlIHRoZSBjb2RlIHJlcXVpcmVkIHRvIHNpbXVsYXRlIGEgc3lzdGVtIGNhbiBiZSB2ZXJ5IGNvbXBsZXgsIHRoZSBwcm9jZXNzIG9mIHJ1bm5pbmcgaXQgbWFueSB0aW1lcyBhbmQgYWNjcnVpbmcgdGhlIHJlc3VsdHMgaXMgZWFzeSAtLSBqdXN0IHVzZSBhIGZvciBsb29wLgoKRm9yIGV4YW1wbGUsIHdlIGhhdmUgdXNlZCB0aGUgZnVuY3Rpb24gYHJub3JtYCB0byByYW5kb21seSBzZWxlY3QgYSBzaW5nbGUgdmFsdWUgZnJvbSBhIG5vcm1hbCBkaXN0cmlidXRpb24uIEluIGEgbWF0dXJlIGxhbmd1YWdlIGxpa2UgUiwgd2UgY2FuIGFzc3VtZSB0aGF0IHRoaXMgZnVuY3Rpb24gYmVoYXZlcyBjb3JyZWN0bHksIGJ1dCB0aGlzIGlzIGEgdGVzdGFibGUgY2xhaW0uIElmIHdlIHdlcmUgdG8gc2VsZWN0IG1hbnksIG1hbnkgc2luZ2xlIHZhbHVlcyB3aXRoIGBybm9ybWAgYW5kIHBsb3QgdGhlbSwgd2Ugd291bGQgZXhwZWN0IHRoZW0gdG8gYmUgbm9ybWFsbHkgZGlzdHJpYnV0ZWQuIChOb3RlIHRoYXQgaXMgaXMgYWN0dWFsbHkgcG9zc2libGUgdG8gc2VsZWN0IG11bHRpcGxlIHZhbHVlcyB3aXRoIHJub3JtIHdpdGhvdXQgbG9vcGluZywgYnV0IHdlIHdpbGwgaWdub3JlIHRoYXQgc21hbGwgZmFjdCBmb3IgdGhpcyBleGFtcGxlLikgVGhpcyBzaW1wbGUgc2ltdWxhdGlvbiBpbGx1c3RyYXRlcyB0aGUgKipsb29wLWNvbXB1dGUtYWNjcnVlKiogY29tcHV0YXRpb25hbCBwYXR0ZXJuLCB3aGljaCBmb3JtcyB0aGUgYmFzaXMgb2YgbXVjaCBtb2Rlcm4gY29tcHV0ZXIgbW9kZWxsaW5nIGFuZCBzaW11bGF0aW9uLgoKYGBge3Igcm5vcm0gdGVzdH0KIyBOdW1iZXIgb2YgdHJpYWxzIHRvIHJ1biAtLSBtb3JlIGlzIGdlbmVyYWxseSBiZXR0ZXIKbl90cmlhbHMgPC0gMTAwMDAKCiMgVmVjdG9yIHRvIHN0b3JlIHJlc3VsdHMgaW4Kc2FtcGxlX3ZhbHVlX3ZlY3RvciA8LSBjKCkKCiMgU2ltdWxhdGlvbiBwYXJhbWV0ZXJzCnNpbV9tZWFuIDwtIDEwMApzaW1fc2QgPC0gMTAKCiMgTG9vcCwgY29tcHV0ZSwgYWNjcnVlCmZvciAodHJpYWwgaW4gMTpuX3RyaWFscykKewogICMgQ29tcHV0ZSAtLSBJUkwgY2FuIGJlIDEwMDBzIG9mIGxpbmVzIG9mIGNvZGUgaGVyZQogIHNhbXBsZV92YWx1ZSA8LSBybm9ybSgxLCBzaW1fbWVhbiwgc2ltX3NkKQogIAogICMgQWNjcnVlIHJlc3VsdHMsIHVzaW5nIHRoZSBsb29wIGRyaXZlciB0byBhZGQgZWFjaAogICMgdmFsdWUgb24gdG8gdGhlIGVuZCBvZiB0aGUgdmVjdG9yCiAgc2FtcGxlX3ZhbHVlX3ZlY3Rvclt0cmlhbF0gPC0gc2FtcGxlX3ZhbHVlCn0KCgojIEF0IHRoZSBlbmQgb2YgdGhlIGZvciBsb29wLCB3ZSBoYXZlIDEwLDAwMCB2YWx1ZXMKIyBnYXRoZXJlZCBpbiBzYW1wbGVfdmFsdWVfdmVjdG9yLCBhbmQgd2UgY2FuIHBsb3QgdGhlbQojIHRvIGNvbmZpcm0gdGhhdCB0aGV5IGFyZSwgaW4gZmFjdCwgZGlzdHJpYnV0ZWQgbm9ybWFsbHkKCmhpc3Qoc2FtcGxlX3ZhbHVlX3ZlY3RvcikKYGBgCgpMYXN0IHdlZWssIHdlIHdyb3RlIGEgZnVuY3Rpb24gdG8gcGxheSBSb2NrLVBhcGVyLVNjaXNzb3JzLCB3aGVyZSBlYWNoIHBsYXllciBzZWxlY3RlZCByYW5kb21seSBmcm9tIHRoZSB0aHJlZSBwb3NzaWJsZSBtb3Zlcy4gKElmIHlvdSBkaWRuJ3Qgd3JpdGUgdGhhdCBmdW5jdGlvbiwgeW91IGNhbiB1c2UgdGhlIHZlcnNpb24gc2hvd24gYmVsb3cuKSBVc2UgdGhlIGxvb3AtY29tcHV0ZS1hY2NydWUgcGF0dGVybiB0byBkZXRlcm1pbmUgdGhlIHByb2JhYmlsaXR5IG9mIHRoZSBnYW1lIGVuZGluZyBpbiBhIGRyYXcgKGkuZS4gYm90aCBwbGF5ZXJzIG1ha2UgdGhlIHNhbWUgbW92ZSkgaWYgYm90aCBwbGF5ZXJzIGFyZSBzZWxlY3RpbmcgdGhlaXIgbW92ZSByYW5kb21seS4KCgojIyMjIFRoZSBnYW1lCmBgYHtyIGdhbWV9CnJvY2tfcGFwZXJfc2Npc3NvcnMgPC0gZnVuY3Rpb24oKQp7CiAgIyBWZWN0b3Igb2YgdGhlIHRocmVlIHBvc3NpYmxlIG1vdmVzCiAgbW92ZXMgPC0gYygicm9jayIsICJwYXBlciIsICJzY2lzc29ycyIpCiAgCiAgIyBSYW5kb21seSBzZWxlY3QgYSBtb3ZlIGZvciBCb2IKICBib2JfbW92ZSA8LSBzYW1wbGUobW92ZXMsMSkKICAKICAjIFJhbmRvbWx5IHNlbGVjdCBhIG1vdmUgZm9yIEZyZWQKICBmcmVkX21vdmUgPC0gc2FtcGxlKG1vdmVzLDEpCiAgCiAgCiAgIyBXb3JrIHRocm91Z2ggdGhlIGdhbWUgd2luIGNvbmRpdGlvbnMKICBpZiAoYm9iX21vdmUgPT0gZnJlZF9tb3ZlKXsKICAgIHdpbm5lciA9ICJkcmF3IgogIH0KICAKICBpZiggYm9iX21vdmUgPT0gInJvY2siKXsKICAgIGlmIChmcmVkX21vdmUgPT0gInBhcGVyIil7CiAgICAgIHdpbm5lciA9ICJmcmVkIgogICAgfQogICAgaWYgKGZyZWRfbW92ZSA9PSAic2Npc3NvcnMiKXsKICAgICAgd2lubmVyID0gImJvYiIKICAgIH0KICAgICAgCiAgfQogIAogIGlmIChib2JfbW92ZSA9PSAicGFwZXIiKXsKICAgIGlmIChmcmVkX21vdmUgPT0gInJvY2siKXsKICAgICAgd2lubmVyID0gImJvYiIKICAgIH0KICAgIGlmIChmcmVkX21vdmUgPT0gInNjaXNzb3JzIil7CiAgICAgIHdpbm5lciA9ICJmcmVkIgogICAgfQogIH0KICAKICBpZiAoYm9iX21vdmUgPT0gInNjaXNzb3JzIikgewogICAgaWYgKGZyZWRfbW92ZSA9PSAicm9jayIpewogICAgICB3aW5uZXIgPSAiZnJlZCIKICAgIH0KICAgIGlmIChmcmVkX21vdmUgPT0gInBhcGVyIil7CiAgICAgIHdpbm5lciA9ICJib2IiCiAgICB9CiAgfQogIAogICMgUmV0dXJuIHRoZSB3aW5uZXIKICByZXR1cm4od2lubmVyKQp9ICMgZW5kIHJvY2tfcGFwZXJfc2Npc3NvcnMKCmBgYAoKCiMjIyMgVGhlIHNpbXVsYXRpb24KYGBge3Igc2ltdWxhdGlvbn0KIyBOdW1iZXIgb2YgdHJpYWxzIHRvIHJ1biAtLSBtb3JlIGlzIHVzdWFsbHkgYmV0dGVyCm5fdHJpYWxzIDwtIDEwMDAwMAoKIyBWZWN0b3IgdG8gYWNjcnVlIHJlc3VsdHMKZ2FtZV9yZXN1bHRfdmVjdG9yIDwtIGMoKQoKIyBMb29wCmZvciAoaSBpbiAxOm5fdHJpYWxzKQp7CiAgIyBDb21wdXRlIHRoZSB3aW5uZXIKICBnYW1lX3Jlc3VsdCA8LSByb2NrX3BhcGVyX3NjaXNzb3JzKCkKICAKICAjIEFjY3J1ZQogIGdhbWVfcmVzdWx0X3ZlY3RvcltpXSA8LSBnYW1lX3Jlc3VsdAp9CgoKIyBBdCB0aGUgZW5kIG9mIHRoZSBmb3IgbG9vcCwgd2UgaGF2ZSAxMDAsMDAwIGdhbWUgcmVzdWx0cy4KIyBXZSBjYW4gZmluZCB0aGUgZnJlcXVlbmN5IGRpc3RyaWJ1dGlvbiBvZiB0aGVzZSBjYXRlZ29yaWNhbAojIGRhdGEgdXNpbmcgZnVuY3Rpb24gdGFibGUKCmZkIDwtIHRhYmxlKGdhbWVfcmVzdWx0X3ZlY3RvcikKcHJpbnQoZmQpCgoKYGBgCgpPdXIgc2ltdWxhdGlvbiBzaG93cyB0aGF0LCB3aGVuIGJvdGggcGxheWVycyBzZWxlY3QgdGhlaXIgbW92ZXMgcmFuZG9tbHksIHRoZSBwcm9iYWJpbGl0eSBvZiBhIGRyYXcgaXMgYXBwcm94aW1hdGVseSAxLzMsIGFzIGlzIHRoZSBwcm9iYWJpbGl0eSBvZiBlYWNoIHBsYXllciB3aW5uaW5nLiBUaGF0IGlzLCBhbGwgb3V0Y29tZXMgYXJlIGVxdWFsbHkgbGlrZWx5LgoKCiMjIyMgQ29tcGFyaW5nIHN0cmF0ZWdpZXMKCldoZW4gdmVyeSBzbWFsbCBjaGlsZHJlbiBwbGF5IFJvY2stUGFwZXItU2Npc3NvcnMsIHRoZXkgb2Z0ZW4gcGljayBvbmUgbW92ZSBhbmQgdXNlIGl0IGV2ZXJ5IHRpbWUuIFRoaXMgbWFrZXMgdGhlbSBleHRyZW1lbHkgZWFzeSB0byBiZWF0LiBNb2RpZnkgeW91ciBnYW1lIGZ1bmN0aW9uIHNvIHRoYXQgb25lIG9mIHRoZSBwbGF5ZXJzIChlLmcuICJib2IiIGluIG15IHNvbHV0aW9uKSBhbHdheXMgcGlja3MgU2Npc3NvcnMuIFdoYXQgb3V0Y29tZSBwcm9iYWJpbGl0aWVzIHdvdWxkIHlvdSBwcmVkaWN0IHVuZGVyIHRoaXMgbmV3IHN0cmF0ZWd5LCB3aGVyZSBvbmUgcGxheWVyJ3MgbW92ZSBpcyBmaXhlZD8gUmVwZWF0IHlvdXIgc2ltdWxhdGlvbi4gV2FzIHlvdXIgcHJlZGljdGlvbiBjb25maXJtZWQ/IElmIG5vdCwgZXhwbGFpbiB0aGUgdW5leHBlY3RlZCByZXN1bHQuIAoKCgoKCgoKCgoKCgoKCgoKCgoKCg==</div>
 
 
 </div>

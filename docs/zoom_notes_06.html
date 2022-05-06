@@ -13,7 +13,7 @@
 
 <title>Zoom Notes: Communicating Data</title>
 
-<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
@@ -60,6 +60,7 @@ if (window.hljs) {
 
 
 
+
 <style type="text/css">
 #rmd-source-code {
   display: none;
@@ -91,6 +92,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -319,7 +323,7 @@ div.tocify {
 <div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -332,7 +336,7 @@ div.tocify {
   <a href="index.html">Home</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Modules
      
     <span class="caret"></span>
@@ -361,13 +365,17 @@ div.tocify {
     </li>
     <li class="divider"></li>
     <li class="dropdown-header">Programming focus</li>
-    <li class="dropdown-header">Functions and Choices</li>
-    <li class="dropdown-header">Repeating Code</li>
+    <li>
+      <a href="07-functions.html">Functions and Choices</a>
+    </li>
+    <li>
+      <a href="08-iterate.html">Repeating Code</a>
+    </li>
     <li class="dropdown-header">Workflows</li>
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Zoom Notes
      
     <span class="caret"></span>
@@ -389,7 +397,13 @@ div.tocify {
       <a href="zoom_notes_05.html">05 - Transforming data</a>
     </li>
     <li>
-      <a href="zoom_notes_06.html">Handout 6</a>
+      <a href="zoom_notes_06.html">06 - Communicating data</a>
+    </li>
+    <li>
+      <a href="zoom_notes_07.html">07 - Functions and Choices</a>
+    </li>
+    <li>
+      <a href="zoom_notes_08.html">08 - Repeating Code</a>
     </li>
   </ul>
 </li>
@@ -407,7 +421,7 @@ div.tocify {
 <div id="header">
 
 <div class="btn-group pull-right float-right">
-<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
 <ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
 <li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
 <li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
@@ -427,41 +441,96 @@ div.tocify {
 <h4 id="associated-material">Associated Material</h4>
 <p>Module: <a href="06-communicate.html">Module 06 - Communicate</a></p>
 <p>Readings:</p>
-<p><a href="https://r4ds.had.co.nz/r-markdown.html">R for Data Science -
-Chapter 27</a> <a
-href="https://r4ds.had.co.nz/r-markdown-formats.html">R for Data Science
-- Chapter 29</a> <a
-href="https://bookdown.org/yihui/rmarkdown/">Reference: RMarkdown - the
-definitive guide</a></p>
-</blockquote>
-<p>Scripts</p>
-<p>Rmarkdown</p>
 <ul>
-<li>yaml</li>
-<li>markdown</li>
-<li>code chunks
-<ul>
-<li>eval</li>
-<li>include</li>
-<li>warning</li>
-<li>message</li>
-<li>fig</li>
-<li>results</li>
-</ul></li>
-<li>images
-<ul>
-<li>include_graphics</li>
-<li><code>![]()</code></li>
-</ul></li>
-<li>tables
-<ul>
-<li>kable</li>
-<li>{kableExtra}</li>
-</ul></li>
-<li>{here}</li>
+<li><a href="https://r4ds.had.co.nz/r-markdown.html">R for Data Science
+- Chapter 27</a></li>
+<li><a href="https://r4ds.had.co.nz/r-markdown-formats.html">R for Data
+Science - Chapter 29</a></li>
+<li><a href="https://bookdown.org/yihui/rmarkdown/">Reference: RMarkdown
+- the definitive guide</a></li>
+<li><a
+href="https://www.rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf">RMarkdown
+Reference Guide</a></li>
 </ul>
+</blockquote>
+<div id="what-is-rmarkdown" class="section level2">
+<h2>What is RMarkdown</h2>
+<p>There are three main components to an RMarkdown document</p>
+<ol style="list-style-type: decimal">
+<li>The <strong>YAML</strong> header which is surrounded by
+<code>---</code>s and provides information for the compiling
+process</li>
+<li>R code <strong>chunks</strong> which are surrounded by
+<code>```</code>s</li>
+<li>Text which can be formatted using the Markdown language.</li>
+</ol>
+<p>A reference guide of RMarkdown syntax can be found through
+<code>Help</code> -&gt; <code>Cheat Sheets</code> -&gt;
+<code>R Markdown Reference Guide</code> in the RStudio menu.</p>
+<div id="example-rmd" class="section level3">
+<h3>Example Rmd</h3>
+<p>Create your own RMarkdown document now from the template. To do this
+go <code>File</code> -&gt; <code>New File</code> -&gt;
+<code>R Markdown</code>.</p>
+</div>
+<div id="knitting" class="section level3">
+<h3>Knitting</h3>
+<p>“Knit” or compile the document using the <code>knit</code> button or
+<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>K</kbd>.</p>
+<p><br />
+</p>
+</div>
+</div>
+<div id="markdown-syntax" class="section level2">
+<h2>Markdown syntax</h2>
+<p>Refer to the <a
+href="https://www.rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf">RMarkdown
+Reference Guide</a></p>
+<p><br />
+</p>
+</div>
+<div id="code-chunks" class="section level2">
+<h2>Code Chunks</h2>
+<p>Code chunks look like:</p>
+<pre><code>```{r}
+1 + 2
+```</code></pre>
+<ul>
+<li><p>Code chunks are executed as part of the document “knitting” and
+the code and output embedded in the document</p></li>
+<li><p>Be aware of the working directory (don’t use
+<code>setwd()</code>). Ideally use the <code>here</code> package to
+manage paths.</p></li>
+</ul>
+<p><br />
+</p>
+</div>
+<div id="images-figures-and-tables" class="section level2">
+<h2>Images, Figures, and Tables</h2>
+<ul>
+<li><p>Images can be included though markdown, or by using the
+<code>include_graphics()</code> from <code>knitr</code> in a code chunk
+- the latter provides more options for customising for
+size/position.</p></li>
+<li><p>Figures are created from code chunks and chunk options are used
+to control size/position</p></li>
+<li><p>Tables can be manually created using the markdown syntax or
+created automatically from your data using the <code>kable()</code> from
+<code>knitr</code>.</p></li>
+</ul>
+<p>Further customising of <code>kable</code> tables can be done with the
+<code>kableExtra</code> package.</p>
+<p><br />
+</p>
+</div>
+<div id="citations" class="section level2">
+<h2>Citations</h2>
+<p>Citations can be inserted into an RMarkdown document. <a
+href="https://rstudio.github.io/visual-markdown-editing/citations.html">This
+document from RStudio</a> goes through how to do it</p>
+</div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiWm9vbSBOb3RlczogQ29tbXVuaWNhdGluZyBEYXRhIgpvdXRwdXQ6CiAgaHRtbF9kb2N1bWVudDoKICAgIHRvYzogdHJ1ZQogICAgdG9jX2Zsb2F0OiB0cnVlCiAgICB0b2NfZGVwdGg6IDMKICAgIGNvZGVfZG93bmxvYWQ6IHRydWUKICAgIGNvZGVfZm9sZGluZzogc2hvdwotLS0KCmBgYHtyIHNldHVwLCBpbmNsdWRlPUZBTFNFfQpsaWJyYXJ5KGtuaXRyKQoKa25pdHI6Om9wdHNfY2h1bmskc2V0KAogIGNvbW1lbnQgPSAiIz4iLAogIGZpZy5wYXRoID0gImZpZ3VyZXMvMDYvIiwgIyB1c2Ugb25seSBmb3Igc2luZ2xlIFJtZCBmaWxlcwogIGNvbGxhcHNlID0gVFJVRSwKICBlY2hvID0gVFJVRQopCgoKYGBgCgo+ICMjIyMgQXNzb2NpYXRlZCBNYXRlcmlhbAo+Cj4gTW9kdWxlOiBbTW9kdWxlIDA2IC0gQ29tbXVuaWNhdGVdKDA2LWNvbW11bmljYXRlLmh0bWwpCj4KPiBSZWFkaW5nczoKPgo+IFtSIGZvciBEYXRhIFNjaWVuY2UgLSBDaGFwdGVyIDI3XShodHRwczovL3I0ZHMuaGFkLmNvLm56L3ItbWFya2Rvd24uaHRtbCkKPiBbUiBmb3IgRGF0YSBTY2llbmNlIC0gQ2hhcHRlciAyOV0oaHR0cHM6Ly9yNGRzLmhhZC5jby5uei9yLW1hcmtkb3duLWZvcm1hdHMuaHRtbCkKPiBbUmVmZXJlbmNlOiBSTWFya2Rvd24gLSB0aGUgZGVmaW5pdGl2ZSBndWlkZV0oaHR0cHM6Ly9ib29rZG93bi5vcmcveWlodWkvcm1hcmtkb3duLykKCgpTY3JpcHRzCgpSbWFya2Rvd24KCi0geWFtbAotIG1hcmtkb3duCi0gY29kZSBjaHVua3MKICAtIGV2YWwKICAtIGluY2x1ZGUKICAtIHdhcm5pbmcKICAtIG1lc3NhZ2UKICAtIGZpZwogIC0gcmVzdWx0cwotIGltYWdlcwogIC0gaW5jbHVkZV9ncmFwaGljcwogIC0gYCFbXSgpYAotIHRhYmxlcwogIC0ga2FibGUKICAtIHtrYWJsZUV4dHJhfQoKLSB7aGVyZX0K</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiWm9vbSBOb3RlczogQ29tbXVuaWNhdGluZyBEYXRhIgpvdXRwdXQ6CiAgaHRtbF9kb2N1bWVudDoKICAgIHRvYzogdHJ1ZQogICAgdG9jX2Zsb2F0OiB0cnVlCiAgICB0b2NfZGVwdGg6IDMKICAgIGNvZGVfZG93bmxvYWQ6IHRydWUKICAgIGNvZGVfZm9sZGluZzogc2hvdwotLS0KCmBgYHtyIHNldHVwLCBpbmNsdWRlPUZBTFNFfQpsaWJyYXJ5KGtuaXRyKQoKa25pdHI6Om9wdHNfY2h1bmskc2V0KAogIGNvbW1lbnQgPSAiIz4iLAogIGZpZy5wYXRoID0gImZpZ3VyZXMvMDYvIiwgIyB1c2Ugb25seSBmb3Igc2luZ2xlIFJtZCBmaWxlcwogIGNvbGxhcHNlID0gVFJVRSwKICBlY2hvID0gVFJVRQopCgoKYGBgCgo+ICMjIyMgQXNzb2NpYXRlZCBNYXRlcmlhbAo+Cj4gTW9kdWxlOiBbTW9kdWxlIDA2IC0gQ29tbXVuaWNhdGVdKDA2LWNvbW11bmljYXRlLmh0bWwpCj4KPiBSZWFkaW5nczoKPgo+IC0gICBbUiBmb3IgRGF0YSBTY2llbmNlIC0gQ2hhcHRlciAyN10oaHR0cHM6Ly9yNGRzLmhhZC5jby5uei9yLW1hcmtkb3duLmh0bWwpCj4gLSAgIFtSIGZvciBEYXRhIFNjaWVuY2UgLSBDaGFwdGVyIDI5XShodHRwczovL3I0ZHMuaGFkLmNvLm56L3ItbWFya2Rvd24tZm9ybWF0cy5odG1sKQo+IC0gICBbUmVmZXJlbmNlOiBSTWFya2Rvd24gLSB0aGUgZGVmaW5pdGl2ZSBndWlkZV0oaHR0cHM6Ly9ib29rZG93bi5vcmcveWlodWkvcm1hcmtkb3duLykKPiAtICAgW1JNYXJrZG93biBSZWZlcmVuY2UgR3VpZGVdKGh0dHBzOi8vd3d3LnJzdHVkaW8uY29tL3dwLWNvbnRlbnQvdXBsb2Fkcy8yMDE1LzAzL3JtYXJrZG93bi1yZWZlcmVuY2UucGRmKQoKIyMgV2hhdCBpcyBSTWFya2Rvd24KClRoZXJlIGFyZSB0aHJlZSBtYWluIGNvbXBvbmVudHMgdG8gYW4gUk1hcmtkb3duIGRvY3VtZW50CgoxLiAgVGhlICoqWUFNTCoqIGhlYWRlciB3aGljaCBpcyBzdXJyb3VuZGVkIGJ5IGAtLS1gcyBhbmQgcHJvdmlkZXMgaW5mb3JtYXRpb24gZm9yIHRoZSBjb21waWxpbmcgcHJvY2VzcwoyLiAgUiBjb2RlICoqY2h1bmtzKiogd2hpY2ggYXJlIHN1cnJvdW5kZWQgYnkgYGBgYCBgYGAgYGBgYHMKMy4gIFRleHQgd2hpY2ggY2FuIGJlIGZvcm1hdHRlZCB1c2luZyB0aGUgTWFya2Rvd24gbGFuZ3VhZ2UuCgoKQSByZWZlcmVuY2UgZ3VpZGUgb2YgUk1hcmtkb3duIHN5bnRheCBjYW4gYmUgZm91bmQgdGhyb3VnaCBgSGVscGAgLT4gYENoZWF0IFNoZWV0c2AgLT4gYFIgTWFya2Rvd24gUmVmZXJlbmNlIEd1aWRlYCBpbiB0aGUgUlN0dWRpbyBtZW51LgoKIyMjIEV4YW1wbGUgUm1kCgpDcmVhdGUgeW91ciBvd24gUk1hcmtkb3duIGRvY3VtZW50IG5vdyBmcm9tIHRoZSB0ZW1wbGF0ZS4gVG8gZG8gdGhpcyBnbyBgRmlsZWAgLVw+IGBOZXcgRmlsZWAgLVw+IGBSIE1hcmtkb3duYC4KCiMjIyBLbml0dGluZwoKIktuaXQiIG9yIGNvbXBpbGUgdGhlIGRvY3VtZW50IHVzaW5nIHRoZSBga25pdGAgYnV0dG9uIG9yIDxrYmQ+Q3RybDwva2JkPiArIDxrYmQ+U2hpZnQ8L2tiZD4gKyA8a2JkPks8L2tiZD4uCgpcCgojIyBNYXJrZG93biBzeW50YXgKClJlZmVyIHRvIHRoZSBbUk1hcmtkb3duIFJlZmVyZW5jZSBHdWlkZV0oaHR0cHM6Ly93d3cucnN0dWRpby5jb20vd3AtY29udGVudC91cGxvYWRzLzIwMTUvMDMvcm1hcmtkb3duLXJlZmVyZW5jZS5wZGYpCgpcCgojIyBDb2RlIENodW5rcwoKQ29kZSBjaHVua3MgbG9vayBsaWtlOgoKYGBge3IgZWNobyA9IEZBTFNFLCBjb21tZW50ID0gIiJ9CmNhdChodG1sdG9vbHM6OmluY2x1ZGVUZXh0KCJzY3JpcHRzL2NvZGVfY2h1bmsuUm1kIikpCmBgYAoKLSBDb2RlIGNodW5rcyBhcmUgZXhlY3V0ZWQgYXMgcGFydCBvZiB0aGUgZG9jdW1lbnQgImtuaXR0aW5nIiBhbmQgdGhlIGNvZGUgYW5kIG91dHB1dCBlbWJlZGRlZCBpbiB0aGUgZG9jdW1lbnQKCi0gQmUgYXdhcmUgb2YgdGhlIHdvcmtpbmcgZGlyZWN0b3J5IChkb24ndCB1c2UgYHNldHdkKClgKS4gSWRlYWxseSB1c2UgdGhlIGBoZXJlYCBwYWNrYWdlIHRvIG1hbmFnZSBwYXRocy4KClwKCiMjIEltYWdlcywgRmlndXJlcywgYW5kIFRhYmxlcwoKLSBJbWFnZXMgY2FuIGJlIGluY2x1ZGVkIHRob3VnaCBtYXJrZG93biwgb3IgYnkgdXNpbmcgdGhlIGBpbmNsdWRlX2dyYXBoaWNzKClgIGZyb20gYGtuaXRyYCBpbiBhIGNvZGUgY2h1bmsgLSB0aGUgbGF0dGVyIHByb3ZpZGVzIG1vcmUgb3B0aW9ucyBmb3IgY3VzdG9taXNpbmcgZm9yIHNpemUvcG9zaXRpb24uCgotIEZpZ3VyZXMgYXJlIGNyZWF0ZWQgZnJvbSBjb2RlIGNodW5rcyBhbmQgY2h1bmsgb3B0aW9ucyBhcmUgdXNlZCB0byBjb250cm9sIHNpemUvcG9zaXRpb24KCi0gVGFibGVzIGNhbiBiZSBtYW51YWxseSBjcmVhdGVkIHVzaW5nIHRoZSBtYXJrZG93biBzeW50YXggb3IgY3JlYXRlZCBhdXRvbWF0aWNhbGx5IGZyb20geW91ciBkYXRhIHVzaW5nIHRoZSBga2FibGUoKWAgZnJvbSBga25pdHJgLgoKRnVydGhlciBjdXN0b21pc2luZyBvZiBga2FibGVgIHRhYmxlcyBjYW4gYmUgZG9uZSB3aXRoIHRoZSBga2FibGVFeHRyYWAgcGFja2FnZS4KClwKCiMjIENpdGF0aW9ucwoKQ2l0YXRpb25zIGNhbiBiZSBpbnNlcnRlZCBpbnRvIGFuIFJNYXJrZG93biBkb2N1bWVudC4gW1RoaXMgZG9jdW1lbnQgZnJvbSBSU3R1ZGlvXShodHRwczovL3JzdHVkaW8uZ2l0aHViLmlvL3Zpc3VhbC1tYXJrZG93bi1lZGl0aW5nL2NpdGF0aW9ucy5odG1sKSBnb2VzIHRocm91Z2ggaG93IHRvIGRvIGl0Cg==</div>
 
 
 </div>
