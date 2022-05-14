@@ -29,7 +29,7 @@ navbar:
         - text: "Repeating Code"
           href: 08-iterate.html
         - text: "Workflows"
-          # href: 09-workflows.html
+          href: 09-workflows.html
     - text: "Zoom Notes"
       menu:
         - text: "01 - Introducing R and RStudio"
@@ -48,8 +48,8 @@ navbar:
           href: zoom_notes_07.html
         - text: "08 - Repeating Code"
           href: zoom_notes_08.html
-    #     - text: "Handout 9"
-    #       href: zoom_notes_09.html
+        - text: "09 - Workflows"
+          href: zoom_notes_09.html
 
     - text: "About"
       href: about.html
