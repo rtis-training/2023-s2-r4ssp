@@ -13,6 +13,7 @@ output:
 ```{r setup, include=FALSE}
 library(knitr)
 library(tidyverse)
+library(palmerpenguins)
 
 knitr::opts_chunk$set(
   comment = "#>",

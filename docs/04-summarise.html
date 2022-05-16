@@ -767,6 +767,14 @@ aggregate(lakes$ChlA, by = list(Lake = lakes$LakeName), FUN=mean)
 <h3>Using <code>group_by</code> and <code>summarise</code></h3>
 <pre class="r"><code># Using `group_by` and `summarise`
 library(dplyr)
+#&gt; 
+#&gt; Attaching package: &#39;dplyr&#39;
+#&gt; The following objects are masked from &#39;package:stats&#39;:
+#&gt; 
+#&gt;     filter, lag
+#&gt; The following objects are masked from &#39;package:base&#39;:
+#&gt; 
+#&gt;     intersect, setdiff, setequal, union
 
 lakes %&gt;% 
   group_by(LakeName) %&gt;%

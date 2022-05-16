@@ -609,6 +609,8 @@ head(flight_results_dplyr)
 One of the nice features of dealing with pipes, is that you can do your subsetting workflow and pipe directly into `ggplot`, although it's usually a good idea to assign your subsetted data and then use that to start your plotting pipeline. If you pipe your data into ggplot RStudio will also let you auto-complete your columns with <kbd>Tab</kbd>.
 
 ```{r pipe_plot}
+library(ggplot2)
+
 flights %>% 
   # subset the data
   select(month, origin, air_time) %>% 

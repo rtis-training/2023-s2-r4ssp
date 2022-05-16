@@ -84,7 +84,6 @@ usethis::use_readme_rmd()
 # Create a new R script in your project in directory R/
 usethis::use_r(name = "myfile.R")
 
-
 ```
 
 On top of these, there are many other helper functions, such as for creating various licenses, editing configurations, interacting with version control software, or setting up automatic testing. All of which we'll touch on in this module.

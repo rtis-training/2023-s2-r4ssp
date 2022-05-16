@@ -506,7 +506,15 @@ dealing with character vectors.</p>
 <p>All are loaded as part of loading the <code>tidyverse</code> package.
 You can see under the “Attaching packages” heading exactly which
 packages are being loaded.</p>
-<pre class="r"><code>library(tidyverse)</code></pre>
+<pre class="r"><code>library(tidyverse)
+#&gt; ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──
+#&gt; ✔ ggplot2 3.3.5     ✔ purrr   0.3.4
+#&gt; ✔ tibble  3.1.6     ✔ dplyr   1.0.9
+#&gt; ✔ tidyr   1.2.0     ✔ stringr 1.4.0
+#&gt; ✔ readr   2.1.2     ✔ forcats 0.5.1
+#&gt; ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+#&gt; ✖ dplyr::filter() masks stats::filter()
+#&gt; ✖ dplyr::lag()    masks stats::lag()</code></pre>
 <p>An extra package is <code>janitor</code>, which designed for
 cleaning.</p>
 <pre class="r"><code># install.packages(&quot;janitor&quot;)

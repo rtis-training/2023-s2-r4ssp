@@ -974,7 +974,7 @@ multiply_by_n &lt;- function(x){
 }
 
 multiply_by_n(x = 3)
-#&gt; Error in x * n: non-numeric argument to binary operator</code></pre>
+#&gt; Error in multiply_by_n(x = 3): object &#39;n&#39; not found</code></pre>
 <p>In the function body we referred to <code>n</code> which wasn’t
 defined anywhere so we got an error.</p>
 <p>Let’s use the same function again but define <code>n</code> outside
