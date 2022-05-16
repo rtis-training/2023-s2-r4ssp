@@ -49,7 +49,7 @@ My_Project/
   \- scripts/
 ```
 
-Beyond the structure of where we put things. We also want to establish the the principles of how the project will operate. Two important files in this regard are the README and the LICENSE. The README will tell yourself and others important details about the project such as where the source data came from, or how to run the code in the project (e.g. order of scripts). Secondly a LICENSE - this will become important later on when code you have written may be released for others to see (e.g. as part of a research paper) as it will set out the rules under which people may use your code.
+Beyond the structure of where we put things, we also want to establish the the principles of how the project will operate. Two important files in this regard are the README and the LICENSE. The README will tell yourself and others important details about the project such as where the source data came from, or how to run the code in the project (e.g. order of scripts). Secondly a LICENSE - this will become important later on when code you have written may be released for others to see (e.g. as part of a research paper) as it will set out the rules under which people may use your code.
 
 \
 
@@ -57,19 +57,19 @@ Beyond the structure of where we put things. We also want to establish the the p
 
 When we're dealing with research, by and large we're operating in an "open source" manner - i.e. the code that is used to perform the research is shared alongside the results so that people can view it. Just because the code is available doesn't mean that people get to do what they like with your code though. 
 
-It's always a good practice to add a license to go along with your code. A license is a document that lets people who come across the code what they allowed to do with it, and what they're not. There are many open source licenses available and they vary in what behaviours they permit or restrict. When choosing an open source licence there are 3 main questions you need to answer:
+It's always a good practice to add a license to go along with your code. A license is a document that lets people who come across the code what they're allowed to do with it, and what they're not. There are many open source licenses available and they vary in what behaviours they permit or restrict. When choosing an open source licence there are 3 main questions you need to answer:
 
 1. Do you care about how any modifications that people make to the code are distributed?
 2. Do you or your institution own any related software patents?
 3. Do you care about the way your name is or isn't mentioned when someone makes use of your code?
 
-An extremely common license in research code/software is the MIT license which is the simplest and most permissive, essentially says the code is "as is" without any warranties, and lets people use, copy, modify, and distribute your code so long as the copyright notice goes along with it (i.e. for attribution purposes). For help selecting an appropriate license have a look at [https://choosealicense.com](https://choosealicense.com).
+An extremely common license in research code/software is the MIT license which is the simplest and most permissive, and essentially says the code is "as is" without any warranties, and lets people use, copy, modify, and distribute your code so long as the copyright notice goes along with it (i.e. for attribution purposes). For help selecting an appropriate license have a look at [https://choosealicense.com](https://choosealicense.com).
 
 \
 
 ### The `usethis` Package
 
-The `usethis` package is designed to assist in the creation of new packages and setting up of new projects. It is is an extremely useful package for several "workflow" tasks. It provides functions for many common workflow tasks such as creating new projects, adding README files, or opening R files. 
+The [`usethis`](https://usethis.r-lib.org) package is designed to assist in the creation of new packages and setting up of new projects. It is is an extremely useful package for several "workflow" tasks. It provides functions for many common workflow tasks such as creating new projects, adding README files, or opening R files. 
 
 ```{r, eval = FALSE}
 # Create and open a new package
@@ -168,7 +168,15 @@ You are likely familiar with versioning, usually people try to achieve this thro
 
 It's always a good idea to get this set up before you get under way doing actual work so that you can track you changes from the the very start. In the case of `git`, following [Happy Git with R](https://happygitwithr.com) for installing and configuring `git` and subsequently telling RStudio about your installation is a good place to start.
 
-Version control is used for keeping track of the changes made to your scripts, we don't use it to manage our data.
+Once you have RStudio set up with `git`, when you add (initialise) version control onto your project you'll get an new tab appear and a hidden directory called `.git` will be created inside your project directory. A directory under version control is called a 'repository' or 'repo'.
+
+```{r, echo=FALSE, fig.align='center'}
+include_graphics("images/09-git_panel.png")
+```
+
+
+
+Version control is used for keeping track of the changes made to your scripts, we don't usually use it to manage our data - since our initial raw data isn't going to be changing. For managing data, we use an appropriate backup or archiving system.
 
 \
 
@@ -205,7 +213,8 @@ knitr::include_graphics("images/09-fixing_problems.png")
 Knowing where to start debugging takes practice. some general good advice can be found in https://adv-r.hadley.nz/debugging.html with some specific tips and tricks for R. The general premise is that we want to test and confirm all of our assumptions.
 
 > Finding your bug is a process of confirming the many things that you believe are true — until you find one which is not true.
-> —Norm Matloff
+>
+> — Norm Matloff
 
 Some techniques for solving errors and confirming our assumptions can include:
 
@@ -370,13 +379,24 @@ testthat::expect_equal(mean(c(1,2,3)), 2)
 
 Version control software is slightly different from what you might have experienced with something like 'track changes' in Microsoft Word which tracks all changes live. 
 
-In the case of `git`, once you have everything set up and configured there is a (simplified) mini-workflow:
+In the case of `git`, once you have everything set up and configured there is a (simplified) mini-workflow which can be done after clicking the 'commit' button in the git tab:
+
+```{r, echo = FALSE, fig.align='center'}
+include_graphics("images/09-commit.png")
+```
+
+
 
 1. Tell `git` you want it to track the changes on a file
 2. Make some changes
 3. Tell `git` you want to include these changes in its tracking
+    - click the 'staged' checkbox on the file in the git-commit window
 4. Tell `git` to 'snapshot' your changes and include a message about them
+    - write a message and click commit in the git - commit window
 5. go back to step 2.
+
+
+
 
 Why would you do this workflow? For your future self. Every snapshot you take with `git` gives you a point in time that you can roll back to if you wish - from a reproducibility point of view this lets you run _any_ version of your code at a snapshot. `git` can also let you see exactly what changes there were between snapshots which can be extremely helpful for debugging
 
