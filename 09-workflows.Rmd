@@ -33,6 +33,8 @@ knitr::opts_chunk$set(
 
 In this module we're going to cover some ways to improve your workflow as you use R. As you develop your understanding of R and proceed to do fancier things, you'll want to start bringing in extra features to make your life easier. When we think of a workflow there are three main phases we undertake. At the very beginning we're setting ourselves up, establishing how things will be organised, and how we intend to work. Second, we do the work - which involves testing and adjusting the established systems, and lastly, we wrap things up.
 
+\
+
 ## Getting organised
 
 In the first module we discussed creating a structure for your work inside an RStudio project. For both analysis and programming projects it is useful to have a pre-established 'go-to' template structure to keep things organised.
@@ -49,6 +51,8 @@ My_Project/
 
 Beyond the structure of where we put things. We also want to establish the the principles of how the project will operate. Two important files in this regard are the README and the LICENSE. The README will tell yourself and others important details about the project such as where the source data came from, or how to run the code in the project (e.g. order of scripts). Secondly a LICENSE - this will become important later on when code you have written may be released for others to see (e.g. as part of a research paper) as it will set out the rules under which people may use your code.
 
+\
+
 ### Licensing
 
 When we're dealing with research, by and large we're operating in an "open source" manner - i.e. the code that is used to perform the research is shared alongside the results so that people can view it. Just because the code is available doesn't mean that people get to do what they like with your code though. 
@@ -60,6 +64,8 @@ It's always a good practice to add a license to go along with your code. A licen
 3. Do you care about the way your name is or isn't mentioned when someone makes use of your code?
 
 An extremely common license in research code/software is the MIT license which is the simplest and most permissive, essentially says the code is "as is" without any warranties, and lets people use, copy, modify, and distribute your code so long as the copyright notice goes along with it (i.e. for attribution purposes). For help selecting an appropriate license have a look at [https://choosealicense.com](https://choosealicense.com).
+
+\
 
 ### The `usethis` Package
 
@@ -83,9 +89,9 @@ usethis::use_r(name = "myfile.R")
 
 On top of these, there are many other helper functions, such as for creating various licenses, editing configurations, interacting with version control software, or setting up automatic testing. All of which we'll touch on in this module.
 
-
-
 Once you have chosen an appropriate license, `usethis` likely has a template ready to go. e.g. `usethis::use_mit_license()`.
+
+\
 
 ### Configuration
 
@@ -125,7 +131,9 @@ options(useFancyQuotes = FALSE)
 
 Don't put analysis modifying options into your .Rprofile e.g. automatic loading of `tidyverse`. It will make the code you write less reproducible because it will start depending on these hidden settings, and it can make debugging harder.
 
-#### keyboard shortcuts
+\
+
+#### Keyboard shortcuts
 
 The keyboard shortcut to rule them all: <kbd>Alt</kbd> + <kbd>Shift</kbd> + <kbd>K</kbd>
 
@@ -133,69 +141,90 @@ Other useful shortcuts
 
 Keys | produces
 ---|---
-Ctrl + Shift + M | %>%
-Alt + - | <-
-Ctrl + Shift + K | knits Rmd
-Ctrl + Shift + F10 | Restart R
-Ctrl + Alt + I | Insert code chunk
-Ctrl + Shift + S | Source active file
-Ctrl + . | Go to file/function
+<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>M</kbd> | %>%
+<kbd>Alt</kbd> + <kbd>-</kbd> | <-
+<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>K</kbd> | knits Rmd
+<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>F10</kbd> | Restart R
+<kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>I</kbd> | Insert code chunk
+<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>S</kbd> | Source active file
+<kbd>Ctrl</kbd> + <kbd>.</kbd> | Go to file/function
 
 Make your own...
 
 Tools -> Modify Keyboard Shortcuts
 
+\
+
 ### Scripts
 
 Establish the structure of how you want to capture your code. Are you going to do everything in Rscripts? RMarkdown? A combination? Create the appropriate script files. It can be useful to have a separate Rscript where you store functions that you create which can be 'sourced' into your other scripts through `source("scriptname.R)`.
 
+\
 
 ### Initialise Version Control
 
-This section is a very brief overview of version control, specifically to say that you should start to build it into your workflow and we'll touch on it again in the [Automating Version Control](#auto-vc) section.
+This section is a very brief overview of version control, specifically to say that you should start to build it into your workflow and we'll touch on it again in the [Automating Version Control](#auto-vc) section but ultimately the details are outside of the scope of this course.
 
 You are likely familiar with versioning, usually people try to achieve this through file names. This is ok to a point but can cumbersome and doesn't scale well across multiple files nor does it give you an easy way to see exactly what the differences were between those files. This is where using version control software such as `git` can make your life easier.
 
-It's always a good idea to get this set up before you get underway doing actual work so that you can track you changes from the the very start. In the case of `git`
+It's always a good idea to get this set up before you get under way doing actual work so that you can track you changes from the the very start. In the case of `git`, following [Happy Git with R](https://happygitwithr.com) for installing and configuring `git` and subsequently telling RStudio about your installation is a good place to start.
 
+Version control is used for keeping track of the changes made to your scripts, we don't use it to manage our data.
 
-https://happygitwithr.com
-
+\
 
 ## Testing and Adjusting
 
+Once things are set up, we're ready to actually start doing the work we want to do. As we develop our code however, we constantly cycle through testing and adjusting. Each piece of code we write needs to be checked that is is working correctly. Often this type of testing is performed manually as you go: 'does the line of code run?' - checking for syntax errors, and then 'does the output look right?'. When the answer to these either question is no, we then enter a debugging mode where we try and find out why the code isn't doing what we think it should be.   
 
-
+\
 
 ### Debugging
 
+
 Errors messages are common when coding and are a way the computer communicates it doesn't understand what the instructions it has been given are.
+Common types of errors we encounter are:
+
+- syntactical
+- logical
+- runtime
+
+Syntactical errors are usually the most straight forward, the computer says that no straight away due to improper syntax. These are usually the easiest to find and correct. Logical errors come about through incorrect implementation of logic. The computer will run the code without complaint but the result isn't correct - these can be tricky to find and fix because they often involve checking each logical statement and subsequent code pathway in order to track down what is going wrong. Runtime errors are errors where you are trying to make the computer do something it can't in certain situations, such as storing a result in a certain location. The code will run sometimes but not others and again can be tricky to track down. 
+
+Remember, each time we find and fix an error, we must retest. This can get quite laborious to do manually so we can find better systems to help such as [automatic testing](#automatic-tests) but first we'll cover some general principles on how to go about debugging.
 
 
-```{r, echo = FALSE, out.height = '50%', out.width='50%', fig.cap = "https://xkcd.com/1739/"}
+
+```{r, echo = FALSE, out.height = '50%', out.width='50%', fig.cap = "https://xkcd.com/1739/", fig.align='center'}
 knitr::include_graphics("images/09-fixing_problems.png")
 ```
 
-Some general good advice can be found in https://adv-r.hadley.nz/debugging.html with some specific tips and tricks for R.
+\
 
 #### Where do I start?
+
+Knowing where to start debugging takes practice. some general good advice can be found in https://adv-r.hadley.nz/debugging.html with some specific tips and tricks for R. The general premise is that we want to test and confirm all of our assumptions.
 
 > Finding your bug is a process of confirming the many things that you believe are true — until you find one which is not true.
 > —Norm Matloff
 
-
-```{r, echo = FALSE, out.height = '50%', out.width='50%'}
-knitr::include_graphics("images/09-effective_techniques.png")
-```
+Some techniques for solving errors and confirming our assumptions can include:
 
 
-Rubber Duck debugging
+- using print statements to confirm values at key stages
+- googling the error message
+- restart R and rerun the code
+- reading the documentation
+- talk through the problem
 
-```{r, echo = FALSE, out.width = '50%', out.height = '50%'}
+
+```{r, echo = FALSE, out.width = '50%', out.height = '50%', fig.align='center'}
 knitr::include_graphics("images/09-rubberduck.jpg")
 ```
 
+'Rubber duck debugging' is a technique which involves talking your way through what you are trying to achieve with your code and explaining what your code is actually doing at each step to a rubber duck (or other toy). Often by being systematic and saying out loud what is happening this will trigger an "a-ha" moment as to what is causing the issue. You can also use this technique with another person e.g. co-worker instead of a toy if you prefer.
 
+\
 
 #### General process
 
@@ -210,36 +239,71 @@ My general process focuses on the initial source of the error and then starts to
 4. Did the previous command run properly?
     - if not jump to 1. for the previous command
 
-```{r, echo = FALSE, out.width="50%", out.height="50%"}
-knitr::include_graphics("images/09-changingstuff.jpg")
-```
+\
 
 #### Getting to know some errors
 
-Lets look at a few common R errors and warnings so that we can become more familiar with a) what they look like, b) how to find the useful bits, and c) demonstrate some techniques.
+R is notorious for having messages that are not user friendly. Lets look at a few common R errors and warnings so that we can become more familiar with a) what they look like, b) how to find the useful bits
+
+**Anatomy of a message**
+
+1. Usually the first word is "Error", but sometimes it can be "Warning". Code that produces errors won't run. Code that produces warnings will run but is signifying that you should be extra careful about the output because it might not be doing what you think it is. 
+2. Immediately following is the exact code that is producing the error/warning. This tells you where to start looking.
+3. after the `:` gives the details about what the error/warning actually is. 
 
 ```{r, eval = TRUE, error = TRUE, warning = TRUE, results='hide'}
 my_var
+```
 
+Caused by trying to access a variable that hasn't been defined yet.
+
+```{r, eval = TRUE, error = TRUE, warning = TRUE, results='hide'}
 mean[2]
+```
 
+Caused by using the subsetting brackets `[]` instead of `()` which are used for a function.
+
+```{r, eval = TRUE, error = TRUE, warning = TRUE, results='hide'}
 a <- c(one = 1,two = 2, three = 3)
 a$one
+```
 
+You can't use `$` on an atomic vector, it's used on structures such as data.frames or lists.
+
+```{r, eval = TRUE, error = TRUE, warning = TRUE, results='hide'}
 a[[20]]
+```
 
+Caused by trying to access an element at an index that doesn't exist.
+
+```{r, eval = TRUE, error = TRUE, warning = TRUE, results='hide'}
 read.csv("myfile.csv")
+```
 
+Caused by providing a file name that R cannot find in the working directory.
+
+```{r, eval = TRUE, error = TRUE, warning = TRUE, results='hide'}
 ggplot()
+```
 
+Caused by not having a `ggplot` function either user defined in the environment or not loaded a library that contains it (`ggplot2` or `tidyverse`).
+
+```{r, eval = TRUE, error = TRUE, warning = TRUE, results='hide'}
 notapackage::notafunction()
+```
 
+Caused by trying to call a function from a package that doesn't exist is not be installed on the library path.
 
+```{r, eval = TRUE, error = TRUE, warning = TRUE, results='hide'}
 if(NA){
   print("was NA")
 }
+```
+
+`if` requires the result to be TRUE or FALSE, `NA` isn't a TRUE or FALSE.
 
 
+```{r, eval = TRUE, error = TRUE, warning = TRUE, results='hide'}
 if(c(3 > c(1,2,3))){
   print("less than three")
 }
@@ -247,44 +311,79 @@ if(c(3 > c(1,2,3))){
 if(c(1,2,3) > 3){
   print("less than one")
 }
+```
 
+`if` requires a single TRUE or FALSE result, these statements create multiple. In older versions of R this produced a warning and not an error.
+
+```{r, eval = TRUE, error = TRUE, warning = TRUE, results='hide'}
 mean(c("1", "2"))
 ```
 
+Caused by the a data type that doesn't coerce into a numeric automatically.
 
-#### Asking/searching for help
+\
 
-- Effective googling
-- Stack Overflow
-- Minimal Reproducible example
-  - https://stackoverflow.com/help/minimal-reproducible-example
+### Adjusting
 
+In the process of developing, it's also important to take opportunities to adjust how things are being done. Working code is better than no code, but you create more code it's also a good idea to every so often look for opportunities to make things better - efficiency or maintenance wise.
 
-### RMarkdown driven dev
+Code replication is a good place to start - if you've found yourself copy and pasting the same code over in the same project, consider making it into a function. This then gives you a single place that needs to be changed. If you find yourself copy and pasting your functions across projects, consider creating your own package.
 
-https://emilyriederer.netlify.app/post/rmarkdown-driven-development/
+\
 
-### Packages
+#### RMarkdown driven dev
+
+Emily Riederer has a great blog post about [RMarkdown driven development](https://emilyriederer.netlify.app/post/rmarkdown-driven-development/) which describes a process of development using RMarkdown documents, where first you get things to a working situation, then go through rounds of tidying your document bringing like-to-like with your code so that code blocks contain similar processes. As the tidying is performed, it provides an opportunity to also reduce duplication of code and increase the maintainability by converting processes into functions. 
+
+\
+
+#### Packages
+
+If you find yourself copy and pasting function between documents, it might be time to start creating your own package, that way you reduce the number of individual places your function is defined and this makes it easier in the future to maintain. Packages also bring in an extra level of utility in that you can improve documentation and implement automated testing so that you know when changes break functionality.
+
+If you want to look further into how to create packages, check out the [R Packages online book](https://r-pkgs.org/index.html) and you can use `usethis::create_package()` to create a new package from a template.
+
+\
 
 ## Automating
 
 As you go about developing, there are two main things you will find yourself doing over and over again - trying to remember what you have changed, and making sure that any changes haven't broken anything. These processes can be quite time intensive so it's quite useful to try and automate the pieces that you can.
 
-### Automated testing
+\
+
+### Automated testing {#automatic-tests}
 
 As you code and manually test, it can be beneficial to formalise the manual tests into an automated solution so that you can be more efficient and also ensure that you know when you 'break things' with future changes. This is particularly useful when you fix bugs in your code, create a test that replicates the condition that caused the bug.
 
-In R one system uses the package `testthat` which provides a framework to create these formal tests which will evaluate a piece of code against the known expected output and tell you if they don't match.
+In R, one system uses the package `testthat` which provides a framework to create these formal tests which will evaluate a piece of code against the known expected output and tell you if they don't match.
 
 ```{r, eval = FALSE}
 
 # expect a mean of 2
 testthat::expect_equal(mean(c(1,2,3)), 2)
-
 ```
+
+`testthat` operates by setting up expectations and testing if they hold true. If they are true the expectation function is silent, if thy aren't it will tell you when run. This lets you formalise tests that you would be running manually and as you make adjustments to your code you can rerun these tests to check things are still working.
+
+\
 
 ### Automating differences {#auto-vc}
 
+Version control software is slightly different from what you might have experienced with something like 'track changes' in Microsoft Word which tracks all changes live. 
+
+In the case of `git`, once you have everything set up and configured there is a (simplified) mini-workflow:
+
+1. Tell `git` you want it to track the changes on a file
+2. Make some changes
+3. Tell `git` you want to include these changes in its tracking
+4. Tell `git` to 'snapshot' your changes and include a message about them
+5. go back to step 2.
+
+Why would you do this workflow? For your future self. Every snapshot you take with `git` gives you a point in time that you can roll back to if you wish - from a reproducibility point of view this lets you run _any_ version of your code at a snapshot. `git` can also let you see exactly what changes there were between snapshots which can be extremely helpful for debugging
+
+`git` is a fairly complex piece of software and provides more functionality than this, but for starting out this workflow covers the main need and use case.
+
+\
 
 ## Finalise
 
@@ -292,9 +391,11 @@ Congratulations! You've made it to the end-stage of your project where you're re
 
 Regardless, embrace the completion. Then continue on to your next project, bringing with you the skills you learnt on this one.
 
+\
+
 ## Appendix
 
-An example workflow
+An example workflow set up
 
 ```{r, eval=FALSE}
 # Create and open a new project

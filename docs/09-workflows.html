@@ -13,7 +13,7 @@
 
 <title>Workflows</title>
 
-<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
@@ -60,6 +60,7 @@ if (window.hljs) {
 
 
 
+
 <style type="text/css">
 #rmd-source-code {
   display: none;
@@ -91,6 +92,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -319,7 +323,7 @@ div.tocify {
 <div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -332,7 +336,7 @@ div.tocify {
   <a href="index.html">Home</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Modules
      
     <span class="caret"></span>
@@ -350,18 +354,30 @@ div.tocify {
     <li>
       <a href="03-subset.html">Part 2: Subsetting</a>
     </li>
-    <li class="dropdown-header">Part 3: Summarising</li>
-    <li class="dropdown-header">Part 4: Transforming</li>
-    <li class="dropdown-header">Part 5: Communicating</li>
+    <li>
+      <a href="04-summarise.html">Part 3: Summarising</a>
+    </li>
+    <li>
+      <a href="05-transform.html">Part 4: Transforming</a>
+    </li>
+    <li>
+      <a href="06-communicate.html">Part 5: Communicating</a>
+    </li>
     <li class="divider"></li>
     <li class="dropdown-header">Programming focus</li>
-    <li class="dropdown-header">Functions and Choices</li>
-    <li class="dropdown-header">Repeating Code</li>
-    <li class="dropdown-header">Workflows</li>
+    <li>
+      <a href="07-functions.html">Functions and Choices</a>
+    </li>
+    <li>
+      <a href="08-iterate.html">Repeating Code</a>
+    </li>
+    <li>
+      <a href="09-workflows.html">Workflows</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Zoom Notes
      
     <span class="caret"></span>
@@ -375,6 +391,24 @@ div.tocify {
     </li>
     <li>
       <a href="zoom_notes_03.html">03 - Subsetting data</a>
+    </li>
+    <li>
+      <a href="zoom_notes_04.html">04 - Summarising data</a>
+    </li>
+    <li>
+      <a href="zoom_notes_05.html">05 - Transforming data</a>
+    </li>
+    <li>
+      <a href="zoom_notes_06.html">06 - Communicating data</a>
+    </li>
+    <li>
+      <a href="zoom_notes_07.html">07 - Functions and Choices</a>
+    </li>
+    <li>
+      <a href="zoom_notes_08.html">08 - Repeating Code</a>
+    </li>
+    <li>
+      <a href="zoom_notes_09.html">09 - Workflows</a>
     </li>
   </ul>
 </li>
@@ -392,7 +426,7 @@ div.tocify {
 <div id="header">
 
 <div class="btn-group pull-right float-right">
-<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
 <ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
 <li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
 <li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
@@ -414,27 +448,555 @@ div.tocify {
 <p>Zoom Notes: <a href="zoom_notes_09.html">Zoom Notes 09 -
 Workflows</a></p>
 </blockquote>
-<blockquote>
-<p>Potential topics:</p>
-<ul>
-<li>infrential stats
-<ul>
-<li>formula syntax</li>
-<li>formala syntax in context of loop and/or custom function for running
-through many models</li>
-</ul></li>
-<li>projects</li>
-<li>organisation</li>
-<li>scripts</li>
-<li>rmd driven dev</li>
-<li>packages</li>
-<li>debugging</li>
-<li>complex data structures (lists)</li>
-<li>git</li>
-</ul>
-</blockquote>
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<p>In this module we’re going to cover some ways to improve your
+workflow as you use R. As you develop your understanding of R and
+proceed to do fancier things, you’ll want to start bringing in extra
+features to make your life easier. When we think of a workflow there are
+three main phases we undertake. At the very beginning we’re setting
+ourselves up, establishing how things will be organised, and how we
+intend to work. Second, we do the work - which involves testing and
+adjusting the established systems, and lastly, we wrap things up.</p>
+<p><br />
+</p>
+</div>
+<div id="getting-organised" class="section level2">
+<h2>Getting organised</h2>
+<p>In the first module we discussed creating a structure for your work
+inside an RStudio project. For both analysis and programming projects it
+is useful to have a pre-established ‘go-to’ template structure to keep
+things organised.</p>
+<p>An overarching principle is “keep similar things together”. For an
+analysis project, this can mean the structure we first covered when
+setting up an RStudio Project:</p>
+<pre><code>My_Project/
+  |- data/
+  |- docs/
+  |- output/
+  \- scripts/</code></pre>
+<p>Beyond the structure of where we put things. We also want to
+establish the the principles of how the project will operate. Two
+important files in this regard are the README and the LICENSE. The
+README will tell yourself and others important details about the project
+such as where the source data came from, or how to run the code in the
+project (e.g. order of scripts). Secondly a LICENSE - this will become
+important later on when code you have written may be released for others
+to see (e.g. as part of a research paper) as it will set out the rules
+under which people may use your code.</p>
+<p><br />
+</p>
+<div id="licensing" class="section level3">
+<h3>Licensing</h3>
+<p>When we’re dealing with research, by and large we’re operating in an
+“open source” manner - i.e. the code that is used to perform the
+research is shared alongside the results so that people can view it.
+Just because the code is available doesn’t mean that people get to do
+what they like with your code though.</p>
+<p>It’s always a good practice to add a license to go along with your
+code. A license is a document that lets people who come across the code
+what they allowed to do with it, and what they’re not. There are many
+open source licenses available and they vary in what behaviours they
+permit or restrict. When choosing an open source licence there are 3
+main questions you need to answer:</p>
+<ol style="list-style-type: decimal">
+<li>Do you care about how any modifications that people make to the code
+are distributed?</li>
+<li>Do you or your institution own any related software patents?</li>
+<li>Do you care about the way your name is or isn’t mentioned when
+someone makes use of your code?</li>
+</ol>
+<p>An extremely common license in research code/software is the MIT
+license which is the simplest and most permissive, essentially says the
+code is “as is” without any warranties, and lets people use, copy,
+modify, and distribute your code so long as the copyright notice goes
+along with it (i.e. for attribution purposes). For help selecting an
+appropriate license have a look at <a
+href="https://choosealicense.com">https://choosealicense.com</a>.</p>
+<p><br />
+</p>
+</div>
+<div id="the-usethis-package" class="section level3">
+<h3>The <code>usethis</code> Package</h3>
+<p>The <code>usethis</code> package is designed to assist in the
+creation of new packages and setting up of new projects. It is is an
+extremely useful package for several “workflow” tasks. It provides
+functions for many common workflow tasks such as creating new projects,
+adding README files, or opening R files.</p>
+<pre class="r"><code># Create and open a new package
+usethis::create_project(path = &quot;path/to/new/project&quot;)
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiV29ya2Zsb3dzIgpkYXRlOiAiU2VtZXN0ZXIgMSwgMjAyMiIKb3V0cHV0OgogIGh0bWxfZG9jdW1lbnQ6CiAgICB0b2M6IHRydWUKICAgIHRvY19mbG9hdDogdHJ1ZQogICAgdG9jX2RlcHRoOiAzCiAgICBjb2RlX2Rvd25sb2FkOiB0cnVlCiAgICBjb2RlX2ZvbGRpbmc6IHNob3cKLS0tCiAgCmBgYHtyIHNldHVwLCBpbmNsdWRlPUZBTFNFfQpsaWJyYXJ5KGtuaXRyKQoKa25pdHI6Om9wdHNfY2h1bmskc2V0KAogIGNvbW1lbnQgPSAiIz4iLAogIGZpZy5wYXRoID0gImZpZ3VyZXMvMDkvIiwgIyB1c2Ugb25seSBmb3Igc2luZ2xlIFJtZCBmaWxlcwogIGNvbGxhcHNlID0gVFJVRSwKICBlY2hvID0gVFJVRQopCmBgYAoKPiAjIyMjIEFzc29jaWF0ZWQgTWF0ZXJpYWwKPgo+IFpvb20gTm90ZXM6IFtab29tIE5vdGVzIDA5IC0gV29ya2Zsb3dzXSh6b29tX25vdGVzXzA5Lmh0bWwpCgoKPiBQb3RlbnRpYWwgdG9waWNzOgo+IAo+IC0gaW5mcmVudGlhbCBzdGF0cwo+ICAgLSBmb3JtdWxhIHN5bnRheAo+ICAgLSBmb3JtYWxhIHN5bnRheCBpbiBjb250ZXh0IG9mIGxvb3AgYW5kL29yIGN1c3RvbSBmdW5jdGlvbiBmb3IgcnVubmluZyB0aHJvdWdoIG1hbnkgbW9kZWxzCj4gLSBwcm9qZWN0cwo+IC0gb3JnYW5pc2F0aW9uCj4gLSBzY3JpcHRzCj4gLSBybWQgZHJpdmVuIGRldgo+IC0gcGFja2FnZXMKPiAtIGRlYnVnZ2luZwo+IC0gY29tcGxleCBkYXRhIHN0cnVjdHVyZXMgKGxpc3RzKQo+IC0gZ2l0Cg==</div>
+# Create a markdown README
+usethis::use_readme_md()
+
+# Create an RMarkdown README
+usethis::use_readme_rmd()
+
+# Create a new R script in your project in directory R/
+usethis::use_r(name = &quot;myfile.R&quot;)
+</code></pre>
+<p>On top of these, there are many other helper functions, such as for
+creating various licenses, editing configurations, interacting with
+version control software, or setting up automatic testing. All of which
+we’ll touch on in this module.</p>
+<p>Once you have chosen an appropriate license, <code>usethis</code>
+likely has a template ready to go.
+e.g. <code>usethis::use_mit_license()</code>.</p>
+<p><br />
+</p>
+</div>
+<div id="configuration" class="section level3">
+<h3>Configuration</h3>
+<p>As part of the set up stage, we’re also wanting to make things easier
+on ourselves to that we can be more productive during the “do stuff”
+stage.</p>
+<p>There is a hidden file called .Rprofile which is loaded as R launches
+and is a place where you can place customisations of options to make
+your R life easier. For instance I have mine set to automatically load
+workflow helper packages such as <code>usethis</code>
+<code>testthat</code> and <code>devtools</code>. And set a few options
+to make R produce more warnings so that it helps me know when something
+might cause an issue. It’s also a good place to set some defaults such
+as your favourite CRAN mirror so that R doesn’t need to ask you when you
+go to install packages.</p>
+<pre class="r"><code>usethis::edit_r_profile()</code></pre>
+<pre class="r"><code> # load workflow helper packages if in interactive session
+if (interactive()) {
+  suppressMessages(require(devtools))
+  suppressMessages(require(usethis))
+  suppressMessages(require(testthat))
+}
+
+
+# set CRAN
+options(repos = c(CRAN = &quot;https://cloud.r-project.org/&quot;))
+
+
+# warn on partial matches
+options(
+  warnPartialMatchArgs = TRUE,
+  warnPartialMatchDollar = TRUE,
+  warnPartialMatchAttr = TRUE
+)
+
+# fancy quotes are annoying and lead to
+# &#39;copy + paste&#39; bugs / frustrations
+options(useFancyQuotes = FALSE)</code></pre>
+<p>Don’t put analysis modifying options into your .Rprofile
+e.g. automatic loading of <code>tidyverse</code>. It will make the code
+you write less reproducible because it will start depending on these
+hidden settings, and it can make debugging harder.</p>
+<p><br />
+</p>
+<div id="keyboard-shortcuts" class="section level4">
+<h4>Keyboard shortcuts</h4>
+<p>The keyboard shortcut to rule them all: <kbd>Alt</kbd> +
+<kbd>Shift</kbd> + <kbd>K</kbd></p>
+<p>Other useful shortcuts</p>
+<table>
+<thead>
+<tr class="header">
+<th>Keys</th>
+<th>produces</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>M</kbd></td>
+<td>%&gt;%</td>
+</tr>
+<tr class="even">
+<td><kbd>Alt</kbd> + <kbd>-</kbd></td>
+<td>&lt;-</td>
+</tr>
+<tr class="odd">
+<td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>K</kbd></td>
+<td>knits Rmd</td>
+</tr>
+<tr class="even">
+<td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>F10</kbd></td>
+<td>Restart R</td>
+</tr>
+<tr class="odd">
+<td><kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>I</kbd></td>
+<td>Insert code chunk</td>
+</tr>
+<tr class="even">
+<td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>S</kbd></td>
+<td>Source active file</td>
+</tr>
+<tr class="odd">
+<td><kbd>Ctrl</kbd> + <kbd>.</kbd></td>
+<td>Go to file/function</td>
+</tr>
+</tbody>
+</table>
+<p>Make your own…</p>
+<p>Tools -&gt; Modify Keyboard Shortcuts</p>
+<p><br />
+</p>
+</div>
+</div>
+<div id="scripts" class="section level3">
+<h3>Scripts</h3>
+<p>Establish the structure of how you want to capture your code. Are you
+going to do everything in Rscripts? RMarkdown? A combination? Create the
+appropriate script files. It can be useful to have a separate Rscript
+where you store functions that you create which can be ‘sourced’ into
+your other scripts through <code>source("scriptname.R)</code>.</p>
+<p><br />
+</p>
+</div>
+<div id="initialise-version-control" class="section level3">
+<h3>Initialise Version Control</h3>
+<p>This section is a very brief overview of version control,
+specifically to say that you should start to build it into your workflow
+and we’ll touch on it again in the <a href="#auto-vc">Automating Version
+Control</a> section but ultimately the details are outside of the scope
+of this course.</p>
+<p>You are likely familiar with versioning, usually people try to
+achieve this through file names. This is ok to a point but can
+cumbersome and doesn’t scale well across multiple files nor does it give
+you an easy way to see exactly what the differences were between those
+files. This is where using version control software such as
+<code>git</code> can make your life easier.</p>
+<p>It’s always a good idea to get this set up before you get under way
+doing actual work so that you can track you changes from the the very
+start. In the case of <code>git</code>, following <a
+href="https://happygitwithr.com">Happy Git with R</a> for installing and
+configuring <code>git</code> and subsequently telling RStudio about your
+installation is a good place to start.</p>
+<p>Version control is used for keeping track of the changes made to your
+scripts, we don’t use it to manage our data.</p>
+<p><br />
+</p>
+</div>
+</div>
+<div id="testing-and-adjusting" class="section level2">
+<h2>Testing and Adjusting</h2>
+<p>Once things are set up, we’re ready to actually start doing the work
+we want to do. As we develop our code however, we constantly cycle
+through testing and adjusting. Each piece of code we write needs to be
+checked that is is working correctly. Often this type of testing is
+performed manually as you go: ‘does the line of code run?’ - checking
+for syntax errors, and then ‘does the output look right?’. When the
+answer to these either question is no, we then enter a debugging mode
+where we try and find out why the code isn’t doing what we think it
+should be.</p>
+<p><br />
+</p>
+<div id="debugging" class="section level3">
+<h3>Debugging</h3>
+<p>Errors messages are common when coding and are a way the computer
+communicates it doesn’t understand what the instructions it has been
+given are. Common types of errors we encounter are:</p>
+<ul>
+<li>syntactical</li>
+<li>logical</li>
+<li>runtime</li>
+</ul>
+<p>Syntactical errors are usually the most straight forward, the
+computer says that no straight away due to improper syntax. These are
+usually the easiest to find and correct. Logical errors come about
+through incorrect implementation of logic. The computer will run the
+code without complaint but the result isn’t correct - these can be
+tricky to find and fix because they often involve checking each logical
+statement and subsequent code pathway in order to track down what is
+going wrong. Runtime errors are errors where you are trying to make the
+computer do something it can’t in certain situations, such as storing a
+result in a certain location. The code will run sometimes but not others
+and again can be tricky to track down.</p>
+<p>Remember, each time we find and fix an error, we must retest. This
+can get quite laborious to do manually so we can find better systems to
+help such as <a href="#automatic-tests">automatic testing</a> but first
+we’ll cover some general principles on how to go about debugging.</p>
+<div class="figure" style="text-align: center">
+<img src="images/09-fixing_problems.png" alt="https://xkcd.com/1739/" width="50%" height="50%" />
+<p class="caption">
+<a href="https://xkcd.com/1739/" class="uri">https://xkcd.com/1739/</a>
+</p>
+</div>
+<p><br />
+</p>
+<div id="where-do-i-start" class="section level4">
+<h4>Where do I start?</h4>
+<p>Knowing where to start debugging takes practice. some general good
+advice can be found in <a href="https://adv-r.hadley.nz/debugging.html"
+class="uri">https://adv-r.hadley.nz/debugging.html</a> with some
+specific tips and tricks for R. The general premise is that we want to
+test and confirm all of our assumptions.</p>
+<blockquote>
+<p>Finding your bug is a process of confirming the many things that you
+believe are true — until you find one which is not true. —Norm
+Matloff</p>
+</blockquote>
+<p>Some techniques for solving errors and confirming our assumptions can
+include:</p>
+<ul>
+<li>using print statements to confirm values at key stages</li>
+<li>googling the error message</li>
+<li>restart R and rerun the code</li>
+<li>reading the documentation</li>
+<li>talk through the problem</li>
+</ul>
+<p><img src="images/09-rubberduck.jpg" width="50%" height="50%" style="display: block; margin: auto;" /></p>
+<p>‘Rubber duck debugging’ is a technique which involves talking your
+way through what you are trying to achieve with your code and explaining
+what your code is actually doing at each step to a rubber duck (or other
+toy). Often by being systematic and saying out loud what is happening
+this will trigger an “a-ha” moment as to what is causing the issue. You
+can also use this technique with another person e.g. co-worker instead
+of a toy if you prefer.</p>
+<p><br />
+</p>
+</div>
+<div id="general-process" class="section level4">
+<h4>General process</h4>
+<p>My general process focuses on the initial source of the error and
+then starts to work backwards in command history.</p>
+<ol style="list-style-type: decimal">
+<li>Do I recognise the message?</li>
+<li>Re-look at the command I ran looking for
+<ul>
+<li>typos</li>
+<li>missing syntax (e.g. brackets, semicolons, etc.)</li>
+<li>correct naming of things</li>
+</ul></li>
+<li>Is the input for my command what I expect it is?</li>
+<li>Did the previous command run properly?
+<ul>
+<li>if not jump to 1. for the previous command</li>
+</ul></li>
+</ol>
+<p><br />
+</p>
+</div>
+<div id="getting-to-know-some-errors" class="section level4">
+<h4>Getting to know some errors</h4>
+<p>R is notorious for having messages that are not user friendly. Lets
+look at a few common R errors and warnings so that we can become more
+familiar with a) what they look like, b) how to find the useful bits</p>
+<p><strong>Anatomy of a message</strong></p>
+<ol style="list-style-type: decimal">
+<li>Usually the first word is “Error”, but sometimes it can be
+“Warning”. Code that produces errors won’t run. Code that produces
+warnings will run but is signifying that you should be extra careful
+about the output because it might not be doing what you think it
+is.</li>
+<li>Immediately following is the exact code that is producing the
+error/warning. This tells you where to start looking.</li>
+<li>after the <code>:</code> gives the details about what the
+error/warning actually is.</li>
+</ol>
+<pre class="r"><code>my_var
+#&gt; Error in eval(expr, envir, enclos): object &#39;my_var&#39; not found</code></pre>
+<p>Caused by trying to access a variable that hasn’t been defined
+yet.</p>
+<pre class="r"><code>mean[2]
+#&gt; Error in mean[2]: object of type &#39;closure&#39; is not subsettable</code></pre>
+<p>Caused by using the subsetting brackets <code>[]</code> instead of
+<code>()</code> which are used for a function.</p>
+<pre class="r"><code>a &lt;- c(one = 1,two = 2, three = 3)
+a$one
+#&gt; Error in a$one: $ operator is invalid for atomic vectors</code></pre>
+<p>You can’t use <code>$</code> on an atomic vector, it’s used on
+structures such as data.frames or lists.</p>
+<pre class="r"><code>a[[20]]
+#&gt; Error in a[[20]]: subscript out of bounds</code></pre>
+<p>Caused by trying to access an element at an index that doesn’t
+exist.</p>
+<pre class="r"><code>read.csv(&quot;myfile.csv&quot;)
+#&gt; Warning in file(file, &quot;rt&quot;): cannot open file &#39;myfile.csv&#39;: No such file or
+#&gt; directory
+#&gt; Error in file(file, &quot;rt&quot;): cannot open the connection</code></pre>
+<p>Caused by providing a file name that R cannot find in the working
+directory.</p>
+<pre class="r"><code>ggplot()
+#&gt; Error in ggplot(): could not find function &quot;ggplot&quot;</code></pre>
+<p>Caused by not having a <code>ggplot</code> function either user
+defined in the environment or not loaded a library that contains it
+(<code>ggplot2</code> or <code>tidyverse</code>).</p>
+<pre class="r"><code>notapackage::notafunction()
+#&gt; Error in loadNamespace(x): there is no package called &#39;notapackage&#39;</code></pre>
+<p>Caused by trying to call a function from a package that doesn’t exist
+is not be installed on the library path.</p>
+<pre class="r"><code>if(NA){
+  print(&quot;was NA&quot;)
+}
+#&gt; Error in if (NA) {: missing value where TRUE/FALSE needed</code></pre>
+<p><code>if</code> requires the result to be TRUE or FALSE,
+<code>NA</code> isn’t a TRUE or FALSE.</p>
+<pre class="r"><code>if(c(3 &gt; c(1,2,3))){
+  print(&quot;less than three&quot;)
+}
+#&gt; Error in if (c(3 &gt; c(1, 2, 3))) {: the condition has length &gt; 1
+
+if(c(1,2,3) &gt; 3){
+  print(&quot;less than one&quot;)
+}
+#&gt; Error in if (c(1, 2, 3) &gt; 3) {: the condition has length &gt; 1</code></pre>
+<p><code>if</code> requires a single TRUE or FALSE result, these
+statements create multiple. In older versions of R this produced a
+warning and not an error.</p>
+<pre class="r"><code>mean(c(&quot;1&quot;, &quot;2&quot;))
+#&gt; Warning in mean.default(c(&quot;1&quot;, &quot;2&quot;)): argument is not numeric or logical:
+#&gt; returning NA</code></pre>
+<p>Caused by the a data type that doesn’t coerce into a numeric
+automatically.</p>
+<p><br />
+</p>
+</div>
+</div>
+<div id="adjusting" class="section level3">
+<h3>Adjusting</h3>
+<p>In the process of developing, it’s also important to take
+opportunities to adjust how things are being done. Working code is
+better than no code, but you create more code it’s also a good idea to
+every so often look for opportunities to make things better - efficiency
+or maintenance wise.</p>
+<p>Code replication is a good place to start - if you’ve found yourself
+copy and pasting the same code over in the same project, consider making
+it into a function. This then gives you a single place that needs to be
+changed. If you find yourself copy and pasting your functions across
+projects, consider creating your own package.</p>
+<p><br />
+</p>
+<div id="rmarkdown-driven-dev" class="section level4">
+<h4>RMarkdown driven dev</h4>
+<p>Emily Riederer has a great blog post about <a
+href="https://emilyriederer.netlify.app/post/rmarkdown-driven-development/">RMarkdown
+driven development</a> which describes a process of development using
+RMarkdown documents, where first you get things to a working situation,
+then go through rounds of tidying your document bringing like-to-like
+with your code so that code blocks contain similar processes. As the
+tidying is performed, it provides an opportunity to also reduce
+duplication of code and increase the maintainability by converting
+processes into functions.</p>
+<p><br />
+</p>
+</div>
+<div id="packages" class="section level4">
+<h4>Packages</h4>
+<p>If you find yourself copy and pasting function between documents, it
+might be time to start creating your own package, that way you reduce
+the number of individual places your function is defined and this makes
+it easier in the future to maintain. Packages also bring in an extra
+level of utility in that you can improve documentation and implement
+automated testing so that you know when changes break functionality.</p>
+<p>If you want to look further into how to create packages, check out
+the <a href="https://r-pkgs.org/index.html">R Packages online book</a>
+and you can use <code>usethis::create_package()</code> to create a new
+package from a template.</p>
+<p><br />
+</p>
+</div>
+</div>
+</div>
+<div id="automating" class="section level2">
+<h2>Automating</h2>
+<p>As you go about developing, there are two main things you will find
+yourself doing over and over again - trying to remember what you have
+changed, and making sure that any changes haven’t broken anything. These
+processes can be quite time intensive so it’s quite useful to try and
+automate the pieces that you can.</p>
+<p><br />
+</p>
+<div id="automatic-tests" class="section level3">
+<h3>Automated testing</h3>
+<p>As you code and manually test, it can be beneficial to formalise the
+manual tests into an automated solution so that you can be more
+efficient and also ensure that you know when you ‘break things’ with
+future changes. This is particularly useful when you fix bugs in your
+code, create a test that replicates the condition that caused the
+bug.</p>
+<p>In R, one system uses the package <code>testthat</code> which
+provides a framework to create these formal tests which will evaluate a
+piece of code against the known expected output and tell you if they
+don’t match.</p>
+<pre class="r"><code>
+# expect a mean of 2
+testthat::expect_equal(mean(c(1,2,3)), 2)</code></pre>
+<p><code>testthat</code> operates by setting up expectations and testing
+if they hold true. If they are true the expectation function is silent,
+if thy aren’t it will tell you when run. This lets you formalise tests
+that you would be running manually and as you make adjustments to your
+code you can rerun these tests to check things are still working.</p>
+<p><br />
+</p>
+</div>
+<div id="auto-vc" class="section level3">
+<h3>Automating differences</h3>
+<p>Version control software is slightly different from what you might
+have experienced with something like ‘track changes’ in Microsoft Word
+which tracks all changes live.</p>
+<p>In the case of <code>git</code>, once you have everything set up and
+configured there is a (simplified) mini-workflow:</p>
+<ol style="list-style-type: decimal">
+<li>Tell <code>git</code> you want it to track the changes on a
+file</li>
+<li>Make some changes</li>
+<li>Tell <code>git</code> you want to include these changes in its
+tracking</li>
+<li>Tell <code>git</code> to ‘snapshot’ your changes and include a
+message about them</li>
+<li>go back to step 2.</li>
+</ol>
+<p>Why would you do this workflow? For your future self. Every snapshot
+you take with <code>git</code> gives you a point in time that you can
+roll back to if you wish - from a reproducibility point of view this
+lets you run <em>any</em> version of your code at a snapshot.
+<code>git</code> can also let you see exactly what changes there were
+between snapshots which can be extremely helpful for debugging</p>
+<p><code>git</code> is a fairly complex piece of software and provides
+more functionality than this, but for starting out this workflow covers
+the main need and use case.</p>
+<p><br />
+</p>
+</div>
+</div>
+<div id="finalise" class="section level2">
+<h2>Finalise</h2>
+<p>Congratulations! You’ve made it to the end-stage of your project
+where you’re ready to wrap things up and share your project with others.
+What you do at this stage entirely depends on what output your project
+was for. Perhaps it’s sending your entire project directory to your
+lecturer or supervisor. Or this could involve uploading your version
+controlled code to an online code repository such as <a
+href="https://github.com">https://github.com</a> and publishing the url
+in your paper or other output.</p>
+<p>Regardless, embrace the completion. Then continue on to your next
+project, bringing with you the skills you learnt on this one.</p>
+<p><br />
+</p>
+</div>
+<div id="appendix" class="section level2">
+<h2>Appendix</h2>
+<p>An example workflow set up</p>
+<pre class="r"><code># Create and open a new project
+usethis::create_project(path = &quot;~/myproject&quot;)
+
+# Initialise version control
+usethis::use_git()
+
+# Create the project structure
+dir.create(&quot;data&quot;)
+dir.create(&quot;scripts&quot;)
+dir.create(&quot;output&quot;)
+dir.create(&quot;docs&quot;)
+
+# Tell git to ignore the data directory by adding line:
+# data/
+usethis::edit_git_ignore()
+
+
+# Add a README
+usethis::use_readme_md()
+
+# Add MIT License
+usethis::use_mit_license(copyright_holder = &quot;Firstname Lastname&quot;)</code></pre>
+</div>
+
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiV29ya2Zsb3dzIgpkYXRlOiAiU2VtZXN0ZXIgMSwgMjAyMiIKb3V0cHV0OgogIGh0bWxfZG9jdW1lbnQ6CiAgICB0b2M6IHRydWUKICAgIHRvY19mbG9hdDogdHJ1ZQogICAgdG9jX2RlcHRoOiAzCiAgICBjb2RlX2Rvd25sb2FkOiB0cnVlCiAgICBjb2RlX2ZvbGRpbmc6IHNob3cKLS0tCiAgCmBgYHtyIHNldHVwLCBpbmNsdWRlPUZBTFNFfQpsaWJyYXJ5KGtuaXRyKQoKa25pdHI6Om9wdHNfY2h1bmskc2V0KAogIGNvbW1lbnQgPSAiIz4iLAogIGZpZy5wYXRoID0gImZpZ3VyZXMvMDkvIiwgIyB1c2Ugb25seSBmb3Igc2luZ2xlIFJtZCBmaWxlcwogIGNvbGxhcHNlID0gVFJVRSwKICBlY2hvID0gVFJVRQopCmBgYAoKPiAjIyMjIEFzc29jaWF0ZWQgTWF0ZXJpYWwKPgo+IFpvb20gTm90ZXM6IFtab29tIE5vdGVzIDA5IC0gV29ya2Zsb3dzXSh6b29tX25vdGVzXzA5Lmh0bWwpCgoKCgoKIyMgSW50cm9kdWN0aW9uCgpJbiB0aGlzIG1vZHVsZSB3ZSdyZSBnb2luZyB0byBjb3ZlciBzb21lIHdheXMgdG8gaW1wcm92ZSB5b3VyIHdvcmtmbG93IGFzIHlvdSB1c2UgUi4gQXMgeW91IGRldmVsb3AgeW91ciB1bmRlcnN0YW5kaW5nIG9mIFIgYW5kIHByb2NlZWQgdG8gZG8gZmFuY2llciB0aGluZ3MsIHlvdSdsbCB3YW50IHRvIHN0YXJ0IGJyaW5naW5nIGluIGV4dHJhIGZlYXR1cmVzIHRvIG1ha2UgeW91ciBsaWZlIGVhc2llci4gV2hlbiB3ZSB0aGluayBvZiBhIHdvcmtmbG93IHRoZXJlIGFyZSB0aHJlZSBtYWluIHBoYXNlcyB3ZSB1bmRlcnRha2UuIEF0IHRoZSB2ZXJ5IGJlZ2lubmluZyB3ZSdyZSBzZXR0aW5nIG91cnNlbHZlcyB1cCwgZXN0YWJsaXNoaW5nIGhvdyB0aGluZ3Mgd2lsbCBiZSBvcmdhbmlzZWQsIGFuZCBob3cgd2UgaW50ZW5kIHRvIHdvcmsuIFNlY29uZCwgd2UgZG8gdGhlIHdvcmsgLSB3aGljaCBpbnZvbHZlcyB0ZXN0aW5nIGFuZCBhZGp1c3RpbmcgdGhlIGVzdGFibGlzaGVkIHN5c3RlbXMsIGFuZCBsYXN0bHksIHdlIHdyYXAgdGhpbmdzIHVwLgoKXAoKIyMgR2V0dGluZyBvcmdhbmlzZWQKCkluIHRoZSBmaXJzdCBtb2R1bGUgd2UgZGlzY3Vzc2VkIGNyZWF0aW5nIGEgc3RydWN0dXJlIGZvciB5b3VyIHdvcmsgaW5zaWRlIGFuIFJTdHVkaW8gcHJvamVjdC4gRm9yIGJvdGggYW5hbHlzaXMgYW5kIHByb2dyYW1taW5nIHByb2plY3RzIGl0IGlzIHVzZWZ1bCB0byBoYXZlIGEgcHJlLWVzdGFibGlzaGVkICdnby10bycgdGVtcGxhdGUgc3RydWN0dXJlIHRvIGtlZXAgdGhpbmdzIG9yZ2FuaXNlZC4KCkFuIG92ZXJhcmNoaW5nIHByaW5jaXBsZSBpcyAia2VlcCBzaW1pbGFyIHRoaW5ncyB0b2dldGhlciIuIEZvciBhbiBhbmFseXNpcyBwcm9qZWN0LCB0aGlzIGNhbiBtZWFuIHRoZSBzdHJ1Y3R1cmUgd2UgZmlyc3QgY292ZXJlZCB3aGVuIHNldHRpbmcgdXAgYW4gUlN0dWRpbyBQcm9qZWN0OgoKYGBgCk15X1Byb2plY3QvCiAgfC0gZGF0YS8KICB8LSBkb2NzLwogIHwtIG91dHB1dC8KICBcLSBzY3JpcHRzLwpgYGAKCkJleW9uZCB0aGUgc3RydWN0dXJlIG9mIHdoZXJlIHdlIHB1dCB0aGluZ3MuIFdlIGFsc28gd2FudCB0byBlc3RhYmxpc2ggdGhlIHRoZSBwcmluY2lwbGVzIG9mIGhvdyB0aGUgcHJvamVjdCB3aWxsIG9wZXJhdGUuIFR3byBpbXBvcnRhbnQgZmlsZXMgaW4gdGhpcyByZWdhcmQgYXJlIHRoZSBSRUFETUUgYW5kIHRoZSBMSUNFTlNFLiBUaGUgUkVBRE1FIHdpbGwgdGVsbCB5b3Vyc2VsZiBhbmQgb3RoZXJzIGltcG9ydGFudCBkZXRhaWxzIGFib3V0IHRoZSBwcm9qZWN0IHN1Y2ggYXMgd2hlcmUgdGhlIHNvdXJjZSBkYXRhIGNhbWUgZnJvbSwgb3IgaG93IHRvIHJ1biB0aGUgY29kZSBpbiB0aGUgcHJvamVjdCAoZS5nLiBvcmRlciBvZiBzY3JpcHRzKS4gU2Vjb25kbHkgYSBMSUNFTlNFIC0gdGhpcyB3aWxsIGJlY29tZSBpbXBvcnRhbnQgbGF0ZXIgb24gd2hlbiBjb2RlIHlvdSBoYXZlIHdyaXR0ZW4gbWF5IGJlIHJlbGVhc2VkIGZvciBvdGhlcnMgdG8gc2VlIChlLmcuIGFzIHBhcnQgb2YgYSByZXNlYXJjaCBwYXBlcikgYXMgaXQgd2lsbCBzZXQgb3V0IHRoZSBydWxlcyB1bmRlciB3aGljaCBwZW9wbGUgbWF5IHVzZSB5b3VyIGNvZGUuCgpcCgojIyMgTGljZW5zaW5nCgpXaGVuIHdlJ3JlIGRlYWxpbmcgd2l0aCByZXNlYXJjaCwgYnkgYW5kIGxhcmdlIHdlJ3JlIG9wZXJhdGluZyBpbiBhbiAib3BlbiBzb3VyY2UiIG1hbm5lciAtIGkuZS4gdGhlIGNvZGUgdGhhdCBpcyB1c2VkIHRvIHBlcmZvcm0gdGhlIHJlc2VhcmNoIGlzIHNoYXJlZCBhbG9uZ3NpZGUgdGhlIHJlc3VsdHMgc28gdGhhdCBwZW9wbGUgY2FuIHZpZXcgaXQuIEp1c3QgYmVjYXVzZSB0aGUgY29kZSBpcyBhdmFpbGFibGUgZG9lc24ndCBtZWFuIHRoYXQgcGVvcGxlIGdldCB0byBkbyB3aGF0IHRoZXkgbGlrZSB3aXRoIHlvdXIgY29kZSB0aG91Z2guIAoKSXQncyBhbHdheXMgYSBnb29kIHByYWN0aWNlIHRvIGFkZCBhIGxpY2Vuc2UgdG8gZ28gYWxvbmcgd2l0aCB5b3VyIGNvZGUuIEEgbGljZW5zZSBpcyBhIGRvY3VtZW50IHRoYXQgbGV0cyBwZW9wbGUgd2hvIGNvbWUgYWNyb3NzIHRoZSBjb2RlIHdoYXQgdGhleSBhbGxvd2VkIHRvIGRvIHdpdGggaXQsIGFuZCB3aGF0IHRoZXkncmUgbm90LiBUaGVyZSBhcmUgbWFueSBvcGVuIHNvdXJjZSBsaWNlbnNlcyBhdmFpbGFibGUgYW5kIHRoZXkgdmFyeSBpbiB3aGF0IGJlaGF2aW91cnMgdGhleSBwZXJtaXQgb3IgcmVzdHJpY3QuIFdoZW4gY2hvb3NpbmcgYW4gb3BlbiBzb3VyY2UgbGljZW5jZSB0aGVyZSBhcmUgMyBtYWluIHF1ZXN0aW9ucyB5b3UgbmVlZCB0byBhbnN3ZXI6CgoxLiBEbyB5b3UgY2FyZSBhYm91dCBob3cgYW55IG1vZGlmaWNhdGlvbnMgdGhhdCBwZW9wbGUgbWFrZSB0byB0aGUgY29kZSBhcmUgZGlzdHJpYnV0ZWQ/CjIuIERvIHlvdSBvciB5b3VyIGluc3RpdHV0aW9uIG93biBhbnkgcmVsYXRlZCBzb2Z0d2FyZSBwYXRlbnRzPwozLiBEbyB5b3UgY2FyZSBhYm91dCB0aGUgd2F5IHlvdXIgbmFtZSBpcyBvciBpc24ndCBtZW50aW9uZWQgd2hlbiBzb21lb25lIG1ha2VzIHVzZSBvZiB5b3VyIGNvZGU/CgpBbiBleHRyZW1lbHkgY29tbW9uIGxpY2Vuc2UgaW4gcmVzZWFyY2ggY29kZS9zb2Z0d2FyZSBpcyB0aGUgTUlUIGxpY2Vuc2Ugd2hpY2ggaXMgdGhlIHNpbXBsZXN0IGFuZCBtb3N0IHBlcm1pc3NpdmUsIGVzc2VudGlhbGx5IHNheXMgdGhlIGNvZGUgaXMgImFzIGlzIiB3aXRob3V0IGFueSB3YXJyYW50aWVzLCBhbmQgbGV0cyBwZW9wbGUgdXNlLCBjb3B5LCBtb2RpZnksIGFuZCBkaXN0cmlidXRlIHlvdXIgY29kZSBzbyBsb25nIGFzIHRoZSBjb3B5cmlnaHQgbm90aWNlIGdvZXMgYWxvbmcgd2l0aCBpdCAoaS5lLiBmb3IgYXR0cmlidXRpb24gcHVycG9zZXMpLiBGb3IgaGVscCBzZWxlY3RpbmcgYW4gYXBwcm9wcmlhdGUgbGljZW5zZSBoYXZlIGEgbG9vayBhdCBbaHR0cHM6Ly9jaG9vc2VhbGljZW5zZS5jb21dKGh0dHBzOi8vY2hvb3NlYWxpY2Vuc2UuY29tKS4KClwKCiMjIyBUaGUgYHVzZXRoaXNgIFBhY2thZ2UKClRoZSBgdXNldGhpc2AgcGFja2FnZSBpcyBkZXNpZ25lZCB0byBhc3Npc3QgaW4gdGhlIGNyZWF0aW9uIG9mIG5ldyBwYWNrYWdlcyBhbmQgc2V0dGluZyB1cCBvZiBuZXcgcHJvamVjdHMuIEl0IGlzIGlzIGFuIGV4dHJlbWVseSB1c2VmdWwgcGFja2FnZSBmb3Igc2V2ZXJhbCAid29ya2Zsb3ciIHRhc2tzLiBJdCBwcm92aWRlcyBmdW5jdGlvbnMgZm9yIG1hbnkgY29tbW9uIHdvcmtmbG93IHRhc2tzIHN1Y2ggYXMgY3JlYXRpbmcgbmV3IHByb2plY3RzLCBhZGRpbmcgUkVBRE1FIGZpbGVzLCBvciBvcGVuaW5nIFIgZmlsZXMuIAoKYGBge3IsIGV2YWwgPSBGQUxTRX0KIyBDcmVhdGUgYW5kIG9wZW4gYSBuZXcgcGFja2FnZQp1c2V0aGlzOjpjcmVhdGVfcHJvamVjdChwYXRoID0gInBhdGgvdG8vbmV3L3Byb2plY3QiKQoKIyBDcmVhdGUgYSBtYXJrZG93biBSRUFETUUKdXNldGhpczo6dXNlX3JlYWRtZV9tZCgpCgojIENyZWF0ZSBhbiBSTWFya2Rvd24gUkVBRE1FCnVzZXRoaXM6OnVzZV9yZWFkbWVfcm1kKCkKCiMgQ3JlYXRlIGEgbmV3IFIgc2NyaXB0IGluIHlvdXIgcHJvamVjdCBpbiBkaXJlY3RvcnkgUi8KdXNldGhpczo6dXNlX3IobmFtZSA9ICJteWZpbGUuUiIpCgoKYGBgCgpPbiB0b3Agb2YgdGhlc2UsIHRoZXJlIGFyZSBtYW55IG90aGVyIGhlbHBlciBmdW5jdGlvbnMsIHN1Y2ggYXMgZm9yIGNyZWF0aW5nIHZhcmlvdXMgbGljZW5zZXMsIGVkaXRpbmcgY29uZmlndXJhdGlvbnMsIGludGVyYWN0aW5nIHdpdGggdmVyc2lvbiBjb250cm9sIHNvZnR3YXJlLCBvciBzZXR0aW5nIHVwIGF1dG9tYXRpYyB0ZXN0aW5nLiBBbGwgb2Ygd2hpY2ggd2UnbGwgdG91Y2ggb24gaW4gdGhpcyBtb2R1bGUuCgpPbmNlIHlvdSBoYXZlIGNob3NlbiBhbiBhcHByb3ByaWF0ZSBsaWNlbnNlLCBgdXNldGhpc2AgbGlrZWx5IGhhcyBhIHRlbXBsYXRlIHJlYWR5IHRvIGdvLiBlLmcuIGB1c2V0aGlzOjp1c2VfbWl0X2xpY2Vuc2UoKWAuCgpcCgojIyMgQ29uZmlndXJhdGlvbgoKQXMgcGFydCBvZiB0aGUgc2V0IHVwIHN0YWdlLCB3ZSdyZSBhbHNvIHdhbnRpbmcgdG8gbWFrZSB0aGluZ3MgZWFzaWVyIG9uIG91cnNlbHZlcyB0byB0aGF0IHdlIGNhbiBiZSBtb3JlIHByb2R1Y3RpdmUgZHVyaW5nIHRoZSAiZG8gc3R1ZmYiIHN0YWdlLgoKVGhlcmUgaXMgYSBoaWRkZW4gZmlsZSBjYWxsZWQgLlJwcm9maWxlIHdoaWNoIGlzIGxvYWRlZCBhcyBSIGxhdW5jaGVzIGFuZCBpcyBhIHBsYWNlIHdoZXJlIHlvdSBjYW4gcGxhY2UgY3VzdG9taXNhdGlvbnMgb2Ygb3B0aW9ucyB0byBtYWtlIHlvdXIgUiBsaWZlIGVhc2llci4gRm9yIGluc3RhbmNlIEkgaGF2ZSBtaW5lIHNldCB0byBhdXRvbWF0aWNhbGx5IGxvYWQgd29ya2Zsb3cgaGVscGVyIHBhY2thZ2VzIHN1Y2ggYXMgYHVzZXRoaXNgIGB0ZXN0dGhhdGAgYW5kIGBkZXZ0b29sc2AuIEFuZCBzZXQgYSBmZXcgb3B0aW9ucyB0byBtYWtlIFIgcHJvZHVjZSBtb3JlIHdhcm5pbmdzIHNvIHRoYXQgaXQgaGVscHMgbWUga25vdyB3aGVuIHNvbWV0aGluZyBtaWdodCBjYXVzZSBhbiBpc3N1ZS4gSXQncyBhbHNvIGEgZ29vZCBwbGFjZSB0byBzZXQgc29tZSBkZWZhdWx0cyBzdWNoIGFzIHlvdXIgZmF2b3VyaXRlIENSQU4gbWlycm9yIHNvIHRoYXQgUiBkb2Vzbid0IG5lZWQgdG8gYXNrIHlvdSB3aGVuIHlvdSBnbyB0byBpbnN0YWxsIHBhY2thZ2VzLgoKYGBge3IsIGV2YWw9RkFMU0V9CnVzZXRoaXM6OmVkaXRfcl9wcm9maWxlKCkKYGBgCgoKYGBge3IsIGV2YWw9RkFMU0V9CiAjIGxvYWQgd29ya2Zsb3cgaGVscGVyIHBhY2thZ2VzIGlmIGluIGludGVyYWN0aXZlIHNlc3Npb24KaWYgKGludGVyYWN0aXZlKCkpIHsKICBzdXBwcmVzc01lc3NhZ2VzKHJlcXVpcmUoZGV2dG9vbHMpKQogIHN1cHByZXNzTWVzc2FnZXMocmVxdWlyZSh1c2V0aGlzKSkKICBzdXBwcmVzc01lc3NhZ2VzKHJlcXVpcmUodGVzdHRoYXQpKQp9CgoKIyBzZXQgQ1JBTgpvcHRpb25zKHJlcG9zID0gYyhDUkFOID0gImh0dHBzOi8vY2xvdWQuci1wcm9qZWN0Lm9yZy8iKSkKCgojIHdhcm4gb24gcGFydGlhbCBtYXRjaGVzCm9wdGlvbnMoCiAgd2FyblBhcnRpYWxNYXRjaEFyZ3MgPSBUUlVFLAogIHdhcm5QYXJ0aWFsTWF0Y2hEb2xsYXIgPSBUUlVFLAogIHdhcm5QYXJ0aWFsTWF0Y2hBdHRyID0gVFJVRQopCgojIGZhbmN5IHF1b3RlcyBhcmUgYW5ub3lpbmcgYW5kIGxlYWQgdG8KIyAnY29weSArIHBhc3RlJyBidWdzIC8gZnJ1c3RyYXRpb25zCm9wdGlvbnModXNlRmFuY3lRdW90ZXMgPSBGQUxTRSkKYGBgCgpEb24ndCBwdXQgYW5hbHlzaXMgbW9kaWZ5aW5nIG9wdGlvbnMgaW50byB5b3VyIC5ScHJvZmlsZSBlLmcuIGF1dG9tYXRpYyBsb2FkaW5nIG9mIGB0aWR5dmVyc2VgLiBJdCB3aWxsIG1ha2UgdGhlIGNvZGUgeW91IHdyaXRlIGxlc3MgcmVwcm9kdWNpYmxlIGJlY2F1c2UgaXQgd2lsbCBzdGFydCBkZXBlbmRpbmcgb24gdGhlc2UgaGlkZGVuIHNldHRpbmdzLCBhbmQgaXQgY2FuIG1ha2UgZGVidWdnaW5nIGhhcmRlci4KClwKCiMjIyMgS2V5Ym9hcmQgc2hvcnRjdXRzCgpUaGUga2V5Ym9hcmQgc2hvcnRjdXQgdG8gcnVsZSB0aGVtIGFsbDogPGtiZD5BbHQ8L2tiZD4gKyA8a2JkPlNoaWZ0PC9rYmQ+ICsgPGtiZD5LPC9rYmQ+CgpPdGhlciB1c2VmdWwgc2hvcnRjdXRzCgpLZXlzIHwgcHJvZHVjZXMKLS0tfC0tLQo8a2JkPkN0cmw8L2tiZD4gKyA8a2JkPlNoaWZ0PC9rYmQ+ICsgPGtiZD5NPC9rYmQ+IHwgJT4lCjxrYmQ+QWx0PC9rYmQ+ICsgPGtiZD4tPC9rYmQ+IHwgPC0KPGtiZD5DdHJsPC9rYmQ+ICsgPGtiZD5TaGlmdDwva2JkPiArIDxrYmQ+Szwva2JkPiB8IGtuaXRzIFJtZAo8a2JkPkN0cmw8L2tiZD4gKyA8a2JkPlNoaWZ0PC9rYmQ+ICsgPGtiZD5GMTA8L2tiZD4gfCBSZXN0YXJ0IFIKPGtiZD5DdHJsPC9rYmQ+ICsgPGtiZD5BbHQ8L2tiZD4gKyA8a2JkPkk8L2tiZD4gfCBJbnNlcnQgY29kZSBjaHVuawo8a2JkPkN0cmw8L2tiZD4gKyA8a2JkPlNoaWZ0PC9rYmQ+ICsgPGtiZD5TPC9rYmQ+IHwgU291cmNlIGFjdGl2ZSBmaWxlCjxrYmQ+Q3RybDwva2JkPiArIDxrYmQ+Ljwva2JkPiB8IEdvIHRvIGZpbGUvZnVuY3Rpb24KCk1ha2UgeW91ciBvd24uLi4KClRvb2xzIC0+IE1vZGlmeSBLZXlib2FyZCBTaG9ydGN1dHMKClwKCiMjIyBTY3JpcHRzCgpFc3RhYmxpc2ggdGhlIHN0cnVjdHVyZSBvZiBob3cgeW91IHdhbnQgdG8gY2FwdHVyZSB5b3VyIGNvZGUuIEFyZSB5b3UgZ29pbmcgdG8gZG8gZXZlcnl0aGluZyBpbiBSc2NyaXB0cz8gUk1hcmtkb3duPyBBIGNvbWJpbmF0aW9uPyBDcmVhdGUgdGhlIGFwcHJvcHJpYXRlIHNjcmlwdCBmaWxlcy4gSXQgY2FuIGJlIHVzZWZ1bCB0byBoYXZlIGEgc2VwYXJhdGUgUnNjcmlwdCB3aGVyZSB5b3Ugc3RvcmUgZnVuY3Rpb25zIHRoYXQgeW91IGNyZWF0ZSB3aGljaCBjYW4gYmUgJ3NvdXJjZWQnIGludG8geW91ciBvdGhlciBzY3JpcHRzIHRocm91Z2ggYHNvdXJjZSgic2NyaXB0bmFtZS5SKWAuCgpcCgojIyMgSW5pdGlhbGlzZSBWZXJzaW9uIENvbnRyb2wKClRoaXMgc2VjdGlvbiBpcyBhIHZlcnkgYnJpZWYgb3ZlcnZpZXcgb2YgdmVyc2lvbiBjb250cm9sLCBzcGVjaWZpY2FsbHkgdG8gc2F5IHRoYXQgeW91IHNob3VsZCBzdGFydCB0byBidWlsZCBpdCBpbnRvIHlvdXIgd29ya2Zsb3cgYW5kIHdlJ2xsIHRvdWNoIG9uIGl0IGFnYWluIGluIHRoZSBbQXV0b21hdGluZyBWZXJzaW9uIENvbnRyb2xdKCNhdXRvLXZjKSBzZWN0aW9uIGJ1dCB1bHRpbWF0ZWx5IHRoZSBkZXRhaWxzIGFyZSBvdXRzaWRlIG9mIHRoZSBzY29wZSBvZiB0aGlzIGNvdXJzZS4KCllvdSBhcmUgbGlrZWx5IGZhbWlsaWFyIHdpdGggdmVyc2lvbmluZywgdXN1YWxseSBwZW9wbGUgdHJ5IHRvIGFjaGlldmUgdGhpcyB0aHJvdWdoIGZpbGUgbmFtZXMuIFRoaXMgaXMgb2sgdG8gYSBwb2ludCBidXQgY2FuIGN1bWJlcnNvbWUgYW5kIGRvZXNuJ3Qgc2NhbGUgd2VsbCBhY3Jvc3MgbXVsdGlwbGUgZmlsZXMgbm9yIGRvZXMgaXQgZ2l2ZSB5b3UgYW4gZWFzeSB3YXkgdG8gc2VlIGV4YWN0bHkgd2hhdCB0aGUgZGlmZmVyZW5jZXMgd2VyZSBiZXR3ZWVuIHRob3NlIGZpbGVzLiBUaGlzIGlzIHdoZXJlIHVzaW5nIHZlcnNpb24gY29udHJvbCBzb2Z0d2FyZSBzdWNoIGFzIGBnaXRgIGNhbiBtYWtlIHlvdXIgbGlmZSBlYXNpZXIuCgpJdCdzIGFsd2F5cyBhIGdvb2QgaWRlYSB0byBnZXQgdGhpcyBzZXQgdXAgYmVmb3JlIHlvdSBnZXQgdW5kZXIgd2F5IGRvaW5nIGFjdHVhbCB3b3JrIHNvIHRoYXQgeW91IGNhbiB0cmFjayB5b3UgY2hhbmdlcyBmcm9tIHRoZSB0aGUgdmVyeSBzdGFydC4gSW4gdGhlIGNhc2Ugb2YgYGdpdGAsIGZvbGxvd2luZyBbSGFwcHkgR2l0IHdpdGggUl0oaHR0cHM6Ly9oYXBweWdpdHdpdGhyLmNvbSkgZm9yIGluc3RhbGxpbmcgYW5kIGNvbmZpZ3VyaW5nIGBnaXRgIGFuZCBzdWJzZXF1ZW50bHkgdGVsbGluZyBSU3R1ZGlvIGFib3V0IHlvdXIgaW5zdGFsbGF0aW9uIGlzIGEgZ29vZCBwbGFjZSB0byBzdGFydC4KClZlcnNpb24gY29udHJvbCBpcyB1c2VkIGZvciBrZWVwaW5nIHRyYWNrIG9mIHRoZSBjaGFuZ2VzIG1hZGUgdG8geW91ciBzY3JpcHRzLCB3ZSBkb24ndCB1c2UgaXQgdG8gbWFuYWdlIG91ciBkYXRhLgoKXAoKIyMgVGVzdGluZyBhbmQgQWRqdXN0aW5nCgpPbmNlIHRoaW5ncyBhcmUgc2V0IHVwLCB3ZSdyZSByZWFkeSB0byBhY3R1YWxseSBzdGFydCBkb2luZyB0aGUgd29yayB3ZSB3YW50IHRvIGRvLiBBcyB3ZSBkZXZlbG9wIG91ciBjb2RlIGhvd2V2ZXIsIHdlIGNvbnN0YW50bHkgY3ljbGUgdGhyb3VnaCB0ZXN0aW5nIGFuZCBhZGp1c3RpbmcuIEVhY2ggcGllY2Ugb2YgY29kZSB3ZSB3cml0ZSBuZWVkcyB0byBiZSBjaGVja2VkIHRoYXQgaXMgaXMgd29ya2luZyBjb3JyZWN0bHkuIE9mdGVuIHRoaXMgdHlwZSBvZiB0ZXN0aW5nIGlzIHBlcmZvcm1lZCBtYW51YWxseSBhcyB5b3UgZ286ICdkb2VzIHRoZSBsaW5lIG9mIGNvZGUgcnVuPycgLSBjaGVja2luZyBmb3Igc3ludGF4IGVycm9ycywgYW5kIHRoZW4gJ2RvZXMgdGhlIG91dHB1dCBsb29rIHJpZ2h0PycuIFdoZW4gdGhlIGFuc3dlciB0byB0aGVzZSBlaXRoZXIgcXVlc3Rpb24gaXMgbm8sIHdlIHRoZW4gZW50ZXIgYSBkZWJ1Z2dpbmcgbW9kZSB3aGVyZSB3ZSB0cnkgYW5kIGZpbmQgb3V0IHdoeSB0aGUgY29kZSBpc24ndCBkb2luZyB3aGF0IHdlIHRoaW5rIGl0IHNob3VsZCBiZS4gICAKClwKCiMjIyBEZWJ1Z2dpbmcKCgpFcnJvcnMgbWVzc2FnZXMgYXJlIGNvbW1vbiB3aGVuIGNvZGluZyBhbmQgYXJlIGEgd2F5IHRoZSBjb21wdXRlciBjb21tdW5pY2F0ZXMgaXQgZG9lc24ndCB1bmRlcnN0YW5kIHdoYXQgdGhlIGluc3RydWN0aW9ucyBpdCBoYXMgYmVlbiBnaXZlbiBhcmUuCkNvbW1vbiB0eXBlcyBvZiBlcnJvcnMgd2UgZW5jb3VudGVyIGFyZToKCi0gc3ludGFjdGljYWwKLSBsb2dpY2FsCi0gcnVudGltZQoKU3ludGFjdGljYWwgZXJyb3JzIGFyZSB1c3VhbGx5IHRoZSBtb3N0IHN0cmFpZ2h0IGZvcndhcmQsIHRoZSBjb21wdXRlciBzYXlzIHRoYXQgbm8gc3RyYWlnaHQgYXdheSBkdWUgdG8gaW1wcm9wZXIgc3ludGF4LiBUaGVzZSBhcmUgdXN1YWxseSB0aGUgZWFzaWVzdCB0byBmaW5kIGFuZCBjb3JyZWN0LiBMb2dpY2FsIGVycm9ycyBjb21lIGFib3V0IHRocm91Z2ggaW5jb3JyZWN0IGltcGxlbWVudGF0aW9uIG9mIGxvZ2ljLiBUaGUgY29tcHV0ZXIgd2lsbCBydW4gdGhlIGNvZGUgd2l0aG91dCBjb21wbGFpbnQgYnV0IHRoZSByZXN1bHQgaXNuJ3QgY29ycmVjdCAtIHRoZXNlIGNhbiBiZSB0cmlja3kgdG8gZmluZCBhbmQgZml4IGJlY2F1c2UgdGhleSBvZnRlbiBpbnZvbHZlIGNoZWNraW5nIGVhY2ggbG9naWNhbCBzdGF0ZW1lbnQgYW5kIHN1YnNlcXVlbnQgY29kZSBwYXRod2F5IGluIG9yZGVyIHRvIHRyYWNrIGRvd24gd2hhdCBpcyBnb2luZyB3cm9uZy4gUnVudGltZSBlcnJvcnMgYXJlIGVycm9ycyB3aGVyZSB5b3UgYXJlIHRyeWluZyB0byBtYWtlIHRoZSBjb21wdXRlciBkbyBzb21ldGhpbmcgaXQgY2FuJ3QgaW4gY2VydGFpbiBzaXR1YXRpb25zLCBzdWNoIGFzIHN0b3JpbmcgYSByZXN1bHQgaW4gYSBjZXJ0YWluIGxvY2F0aW9uLiBUaGUgY29kZSB3aWxsIHJ1biBzb21ldGltZXMgYnV0IG5vdCBvdGhlcnMgYW5kIGFnYWluIGNhbiBiZSB0cmlja3kgdG8gdHJhY2sgZG93bi4gCgpSZW1lbWJlciwgZWFjaCB0aW1lIHdlIGZpbmQgYW5kIGZpeCBhbiBlcnJvciwgd2UgbXVzdCByZXRlc3QuIFRoaXMgY2FuIGdldCBxdWl0ZSBsYWJvcmlvdXMgdG8gZG8gbWFudWFsbHkgc28gd2UgY2FuIGZpbmQgYmV0dGVyIHN5c3RlbXMgdG8gaGVscCBzdWNoIGFzIFthdXRvbWF0aWMgdGVzdGluZ10oI2F1dG9tYXRpYy10ZXN0cykgYnV0IGZpcnN0IHdlJ2xsIGNvdmVyIHNvbWUgZ2VuZXJhbCBwcmluY2lwbGVzIG9uIGhvdyB0byBnbyBhYm91dCBkZWJ1Z2dpbmcuCgoKCmBgYHtyLCBlY2hvID0gRkFMU0UsIG91dC5oZWlnaHQgPSAnNTAlJywgb3V0LndpZHRoPSc1MCUnLCBmaWcuY2FwID0gImh0dHBzOi8veGtjZC5jb20vMTczOS8iLCBmaWcuYWxpZ249J2NlbnRlcid9CmtuaXRyOjppbmNsdWRlX2dyYXBoaWNzKCJpbWFnZXMvMDktZml4aW5nX3Byb2JsZW1zLnBuZyIpCmBgYAoKXAoKIyMjIyBXaGVyZSBkbyBJIHN0YXJ0PwoKS25vd2luZyB3aGVyZSB0byBzdGFydCBkZWJ1Z2dpbmcgdGFrZXMgcHJhY3RpY2UuIHNvbWUgZ2VuZXJhbCBnb29kIGFkdmljZSBjYW4gYmUgZm91bmQgaW4gaHR0cHM6Ly9hZHYtci5oYWRsZXkubnovZGVidWdnaW5nLmh0bWwgd2l0aCBzb21lIHNwZWNpZmljIHRpcHMgYW5kIHRyaWNrcyBmb3IgUi4gVGhlIGdlbmVyYWwgcHJlbWlzZSBpcyB0aGF0IHdlIHdhbnQgdG8gdGVzdCBhbmQgY29uZmlybSBhbGwgb2Ygb3VyIGFzc3VtcHRpb25zLgoKPiBGaW5kaW5nIHlvdXIgYnVnIGlzIGEgcHJvY2VzcyBvZiBjb25maXJtaW5nIHRoZSBtYW55IHRoaW5ncyB0aGF0IHlvdSBiZWxpZXZlIGFyZSB0cnVlIOKAlCB1bnRpbCB5b3UgZmluZCBvbmUgd2hpY2ggaXMgbm90IHRydWUuCj4g4oCUTm9ybSBNYXRsb2ZmCgpTb21lIHRlY2huaXF1ZXMgZm9yIHNvbHZpbmcgZXJyb3JzIGFuZCBjb25maXJtaW5nIG91ciBhc3N1bXB0aW9ucyBjYW4gaW5jbHVkZToKCgotIHVzaW5nIHByaW50IHN0YXRlbWVudHMgdG8gY29uZmlybSB2YWx1ZXMgYXQga2V5IHN0YWdlcwotIGdvb2dsaW5nIHRoZSBlcnJvciBtZXNzYWdlCi0gcmVzdGFydCBSIGFuZCByZXJ1biB0aGUgY29kZQotIHJlYWRpbmcgdGhlIGRvY3VtZW50YXRpb24KLSB0YWxrIHRocm91Z2ggdGhlIHByb2JsZW0KCgpgYGB7ciwgZWNobyA9IEZBTFNFLCBvdXQud2lkdGggPSAnNTAlJywgb3V0LmhlaWdodCA9ICc1MCUnLCBmaWcuYWxpZ249J2NlbnRlcid9CmtuaXRyOjppbmNsdWRlX2dyYXBoaWNzKCJpbWFnZXMvMDktcnViYmVyZHVjay5qcGciKQpgYGAKCidSdWJiZXIgZHVjayBkZWJ1Z2dpbmcnIGlzIGEgdGVjaG5pcXVlIHdoaWNoIGludm9sdmVzIHRhbGtpbmcgeW91ciB3YXkgdGhyb3VnaCB3aGF0IHlvdSBhcmUgdHJ5aW5nIHRvIGFjaGlldmUgd2l0aCB5b3VyIGNvZGUgYW5kIGV4cGxhaW5pbmcgd2hhdCB5b3VyIGNvZGUgaXMgYWN0dWFsbHkgZG9pbmcgYXQgZWFjaCBzdGVwIHRvIGEgcnViYmVyIGR1Y2sgKG9yIG90aGVyIHRveSkuIE9mdGVuIGJ5IGJlaW5nIHN5c3RlbWF0aWMgYW5kIHNheWluZyBvdXQgbG91ZCB3aGF0IGlzIGhhcHBlbmluZyB0aGlzIHdpbGwgdHJpZ2dlciBhbiAiYS1oYSIgbW9tZW50IGFzIHRvIHdoYXQgaXMgY2F1c2luZyB0aGUgaXNzdWUuIFlvdSBjYW4gYWxzbyB1c2UgdGhpcyB0ZWNobmlxdWUgd2l0aCBhbm90aGVyIHBlcnNvbiBlLmcuIGNvLXdvcmtlciBpbnN0ZWFkIG9mIGEgdG95IGlmIHlvdSBwcmVmZXIuCgpcCgojIyMjIEdlbmVyYWwgcHJvY2VzcwoKTXkgZ2VuZXJhbCBwcm9jZXNzIGZvY3VzZXMgb24gdGhlIGluaXRpYWwgc291cmNlIG9mIHRoZSBlcnJvciBhbmQgdGhlbiBzdGFydHMgdG8gd29yayBiYWNrd2FyZHMgaW4gY29tbWFuZCBoaXN0b3J5LgoKMS4gRG8gSSByZWNvZ25pc2UgdGhlIG1lc3NhZ2U/CjIuIFJlLWxvb2sgYXQgdGhlIGNvbW1hbmQgSSByYW4gbG9va2luZyBmb3IKICAgIC0gdHlwb3MKICAgIC0gbWlzc2luZyBzeW50YXggKGUuZy4gYnJhY2tldHMsIHNlbWljb2xvbnMsIGV0Yy4pCiAgICAtIGNvcnJlY3QgbmFtaW5nIG9mIHRoaW5ncwozLiBJcyB0aGUgaW5wdXQgZm9yIG15IGNvbW1hbmQgd2hhdCBJIGV4cGVjdCBpdCBpcz8KNC4gRGlkIHRoZSBwcmV2aW91cyBjb21tYW5kIHJ1biBwcm9wZXJseT8KICAgIC0gaWYgbm90IGp1bXAgdG8gMS4gZm9yIHRoZSBwcmV2aW91cyBjb21tYW5kCgpcCgojIyMjIEdldHRpbmcgdG8ga25vdyBzb21lIGVycm9ycwoKUiBpcyBub3RvcmlvdXMgZm9yIGhhdmluZyBtZXNzYWdlcyB0aGF0IGFyZSBub3QgdXNlciBmcmllbmRseS4gTGV0cyBsb29rIGF0IGEgZmV3IGNvbW1vbiBSIGVycm9ycyBhbmQgd2FybmluZ3Mgc28gdGhhdCB3ZSBjYW4gYmVjb21lIG1vcmUgZmFtaWxpYXIgd2l0aCBhKSB3aGF0IHRoZXkgbG9vayBsaWtlLCBiKSBob3cgdG8gZmluZCB0aGUgdXNlZnVsIGJpdHMKCioqQW5hdG9teSBvZiBhIG1lc3NhZ2UqKgoKMS4gVXN1YWxseSB0aGUgZmlyc3Qgd29yZCBpcyAiRXJyb3IiLCBidXQgc29tZXRpbWVzIGl0IGNhbiBiZSAiV2FybmluZyIuIENvZGUgdGhhdCBwcm9kdWNlcyBlcnJvcnMgd29uJ3QgcnVuLiBDb2RlIHRoYXQgcHJvZHVjZXMgd2FybmluZ3Mgd2lsbCBydW4gYnV0IGlzIHNpZ25pZnlpbmcgdGhhdCB5b3Ugc2hvdWxkIGJlIGV4dHJhIGNhcmVmdWwgYWJvdXQgdGhlIG91dHB1dCBiZWNhdXNlIGl0IG1pZ2h0IG5vdCBiZSBkb2luZyB3aGF0IHlvdSB0aGluayBpdCBpcy4gCjIuIEltbWVkaWF0ZWx5IGZvbGxvd2luZyBpcyB0aGUgZXhhY3QgY29kZSB0aGF0IGlzIHByb2R1Y2luZyB0aGUgZXJyb3Ivd2FybmluZy4gVGhpcyB0ZWxscyB5b3Ugd2hlcmUgdG8gc3RhcnQgbG9va2luZy4KMy4gYWZ0ZXIgdGhlIGA6YCBnaXZlcyB0aGUgZGV0YWlscyBhYm91dCB3aGF0IHRoZSBlcnJvci93YXJuaW5nIGFjdHVhbGx5IGlzLiAKCmBgYHtyLCBldmFsID0gVFJVRSwgZXJyb3IgPSBUUlVFLCB3YXJuaW5nID0gVFJVRSwgcmVzdWx0cz0naGlkZSd9Cm15X3ZhcgpgYGAKCkNhdXNlZCBieSB0cnlpbmcgdG8gYWNjZXNzIGEgdmFyaWFibGUgdGhhdCBoYXNuJ3QgYmVlbiBkZWZpbmVkIHlldC4KCmBgYHtyLCBldmFsID0gVFJVRSwgZXJyb3IgPSBUUlVFLCB3YXJuaW5nID0gVFJVRSwgcmVzdWx0cz0naGlkZSd9Cm1lYW5bMl0KYGBgCgpDYXVzZWQgYnkgdXNpbmcgdGhlIHN1YnNldHRpbmcgYnJhY2tldHMgYFtdYCBpbnN0ZWFkIG9mIGAoKWAgd2hpY2ggYXJlIHVzZWQgZm9yIGEgZnVuY3Rpb24uCgpgYGB7ciwgZXZhbCA9IFRSVUUsIGVycm9yID0gVFJVRSwgd2FybmluZyA9IFRSVUUsIHJlc3VsdHM9J2hpZGUnfQphIDwtIGMob25lID0gMSx0d28gPSAyLCB0aHJlZSA9IDMpCmEkb25lCmBgYAoKWW91IGNhbid0IHVzZSBgJGAgb24gYW4gYXRvbWljIHZlY3RvciwgaXQncyB1c2VkIG9uIHN0cnVjdHVyZXMgc3VjaCBhcyBkYXRhLmZyYW1lcyBvciBsaXN0cy4KCmBgYHtyLCBldmFsID0gVFJVRSwgZXJyb3IgPSBUUlVFLCB3YXJuaW5nID0gVFJVRSwgcmVzdWx0cz0naGlkZSd9CmFbWzIwXV0KYGBgCgpDYXVzZWQgYnkgdHJ5aW5nIHRvIGFjY2VzcyBhbiBlbGVtZW50IGF0IGFuIGluZGV4IHRoYXQgZG9lc24ndCBleGlzdC4KCmBgYHtyLCBldmFsID0gVFJVRSwgZXJyb3IgPSBUUlVFLCB3YXJuaW5nID0gVFJVRSwgcmVzdWx0cz0naGlkZSd9CnJlYWQuY3N2KCJteWZpbGUuY3N2IikKYGBgCgpDYXVzZWQgYnkgcHJvdmlkaW5nIGEgZmlsZSBuYW1lIHRoYXQgUiBjYW5ub3QgZmluZCBpbiB0aGUgd29ya2luZyBkaXJlY3RvcnkuCgpgYGB7ciwgZXZhbCA9IFRSVUUsIGVycm9yID0gVFJVRSwgd2FybmluZyA9IFRSVUUsIHJlc3VsdHM9J2hpZGUnfQpnZ3Bsb3QoKQpgYGAKCkNhdXNlZCBieSBub3QgaGF2aW5nIGEgYGdncGxvdGAgZnVuY3Rpb24gZWl0aGVyIHVzZXIgZGVmaW5lZCBpbiB0aGUgZW52aXJvbm1lbnQgb3Igbm90IGxvYWRlZCBhIGxpYnJhcnkgdGhhdCBjb250YWlucyBpdCAoYGdncGxvdDJgIG9yIGB0aWR5dmVyc2VgKS4KCmBgYHtyLCBldmFsID0gVFJVRSwgZXJyb3IgPSBUUlVFLCB3YXJuaW5nID0gVFJVRSwgcmVzdWx0cz0naGlkZSd9Cm5vdGFwYWNrYWdlOjpub3RhZnVuY3Rpb24oKQpgYGAKCkNhdXNlZCBieSB0cnlpbmcgdG8gY2FsbCBhIGZ1bmN0aW9uIGZyb20gYSBwYWNrYWdlIHRoYXQgZG9lc24ndCBleGlzdCBpcyBub3QgYmUgaW5zdGFsbGVkIG9uIHRoZSBsaWJyYXJ5IHBhdGguCgpgYGB7ciwgZXZhbCA9IFRSVUUsIGVycm9yID0gVFJVRSwgd2FybmluZyA9IFRSVUUsIHJlc3VsdHM9J2hpZGUnfQppZihOQSl7CiAgcHJpbnQoIndhcyBOQSIpCn0KYGBgCgpgaWZgIHJlcXVpcmVzIHRoZSByZXN1bHQgdG8gYmUgVFJVRSBvciBGQUxTRSwgYE5BYCBpc24ndCBhIFRSVUUgb3IgRkFMU0UuCgoKYGBge3IsIGV2YWwgPSBUUlVFLCBlcnJvciA9IFRSVUUsIHdhcm5pbmcgPSBUUlVFLCByZXN1bHRzPSdoaWRlJ30KaWYoYygzID4gYygxLDIsMykpKXsKICBwcmludCgibGVzcyB0aGFuIHRocmVlIikKfQoKaWYoYygxLDIsMykgPiAzKXsKICBwcmludCgibGVzcyB0aGFuIG9uZSIpCn0KYGBgCgpgaWZgIHJlcXVpcmVzIGEgc2luZ2xlIFRSVUUgb3IgRkFMU0UgcmVzdWx0LCB0aGVzZSBzdGF0ZW1lbnRzIGNyZWF0ZSBtdWx0aXBsZS4gSW4gb2xkZXIgdmVyc2lvbnMgb2YgUiB0aGlzIHByb2R1Y2VkIGEgd2FybmluZyBhbmQgbm90IGFuIGVycm9yLgoKYGBge3IsIGV2YWwgPSBUUlVFLCBlcnJvciA9IFRSVUUsIHdhcm5pbmcgPSBUUlVFLCByZXN1bHRzPSdoaWRlJ30KbWVhbihjKCIxIiwgIjIiKSkKYGBgCgpDYXVzZWQgYnkgdGhlIGEgZGF0YSB0eXBlIHRoYXQgZG9lc24ndCBjb2VyY2UgaW50byBhIG51bWVyaWMgYXV0b21hdGljYWxseS4KClwKCiMjIyBBZGp1c3RpbmcKCkluIHRoZSBwcm9jZXNzIG9mIGRldmVsb3BpbmcsIGl0J3MgYWxzbyBpbXBvcnRhbnQgdG8gdGFrZSBvcHBvcnR1bml0aWVzIHRvIGFkanVzdCBob3cgdGhpbmdzIGFyZSBiZWluZyBkb25lLiBXb3JraW5nIGNvZGUgaXMgYmV0dGVyIHRoYW4gbm8gY29kZSwgYnV0IHlvdSBjcmVhdGUgbW9yZSBjb2RlIGl0J3MgYWxzbyBhIGdvb2QgaWRlYSB0byBldmVyeSBzbyBvZnRlbiBsb29rIGZvciBvcHBvcnR1bml0aWVzIHRvIG1ha2UgdGhpbmdzIGJldHRlciAtIGVmZmljaWVuY3kgb3IgbWFpbnRlbmFuY2Ugd2lzZS4KCkNvZGUgcmVwbGljYXRpb24gaXMgYSBnb29kIHBsYWNlIHRvIHN0YXJ0IC0gaWYgeW91J3ZlIGZvdW5kIHlvdXJzZWxmIGNvcHkgYW5kIHBhc3RpbmcgdGhlIHNhbWUgY29kZSBvdmVyIGluIHRoZSBzYW1lIHByb2plY3QsIGNvbnNpZGVyIG1ha2luZyBpdCBpbnRvIGEgZnVuY3Rpb24uIFRoaXMgdGhlbiBnaXZlcyB5b3UgYSBzaW5nbGUgcGxhY2UgdGhhdCBuZWVkcyB0byBiZSBjaGFuZ2VkLiBJZiB5b3UgZmluZCB5b3Vyc2VsZiBjb3B5IGFuZCBwYXN0aW5nIHlvdXIgZnVuY3Rpb25zIGFjcm9zcyBwcm9qZWN0cywgY29uc2lkZXIgY3JlYXRpbmcgeW91ciBvd24gcGFja2FnZS4KClwKCiMjIyMgUk1hcmtkb3duIGRyaXZlbiBkZXYKCkVtaWx5IFJpZWRlcmVyIGhhcyBhIGdyZWF0IGJsb2cgcG9zdCBhYm91dCBbUk1hcmtkb3duIGRyaXZlbiBkZXZlbG9wbWVudF0oaHR0cHM6Ly9lbWlseXJpZWRlcmVyLm5ldGxpZnkuYXBwL3Bvc3Qvcm1hcmtkb3duLWRyaXZlbi1kZXZlbG9wbWVudC8pIHdoaWNoIGRlc2NyaWJlcyBhIHByb2Nlc3Mgb2YgZGV2ZWxvcG1lbnQgdXNpbmcgUk1hcmtkb3duIGRvY3VtZW50cywgd2hlcmUgZmlyc3QgeW91IGdldCB0aGluZ3MgdG8gYSB3b3JraW5nIHNpdHVhdGlvbiwgdGhlbiBnbyB0aHJvdWdoIHJvdW5kcyBvZiB0aWR5aW5nIHlvdXIgZG9jdW1lbnQgYnJpbmdpbmcgbGlrZS10by1saWtlIHdpdGggeW91ciBjb2RlIHNvIHRoYXQgY29kZSBibG9ja3MgY29udGFpbiBzaW1pbGFyIHByb2Nlc3Nlcy4gQXMgdGhlIHRpZHlpbmcgaXMgcGVyZm9ybWVkLCBpdCBwcm92aWRlcyBhbiBvcHBvcnR1bml0eSB0byBhbHNvIHJlZHVjZSBkdXBsaWNhdGlvbiBvZiBjb2RlIGFuZCBpbmNyZWFzZSB0aGUgbWFpbnRhaW5hYmlsaXR5IGJ5IGNvbnZlcnRpbmcgcHJvY2Vzc2VzIGludG8gZnVuY3Rpb25zLiAKClwKCiMjIyMgUGFja2FnZXMKCklmIHlvdSBmaW5kIHlvdXJzZWxmIGNvcHkgYW5kIHBhc3RpbmcgZnVuY3Rpb24gYmV0d2VlbiBkb2N1bWVudHMsIGl0IG1pZ2h0IGJlIHRpbWUgdG8gc3RhcnQgY3JlYXRpbmcgeW91ciBvd24gcGFja2FnZSwgdGhhdCB3YXkgeW91IHJlZHVjZSB0aGUgbnVtYmVyIG9mIGluZGl2aWR1YWwgcGxhY2VzIHlvdXIgZnVuY3Rpb24gaXMgZGVmaW5lZCBhbmQgdGhpcyBtYWtlcyBpdCBlYXNpZXIgaW4gdGhlIGZ1dHVyZSB0byBtYWludGFpbi4gUGFja2FnZXMgYWxzbyBicmluZyBpbiBhbiBleHRyYSBsZXZlbCBvZiB1dGlsaXR5IGluIHRoYXQgeW91IGNhbiBpbXByb3ZlIGRvY3VtZW50YXRpb24gYW5kIGltcGxlbWVudCBhdXRvbWF0ZWQgdGVzdGluZyBzbyB0aGF0IHlvdSBrbm93IHdoZW4gY2hhbmdlcyBicmVhayBmdW5jdGlvbmFsaXR5LgoKSWYgeW91IHdhbnQgdG8gbG9vayBmdXJ0aGVyIGludG8gaG93IHRvIGNyZWF0ZSBwYWNrYWdlcywgY2hlY2sgb3V0IHRoZSBbUiBQYWNrYWdlcyBvbmxpbmUgYm9va10oaHR0cHM6Ly9yLXBrZ3Mub3JnL2luZGV4Lmh0bWwpIGFuZCB5b3UgY2FuIHVzZSBgdXNldGhpczo6Y3JlYXRlX3BhY2thZ2UoKWAgdG8gY3JlYXRlIGEgbmV3IHBhY2thZ2UgZnJvbSBhIHRlbXBsYXRlLgoKXAoKIyMgQXV0b21hdGluZwoKQXMgeW91IGdvIGFib3V0IGRldmVsb3BpbmcsIHRoZXJlIGFyZSB0d28gbWFpbiB0aGluZ3MgeW91IHdpbGwgZmluZCB5b3Vyc2VsZiBkb2luZyBvdmVyIGFuZCBvdmVyIGFnYWluIC0gdHJ5aW5nIHRvIHJlbWVtYmVyIHdoYXQgeW91IGhhdmUgY2hhbmdlZCwgYW5kIG1ha2luZyBzdXJlIHRoYXQgYW55IGNoYW5nZXMgaGF2ZW4ndCBicm9rZW4gYW55dGhpbmcuIFRoZXNlIHByb2Nlc3NlcyBjYW4gYmUgcXVpdGUgdGltZSBpbnRlbnNpdmUgc28gaXQncyBxdWl0ZSB1c2VmdWwgdG8gdHJ5IGFuZCBhdXRvbWF0ZSB0aGUgcGllY2VzIHRoYXQgeW91IGNhbi4KClwKCiMjIyBBdXRvbWF0ZWQgdGVzdGluZyB7I2F1dG9tYXRpYy10ZXN0c30KCkFzIHlvdSBjb2RlIGFuZCBtYW51YWxseSB0ZXN0LCBpdCBjYW4gYmUgYmVuZWZpY2lhbCB0byBmb3JtYWxpc2UgdGhlIG1hbnVhbCB0ZXN0cyBpbnRvIGFuIGF1dG9tYXRlZCBzb2x1dGlvbiBzbyB0aGF0IHlvdSBjYW4gYmUgbW9yZSBlZmZpY2llbnQgYW5kIGFsc28gZW5zdXJlIHRoYXQgeW91IGtub3cgd2hlbiB5b3UgJ2JyZWFrIHRoaW5ncycgd2l0aCBmdXR1cmUgY2hhbmdlcy4gVGhpcyBpcyBwYXJ0aWN1bGFybHkgdXNlZnVsIHdoZW4geW91IGZpeCBidWdzIGluIHlvdXIgY29kZSwgY3JlYXRlIGEgdGVzdCB0aGF0IHJlcGxpY2F0ZXMgdGhlIGNvbmRpdGlvbiB0aGF0IGNhdXNlZCB0aGUgYnVnLgoKSW4gUiwgb25lIHN5c3RlbSB1c2VzIHRoZSBwYWNrYWdlIGB0ZXN0dGhhdGAgd2hpY2ggcHJvdmlkZXMgYSBmcmFtZXdvcmsgdG8gY3JlYXRlIHRoZXNlIGZvcm1hbCB0ZXN0cyB3aGljaCB3aWxsIGV2YWx1YXRlIGEgcGllY2Ugb2YgY29kZSBhZ2FpbnN0IHRoZSBrbm93biBleHBlY3RlZCBvdXRwdXQgYW5kIHRlbGwgeW91IGlmIHRoZXkgZG9uJ3QgbWF0Y2guCgpgYGB7ciwgZXZhbCA9IEZBTFNFfQoKIyBleHBlY3QgYSBtZWFuIG9mIDIKdGVzdHRoYXQ6OmV4cGVjdF9lcXVhbChtZWFuKGMoMSwyLDMpKSwgMikKYGBgCgpgdGVzdHRoYXRgIG9wZXJhdGVzIGJ5IHNldHRpbmcgdXAgZXhwZWN0YXRpb25zIGFuZCB0ZXN0aW5nIGlmIHRoZXkgaG9sZCB0cnVlLiBJZiB0aGV5IGFyZSB0cnVlIHRoZSBleHBlY3RhdGlvbiBmdW5jdGlvbiBpcyBzaWxlbnQsIGlmIHRoeSBhcmVuJ3QgaXQgd2lsbCB0ZWxsIHlvdSB3aGVuIHJ1bi4gVGhpcyBsZXRzIHlvdSBmb3JtYWxpc2UgdGVzdHMgdGhhdCB5b3Ugd291bGQgYmUgcnVubmluZyBtYW51YWxseSBhbmQgYXMgeW91IG1ha2UgYWRqdXN0bWVudHMgdG8geW91ciBjb2RlIHlvdSBjYW4gcmVydW4gdGhlc2UgdGVzdHMgdG8gY2hlY2sgdGhpbmdzIGFyZSBzdGlsbCB3b3JraW5nLgoKXAoKIyMjIEF1dG9tYXRpbmcgZGlmZmVyZW5jZXMgeyNhdXRvLXZjfQoKVmVyc2lvbiBjb250cm9sIHNvZnR3YXJlIGlzIHNsaWdodGx5IGRpZmZlcmVudCBmcm9tIHdoYXQgeW91IG1pZ2h0IGhhdmUgZXhwZXJpZW5jZWQgd2l0aCBzb21ldGhpbmcgbGlrZSAndHJhY2sgY2hhbmdlcycgaW4gTWljcm9zb2Z0IFdvcmQgd2hpY2ggdHJhY2tzIGFsbCBjaGFuZ2VzIGxpdmUuIAoKSW4gdGhlIGNhc2Ugb2YgYGdpdGAsIG9uY2UgeW91IGhhdmUgZXZlcnl0aGluZyBzZXQgdXAgYW5kIGNvbmZpZ3VyZWQgdGhlcmUgaXMgYSAoc2ltcGxpZmllZCkgbWluaS13b3JrZmxvdzoKCjEuIFRlbGwgYGdpdGAgeW91IHdhbnQgaXQgdG8gdHJhY2sgdGhlIGNoYW5nZXMgb24gYSBmaWxlCjIuIE1ha2Ugc29tZSBjaGFuZ2VzCjMuIFRlbGwgYGdpdGAgeW91IHdhbnQgdG8gaW5jbHVkZSB0aGVzZSBjaGFuZ2VzIGluIGl0cyB0cmFja2luZwo0LiBUZWxsIGBnaXRgIHRvICdzbmFwc2hvdCcgeW91ciBjaGFuZ2VzIGFuZCBpbmNsdWRlIGEgbWVzc2FnZSBhYm91dCB0aGVtCjUuIGdvIGJhY2sgdG8gc3RlcCAyLgoKV2h5IHdvdWxkIHlvdSBkbyB0aGlzIHdvcmtmbG93PyBGb3IgeW91ciBmdXR1cmUgc2VsZi4gRXZlcnkgc25hcHNob3QgeW91IHRha2Ugd2l0aCBgZ2l0YCBnaXZlcyB5b3UgYSBwb2ludCBpbiB0aW1lIHRoYXQgeW91IGNhbiByb2xsIGJhY2sgdG8gaWYgeW91IHdpc2ggLSBmcm9tIGEgcmVwcm9kdWNpYmlsaXR5IHBvaW50IG9mIHZpZXcgdGhpcyBsZXRzIHlvdSBydW4gX2FueV8gdmVyc2lvbiBvZiB5b3VyIGNvZGUgYXQgYSBzbmFwc2hvdC4gYGdpdGAgY2FuIGFsc28gbGV0IHlvdSBzZWUgZXhhY3RseSB3aGF0IGNoYW5nZXMgdGhlcmUgd2VyZSBiZXR3ZWVuIHNuYXBzaG90cyB3aGljaCBjYW4gYmUgZXh0cmVtZWx5IGhlbHBmdWwgZm9yIGRlYnVnZ2luZwoKYGdpdGAgaXMgYSBmYWlybHkgY29tcGxleCBwaWVjZSBvZiBzb2Z0d2FyZSBhbmQgcHJvdmlkZXMgbW9yZSBmdW5jdGlvbmFsaXR5IHRoYW4gdGhpcywgYnV0IGZvciBzdGFydGluZyBvdXQgdGhpcyB3b3JrZmxvdyBjb3ZlcnMgdGhlIG1haW4gbmVlZCBhbmQgdXNlIGNhc2UuCgpcCgojIyBGaW5hbGlzZQoKQ29uZ3JhdHVsYXRpb25zISBZb3UndmUgbWFkZSBpdCB0byB0aGUgZW5kLXN0YWdlIG9mIHlvdXIgcHJvamVjdCB3aGVyZSB5b3UncmUgcmVhZHkgdG8gd3JhcCB0aGluZ3MgdXAgYW5kIHNoYXJlIHlvdXIgcHJvamVjdCB3aXRoIG90aGVycy4gV2hhdCB5b3UgZG8gYXQgdGhpcyBzdGFnZSBlbnRpcmVseSBkZXBlbmRzIG9uIHdoYXQgb3V0cHV0IHlvdXIgcHJvamVjdCB3YXMgZm9yLiBQZXJoYXBzIGl0J3Mgc2VuZGluZyB5b3VyIGVudGlyZSBwcm9qZWN0IGRpcmVjdG9yeSB0byB5b3VyIGxlY3R1cmVyIG9yIHN1cGVydmlzb3IuIE9yIHRoaXMgY291bGQgaW52b2x2ZSB1cGxvYWRpbmcgeW91ciB2ZXJzaW9uIGNvbnRyb2xsZWQgY29kZSB0byBhbiBvbmxpbmUgY29kZSByZXBvc2l0b3J5IHN1Y2ggYXMgW2h0dHBzOi8vZ2l0aHViLmNvbV0oaHR0cHM6Ly9naXRodWIuY29tKSBhbmQgcHVibGlzaGluZyB0aGUgdXJsIGluIHlvdXIgcGFwZXIgb3Igb3RoZXIgb3V0cHV0LgoKUmVnYXJkbGVzcywgZW1icmFjZSB0aGUgY29tcGxldGlvbi4gVGhlbiBjb250aW51ZSBvbiB0byB5b3VyIG5leHQgcHJvamVjdCwgYnJpbmdpbmcgd2l0aCB5b3UgdGhlIHNraWxscyB5b3UgbGVhcm50IG9uIHRoaXMgb25lLgoKXAoKIyMgQXBwZW5kaXgKCkFuIGV4YW1wbGUgd29ya2Zsb3cgc2V0IHVwCgpgYGB7ciwgZXZhbD1GQUxTRX0KIyBDcmVhdGUgYW5kIG9wZW4gYSBuZXcgcHJvamVjdAp1c2V0aGlzOjpjcmVhdGVfcHJvamVjdChwYXRoID0gIn4vbXlwcm9qZWN0IikKCiMgSW5pdGlhbGlzZSB2ZXJzaW9uIGNvbnRyb2wKdXNldGhpczo6dXNlX2dpdCgpCgojIENyZWF0ZSB0aGUgcHJvamVjdCBzdHJ1Y3R1cmUKZGlyLmNyZWF0ZSgiZGF0YSIpCmRpci5jcmVhdGUoInNjcmlwdHMiKQpkaXIuY3JlYXRlKCJvdXRwdXQiKQpkaXIuY3JlYXRlKCJkb2NzIikKCiMgVGVsbCBnaXQgdG8gaWdub3JlIHRoZSBkYXRhIGRpcmVjdG9yeSBieSBhZGRpbmcgbGluZToKIyBkYXRhLwp1c2V0aGlzOjplZGl0X2dpdF9pZ25vcmUoKQoKCiMgQWRkIGEgUkVBRE1FCnVzZXRoaXM6OnVzZV9yZWFkbWVfbWQoKQoKIyBBZGQgTUlUIExpY2Vuc2UKdXNldGhpczo6dXNlX21pdF9saWNlbnNlKGNvcHlyaWdodF9ob2xkZXIgPSAiRmlyc3RuYW1lIExhc3RuYW1lIikKYGBgCgoKCg==</div>
 
 
 </div>
