@@ -1,6 +1,6 @@
 ---
-title: "Zoom Notes: Visualising Data"
-date: "Semester 1, 2022"
+title: "Zoom Notes 02: Visualising Data"
+date: "Semester 2, 2022"
 output:
   html_document:
     toc: true

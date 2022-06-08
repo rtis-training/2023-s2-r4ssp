@@ -1,6 +1,6 @@
 ---
-title: "Zoom Notes: Functions and Choices"
-date: "Semester 1, 2022"
+title: "Zoom Notes 07: Functions and Choices"
+date: "Semester 2, 2022"
 output:
   html_document:
     toc: true
