@@ -2,12 +2,27 @@
 title: "R for Successful Student Projects"
 ---
 
+\
 
+## Is this for me?
 
-Semester 2 2022 R for Successful Student Projects (R4SSP) will be in-person in the Science Library ground floor seminar room 10-noon Tuesdays, commencing from 26th July.
+- I want to learn about R
+- I'm a student or staff member at the University of Otago
+
+If you answered yes to both questions, this course is for you!
+
+This course is primarily targeted to students who want to learn R for their assignments or research projects. Staff are welcome to attend too.
+
+\
+
+## Sign-up
+
+Semester 2 2022 R for Successful Student Projects (R4SSP) will be online via Zoom, 10-noon Tuesdays, commencing from 26th July. Please register [using this form](https://docs.google.com/forms/d/e/1FAIpQLScOCwMa1_pSZPZEJyOZ4Wp8OORPqbd_S_84QPwaHR7urDu2mA/viewform?usp=sf_link) to receive details.
 
 
 For more information please email rtis.training@otago.ac.nz
+
+\
 
 ## Content
 
@@ -20,6 +35,7 @@ We have split the content into two common purposes for learning R
 
 The main motivation for many people is to perform data analysis, so we have structured the order so that people can 'get stuff done' and then learn about how to improve their efficiency using R.
 
+\
 
 ## Syllabus
 

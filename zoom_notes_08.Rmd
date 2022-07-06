@@ -19,6 +19,9 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   echo = TRUE
 )
+
+# keep the resulting html the same since sampling is used later on in the lesson
+set.seed(42)
 ```
 
 
