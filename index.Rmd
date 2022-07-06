@@ -11,7 +11,7 @@ title: "R for Successful Student Projects"
 
 If you answered yes to both questions, this course is for you!
 
-This course is primarily targeted to students who want to learn R for their assignments or research projects. Staff are welcome to attend too.
+This course is primarily targeted to students with no or little programming experience who want to learn R for their assignments or research projects. Staff are welcome to attend too.
 
 \
 
