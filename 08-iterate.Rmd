@@ -20,6 +20,8 @@ knitr::opts_chunk$set(
   echo = TRUE
 )
 
+# keep the resulting html the same since sampling is used later on in the lesson
+set.seed(42)
 
 ```
 
