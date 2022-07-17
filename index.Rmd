@@ -51,6 +51,6 @@ Date | Week | Module | Part | Topic
 13 September | 7 | Programming focus | 1 | Functions and Choices
 20 September | 8 | Programming focus | 2 | Repeating code
 27 September | 9 | Programming focus | 3 | Workflows and debugging 
-3 October | 10 | --- | --- | Ask us anything
+4 October | 10 | --- | --- | Ask us anything
 
 
