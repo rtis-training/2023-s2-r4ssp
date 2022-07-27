@@ -70,7 +70,22 @@ Document organisation is vitally important. We suggest that you keep a separate 
 
 6. The sample csv data file used in this module is called **gapminder_data_2007.csv**. This file contains life expectancy, population, and GDP values for 142 different countries. The data for each country were measured 12 times between 1952 and 2007. These data are sourced from the GapMinder foundation (https://www.gapminder.org/).
 
+> Downloading the GapMinder 2007 data:
+> 
+> One option for downloading the data is to use `download.file()` in R. You can use this command to download the file into your `data/` directory: 
+> 
+> ```{r, eval = FALSE}
+> download.file(url = "https://raw.githubusercontent.com/rtis-training/2022-s2-r4ssp/main/docs/data/gapminder_data_2007.csv", 
+>  destfile = "data/gapminder_data_2007.csv")
+> ```
+> _Remember that R is case sensitive so if you don't have a directory exactly called `data/` modify the command to match your directory._
+>
+> The second option is in a web browser go to https://raw.githubusercontent.com/rtis-training/2022-s2-r4ssp/main/docs/data/gapminder_data_2007.csv and then save the page using `Save As` and give it the name "gapminder_data_2007.csv". Save it to your data location.
+
+<!--
 Retrieve the sample csv data file from the course [Google Drive shared folder](https://drive.google.com/drive/folders/1ttf1s8-vkJNOlHdphfi2zFyMq6gGEvCy?usp=sharing). Place the csv file into the folder with your script file.
+-->
+
 
 7. Open the folder and double-click **on your script file** to open it in RStudio.
 
@@ -100,7 +115,7 @@ Type the following line into your script file. Execute the command as you did in
 
 ```{r read.csv}
 # Save an imported data frame into a named variable
-gapminder_data <- read.csv("gapminder_data_2007.csv", stringsAsFactors = TRUE)
+gapminder_data <- read.csv("data/gapminder_data_2007.csv", stringsAsFactors = TRUE)
 ```
 
 When imported into R, the data from the csv file are translated into an R object called a **data frame**. Data frames are simply tables, organised into rows and columns. The columns have names taken from the first row of the csv file, and each subsequent row of the csv file becomes a row in the data frame. 
