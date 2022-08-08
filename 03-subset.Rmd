@@ -279,24 +279,25 @@ Sub-setting isn't usually done performed in isolation. Usually there is a workfl
 
 So far we've covered methods that will let us subset both rows and columns at the same time. 
 
-If we're after a single column in a data frame this can be pulled out using the `$` using the format `dataframe$columnname`.
+If we're after a single column in a data frame this can be pulled out using the `$` using the format `dataframe$columnname`, which will return the column as a vector. For instance if we wanted to know all the countries in the `geography_df` data we can use
 
 ```{r}
-# need an example
+geography_df$Country
 ```
 
-This can be useful if you want to perform an operation on only one column such as calculating a summary statistic like the mean or standard deviation. It can also be used to modify or create a new column on a data frame.
+This `$` syntax can be useful if you want to perform an operation on only one column such as calculating a summary statistic like the mean or standard deviation. It can also be used to modify or create a new column on a data frame.
 
 ```{r}
-# need example
+# mean of a the PopulationMillions column
+mean(geography_df$PopulationMillions)
 
-# mean(dataframe$column)
-
-# dataframe$columnname  <- dataframe$othercolumn * 1000
+# new column PopulationThousands
+geography_df$PopulationThousands <- geography_df$PopulationMillions * 1000
+geography_df$PopulationThousands
 ```
 
 
-To see how selection with the `select` function from `dplyr` compares to selection with the extract operator [ ] in base R, let's load the **flights** data frame and repeat some of the exercises from *R for Data Science*.
+To see how selection with the `select` function from `dplyr` compares to selection with the extract operator `[ ]` in base R, lets load the **flights** data frame and repeat some of the exercises from *R for Data Science*.
 
 ```{r load flights, warning=FALSE}
 
