@@ -78,10 +78,10 @@ library(janitor)
 > The data for this section is derived from [untidy-portal-data.
 xlsx](https://figshare.com/ndownloader/files/24469424). It is part of the [Portal Project Teaching Database](https://figshare.com/articles/Portal_Project_Teaching_Database/1314459) https://doi.org/10.6084/m9.figshare.1314459.v10 available on FigShare under a CC-0 license.
 > 
-> The original file does not have the data in a rectangular format so we have organised the data so it can be read into R and made it available to download either by navigating to [https://raw.githubusercontent.com/rtis-training/2022-s1-r4ssp/main/data/rodents_untidy.csv](https://raw.githubusercontent.com/rtis-training/2022-s1-r4ssp/main/data/rodents_untidy.csv) and using `Save As` "rodents_untidy.csv" in you data directory or by using the folowing R command (ensure you match the directory name to your directory set up):
+> The original file does not have the data in a rectangular format so we have organised the data so it can be read into R and made it available to download either by navigating to [https://raw.githubusercontent.com/rtis-training/2022-s2-r4ssp/main/data/rodents_untidy.csv](https://raw.githubusercontent.com/rtis-training/2022-s2-r4ssp/main/data/rodents_untidy.csv) and using `Save As` "rodents_untidy.csv" in you data directory or by using the folowing R command (ensure you match the directory name to your directory set up):
 > 
 > ```{r, eval = FALSE}
-> download.file(url = "https://raw.githubusercontent.com/rtis-training/2022-s1-r4ssp/main/data/rodents_untidy.csv", 
+> download.file(url = "https://raw.githubusercontent.com/rtis-training/2022-s2-r4ssp/main/data/rodents_untidy.csv", 
 >       destfile = "data/rodents_untidy.csv")
 > ```
 
@@ -200,10 +200,10 @@ In the first example of this section we'll look at, we have yearly population da
 
 > This data was originally downloaded from [Gapminder](https://www.gapminder.org/data/) and selecting the indicator "Population", then "Total population"
 > 
-> Either go to [this page](https://raw.githubusercontent.com/rtis-training/2022-s1-r4ssp/main/data/gapminder_yearly_population_millions_total.csv) and use `Save As` "gapminder_yearly_population_total.csv", saving it into your `data/` directory or by using the R command (adjust the directory "data" to match your directory name exactly):
+> Either go to [this page](https://raw.githubusercontent.com/rtis-training/2022-s2-r4ssp/main/data/gapminder_yearly_population_millions_total.csv) and use `Save As` "gapminder_yearly_population_total.csv", saving it into your `data/` directory or by using the R command (adjust the directory "data" to match your directory name exactly):
 > 
 > ```{r, eval = FALSE}
-> download.file(url = "https://raw.githubusercontent.com/rtis-training/2022-s1-r4ssp/main/data/gapminder_yearly_population_millions_total.csv", 
+> download.file(url = "https://raw.githubusercontent.com/rtis-training/2022-s2-r4ssp/main/data/gapminder_yearly_population_millions_total.csv", 
 >       destfile = "data/gapminder_yearly_population_millions_total.csv")
 > ```
 
