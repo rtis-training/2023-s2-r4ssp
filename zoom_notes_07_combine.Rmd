@@ -1,0 +1,104 @@
+---
+title: "Zoom Notes 07: Combining Data"
+date: "Semester 1, 2023"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 3
+    code_download: true
+    code_folding: show
+---
+
+> #### Associated Material
+>
+> Module: [Module 07 - Transforming data](07-combine.html)
+>
+> Readings
+>
+> - [R for Data Science Chapter 13](https://r4ds.had.co.nz/relational-data.html)
+
+
+```{r setup, include=FALSE}
+library(knitr)
+library(tidyverse)
+
+knitr::opts_chunk$set(
+  comment = "#>",
+  fig.path = "figures/", # use only for single Rmd files
+  collapse = TRUE,
+  echo = TRUE
+)
+
+
+```
+
+
+## Combining Data
+
+How to combine datasets together
+
+- rows
+- columns
+- using data relationships
+
+### Binding
+
+- Combining rows of datasets with same column names together with `rbind`
+- Combining columns of datasets together with `cbind`
+  - caution on using `cbind` and maintaining data integrity
+  - use joins if possible
+
+### Joining
+
+Adding additional columns onto data sets by using a common identifier (key) between datasets to maintain data relationships
+
+#### Inner join
+
+- `inner_join` from `dplyr` will join datasets on a key and at the same time filter so that only rows where there is a matching key will be kept
+
+#### Left/Right joins
+
+- `left_join` and `right_join` from `dplyr` will join datasets on a key and keep all rows from the specified 'side' of the join, and filling in the non-matching entries with `NA`
+
+#### Full joins
+
+- `full_join` from `dplyr` will join datasets on a key and keep all rows from both datasets filling in columns of non-matching entries with `NA`
+
+\
+
+## Excercises
+
+
+
+2. Using `flights` and `planes` from the `nycflights13` package, how many flights were flown in April 2013 by aircraft with each engine type? e.g. Turbo-fan, Turbo-jet, etc.
+
+\
+
+3. Using the gapminder_yearly_population_total.csv data create "long" a format dataset for 
+    a. New Zealand's population from 1900 to 2000
+    b. a country of your choice for the same time range
+
+\
+
+4. Using the datasets you created in 3, create:
+    a. a line plot for each
+    b. combine the datasets and create a facet plot using country with 1 column and 2 rows (hint look up `facet_grid`)
+    
+
+### Example solutions
+    
+2.
+
+```{r zn05-soln2, class.source = "fold-hide"}
+library(tidyverse)
+library(nycflights13)
+
+flights %>% 
+  filter(month == 3 & year == 2013 & !is.na(arr_time)) %>%
+  inner_join(planes, by = "tailnum") %>% 
+  group_by(engine) %>% 
+  summarise(n_flights = n())
+```
+
+---    

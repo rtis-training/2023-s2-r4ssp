@@ -17,40 +17,48 @@ navbar:
           href: 02-visualise.html
         - text: "Part 2: Subsetting"
           href: 03-subset.html
-        - text: "Part 3: Summarising"
-          href: 04-summarise.html
-        - text: "Part 4: Transforming"
-          href: 05-transform.html
-        - text: "Part 5: Communicating"
-          href: 06-communicate.html
+        - text: "Part 3: Communicating"
+          href: 04-communicate.html
+        - text: "Part 4: Summarising"
+          href: 05-summarise.html
+        - text: "Part 5: Transforming"
+          href: 06-transform.html
+        - text: "Part 6: Combining"
+          href: 07-combine.html
+        
         - text: "-------------"
         - text: "Programming focus"
         - text: "Functions and Choices"
-          href: 07-functions.html
+          href: 08-functions.html
         - text: "Repeating Code"
-          href: 08-iterate.html
+          href: 09-iterate.html
         - text: "Workflows"
-          href: 09-workflows.html
+          href: 10-workflows.html
+        - text: "-------------"
+        - text: "Extra"
+        - text: "Version control"
     - text: "Zoom Notes"
       menu:
         - text: "01 - Introducing R and RStudio"
-          href: zoom_notes_01.html
+          href: zoom_notes_01_intro.html
         - text: "02 - Visualising data"
-          href: zoom_notes_02.html
+          href: zoom_notes_02_visualise.html
         - text: "03 - Subsetting data"
-          href: zoom_notes_03.html
-        - text: "04 - Summarising data"
-          href: zoom_notes_04.html
-        - text: "05 - Transforming data"
-          href: zoom_notes_05.html
-        - text: "06 - Communicating data"
-          href: zoom_notes_06.html
-        - text: "07 - Functions and Choices"
-          href: zoom_notes_07.html
-        - text: "08 - Repeating Code"
-          href: zoom_notes_08.html
-        - text: "09 - Workflows"
-          href: zoom_notes_09.html
+          href: zoom_notes_03_subset.html
+        - text: "04- Communicating data"
+          href: zoom_notes_04_communicate.html
+        - text: "05 - Summarising data"
+          href: zoom_notes_05_subset.html
+        - text: "06 - Transforming data"
+          href: zoom_notes_06_transform.html
+        - text: "07 - Combining data"
+          href: zoom_notes_07_combine.html
+        - text: "08 - Functions and Choices"
+          href: zoom_notes_08_functions.html
+        - text: "09 - Repeating Code"
+          href: zoom_notes_09_iterate.html
+        - text: "10 - Workflows"
+          href: zoom_notes_10_workflows.html
 
     - text: "About"
       href: about.html
