@@ -12,7 +12,7 @@ output:
 
 > #### Associated Material
 >
-> Module: [Module 07 - Transforming data](07-combine.html)
+> Module: [Module 07 - Combining data](07-combine.html)
 >
 > Readings
 >

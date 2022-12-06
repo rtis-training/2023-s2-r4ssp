@@ -50,12 +50,12 @@ For this module, we will use two data sets -- the Palmers Penguins data we have 
 > One option for downloading the data is to use `download.file()` in R. You can use this command to download the file into your `data/` directory: 
 > 
 > ```{r, eval = FALSE}
-> download.file(url = "https://raw.githubusercontent.com/rtis-training/2022-s2-r4ssp/main/docs/data/NZ_lake_chla_data.csv", 
+> download.file(url = "https://raw.githubusercontent.com/rtis-training/2023-s1-r4ssp/main/docs/data/NZ_lake_chla_data.csv", 
 >  destfile = "data/NZ_lake_chla_data.csv")
 > ```
 > _Remember that R is case sensitive so if you don't have a directory exactly called `data/` modify the command to match your directory._
 >
-> The second option is in a web browser go to https://raw.githubusercontent.com/rtis-training/2022-s2-r4ssp/main/docs/data/NZ_lake_chla_data.csv and then save the page using `Save As` and give it the name "NZ_lake_chla_data.csv". Save it to your data location.
+> The second option is in a web browser go to https://raw.githubusercontent.com/rtis-training/2023-s1-r4ssp/main/docs/data/NZ_lake_chla_data.csv and then save the page using `Save As` and give it the name "NZ_lake_chla_data.csv". Save it to your data location.
 
 \
 

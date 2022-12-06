@@ -1,8 +1,8 @@
-name: "R4SSP Semester 2 2022"
+name: "R4SSP Semester 1 2023"
 output_dir: docs
 new_session: true
 navbar:
-  title: "R4SSP Semester 2 2022"
+  title: "R4SSP Semester 1 2023"
   left:
     - text: "Home"
       href: index.html

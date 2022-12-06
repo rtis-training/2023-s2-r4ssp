@@ -41,7 +41,7 @@ The main motivation for many people is to perform data analysis, so we have stru
 ## Syllabus
 
 Date | Week | Module | Part | Topic | Instructor
-:--|:-:|:-|:-:|:--|
+:--|:-:|:-|:-:|:--|:--:|
 Week starting 6 March | 1 | Setup | | Introduce the tools: R and Rstudio | P
 Week starting 13 March | 2 | Data focus | 1 | Visualising Data | M
 Week starting 20 March | 3 | Data focus | 2 | Selecting and Filtering Data | P
@@ -50,9 +50,9 @@ Week starting 3 April  | 5 | Data focus | 4 | Summarising Data | P
 Week starting 10 April | - | MID-SEMESTER | | |
 Week starting 17 April | 6 | Data focus | 5 | Tidying Data | M
 Week starting 24 April | 7 |Data focus | 6 | Combing/Joining |P
-Week starting | 7 | Programming focus | 1 | Functions and Choices | M
-Week starting | 8 | Programming focus | 2 | Repeating code | P
-Week starting | 9 | Programming focus | 3 | Workflows and debugging | M
-Week starting | 10 | --- | --- | Ask us anything | P/M
+Week starting 1st May | 8 | Programming focus | 1 | Functions and Choices | M
+Week starting 8th May | 9 | Programming focus | 2 | Repeating code | P
+Week starting 15th May | 10 | Programming focus | 3 | Workflows and debugging | M
+Week starting 22nd May | --- | --- | --- | Ask us anything | P/M
 
-Optional unit - Version Control (TBD)
+Optional unit - Using version control with R (TBD)
