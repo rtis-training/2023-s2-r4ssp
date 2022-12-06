@@ -29,6 +29,19 @@ knitr::opts_chunk$set(
 >
 > - [R for Data Science Chapter 13](https://r4ds.had.co.nz/relational-data.html)
 
+All are loaded as part of loading the `tidyverse` package. You can see under the "Attaching packages" heading exactly which packages are being loaded.
+
+```{r}
+library(tidyverse)
+```
+
+```{r}
+# install.packages(nycflights13)
+library(nycflights13)
+
+glimpse(flights)
+```
+
 
 
 ## Combining Data

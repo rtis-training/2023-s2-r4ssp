@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Transforming</title>
+
+<script src="site_libs/header-attrs-2.18/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+<style type="text/css">
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">R4SSP Semester 2 2022</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Modules
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Intro</li>
+    <li>
+      <a href="01-intro.html">Intro to R and RStudio</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Data Focus</li>
+    <li>
+      <a href="02-visualise.html">Part 1: Visualising</a>
+    </li>
+    <li>
+      <a href="03-subset.html">Part 2: Subsetting</a>
+    </li>
+    <li>
+      <a href="04-communicate.html">Part 3: Communicating</a>
+    </li>
+    <li>
+      <a href="05-summarise.html">Part 4: Summarising</a>
+    </li>
+    <li>
+      <a href="06-transform.html">Part 5: Transforming</a>
+    </li>
+    <li>
+      <a href="07-combine.html">Part 6: Combining</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Programming focus</li>
+    <li>
+      <a href="08-functions.html">Functions and Choices</a>
+    </li>
+    <li>
+      <a href="09-iterate.html">Repeating Code</a>
+    </li>
+    <li>
+      <a href="10-workflows.html">Workflows</a>
+    </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Extra</li>
+    <li class="dropdown-header">Version control</li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Zoom Notes
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="zoom_notes_01_intro.html">01 - Introducing R and RStudio</a>
+    </li>
+    <li>
+      <a href="zoom_notes_02_visualise.html">02 - Visualising data</a>
+    </li>
+    <li>
+      <a href="zoom_notes_03_subset.html">03 - Subsetting data</a>
+    </li>
+    <li>
+      <a href="zoom_notes_04_communicate.html">04- Communicating data</a>
+    </li>
+    <li>
+      <a href="zoom_notes_05_subset.html">05 - Summarising data</a>
+    </li>
+    <li>
+      <a href="zoom_notes_06_transform.html">06 - Transforming data</a>
+    </li>
+    <li>
+      <a href="zoom_notes_07_combine.html">07 - Combining data</a>
+    </li>
+    <li>
+      <a href="zoom_notes_08_functions.html">08 - Functions and Choices</a>
+    </li>
+    <li>
+      <a href="zoom_notes_09_iterate.html">09 - Repeating Code</a>
+    </li>
+    <li>
+      <a href="zoom_notes_10_workflows.html">10 - Workflows</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+<li role="separator" class="divider"></li>
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Transforming</h1>
+<h4 class="date">Semester 1, 2023</h4>
+
+</div>
+
+
+<blockquote>
+<h4 id="associated-material">Associated Material</h4>
+<p>Zoom notes: <a href="docs/zoom_notes_06_transform.html">Zoom Notes 06
+- Transforming D</a></p>
+<p>Readings:</p>
+<ul>
+<li><a href="https://r4ds.had.co.nz/tibbles.html">R for Data Science
+Chapter 10</a></li>
+<li><a href="https://r4ds.had.co.nz/data-import.html">R for Data Science
+Chapter 11</a></li>
+<li><a href="https://r4ds.had.co.nz/tidy-data.html">R for Data Science
+Chapter 12</a></li>
+<li><a href="https://r4ds.had.co.nz/relational-data.html">R for Data
+Science Chapter 13</a></li>
+<li><a href="https://r4ds.had.co.nz/strings.html">R for Data Science
+Chapter 14</a></li>
+</ul>
+</blockquote>
+<p><br />
+</p>
+<p>The pre-processing of data as a proportion of a data analysis
+workflow can be quite substantial, but this step is extremely vital -
+poor data in = poor results out. The main purpose of this module is
+transforming our data into something worthy of analysis and will cover
+data cleaning, tidying and ‘reshaping’. This will be followed by how to
+increase the utility of our data by combining it with other
+datasets.</p>
+<p>Let us first delve into the data cleaning and tidying.</p>
+<p><br />
+</p>
+<div id="cleaningtidying" class="section level2">
+<h2>Cleaning/Tidying</h2>
+<p>The goal of cleaning and tidying our data is to deal with the
+imperfections that exist with real-world datasets and make them ready
+for analysis. Because we’re focusing on how to do this inside R we’re
+going to assume that you are already starting with ‘rectangular’ data -
+all rows are the same length, and all columns are the same length.
+Sometimes there is a ‘pre-R’ phase which requires you to make the data
+rectangular - check out this material from <a
+href="https://datacarpentry.org/spreadsheet-ecology-lesson/">Data
+Carpentry</a> if this is something you first need to do.</p>
+<p>If you have humans as part of the data collecting process it’s only a
+matter of time before there is a data entry issue that needs to be
+‘cleaned’ out.</p>
+<p>Some common tasks at this stage include:</p>
+<ul>
+<li>ensuring that missing data is coded correctly</li>
+<li>dealing with typos</li>
+<li>removing unneeded whitespace</li>
+<li>converting columns to be the correct data type</li>
+<li>making nice column names</li>
+</ul>
+<p>Unless you are in a fortunate position to inherit ‘cleaned’ data
+these jobs will fall on you to ensure that later on they don’t cause
+issues when it comes time to do your statistics.</p>
+<p>For this section we’re going to make use of the following packages
+that are part of the Tidyverse: <code>readr</code> for reading in and
+parsing data, <code>tidyr</code> which has functions for dealing with
+missing data, and <code>stringr</code> which has functions relating to
+dealing with character vectors.</p>
+<p>All are loaded as part of loading the <code>tidyverse</code> package.
+You can see under the “Attaching packages” heading exactly which
+packages are being loaded.</p>
+<pre class="r"><code>library(tidyverse)
+#&gt; ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.2 ──
+#&gt; ✔ ggplot2 3.4.0      ✔ purrr   0.3.4 
+#&gt; ✔ tibble  3.1.8      ✔ dplyr   1.0.10
+#&gt; ✔ tidyr   1.2.1      ✔ stringr 1.4.1 
+#&gt; ✔ readr   2.1.2      ✔ forcats 0.5.1 
+#&gt; ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+#&gt; ✖ dplyr::filter() masks stats::filter()
+#&gt; ✖ dplyr::lag()    masks stats::lag()</code></pre>
+<p>An extra package is <code>janitor</code>, which designed for
+cleaning.</p>
+<pre class="r"><code># install.packages(&quot;janitor&quot;)
+library(janitor)
+#&gt; 
+#&gt; Attaching package: &#39;janitor&#39;
+#&gt; The following objects are masked from &#39;package:stats&#39;:
+#&gt; 
+#&gt;     chisq.test, fisher.test</code></pre>
+<blockquote>
+<p>The data for this section is derived from <a
+href="https://figshare.com/ndownloader/files/24469424">untidy-portal-data.
+xlsx</a>. It is part of the <a
+href="https://figshare.com/articles/Portal_Project_Teaching_Database/1314459">Portal
+Project Teaching Database</a> <a
+href="https://doi.org/10.6084/m9.figshare.1314459.v10"
+class="uri">https://doi.org/10.6084/m9.figshare.1314459.v10</a>
+available on FigShare under a CC-0 license.</p>
+<p>The original file does not have the data in a rectangular format so
+we have organised the data so it can be read into R and made it
+available to download either by navigating to <a
+href="https://raw.githubusercontent.com/rtis-training/2022-s2-r4ssp/main/data/rodents_untidy.csv">https://raw.githubusercontent.com/rtis-training/2022-s2-r4ssp/main/data/rodents_untidy.csv</a>
+and using <code>Save As</code> “rodents_untidy.csv” in you data
+directory or by using the folowing R command (ensure you match the
+directory name to your directory set up):</p>
+<pre class="r"><code>download.file(url = &quot;https://raw.githubusercontent.com/rtis-training/2022-s2-r4ssp/main/data/rodents_untidy.csv&quot;, 
+      destfile = &quot;data/rodents_untidy.csv&quot;)</code></pre>
+</blockquote>
+<p>Until now we’ve been using the <code>read.csv</code> (“read-dot-csv”)
+function that is part of base R, but <code>readr</code> has equivalent
+functions, namely <code>read_csv</code> (“read-underscore-csv”) which
+provides some extra features such as a progress bar, displaying the data
+types of all the columns as part of the reading, and it will create the
+special version of a data.frame called a <code>tibble</code>. For more
+in-depth details about <code>tibbles</code> check out the <a
+href="https://r4ds.had.co.nz/tibbles.html">R for Data Science -
+Tibbles</a> chapter. The main benefit we’ll utilise is the way it prints
+to the screen which includes some formatting and inclusion of the column
+data types under the column names.</p>
+<pre class="r"><code># note the use of the &quot;read-underscore-csv&quot;
+rodents &lt;- read_csv(&quot;data/rodents_untidy.csv&quot;)
+#&gt; Rows: 41 Columns: 6
+#&gt; ── Column specification ────────────────────────────────────────────────────────
+#&gt; Delimiter: &quot;,&quot;
+#&gt; chr (6): Plot location, Date collected, Family, Genus, Species, Weight
+#&gt; 
+#&gt; ℹ Use `spec()` to retrieve the full column specification for this data.
+#&gt; ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<p>The first thing we can look at as part of the data loading is the
+column names and what the datatype <code>read_csv</code> had a best
+guess at the type of data the column had.</p>
+<pre class="r"><code>rodents %&gt;% head()
+#&gt; # A tibble: 6 × 6
+#&gt;   `Plot location` `Date collected` Family       Genus     Species     Weight
+#&gt;   &lt;chr&gt;           &lt;chr&gt;            &lt;chr&gt;        &lt;chr&gt;     &lt;chr&gt;       &lt;chr&gt; 
+#&gt; 1 1_slope         01/09/14         Heteromyidae Dipodomys merriami    40    
+#&gt; 2 1_slope         01/09/14         Heteromyidae Dipodomys merriami    36    
+#&gt; 3 1_slope         01/09/14         Heteromyidae Dipodomys spectabilis 135   
+#&gt; 4 1_rocks         01/09/14         Heteromyidae Dipodomys merriami    39    
+#&gt; 5 1_grass         01/20/14         Heteromyidae Dipodomys merriami    43    
+#&gt; 6 1_rocks         01/20/14         Heteromyidae Dipodomys spectabilis 144</code></pre>
+<p>It can be difficult if you have many columns to see them all, so
+instead you can see exactly what each column was loaded in as using
+<code>spec</code>.</p>
+<pre class="r"><code>spec(rodents)
+#&gt; cols(
+#&gt;   `Plot location` = col_character(),
+#&gt;   `Date collected` = col_character(),
+#&gt;   Family = col_character(),
+#&gt;   Genus = col_character(),
+#&gt;   Species = col_character(),
+#&gt;   Weight = col_character()
+#&gt; )</code></pre>
+<div id="cleaning-data-values" class="section level3">
+<h3>Cleaning data values</h3>
+<p>From this list of columns, without knowing much about the data
+itself, <em>Weight</em> might seen odd that it is a character type,
+rather than a numeric, so we’ll focus in on this column to start
+with</p>
+<pre class="r"><code>rodents$Weight
+#&gt;  [1] &quot;40&quot;   &quot;36&quot;   &quot;135&quot;  &quot;39&quot;   &quot;43&quot;   &quot;144&quot;  &quot;51&quot;   &quot;44&quot;   &quot;146&quot;  &quot;-999&quot;
+#&gt; [11] &quot;44&quot;   &quot;38&quot;   &quot;-999&quot; &quot;220&quot;  &quot;38&quot;   &quot;48&quot;   &quot;143&quot;  &quot;35&quot;   &quot;43&quot;   &quot;37&quot;  
+#&gt; [21] &quot;150&quot;  &quot;45&quot;   &quot;-999&quot; &quot;157&quot;  &quot;-999&quot; &quot;218&quot;  &quot;127&quot;  &quot;52&quot;   &quot;42&quot;   &quot;24&quot;  
+#&gt; [31] &quot;23&quot;   &quot;232&quot;  &quot;22&quot;   &quot;?&quot;    &quot;?&quot;    NA     NA     &quot;182&quot;  &quot;42&quot;   &quot;115&quot; 
+#&gt; [41] &quot;190&quot;</code></pre>
+<p>From this we can see that we have come “?” characters, is what has
+caused the column to be read in as characters instead of numbers
+(remember that a vector must be all the same data type).</p>
+<p>Lets change the “?” to be a <code>NA</code>. We’ll do this through
+sub-setting, where we find the elements that are “?” and assign them to
+now be <code>NA</code>.</p>
+<pre class="r"><code>rodents$Weight[rodents$Weight == &quot;?&quot;] &lt;- NA
+
+rodents$Weight
+#&gt;  [1] &quot;40&quot;   &quot;36&quot;   &quot;135&quot;  &quot;39&quot;   &quot;43&quot;   &quot;144&quot;  &quot;51&quot;   &quot;44&quot;   &quot;146&quot;  &quot;-999&quot;
+#&gt; [11] &quot;44&quot;   &quot;38&quot;   &quot;-999&quot; &quot;220&quot;  &quot;38&quot;   &quot;48&quot;   &quot;143&quot;  &quot;35&quot;   &quot;43&quot;   &quot;37&quot;  
+#&gt; [21] &quot;150&quot;  &quot;45&quot;   &quot;-999&quot; &quot;157&quot;  &quot;-999&quot; &quot;218&quot;  &quot;127&quot;  &quot;52&quot;   &quot;42&quot;   &quot;24&quot;  
+#&gt; [31] &quot;23&quot;   &quot;232&quot;  &quot;22&quot;   NA     NA     NA     NA     &quot;182&quot;  &quot;42&quot;   &quot;115&quot; 
+#&gt; [41] &quot;190&quot;</code></pre>
+<p>Now that we have removed the characters, lets turn
+<code>rodents$Weight</code> into a numeric datatype</p>
+<pre class="r"><code>rodents$Weight &lt;- as.numeric(rodents$Weight)</code></pre>
+<p>Next as part of our cleaning we might want to change the
+<code>-999</code> entries in rodents$Weight to be <code>NA</code></p>
+<pre class="r"><code>rodents$Weight[rodents$Weight == -999] &lt;- NA
+
+rodents$Weight
+#&gt;  [1]  40  36 135  39  43 144  51  44 146  NA  44  38  NA 220  38  48 143  35  43
+#&gt; [20]  37 150  45  NA 157  NA 218 127  52  42  24  23 232  22  NA  NA  NA  NA 182
+#&gt; [39]  42 115 190</code></pre>
+<p><br />
+</p>
+</div>
+<div id="cleaning-names" class="section level3">
+<h3>Cleaning names</h3>
+<p>You many have noticed that <code>read_csv</code> has kept the column
+names as they were in the file, and they actually violate the rules we
+have for variables in R - namely they contain a space - which can make
+dealing with them problematic.</p>
+<pre class="r"><code>names(rodents)
+#&gt; [1] &quot;Plot location&quot;  &quot;Date collected&quot; &quot;Family&quot;         &quot;Genus&quot;         
+#&gt; [5] &quot;Species&quot;        &quot;Weight&quot;</code></pre>
+<p>We’re now going to clean the names up, and this is where the
+<code>janitor</code> package is extremely helpful. Because we’re only
+going to use a single function from the package we can call is directly
+using the <code>&lt;package&gt;::&lt;function&gt;</code> notation,
+rather than using <code>library</code>.</p>
+<pre class="r"><code>rodents &lt;- rodents %&gt;% janitor::clean_names()
+
+names(rodents)
+#&gt; [1] &quot;plot_location&quot;  &quot;date_collected&quot; &quot;family&quot;         &quot;genus&quot;         
+#&gt; [5] &quot;species&quot;        &quot;weight&quot;</code></pre>
+<blockquote>
+<p><code>janitor</code> has many options for how it cleans the names
+with the default being ‘snake’, but many others can be selected and
+supplied as the <code>case</code> parameter e.g. clean_names(case =
+‘lower_camel’) for camel case starting with a lower case letter.</p>
+</blockquote>
+<p><br />
+</p>
+</div>
+<div id="tidying" class="section level3">
+<h3>Tidying</h3>
+<p>The three principles of tidy tabular data are:</p>
+<ol style="list-style-type: decimal">
+<li>Each column is a variable or property that is being measured</li>
+<li>Each row is an observation</li>
+<li>A single cell should contain a single piece of information</li>
+</ol>
+<p>Ideally these principles are followed from the very start when data
+collection is occurring</p>
+<p>In our rodents dataset, the <em>plot_location</em> column violates
+rule number 3, it contains more than a single piece of information.</p>
+<p>We can use the <code>separate</code> function from <code>tidyr</code>
+to split this column into 2 columns using the ’_’ as our field
+delimiter.</p>
+<pre class="r"><code>rodents &lt;- rodents %&gt;% separate(plot_location, into = c(&quot;plot&quot;, &quot;location&quot;), sep = &#39;_&#39;)
+#&gt; Warning: Expected 2 pieces. Missing pieces filled with `NA` in 7 rows [35, 36,
+#&gt; 37, 38, 39, 40, 41].
+
+head(rodents)
+#&gt; # A tibble: 6 × 7
+#&gt;   plot  location date_collected family       genus     species     weight
+#&gt;   &lt;chr&gt; &lt;chr&gt;    &lt;chr&gt;          &lt;chr&gt;        &lt;chr&gt;     &lt;chr&gt;        &lt;dbl&gt;
+#&gt; 1 1     slope    01/09/14       Heteromyidae Dipodomys merriami        40
+#&gt; 2 1     slope    01/09/14       Heteromyidae Dipodomys merriami        36
+#&gt; 3 1     slope    01/09/14       Heteromyidae Dipodomys spectabilis    135
+#&gt; 4 1     rocks    01/09/14       Heteromyidae Dipodomys merriami        39
+#&gt; 5 1     grass    01/20/14       Heteromyidae Dipodomys merriami        43
+#&gt; 6 1     rocks    01/20/14       Heteromyidae Dipodomys spectabilis    144</code></pre>
+<p>Notice how the final 7 rows didn’t have a location, and so were
+automatically filled with <code>NA</code>s. There is still more that
+could be done to clean and tidy this particular dataset but we’ll leave
+it for now.</p>
+<p><br />
+</p>
+<p><br />
+</p>
+</div>
+</div>
+<div id="shaping-data" class="section level2">
+<h2>Shaping Data</h2>
+<p>When we’re thinking about the ‘shape’ of the data, we’re thinking
+about in which direction are we adding observations - are we adding them
+as new columns onto the side making the data <strong>wider</strong>, or
+are we adding them as rows onto the bottom making the data
+<strong>longer</strong>?</p>
+<p>In our framework for making tidy data we created a system that made
+<strong>long</strong> data, in that each row was an observation.
+Sometimes however we need to reshape this data into a
+<strong>wide</strong> format.</p>
+<p>In the first example of this section we’ll look at, we have yearly
+population data downloaded from Gapminder.</p>
+<blockquote>
+<p>This data was originally downloaded from <a
+href="https://www.gapminder.org/data/">Gapminder</a> and selecting the
+indicator “Population”, then “Total population”</p>
+<p>Either go to <a
+href="https://raw.githubusercontent.com/rtis-training/2022-s2-r4ssp/main/data/gapminder_yearly_population_millions_total.csv">this
+page</a> and use <code>Save As</code>
+“gapminder_yearly_population_total.csv”, saving it into your
+<code>data/</code> directory or by using the R command (adjust the
+directory “data” to match your directory name exactly):</p>
+<pre class="r"><code>download.file(url = &quot;https://raw.githubusercontent.com/rtis-training/2022-s2-r4ssp/main/data/gapminder_yearly_population_millions_total.csv&quot;, 
+      destfile = &quot;data/gapminder_yearly_population_millions_total.csv&quot;)</code></pre>
+</blockquote>
+<pre class="r"><code>gapminder_yearly_pop &lt;- read_csv(&quot;data/gapminder_yearly_population_millions_total.csv&quot;)
+#&gt; Rows: 197 Columns: 302
+#&gt; ── Column specification ────────────────────────────────────────────────────────
+#&gt; Delimiter: &quot;,&quot;
+#&gt; chr   (1): country
+#&gt; dbl (301): 1800, 1801, 1802, 1803, 1804, 1805, 1806, 1807, 1808, 1809, 1810,...
+#&gt; 
+#&gt; ℹ Use `spec()` to retrieve the full column specification for this data.
+#&gt; ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+dim(gapminder_yearly_pop)
+#&gt; [1] 197 302
+head(gapminder_yearly_pop)
+#&gt; # A tibble: 6 × 302
+#&gt;   country         `1800`  `1801`  `1802`  `1803`  `1804`  `1805`  `1806`  `1807`
+#&gt;   &lt;chr&gt;            &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
+#&gt; 1 Afghanistan    3.28    3.28    3.28    3.28    3.28    3.28    3.28    3.28   
+#&gt; 2 Angola         1.57    1.57    1.57    1.57    1.57    1.57    1.57    1.57   
+#&gt; 3 Albania        0.4     0.402   0.404   0.405   0.407   0.409   0.411   0.413  
+#&gt; 4 Andorra        0.00265 0.00265 0.00265 0.00265 0.00265 0.00265 0.00265 0.00265
+#&gt; 5 United Arab E… 0.0402  0.0402  0.0402  0.0402  0.0402  0.0402  0.0402  0.0402 
+#&gt; 6 Argentina      0.534   0.52    0.506   0.492   0.479   0.466   0.453   0.441  
+#&gt; # … with 293 more variables: `1808` &lt;dbl&gt;, `1809` &lt;dbl&gt;, `1810` &lt;dbl&gt;,
+#&gt; #   `1811` &lt;dbl&gt;, `1812` &lt;dbl&gt;, `1813` &lt;dbl&gt;, `1814` &lt;dbl&gt;, `1815` &lt;dbl&gt;,
+#&gt; #   `1816` &lt;dbl&gt;, `1817` &lt;dbl&gt;, `1818` &lt;dbl&gt;, `1819` &lt;dbl&gt;, `1820` &lt;dbl&gt;,
+#&gt; #   `1821` &lt;dbl&gt;, `1822` &lt;dbl&gt;, `1823` &lt;dbl&gt;, `1824` &lt;dbl&gt;, `1825` &lt;dbl&gt;,
+#&gt; #   `1826` &lt;dbl&gt;, `1827` &lt;dbl&gt;, `1828` &lt;dbl&gt;, `1829` &lt;dbl&gt;, `1830` &lt;dbl&gt;,
+#&gt; #   `1831` &lt;dbl&gt;, `1832` &lt;dbl&gt;, `1833` &lt;dbl&gt;, `1834` &lt;dbl&gt;, `1835` &lt;dbl&gt;,
+#&gt; #   `1836` &lt;dbl&gt;, `1837` &lt;dbl&gt;, `1838` &lt;dbl&gt;, `1839` &lt;dbl&gt;, `1840` &lt;dbl&gt;, …</code></pre>
+<div id="wide-to-long" class="section level3">
+<h3>Wide to long</h3>
+<p>You can see that in this case we have a column for each year, and our
+rows relate to a particular country. This might be a valid for a final
+table, however it will cause some challenges if we want to perform some
+analysis or visualisation on it. While it is possible to perform
+operations across a row, it fights against how the dataframe structure
+itself is constructed - each column is a single vector and therefore has
+to be the same datatype, but a row is made of multiple vectors each of
+which could be a different datatype. Hence the majority of operations in
+R are column focused.</p>
+<p>E.g If we want to plot the change in population across time for a
+country is that in the current format we can’t do it because we use a
+single column for each axis.</p>
+<p>If we think to our tidy data principles, year is a variable that is
+being measured alongside population, so we should have a column ‘year’
+into which we can store the year values.</p>
+<p>The operation that will take us from a wide format to a long format
+is <code>pivot_longer</code> from <code>tidyr</code>. It has a
+<code>cols</code> parameter where we specify the columns that will be
+gathered into 2 named columns - one that will contain the names from the
+columns - <code>names_to</code>, the second, will contain the values
+that were in the columns - <code>values_to</code>. <code>cols</code>
+uses the same syntax as <code>select</code> from <code>dplyr</code> and
+if a <code>-</code> is used it will use all the columns <em>not</em>
+specified.</p>
+<pre class="r"><code># Using the &#39;positive&#39; selection of columns
+gapminder_yearly_pop_long &lt;- gapminder_yearly_pop %&gt;% pivot_longer(cols = `1800`:`2100`, names_to = &quot;year&quot;, values_to = &quot;population&quot;)
+gapminder_yearly_pop_long
+#&gt; # A tibble: 59,297 × 3
+#&gt;    country     year  population
+#&gt;    &lt;chr&gt;       &lt;chr&gt;      &lt;dbl&gt;
+#&gt;  1 Afghanistan 1800        3.28
+#&gt;  2 Afghanistan 1801        3.28
+#&gt;  3 Afghanistan 1802        3.28
+#&gt;  4 Afghanistan 1803        3.28
+#&gt;  5 Afghanistan 1804        3.28
+#&gt;  6 Afghanistan 1805        3.28
+#&gt;  7 Afghanistan 1806        3.28
+#&gt;  8 Afghanistan 1807        3.28
+#&gt;  9 Afghanistan 1808        3.28
+#&gt; 10 Afghanistan 1809        3.28
+#&gt; # … with 59,287 more rows
+
+# Using the &#39;negative&#39; selection of columns
+gapminder_yearly_pop_long &lt;- gapminder_yearly_pop %&gt;% pivot_longer(cols = -country, names_to = &quot;year&quot;, values_to = &quot;population&quot;)
+gapminder_yearly_pop_long
+#&gt; # A tibble: 59,297 × 3
+#&gt;    country     year  population
+#&gt;    &lt;chr&gt;       &lt;chr&gt;      &lt;dbl&gt;
+#&gt;  1 Afghanistan 1800        3.28
+#&gt;  2 Afghanistan 1801        3.28
+#&gt;  3 Afghanistan 1802        3.28
+#&gt;  4 Afghanistan 1803        3.28
+#&gt;  5 Afghanistan 1804        3.28
+#&gt;  6 Afghanistan 1805        3.28
+#&gt;  7 Afghanistan 1806        3.28
+#&gt;  8 Afghanistan 1807        3.28
+#&gt;  9 Afghanistan 1808        3.28
+#&gt; 10 Afghanistan 1809        3.28
+#&gt; # … with 59,287 more rows</code></pre>
+<p>Note that because the column names violate the rules for R variables
+in that they start with a number, we have to deal with the problematic
+names by enclosing them with backticks <code>`</code>.</p>
+</div>
+<div id="long-to-wide" class="section level3">
+<h3>Long to wide</h3>
+<p>Sometimes we would like to take our data from a long format and into
+a wide format. For our example we want to create a table that will let
+us see distances between an origin and a destination within 500 miles of
+each other. To do this we’re going to use the <code>flights</code> data
+from the <code>nycflights13</code> package.</p>
+<p>The table that we create will essentially be a look-up table that
+will let us quickly reference the distance between origin/destination
+pairs.</p>
+<pre class="r"><code># install.packages(nycflights13)
+library(nycflights13)
+
+glimpse(flights)
+#&gt; Rows: 336,776
+#&gt; Columns: 19
+#&gt; $ year           &lt;int&gt; 2013, 2013, 2013, 2013, 2013, 2013, 2013, 2013, 2013, 2…
+#&gt; $ month          &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1…
+#&gt; $ day            &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1…
+#&gt; $ dep_time       &lt;int&gt; 517, 533, 542, 544, 554, 554, 555, 557, 557, 558, 558, …
+#&gt; $ sched_dep_time &lt;int&gt; 515, 529, 540, 545, 600, 558, 600, 600, 600, 600, 600, …
+#&gt; $ dep_delay      &lt;dbl&gt; 2, 4, 2, -1, -6, -4, -5, -3, -3, -2, -2, -2, -2, -2, -1…
+#&gt; $ arr_time       &lt;int&gt; 830, 850, 923, 1004, 812, 740, 913, 709, 838, 753, 849,…
+#&gt; $ sched_arr_time &lt;int&gt; 819, 830, 850, 1022, 837, 728, 854, 723, 846, 745, 851,…
+#&gt; $ arr_delay      &lt;dbl&gt; 11, 20, 33, -18, -25, 12, 19, -14, -8, 8, -2, -3, 7, -1…
+#&gt; $ carrier        &lt;chr&gt; &quot;UA&quot;, &quot;UA&quot;, &quot;AA&quot;, &quot;B6&quot;, &quot;DL&quot;, &quot;UA&quot;, &quot;B6&quot;, &quot;EV&quot;, &quot;B6&quot;, &quot;…
+#&gt; $ flight         &lt;int&gt; 1545, 1714, 1141, 725, 461, 1696, 507, 5708, 79, 301, 4…
+#&gt; $ tailnum        &lt;chr&gt; &quot;N14228&quot;, &quot;N24211&quot;, &quot;N619AA&quot;, &quot;N804JB&quot;, &quot;N668DN&quot;, &quot;N394…
+#&gt; $ origin         &lt;chr&gt; &quot;EWR&quot;, &quot;LGA&quot;, &quot;JFK&quot;, &quot;JFK&quot;, &quot;LGA&quot;, &quot;EWR&quot;, &quot;EWR&quot;, &quot;LGA&quot;,…
+#&gt; $ dest           &lt;chr&gt; &quot;IAH&quot;, &quot;IAH&quot;, &quot;MIA&quot;, &quot;BQN&quot;, &quot;ATL&quot;, &quot;ORD&quot;, &quot;FLL&quot;, &quot;IAD&quot;,…
+#&gt; $ air_time       &lt;dbl&gt; 227, 227, 160, 183, 116, 150, 158, 53, 140, 138, 149, 1…
+#&gt; $ distance       &lt;dbl&gt; 1400, 1416, 1089, 1576, 762, 719, 1065, 229, 944, 733, …
+#&gt; $ hour           &lt;dbl&gt; 5, 5, 5, 5, 6, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 5, 6, 6, 6…
+#&gt; $ minute         &lt;dbl&gt; 15, 29, 40, 45, 0, 58, 0, 0, 0, 0, 0, 0, 0, 0, 0, 59, 0…
+#&gt; $ time_hour      &lt;dttm&gt; 2013-01-01 05:00:00, 2013-01-01 05:00:00, 2013-01-01 0…</code></pre>
+<p>First lets select those three columns we need and filter so that the
+distance is within 500 miles.</p>
+<pre class="r"><code>flights_long &lt;- flights %&gt;% select(origin, dest, distance) %&gt;% 
+  filter(distance &lt;= 500)</code></pre>
+<p>Next we want remove duplicate rows, this can be done using
+<code>distinct()</code></p>
+<pre class="r"><code>flights_long &lt;- flights_long %&gt;% distinct()</code></pre>
+<p>You can see that our long data has <code>ncol(flights_long)</code>
+columns, and <code>nrow(flights_long)</code> rows.</p>
+<pre class="r"><code>dim(flights_long)
+#&gt; [1] 64  3</code></pre>
+<p>We now want to make each of our destinations its own column and fill
+in the corresponding air time as the value. To do this, we can use
+<code>pivot_wider</code>. The main arguments are <code>names_from</code>
+which is the column you want take the new column names from, and
+<code>values_from</code> which is the column that will be used to fill
+in the new column values.</p>
+<pre class="r"><code>flights_long %&gt;% pivot_wider(origin, names_from = &quot;dest&quot;, values_from = &quot;distance&quot;)
+#&gt; # A tibble: 3 × 31
+#&gt;   origin   IAD   BOS   BWI   BUF   ROC   SYR   RDU   CMH   PIT   DCA   CLE   DTW
+#&gt;   &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+#&gt; 1 LGA      229   184   185   292   254   198   431   479   335   214   419    NA
+#&gt; 2 JFK      228   187   184   301   264   209   427   483   340   213   425    NA
+#&gt; 3 EWR      212   200   169   282   246   195   416   463   319   199   404   488
+#&gt; # … with 18 more variables: BTV &lt;dbl&gt;, PHL &lt;dbl&gt;, PWM &lt;dbl&gt;, CAK &lt;dbl&gt;,
+#&gt; #   ALB &lt;dbl&gt;, BDL &lt;dbl&gt;, MHT &lt;dbl&gt;, GSO &lt;dbl&gt;, RIC &lt;dbl&gt;, ORF &lt;dbl&gt;,
+#&gt; #   CRW &lt;dbl&gt;, PVD &lt;dbl&gt;, ACK &lt;dbl&gt;, BGR &lt;dbl&gt;, ILM &lt;dbl&gt;, MVY &lt;dbl&gt;,
+#&gt; #   CHO &lt;dbl&gt;, LGA &lt;dbl&gt;</code></pre>
+</div>
+</div>
+
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiVHJhbnNmb3JtaW5nIgpkYXRlOiAiU2VtZXN0ZXIgMSwgMjAyMyIKb3V0cHV0OgogIGh0bWxfZG9jdW1lbnQ6CiAgICB0b2M6IHRydWUKICAgIHRvY19mbG9hdDogdHJ1ZQogICAgdG9jX2RlcHRoOiAzCiAgICBjb2RlX2Rvd25sb2FkOiB0cnVlCiAgICBjb2RlX2ZvbGRpbmc6IHNob3cKLS0tCgpgYGB7ciBzZXR1cCwgaW5jbHVkZT1GQUxTRX0KbGlicmFyeShrbml0cikKCmtuaXRyOjpvcHRzX2NodW5rJHNldCgKICBjb21tZW50ID0gIiM+IiwKICBmaWcucGF0aCA9ICJmaWd1cmVzLzA2LyIsICMgdXNlIG9ubHkgZm9yIHNpbmdsZSBSbWQgZmlsZXMKICBjb2xsYXBzZSA9IFRSVUUsCiAgZWNobyA9IFRSVUUKKQpgYGAKCgo+ICMjIyMgQXNzb2NpYXRlZCBNYXRlcmlhbAo+Cj4gWm9vbSBub3RlczogW1pvb20gTm90ZXMgMDYgLSBUcmFuc2Zvcm1pbmcgRF0oZG9jcy96b29tX25vdGVzXzA2X3RyYW5zZm9ybS5odG1sKQo+Cj4gUmVhZGluZ3M6Cj4KPiAtIFtSIGZvciBEYXRhIFNjaWVuY2UgQ2hhcHRlciAxMF0oaHR0cHM6Ly9yNGRzLmhhZC5jby5uei90aWJibGVzLmh0bWwpCj4gLSBbUiBmb3IgRGF0YSBTY2llbmNlIENoYXB0ZXIgMTFdKGh0dHBzOi8vcjRkcy5oYWQuY28ubnovZGF0YS1pbXBvcnQuaHRtbCkKPiAtIFtSIGZvciBEYXRhIFNjaWVuY2UgQ2hhcHRlciAxMl0oaHR0cHM6Ly9yNGRzLmhhZC5jby5uei90aWR5LWRhdGEuaHRtbCkKPiAtIFtSIGZvciBEYXRhIFNjaWVuY2UgQ2hhcHRlciAxM10oaHR0cHM6Ly9yNGRzLmhhZC5jby5uei9yZWxhdGlvbmFsLWRhdGEuaHRtbCkKPiAtIFtSIGZvciBEYXRhIFNjaWVuY2UgQ2hhcHRlciAxNF0oaHR0cHM6Ly9yNGRzLmhhZC5jby5uei9zdHJpbmdzLmh0bWwpCgpcCgoKVGhlIHByZS1wcm9jZXNzaW5nIG9mIGRhdGEgYXMgYSBwcm9wb3J0aW9uIG9mIGEgZGF0YSBhbmFseXNpcyB3b3JrZmxvdyBjYW4gYmUgcXVpdGUgc3Vic3RhbnRpYWwsIGJ1dCB0aGlzIHN0ZXAgaXMgZXh0cmVtZWx5IHZpdGFsIC0gcG9vciBkYXRhIGluID0gcG9vciByZXN1bHRzIG91dC4gVGhlIG1haW4gcHVycG9zZSBvZiB0aGlzIG1vZHVsZSBpcyB0cmFuc2Zvcm1pbmcgb3VyIGRhdGEgaW50byBzb21ldGhpbmcgd29ydGh5IG9mIGFuYWx5c2lzIGFuZCB3aWxsIGNvdmVyIGRhdGEgY2xlYW5pbmcsIHRpZHlpbmcgYW5kICdyZXNoYXBpbmcnLiBUaGlzIHdpbGwgYmUgZm9sbG93ZWQgYnkgaG93IHRvIGluY3JlYXNlIHRoZSB1dGlsaXR5IG9mIG91ciBkYXRhIGJ5IGNvbWJpbmluZyBpdCB3aXRoIG90aGVyIGRhdGFzZXRzLgoKTGV0IHVzIGZpcnN0IGRlbHZlIGludG8gdGhlIGRhdGEgY2xlYW5pbmcgYW5kIHRpZHlpbmcuCgpcCgojIyBDbGVhbmluZy9UaWR5aW5nCgpUaGUgZ29hbCBvZiBjbGVhbmluZyBhbmQgdGlkeWluZyBvdXIgZGF0YSBpcyB0byBkZWFsIHdpdGggdGhlIGltcGVyZmVjdGlvbnMgdGhhdCBleGlzdCB3aXRoIHJlYWwtd29ybGQgZGF0YXNldHMgYW5kIG1ha2UgdGhlbSByZWFkeSBmb3IgYW5hbHlzaXMuIEJlY2F1c2Ugd2UncmUgZm9jdXNpbmcgb24gaG93IHRvIGRvIHRoaXMgaW5zaWRlIFIgd2UncmUgZ29pbmcgdG8gYXNzdW1lIHRoYXQgeW91IGFyZSBhbHJlYWR5IHN0YXJ0aW5nIHdpdGggJ3JlY3Rhbmd1bGFyJyBkYXRhIC0gYWxsIHJvd3MgYXJlIHRoZSBzYW1lIGxlbmd0aCwgYW5kIGFsbCBjb2x1bW5zIGFyZSB0aGUgc2FtZSBsZW5ndGguIFNvbWV0aW1lcyB0aGVyZSBpcyBhICdwcmUtUicgcGhhc2Ugd2hpY2ggcmVxdWlyZXMgeW91IHRvIG1ha2UgdGhlIGRhdGEgcmVjdGFuZ3VsYXIgLSBjaGVjayBvdXQgdGhpcyBtYXRlcmlhbCBmcm9tIFtEYXRhIENhcnBlbnRyeV0oaHR0cHM6Ly9kYXRhY2FycGVudHJ5Lm9yZy9zcHJlYWRzaGVldC1lY29sb2d5LWxlc3Nvbi8pIGlmIHRoaXMgaXMgc29tZXRoaW5nIHlvdSBmaXJzdCBuZWVkIHRvIGRvLgoKSWYgeW91IGhhdmUgaHVtYW5zIGFzIHBhcnQgb2YgdGhlIGRhdGEgY29sbGVjdGluZyBwcm9jZXNzIGl0J3Mgb25seSBhIG1hdHRlciBvZiB0aW1lIGJlZm9yZSB0aGVyZSBpcyBhIGRhdGEgZW50cnkgaXNzdWUgdGhhdCBuZWVkcyB0byBiZSAnY2xlYW5lZCcgb3V0LgoKU29tZSBjb21tb24gdGFza3MgYXQgdGhpcyBzdGFnZSBpbmNsdWRlOgoKLSBlbnN1cmluZyB0aGF0IG1pc3NpbmcgZGF0YSBpcyBjb2RlZCBjb3JyZWN0bHkKLSBkZWFsaW5nIHdpdGggdHlwb3MKLSByZW1vdmluZyB1bm5lZWRlZCB3aGl0ZXNwYWNlCi0gY29udmVydGluZyBjb2x1bW5zIHRvIGJlIHRoZSBjb3JyZWN0IGRhdGEgdHlwZQotIG1ha2luZyBuaWNlIGNvbHVtbiBuYW1lcwoKVW5sZXNzIHlvdSBhcmUgaW4gYSBmb3J0dW5hdGUgcG9zaXRpb24gdG8gaW5oZXJpdCAnY2xlYW5lZCcgZGF0YSB0aGVzZSBqb2JzIHdpbGwgZmFsbCBvbiB5b3UgdG8gZW5zdXJlIHRoYXQgbGF0ZXIgb24gdGhleSBkb24ndCBjYXVzZSBpc3N1ZXMgd2hlbiBpdCBjb21lcyB0aW1lIHRvIGRvIHlvdXIgc3RhdGlzdGljcy4KCkZvciB0aGlzIHNlY3Rpb24gd2UncmUgZ29pbmcgdG8gbWFrZSB1c2Ugb2YgdGhlIGZvbGxvd2luZyBwYWNrYWdlcyB0aGF0IGFyZSBwYXJ0IG9mIHRoZSBUaWR5dmVyc2U6IGByZWFkcmAgZm9yIHJlYWRpbmcgaW4gYW5kIHBhcnNpbmcgZGF0YSwgYHRpZHlyYCB3aGljaCBoYXMgZnVuY3Rpb25zIGZvciBkZWFsaW5nIHdpdGggbWlzc2luZyBkYXRhLCBhbmQgYHN0cmluZ3JgIHdoaWNoIGhhcyBmdW5jdGlvbnMgcmVsYXRpbmcgdG8gZGVhbGluZyB3aXRoIGNoYXJhY3RlciB2ZWN0b3JzLgoKQWxsIGFyZSBsb2FkZWQgYXMgcGFydCBvZiBsb2FkaW5nIHRoZSBgdGlkeXZlcnNlYCBwYWNrYWdlLiBZb3UgY2FuIHNlZSB1bmRlciB0aGUgIkF0dGFjaGluZyBwYWNrYWdlcyIgaGVhZGluZyBleGFjdGx5IHdoaWNoIHBhY2thZ2VzIGFyZSBiZWluZyBsb2FkZWQuCgpgYGB7cn0KbGlicmFyeSh0aWR5dmVyc2UpCmBgYAoKQW4gZXh0cmEgcGFja2FnZSBpcyBgamFuaXRvcmAsIHdoaWNoIGRlc2lnbmVkIGZvciBjbGVhbmluZy4KCmBgYHtyfQojIGluc3RhbGwucGFja2FnZXMoImphbml0b3IiKQpsaWJyYXJ5KGphbml0b3IpCmBgYAoKCj4gVGhlIGRhdGEgZm9yIHRoaXMgc2VjdGlvbiBpcyBkZXJpdmVkIGZyb20gW3VudGlkeS1wb3J0YWwtZGF0YS4KeGxzeF0oaHR0cHM6Ly9maWdzaGFyZS5jb20vbmRvd25sb2FkZXIvZmlsZXMvMjQ0Njk0MjQpLiBJdCBpcyBwYXJ0IG9mIHRoZSBbUG9ydGFsIFByb2plY3QgVGVhY2hpbmcgRGF0YWJhc2VdKGh0dHBzOi8vZmlnc2hhcmUuY29tL2FydGljbGVzL1BvcnRhbF9Qcm9qZWN0X1RlYWNoaW5nX0RhdGFiYXNlLzEzMTQ0NTkpIGh0dHBzOi8vZG9pLm9yZy8xMC42MDg0L205LmZpZ3NoYXJlLjEzMTQ0NTkudjEwIGF2YWlsYWJsZSBvbiBGaWdTaGFyZSB1bmRlciBhIENDLTAgbGljZW5zZS4KPiAKPiBUaGUgb3JpZ2luYWwgZmlsZSBkb2VzIG5vdCBoYXZlIHRoZSBkYXRhIGluIGEgcmVjdGFuZ3VsYXIgZm9ybWF0IHNvIHdlIGhhdmUgb3JnYW5pc2VkIHRoZSBkYXRhIHNvIGl0IGNhbiBiZSByZWFkIGludG8gUiBhbmQgbWFkZSBpdCBhdmFpbGFibGUgdG8gZG93bmxvYWQgZWl0aGVyIGJ5IG5hdmlnYXRpbmcgdG8gW2h0dHBzOi8vcmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbS9ydGlzLXRyYWluaW5nLzIwMjItczItcjRzc3AvbWFpbi9kYXRhL3JvZGVudHNfdW50aWR5LmNzdl0oaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL3J0aXMtdHJhaW5pbmcvMjAyMi1zMi1yNHNzcC9tYWluL2RhdGEvcm9kZW50c191bnRpZHkuY3N2KSBhbmQgdXNpbmcgYFNhdmUgQXNgICJyb2RlbnRzX3VudGlkeS5jc3YiIGluIHlvdSBkYXRhIGRpcmVjdG9yeSBvciBieSB1c2luZyB0aGUgZm9sb3dpbmcgUiBjb21tYW5kIChlbnN1cmUgeW91IG1hdGNoIHRoZSBkaXJlY3RvcnkgbmFtZSB0byB5b3VyIGRpcmVjdG9yeSBzZXQgdXApOgo+IAo+IGBgYHtyLCBldmFsID0gRkFMU0V9Cj4gZG93bmxvYWQuZmlsZSh1cmwgPSAiaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL3J0aXMtdHJhaW5pbmcvMjAyMi1zMi1yNHNzcC9tYWluL2RhdGEvcm9kZW50c191bnRpZHkuY3N2IiwgCj4gICAgICAgZGVzdGZpbGUgPSAiZGF0YS9yb2RlbnRzX3VudGlkeS5jc3YiKQo+IGBgYAoKVW50aWwgbm93IHdlJ3ZlIGJlZW4gdXNpbmcgdGhlIGByZWFkLmNzdmAgKCJyZWFkLWRvdC1jc3YiKSBmdW5jdGlvbiB0aGF0IGlzIHBhcnQgb2YgYmFzZSBSLCBidXQgYHJlYWRyYCBoYXMgZXF1aXZhbGVudCBmdW5jdGlvbnMsIG5hbWVseSBgcmVhZF9jc3ZgICgicmVhZC11bmRlcnNjb3JlLWNzdiIpIHdoaWNoIHByb3ZpZGVzIHNvbWUgZXh0cmEgZmVhdHVyZXMgc3VjaCBhcyBhIHByb2dyZXNzIGJhciwgZGlzcGxheWluZyB0aGUgZGF0YSB0eXBlcyBvZiBhbGwgdGhlIGNvbHVtbnMgYXMgcGFydCBvZiB0aGUgcmVhZGluZywgYW5kIGl0IHdpbGwgY3JlYXRlIHRoZSBzcGVjaWFsIHZlcnNpb24gb2YgYSBkYXRhLmZyYW1lIGNhbGxlZCBhIGB0aWJibGVgLiBGb3IgbW9yZSBpbi1kZXB0aCBkZXRhaWxzIGFib3V0IGB0aWJibGVzYCBjaGVjayBvdXQgdGhlIFtSIGZvciBEYXRhIFNjaWVuY2UgLSBUaWJibGVzXShodHRwczovL3I0ZHMuaGFkLmNvLm56L3RpYmJsZXMuaHRtbCkgY2hhcHRlci4gVGhlIG1haW4gYmVuZWZpdCB3ZSdsbCB1dGlsaXNlIGlzIHRoZSB3YXkgaXQgcHJpbnRzIHRvIHRoZSBzY3JlZW4gd2hpY2ggaW5jbHVkZXMgc29tZSBmb3JtYXR0aW5nIGFuZCBpbmNsdXNpb24gb2YgdGhlIGNvbHVtbiBkYXRhIHR5cGVzIHVuZGVyIHRoZSBjb2x1bW4gbmFtZXMuCgpgYGB7cn0KIyBub3RlIHRoZSB1c2Ugb2YgdGhlICJyZWFkLXVuZGVyc2NvcmUtY3N2Igpyb2RlbnRzIDwtIHJlYWRfY3N2KCJkYXRhL3JvZGVudHNfdW50aWR5LmNzdiIpCmBgYAoKVGhlIGZpcnN0IHRoaW5nIHdlIGNhbiBsb29rIGF0IGFzIHBhcnQgb2YgdGhlIGRhdGEgbG9hZGluZyBpcyB0aGUgY29sdW1uIG5hbWVzIGFuZCB3aGF0IHRoZSBkYXRhdHlwZSBgcmVhZF9jc3ZgIGhhZCBhIGJlc3QgZ3Vlc3MgYXQgdGhlIHR5cGUgb2YgZGF0YSB0aGUgY29sdW1uIGhhZC4KCmBgYHtyfQpyb2RlbnRzICU+JSBoZWFkKCkKYGBgCgpJdCBjYW4gYmUgZGlmZmljdWx0IGlmIHlvdSBoYXZlIG1hbnkgY29sdW1ucyB0byBzZWUgdGhlbSBhbGwsIHNvIGluc3RlYWQgeW91IGNhbiBzZWUgZXhhY3RseSB3aGF0IGVhY2ggY29sdW1uIHdhcyBsb2FkZWQgaW4gYXMgdXNpbmcgYHNwZWNgLgoKYGBge3J9CnNwZWMocm9kZW50cykKYGBgCgojIyMgQ2xlYW5pbmcgZGF0YSB2YWx1ZXMKCkZyb20gdGhpcyBsaXN0IG9mIGNvbHVtbnMsIHdpdGhvdXQga25vd2luZyBtdWNoIGFib3V0IHRoZSBkYXRhIGl0c2VsZiwgX1dlaWdodF8gbWlnaHQgc2VlbiBvZGQgdGhhdCBpdCBpcyBhIGNoYXJhY3RlciB0eXBlLCByYXRoZXIgdGhhbiBhIG51bWVyaWMsIHNvIHdlJ2xsIGZvY3VzIGluIG9uIHRoaXMgY29sdW1uIHRvIHN0YXJ0IHdpdGgKCmBgYHtyfQpyb2RlbnRzJFdlaWdodApgYGAKCkZyb20gdGhpcyB3ZSBjYW4gc2VlIHRoYXQgd2UgaGF2ZSBjb21lICI/IiBjaGFyYWN0ZXJzLCBpcyB3aGF0IGhhcyBjYXVzZWQgdGhlIGNvbHVtbiB0byBiZSByZWFkIGluIGFzIGNoYXJhY3RlcnMgaW5zdGVhZCBvZiBudW1iZXJzIChyZW1lbWJlciB0aGF0IGEgdmVjdG9yIG11c3QgYmUgYWxsIHRoZSBzYW1lIGRhdGEgdHlwZSkuCgpMZXRzIGNoYW5nZSB0aGUgIj8iIHRvIGJlIGEgYE5BYC4gV2UnbGwgZG8gdGhpcyB0aHJvdWdoIHN1Yi1zZXR0aW5nLCB3aGVyZSB3ZSBmaW5kIHRoZSBlbGVtZW50cyB0aGF0IGFyZSAiPyIgYW5kIGFzc2lnbiB0aGVtIHRvIG5vdyBiZSBgTkFgLgoKYGBge3J9CnJvZGVudHMkV2VpZ2h0W3JvZGVudHMkV2VpZ2h0ID09ICI/Il0gPC0gTkEKCnJvZGVudHMkV2VpZ2h0CmBgYAoKCk5vdyB0aGF0IHdlIGhhdmUgcmVtb3ZlZCB0aGUgY2hhcmFjdGVycywgbGV0cyB0dXJuIGByb2RlbnRzJFdlaWdodGAgaW50byBhIG51bWVyaWMgZGF0YXR5cGUKCmBgYHtyfQpyb2RlbnRzJFdlaWdodCA8LSBhcy5udW1lcmljKHJvZGVudHMkV2VpZ2h0KQpgYGAKCgoKTmV4dCBhcyBwYXJ0IG9mIG91ciBjbGVhbmluZyB3ZSBtaWdodCB3YW50IHRvIGNoYW5nZSB0aGUgYC05OTlgIGVudHJpZXMgaW4gcm9kZW50cyRXZWlnaHQgdG8gYmUgYE5BYAoKYGBge3J9CnJvZGVudHMkV2VpZ2h0W3JvZGVudHMkV2VpZ2h0ID09IC05OTldIDwtIE5BCgpyb2RlbnRzJFdlaWdodApgYGAKClwKCiMjIyBDbGVhbmluZyBuYW1lcwoKWW91IG1hbnkgaGF2ZSBub3RpY2VkIHRoYXQgYHJlYWRfY3N2YCBoYXMga2VwdCB0aGUgY29sdW1uIG5hbWVzIGFzIHRoZXkgd2VyZSBpbiB0aGUgZmlsZSwgYW5kIHRoZXkgYWN0dWFsbHkgdmlvbGF0ZSB0aGUgcnVsZXMgd2UgaGF2ZSBmb3IgdmFyaWFibGVzIGluIFIgLSBuYW1lbHkgdGhleSBjb250YWluIGEgc3BhY2UgLSB3aGljaCBjYW4gbWFrZSBkZWFsaW5nIHdpdGggdGhlbSBwcm9ibGVtYXRpYy4KCmBgYHtyfQpuYW1lcyhyb2RlbnRzKQpgYGAKCldlJ3JlIG5vdyBnb2luZyB0byBjbGVhbiB0aGUgbmFtZXMgdXAsIGFuZCB0aGlzIGlzIHdoZXJlIHRoZSBgamFuaXRvcmAgcGFja2FnZSBpcyBleHRyZW1lbHkgaGVscGZ1bC4gQmVjYXVzZSB3ZSdyZSBvbmx5IGdvaW5nIHRvIHVzZSBhIHNpbmdsZSBmdW5jdGlvbiBmcm9tIHRoZSBwYWNrYWdlIHdlIGNhbiBjYWxsIGlzIGRpcmVjdGx5IHVzaW5nIHRoZSBgPHBhY2thZ2U+Ojo8ZnVuY3Rpb24+YCBub3RhdGlvbiwgcmF0aGVyIHRoYW4gdXNpbmcgYGxpYnJhcnlgLgoKCmBgYHtyfQpyb2RlbnRzIDwtIHJvZGVudHMgJT4lIGphbml0b3I6OmNsZWFuX25hbWVzKCkKCm5hbWVzKHJvZGVudHMpCmBgYAoKPiBgamFuaXRvcmAgaGFzIG1hbnkgb3B0aW9ucyBmb3IgaG93IGl0IGNsZWFucyB0aGUgbmFtZXMgd2l0aCB0aGUgZGVmYXVsdCBiZWluZyAnc25ha2UnLCBidXQgbWFueSBvdGhlcnMgY2FuIGJlIHNlbGVjdGVkIGFuZCBzdXBwbGllZCBhcyB0aGUgYGNhc2VgIHBhcmFtZXRlciBlLmcuIGNsZWFuX25hbWVzKGNhc2UgPSAnbG93ZXJfY2FtZWwnKSBmb3IgY2FtZWwgY2FzZSBzdGFydGluZyB3aXRoIGEgbG93ZXIgY2FzZSBsZXR0ZXIuCgpcCgojIyMgVGlkeWluZwoKVGhlIHRocmVlIHByaW5jaXBsZXMgb2YgdGlkeSB0YWJ1bGFyIGRhdGEgYXJlOgoKMS4gRWFjaCBjb2x1bW4gaXMgYSB2YXJpYWJsZSBvciBwcm9wZXJ0eSB0aGF0IGlzIGJlaW5nIG1lYXN1cmVkIAoyLiBFYWNoIHJvdyBpcyBhbiBvYnNlcnZhdGlvbgozLiBBIHNpbmdsZSBjZWxsIHNob3VsZCBjb250YWluIGEgc2luZ2xlIHBpZWNlIG9mIGluZm9ybWF0aW9uCgpJZGVhbGx5IHRoZXNlIHByaW5jaXBsZXMgYXJlIGZvbGxvd2VkIGZyb20gdGhlIHZlcnkgc3RhcnQgd2hlbiBkYXRhIGNvbGxlY3Rpb24gaXMgb2NjdXJyaW5nCgpJbiBvdXIgcm9kZW50cyBkYXRhc2V0LCB0aGUgKnBsb3RfbG9jYXRpb24qIGNvbHVtbiB2aW9sYXRlcyBydWxlIG51bWJlciAzLCBpdCBjb250YWlucyBtb3JlIHRoYW4gYSBzaW5nbGUgcGllY2Ugb2YgaW5mb3JtYXRpb24uCgpXZSBjYW4gdXNlIHRoZSBgc2VwYXJhdGVgIGZ1bmN0aW9uIGZyb20gYHRpZHlyYCB0byBzcGxpdCB0aGlzIGNvbHVtbiBpbnRvIDIgY29sdW1ucyB1c2luZyB0aGUgJ18nIGFzIG91ciBmaWVsZCBkZWxpbWl0ZXIuCgpgYGB7cn0Kcm9kZW50cyA8LSByb2RlbnRzICU+JSBzZXBhcmF0ZShwbG90X2xvY2F0aW9uLCBpbnRvID0gYygicGxvdCIsICJsb2NhdGlvbiIpLCBzZXAgPSAnXycpCgpoZWFkKHJvZGVudHMpCmBgYAoKTm90aWNlIGhvdyB0aGUgZmluYWwgNyByb3dzIGRpZG4ndCBoYXZlIGEgbG9jYXRpb24sIGFuZCBzbyB3ZXJlIGF1dG9tYXRpY2FsbHkgZmlsbGVkIHdpdGggYE5BYHMuIFRoZXJlIGlzIHN0aWxsIG1vcmUgdGhhdCBjb3VsZCBiZSBkb25lIHRvIGNsZWFuIGFuZCB0aWR5IHRoaXMgcGFydGljdWxhciBkYXRhc2V0IGJ1dCB3ZSdsbCBsZWF2ZSBpdCBmb3Igbm93LgoKXAoKXAoKCiMjIFNoYXBpbmcgRGF0YQoKV2hlbiB3ZSdyZSB0aGlua2luZyBhYm91dCB0aGUgJ3NoYXBlJyBvZiB0aGUgZGF0YSwgd2UncmUgdGhpbmtpbmcgYWJvdXQgaW4gd2hpY2ggZGlyZWN0aW9uIGFyZSB3ZSBhZGRpbmcgb2JzZXJ2YXRpb25zIC0gYXJlIHdlIGFkZGluZyB0aGVtIGFzIG5ldyBjb2x1bW5zIG9udG8gdGhlIHNpZGUgbWFraW5nIHRoZSBkYXRhICoqd2lkZXIqKiwgb3IgYXJlIHdlIGFkZGluZyB0aGVtIGFzIHJvd3Mgb250byB0aGUgYm90dG9tIG1ha2luZyB0aGUgZGF0YSAqKmxvbmdlcioqPwoKSW4gb3VyIGZyYW1ld29yayBmb3IgbWFraW5nIHRpZHkgZGF0YSB3ZSBjcmVhdGVkIGEgc3lzdGVtIHRoYXQgbWFkZSAqKmxvbmcqKiBkYXRhLCBpbiB0aGF0IGVhY2ggcm93IHdhcyBhbiBvYnNlcnZhdGlvbi4gU29tZXRpbWVzIGhvd2V2ZXIgd2UgbmVlZCB0byByZXNoYXBlIHRoaXMgZGF0YSBpbnRvIGEgKip3aWRlKiogZm9ybWF0LgoKCkluIHRoZSBmaXJzdCBleGFtcGxlIG9mIHRoaXMgc2VjdGlvbiB3ZSdsbCBsb29rIGF0LCB3ZSBoYXZlIHllYXJseSBwb3B1bGF0aW9uIGRhdGEgZG93bmxvYWRlZCBmcm9tIEdhcG1pbmRlci4gCgo+IFRoaXMgZGF0YSB3YXMgb3JpZ2luYWxseSBkb3dubG9hZGVkIGZyb20gW0dhcG1pbmRlcl0oaHR0cHM6Ly93d3cuZ2FwbWluZGVyLm9yZy9kYXRhLykgYW5kIHNlbGVjdGluZyB0aGUgaW5kaWNhdG9yICJQb3B1bGF0aW9uIiwgdGhlbiAiVG90YWwgcG9wdWxhdGlvbiIKPiAKPiBFaXRoZXIgZ28gdG8gW3RoaXMgcGFnZV0oaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL3J0aXMtdHJhaW5pbmcvMjAyMi1zMi1yNHNzcC9tYWluL2RhdGEvZ2FwbWluZGVyX3llYXJseV9wb3B1bGF0aW9uX21pbGxpb25zX3RvdGFsLmNzdikgYW5kIHVzZSBgU2F2ZSBBc2AgImdhcG1pbmRlcl95ZWFybHlfcG9wdWxhdGlvbl90b3RhbC5jc3YiLCBzYXZpbmcgaXQgaW50byB5b3VyIGBkYXRhL2AgZGlyZWN0b3J5IG9yIGJ5IHVzaW5nIHRoZSBSIGNvbW1hbmQgKGFkanVzdCB0aGUgZGlyZWN0b3J5ICJkYXRhIiB0byBtYXRjaCB5b3VyIGRpcmVjdG9yeSBuYW1lIGV4YWN0bHkpOgo+IAo+IGBgYHtyLCBldmFsID0gRkFMU0V9Cj4gZG93bmxvYWQuZmlsZSh1cmwgPSAiaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL3J0aXMtdHJhaW5pbmcvMjAyMi1zMi1yNHNzcC9tYWluL2RhdGEvZ2FwbWluZGVyX3llYXJseV9wb3B1bGF0aW9uX21pbGxpb25zX3RvdGFsLmNzdiIsIAo+ICAgICAgIGRlc3RmaWxlID0gImRhdGEvZ2FwbWluZGVyX3llYXJseV9wb3B1bGF0aW9uX21pbGxpb25zX3RvdGFsLmNzdiIpCj4gYGBgCgoKYGBge3J9CmdhcG1pbmRlcl95ZWFybHlfcG9wIDwtIHJlYWRfY3N2KCJkYXRhL2dhcG1pbmRlcl95ZWFybHlfcG9wdWxhdGlvbl9taWxsaW9uc190b3RhbC5jc3YiKQpkaW0oZ2FwbWluZGVyX3llYXJseV9wb3ApCmhlYWQoZ2FwbWluZGVyX3llYXJseV9wb3ApCmBgYAoKIyMjIFdpZGUgdG8gbG9uZwoKWW91IGNhbiBzZWUgdGhhdCBpbiB0aGlzIGNhc2Ugd2UgaGF2ZSBhIGNvbHVtbiBmb3IgZWFjaCB5ZWFyLCBhbmQgb3VyIHJvd3MgcmVsYXRlIHRvIGEgcGFydGljdWxhciBjb3VudHJ5LiBUaGlzIG1pZ2h0IGJlIGEgdmFsaWQgZm9yIGEgZmluYWwgdGFibGUsIGhvd2V2ZXIgaXQgd2lsbCBjYXVzZSBzb21lIGNoYWxsZW5nZXMgaWYgd2Ugd2FudCB0byBwZXJmb3JtIHNvbWUgYW5hbHlzaXMgb3IgdmlzdWFsaXNhdGlvbiBvbiBpdC4gV2hpbGUgaXQgaXMgcG9zc2libGUgdG8gcGVyZm9ybSBvcGVyYXRpb25zIGFjcm9zcyBhIHJvdywgaXQgZmlnaHRzIGFnYWluc3QgaG93IHRoZSBkYXRhZnJhbWUgc3RydWN0dXJlIGl0c2VsZiBpcyBjb25zdHJ1Y3RlZCAtIGVhY2ggY29sdW1uIGlzIGEgc2luZ2xlIHZlY3RvciBhbmQgdGhlcmVmb3JlIGhhcyB0byBiZSB0aGUgc2FtZSBkYXRhdHlwZSwgYnV0IGEgcm93IGlzIG1hZGUgb2YgbXVsdGlwbGUgdmVjdG9ycyBlYWNoIG9mIHdoaWNoIGNvdWxkIGJlIGEgZGlmZmVyZW50IGRhdGF0eXBlLiBIZW5jZSB0aGUgbWFqb3JpdHkgb2Ygb3BlcmF0aW9ucyBpbiBSIGFyZSBjb2x1bW4gZm9jdXNlZC4gCgpFLmcgSWYgd2Ugd2FudCB0byBwbG90IHRoZSBjaGFuZ2UgaW4gcG9wdWxhdGlvbiBhY3Jvc3MgdGltZSBmb3IgYSBjb3VudHJ5IGlzIHRoYXQgaW4gdGhlIGN1cnJlbnQgZm9ybWF0IHdlIGNhbid0IGRvIGl0IGJlY2F1c2Ugd2UgdXNlIGEgc2luZ2xlIGNvbHVtbiBmb3IgZWFjaCBheGlzLgoKSWYgd2UgdGhpbmsgdG8gb3VyIHRpZHkgZGF0YSBwcmluY2lwbGVzLCB5ZWFyIGlzIGEgdmFyaWFibGUgdGhhdCBpcyBiZWluZyBtZWFzdXJlZCBhbG9uZ3NpZGUgcG9wdWxhdGlvbiwgc28gd2Ugc2hvdWxkIGhhdmUgYSBjb2x1bW4gJ3llYXInIGludG8gd2hpY2ggd2UgY2FuIHN0b3JlIHRoZSB5ZWFyIHZhbHVlcy4KCgoKVGhlIG9wZXJhdGlvbiB0aGF0IHdpbGwgdGFrZSB1cyBmcm9tIGEgd2lkZSBmb3JtYXQgdG8gYSBsb25nIGZvcm1hdCBpcyBgcGl2b3RfbG9uZ2VyYCBmcm9tIGB0aWR5cmAuIEl0IGhhcyBhIGBjb2xzYCBwYXJhbWV0ZXIgd2hlcmUgd2Ugc3BlY2lmeSB0aGUgY29sdW1ucyB0aGF0IHdpbGwgYmUgZ2F0aGVyZWQgaW50byAyIG5hbWVkIGNvbHVtbnMgLSBvbmUgdGhhdCB3aWxsIGNvbnRhaW4gdGhlIG5hbWVzIGZyb20gdGhlIGNvbHVtbnMgLSBgbmFtZXNfdG9gLCB0aGUgc2Vjb25kLCB3aWxsIGNvbnRhaW4gdGhlIHZhbHVlcyB0aGF0IHdlcmUgaW4gdGhlIGNvbHVtbnMgLSBgdmFsdWVzX3RvYC4gYGNvbHNgIHVzZXMgdGhlIHNhbWUgc3ludGF4IGFzIGBzZWxlY3RgIGZyb20gYGRwbHlyYCBhbmQgaWYgYSBgLWAgaXMgdXNlZCBpdCB3aWxsIHVzZSBhbGwgdGhlIGNvbHVtbnMgX25vdF8gc3BlY2lmaWVkLgoKYGBge3J9CiMgVXNpbmcgdGhlICdwb3NpdGl2ZScgc2VsZWN0aW9uIG9mIGNvbHVtbnMKZ2FwbWluZGVyX3llYXJseV9wb3BfbG9uZyA8LSBnYXBtaW5kZXJfeWVhcmx5X3BvcCAlPiUgcGl2b3RfbG9uZ2VyKGNvbHMgPSBgMTgwMGA6YDIxMDBgLCBuYW1lc190byA9ICJ5ZWFyIiwgdmFsdWVzX3RvID0gInBvcHVsYXRpb24iKQpnYXBtaW5kZXJfeWVhcmx5X3BvcF9sb25nCgojIFVzaW5nIHRoZSAnbmVnYXRpdmUnIHNlbGVjdGlvbiBvZiBjb2x1bW5zCmdhcG1pbmRlcl95ZWFybHlfcG9wX2xvbmcgPC0gZ2FwbWluZGVyX3llYXJseV9wb3AgJT4lIHBpdm90X2xvbmdlcihjb2xzID0gLWNvdW50cnksIG5hbWVzX3RvID0gInllYXIiLCB2YWx1ZXNfdG8gPSAicG9wdWxhdGlvbiIpCmdhcG1pbmRlcl95ZWFybHlfcG9wX2xvbmcKYGBgCgpOb3RlIHRoYXQgYmVjYXVzZSB0aGUgY29sdW1uIG5hbWVzIHZpb2xhdGUgdGhlIHJ1bGVzIGZvciBSIHZhcmlhYmxlcyBpbiB0aGF0IHRoZXkgc3RhcnQgd2l0aCBhIG51bWJlciwgd2UgaGF2ZSB0byBkZWFsIHdpdGggdGhlIHByb2JsZW1hdGljIG5hbWVzIGJ5IGVuY2xvc2luZyB0aGVtIHdpdGggYmFja3RpY2tzIGBgYCBgIGBgYC4KCiMjIyBMb25nIHRvIHdpZGUKClNvbWV0aW1lcyB3ZSB3b3VsZCBsaWtlIHRvIHRha2Ugb3VyIGRhdGEgZnJvbSBhIGxvbmcgZm9ybWF0IGFuZCBpbnRvIGEgd2lkZSBmb3JtYXQuIEZvciBvdXIgZXhhbXBsZSB3ZSB3YW50IHRvIGNyZWF0ZSBhIHRhYmxlIHRoYXQgd2lsbCBsZXQgdXMgc2VlIGRpc3RhbmNlcyBiZXR3ZWVuIGFuIG9yaWdpbiBhbmQgYSBkZXN0aW5hdGlvbiB3aXRoaW4gNTAwIG1pbGVzIG9mIGVhY2ggb3RoZXIuIFRvIGRvIHRoaXMgd2UncmUgZ29pbmcgdG8gdXNlIHRoZSBgZmxpZ2h0c2AgZGF0YSBmcm9tIHRoZSBgbnljZmxpZ2h0czEzYCBwYWNrYWdlLgoKVGhlIHRhYmxlIHRoYXQgd2UgY3JlYXRlIHdpbGwgZXNzZW50aWFsbHkgYmUgYSBsb29rLXVwIHRhYmxlIHRoYXQgd2lsbCBsZXQgdXMgcXVpY2tseSByZWZlcmVuY2UgdGhlIGRpc3RhbmNlIGJldHdlZW4gb3JpZ2luL2Rlc3RpbmF0aW9uIHBhaXJzLiAKCgpgYGB7cn0KIyBpbnN0YWxsLnBhY2thZ2VzKG55Y2ZsaWdodHMxMykKbGlicmFyeShueWNmbGlnaHRzMTMpCgpnbGltcHNlKGZsaWdodHMpCmBgYAoKCgpGaXJzdCBsZXRzIHNlbGVjdCB0aG9zZSB0aHJlZSBjb2x1bW5zIHdlIG5lZWQgYW5kIGZpbHRlciBzbyB0aGF0IHRoZSBkaXN0YW5jZSBpcyB3aXRoaW4gNTAwIG1pbGVzLgpgYGB7cn0KZmxpZ2h0c19sb25nIDwtIGZsaWdodHMgJT4lIHNlbGVjdChvcmlnaW4sIGRlc3QsIGRpc3RhbmNlKSAlPiUgCiAgZmlsdGVyKGRpc3RhbmNlIDw9IDUwMCkKYGBgCgpOZXh0IHdlIHdhbnQgcmVtb3ZlIGR1cGxpY2F0ZSByb3dzLCB0aGlzIGNhbiBiZSBkb25lIHVzaW5nIGBkaXN0aW5jdCgpYApgYGB7cn0KZmxpZ2h0c19sb25nIDwtIGZsaWdodHNfbG9uZyAlPiUgZGlzdGluY3QoKQpgYGAKCllvdSBjYW4gc2VlIHRoYXQgb3VyIGxvbmcgZGF0YSBoYXMgYG5jb2woZmxpZ2h0c19sb25nKWAgY29sdW1ucywgYW5kIGBucm93KGZsaWdodHNfbG9uZylgIHJvd3MuCgpgYGB7cn0KZGltKGZsaWdodHNfbG9uZykKYGBgCgpXZSBub3cgd2FudCB0byBtYWtlIGVhY2ggb2Ygb3VyIGRlc3RpbmF0aW9ucyBpdHMgb3duIGNvbHVtbiBhbmQgZmlsbCBpbiB0aGUgY29ycmVzcG9uZGluZyBhaXIgdGltZSBhcyB0aGUgdmFsdWUuIFRvIGRvIHRoaXMsIHdlIGNhbiB1c2UgYHBpdm90X3dpZGVyYC4gVGhlIG1haW4gYXJndW1lbnRzIGFyZSBgbmFtZXNfZnJvbWAgd2hpY2ggaXMgdGhlIGNvbHVtbiB5b3Ugd2FudCB0YWtlIHRoZSBuZXcgY29sdW1uIG5hbWVzIGZyb20sIGFuZCBgdmFsdWVzX2Zyb21gIHdoaWNoIGlzIHRoZSBjb2x1bW4gdGhhdCB3aWxsIGJlIHVzZWQgdG8gZmlsbCBpbiB0aGUgbmV3IGNvbHVtbiB2YWx1ZXMuCgpgYGB7cn0KZmxpZ2h0c19sb25nICU+JSBwaXZvdF93aWRlcihvcmlnaW4sIG5hbWVzX2Zyb20gPSAiZGVzdCIsIHZhbHVlc19mcm9tID0gImRpc3RhbmNlIikKYGBgCgoKCg==</div>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("06-transform.Rmd");
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

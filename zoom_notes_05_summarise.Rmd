@@ -1,6 +1,6 @@
 ---
-title: "Zoom Notes 04 - Summarising Data"
-date: "Semester 2, 2022"
+title: "Zoom Notes 05 - Summarising Data"
+date: "Semester 1, 2023"
 output:
   html_document:
     toc: true
@@ -15,7 +15,7 @@ library(knitr)
 
 knitr::opts_chunk$set(
   comment = "#>",
-  fig.path = "figures/04/", # use only for single Rmd files
+  fig.path = "figures/05/", # use only for single Rmd files
   collapse = TRUE,
   echo = TRUE
 )
@@ -26,7 +26,7 @@ knitr::opts_chunk$set(
 
 > #### Associated Material
 >
-> Module: [Module 04 - Summarising](04-summarise.html)
+> Module: [Module 05 - Summarising](05-summarise.html)
 >
 > Readings
 >
@@ -84,7 +84,7 @@ The penguin body mass graph is not perfectly symmetrical. It shows a bit of skew
 
 Observe the distribution of ChlA for Lake Ellesmere (shown below with a smoothed density line for illustration). Although most of the readings are clustered below 100, there are some much larger values -- one reading is more than 500 -- creating a long "tail" to the right. The ChlA measure in Lake Ellesmere is skewed. 
 
-```{r chla dist, echo = FALSE, warning=FALSE, message=FALSE}
+```{r chla_dist, echo = FALSE, warning=FALSE, message=FALSE}
 lakes <- read.csv("data/NZ_lake_chla_data.csv", stringsAsFactors = TRUE)
 ellesmere <- (lakes[lakes$LakeName == "Lake Ellesmere", ])
 
@@ -131,7 +131,7 @@ As mentioned earlier, many inferential tests give inaccurate results with skewed
 In Module 03 you saw how to add a new computed column to a data frame using either function `mutate` or the `$` operator. Using the technique of your choice, add a column to data frame lakes that holds the natural log of each ChlA reading.
 
 
-```{r 04-logs_solution, include=FALSE, warning=FALSE, message=FALSE}
+```{r 05-logs_solution, include=FALSE, warning=FALSE, message=FALSE}
 
 # Add a new column to the data frame that holds the log of the raw ChlA
 # This can also be done with dplyr::mutate
@@ -143,7 +143,7 @@ lakes$log_ChlA <- log(lakes$ChlA)
 
 Using ggplot, make a histogram of all the log ChlA values in data frame lakes, with each lake in a different colour. This code is *extremely* similar to the example in the Module. How would you describe these distributions? Are Lake Ellesmere's log ChlA values skewed? What can you provide as evidence for your answer?
 
-```{r 04-logs_check, include=FALSE, warning=FALSE, message=FALSE}
+```{r 05-logs_check, include=FALSE, warning=FALSE, message=FALSE}
 
 # Plot the histogram
 

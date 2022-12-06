@@ -1,6 +1,6 @@
 ---
 title: "Transforming"
-date: "Semester 2, 2022"
+date: "Semester 1, 2023"
 output:
   html_document:
     toc: true
@@ -15,7 +15,7 @@ library(knitr)
 
 knitr::opts_chunk$set(
   comment = "#>",
-  fig.path = "figures/05/", # use only for single Rmd files
+  fig.path = "figures/06/", # use only for single Rmd files
   collapse = TRUE,
   echo = TRUE
 )
@@ -24,7 +24,7 @@ knitr::opts_chunk$set(
 
 > #### Associated Material
 >
-> Zoom notes: [Zoom Notes 05 - Transforming Data](zoom_notes_05.html)
+> Zoom notes: [Zoom Notes 06 - Transforming D](docs/zoom_notes_06_transform.html)
 >
 > Readings:
 >

@@ -1,6 +1,6 @@
 ---
 title: "Introducing R and RStudio"
-date: "Semester 2, 2022"
+date: "Semester 1, 2023"
 output:
   html_document:
     toc: true
@@ -26,7 +26,7 @@ knitr::opts_chunk$set(
 
 > #### Associated material
 >
-> Zoom notes: [Zoom notes 01 - Introducing R and RStudio](zoom_notes_01.html)
+> Zoom notes: [Zoom notes 01 - Introducing R and RStudio](zoom_notes_01_intro.html)
 > 
 > Readings:
 >
@@ -37,7 +37,7 @@ knitr::opts_chunk$set(
 
 This course is designed with two components - the module and the zoom notes. The module content provides more explanation and background so that you can work through it on your own if you wish. The zoom notes content provides the structure for the content that will be delivered in the online sessions. Both sets of content are complementary to each other.
 
-At the top right hand corner of both the module and zoom notes pages is a "code" button. This can be used to toggle seeing/hiding the code or to download the code that that created the page as an Rmarkdown file (we cover Rmarkdown more in-depth in [module](06-communicate.html)/[zoom notes](zoom_notes_06.html) 6).
+At the top right hand corner of both the module and zoom notes pages is a "code" button. This can be used to toggle seeing/hiding the code or to download the code that that created the page as an Rmarkdown file (we cover Rmarkdown more in-depth in [module](04-communicate.html)/[zoom notes](zoom_notes_04_communicate.html) 4).
 
 
 

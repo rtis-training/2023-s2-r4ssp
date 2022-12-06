@@ -1,6 +1,6 @@
 ---
 title: "Communicate"
-date: "Semester 2, 2022"
+date: "Semester 1, 2023"
 output:
   html_document:
     toc: true
@@ -15,7 +15,7 @@ library(knitr)
 
 knitr::opts_chunk$set(
   comment = "#>",
-  fig.path = "figures/06/", # use only for single Rmd files
+  fig.path = "figures/04/", # use only for single Rmd files
   collapse = TRUE,
   echo = TRUE
 )
@@ -25,7 +25,7 @@ knitr::opts_chunk$set(
 
 > #### Associated Material
 >
-> Zoom notes: [Zoom Notes 06 - Communicate](zoom_notes_06.html)
+> Zoom notes: [Zoom Notes 04 - Communicate](zoom_notes_04.html)
 >
 > Readings:
 >
@@ -117,7 +117,7 @@ Before we delve into explaining each part of the RMarkdown file we're going to c
 Lets create our own RMarkdown document now from the template. To do this go `File` -\> `New File` -\> `R Markdown`. You'll then be presented with a window that looks like this
 
 ```{r, out.width="100%", echo = FALSE}
-include_graphics("images/06-new_rmd.png")
+include_graphics("images/04-new_rmd.png")
 ```
 
 Take the opportunity to fill in your name and title then click `OK`.
@@ -133,13 +133,13 @@ cat(htmltools::includeText("scripts/rmd_template.Rmd"))
 From Rstudio v1.2 there has been the inclusion of a live-preview editor that can be turned on that provides a graphical point-and-click method of editing Markdown.
 
 ```{r, echo = FALSE, out.width = "75%", fig.align='center', fig.cap="Source view"}
-include_graphics("images/06-rmd-editor.png")
+include_graphics("images/04-rmd-editor.png")
 ```
 
 \
 
 ```{r, echo = FALSE, out.width = "90%", fig.align='center', fig.cap="Visual view"}
-include_graphics("images/06-rstudio-rmd-visual.png")
+include_graphics("images/04-rstudio-rmd-visual.png")
 ```
 
 

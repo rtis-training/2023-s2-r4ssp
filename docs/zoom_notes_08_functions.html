@@ -11,7 +11,7 @@
 
 
 
-<title>R for Successful Student Projects</title>
+<title>Zoom Notes 08: Functions and Choices</title>
 
 <script src="site_libs/header-attrs-2.18/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -29,7 +29,12 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 
@@ -56,6 +61,11 @@ if (window.hljs) {
 
 
 
+<style type="text/css">
+#rmd-source-code {
+  display: none;
+}
+</style>
 
 
 <link rel="stylesheet" href="style.css" type="text/css" />
@@ -217,7 +227,73 @@ $(document).ready(function () {
 </style>
 
 <!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
 
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
 
 
 
@@ -227,6 +303,16 @@ $(document).ready(function () {
 
 
 <div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -345,168 +431,136 @@ $(document).ready(function () {
 
 <div id="header">
 
-
-
-<h1 class="title toc-ignore">R for Successful Student Projects</h1>
-
-</div>
-
-
-<p><br />
-</p>
-<div id="is-this-for-me" class="section level2">
-<h2>Is this for me?</h2>
-<ul>
-<li>I want to learn about R</li>
-<li>I’m a student or staff member at the University of Otago</li>
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+<li role="separator" class="divider"></li>
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
 </ul>
-<p>If you answered yes to both questions, this course is for you!</p>
-<p>This course is primarily targeted to students with no or little
-programming experience who want to learn R for their assignments or
-research projects. Staff are welcome to attend too.</p>
-<p><br />
-</p>
 </div>
-<div id="sign-up" class="section level2">
-<h2>Sign-up</h2>
-<p>Semester 1 2023 R for Successful Student Projects (R4SSP) will be
-online via Zoom, time and day to be decided.
-<!--Please register [using this form](https://docs.google.com/forms/d/e/1FAIpQLScOCwMa1_pSZPZEJyOZ4Wp8OORPqbd_S_84QPwaHR7urDu2mA/viewform?usp=sf_link) to receive details.--></p>
-<p>For more information please email <a
-href="mailto:rtis.training@otago.ac.nz"
-class="email">rtis.training@otago.ac.nz</a></p>
-<p><br />
-</p>
+
+
+
+<h1 class="title toc-ignore">Zoom Notes 08: Functions and Choices</h1>
+<h4 class="date">Semester 1, 2023</h4>
+
 </div>
-<div id="content" class="section level2">
-<h2>Content</h2>
-<p>This course is designed to provide many avenues to learning R. We
-have provided both Modules that give more in-depth information on topics
-and handouts, which are representative of the content that will be
-covered in the online sessions. Both resources are designed to be
-complementary to each other.</p>
-<p>We have split the content into two common purposes for learning R</p>
+
+
+<blockquote>
+<h4 id="associated-material">Associated Material</h4>
+<p>Zoom notes: <a href="08-functions.html">Module 08 - Functions and
+Choices</a></p>
+<p>Readings:</p>
 <ul>
-<li>Using R for data analysis</li>
-<li>Programming using R</li>
+<li><a href="https://r4ds.had.co.nz/functions.html">R for Data Science -
+Chapter 19</a></li>
 </ul>
-<p>The main motivation for many people is to perform data analysis, so
-we have structured the order so that people can ‘get stuff done’ and
-then learn about how to improve their efficiency using R.</p>
+</blockquote>
 <p><br />
 </p>
+<div id="topics" class="section level1">
+<h1>Topics</h1>
+<div id="user-defined-functions" class="section level2">
+<h2>User-Defined Functions</h2>
+<ul>
+<li>Declaration</li>
+<li>Input arguments</li>
+<li>Returning a result</li>
+</ul>
 </div>
-<div id="syllabus" class="section level2">
-<h2>Syllabus</h2>
-<table>
-<colgroup>
-<col width="21%" />
-<col width="21%" />
-<col width="14%" />
-<col width="21%" />
-<col width="21%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th align="left">Date</th>
-<th align="center">Week</th>
-<th align="left">Module</th>
-<th align="center">Part</th>
-<th align="left">Topic</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">Week starting 6 March</td>
-<td align="center">1</td>
-<td align="left">Setup</td>
-<td align="center"></td>
-<td align="left">Introduce the tools: R and Rstudio</td>
-</tr>
-<tr class="even">
-<td align="left">Week starting 13 March</td>
-<td align="center">2</td>
-<td align="left">Data focus</td>
-<td align="center">1</td>
-<td align="left">Visualising Data</td>
-</tr>
-<tr class="odd">
-<td align="left">Week starting 20 March</td>
-<td align="center">3</td>
-<td align="left">Data focus</td>
-<td align="center">2</td>
-<td align="left">Selecting and Filtering Data</td>
-</tr>
-<tr class="even">
-<td align="left">Week starting 27 March</td>
-<td align="center">4</td>
-<td align="left">Data focus</td>
-<td align="center">3</td>
-<td align="left">Communicating Data</td>
-</tr>
-<tr class="odd">
-<td align="left">Week starting 3 April</td>
-<td align="center">5</td>
-<td align="left">Data focus</td>
-<td align="center">4</td>
-<td align="left">Summarising Data</td>
-</tr>
-<tr class="even">
-<td align="left">Week starting 10 April</td>
-<td align="center">-</td>
-<td align="left">MID-SEMESTER</td>
-<td align="center"></td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td align="left">Week starting 17 April</td>
-<td align="center">6</td>
-<td align="left">Data focus</td>
-<td align="center">5</td>
-<td align="left">Tidying Data</td>
-</tr>
-<tr class="even">
-<td align="left">Week starting 24 April</td>
-<td align="center">7</td>
-<td align="left">Data focus</td>
-<td align="center">6</td>
-<td align="left">Combing/Joining</td>
-</tr>
-<tr class="odd">
-<td align="left">Week starting</td>
-<td align="center">7</td>
-<td align="left">Programming focus</td>
-<td align="center">1</td>
-<td align="left">Functions and Choices</td>
-</tr>
-<tr class="even">
-<td align="left">Week starting</td>
-<td align="center">8</td>
-<td align="left">Programming focus</td>
-<td align="center">2</td>
-<td align="left">Repeating code</td>
-</tr>
-<tr class="odd">
-<td align="left">Week starting</td>
-<td align="center">9</td>
-<td align="left">Programming focus</td>
-<td align="center">3</td>
-<td align="left">Workflows and debugging</td>
-</tr>
-<tr class="even">
-<td align="left">Week starting</td>
-<td align="center">10</td>
-<td align="left">—</td>
-<td align="center">—</td>
-<td align="left">Ask us anything</td>
-</tr>
-</tbody>
-</table>
-<p>Optional unit - Version Control (TBD)</p>
+<div id="scope" class="section level2">
+<h2>Scope</h2>
+</div>
+<div id="flow-of-control" class="section level2">
+<h2>Flow of Control</h2>
+<ul>
+<li>Types</li>
+<li>Conditional execution (branching)</li>
+<li>if, else, and else if</li>
+<li>Comparison operators</li>
+<li>Boolean logic operators</li>
+<li>Complex conditionals</li>
+</ul>
+</div>
+<div id="exercise" class="section level2">
+<h2>Exercise</h2>
+<p>Even seemingly simple programs can involve elaborate flow of control.
+The simple game Rock, Paper, Scissors (<a
+href="https://www.wikihow.com/Play-Rock,-Paper,-Scissors"
+class="uri">https://www.wikihow.com/Play-Rock,-Paper,-Scissors</a>) can
+be implemented with a complex conditional structure. Write a function to
+play the game.</p>
+<p>In the example solution below, we use the R function
+<code>sample</code> to randomly select a move for each of two players
+(<a
+href="https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/sample"
+class="uri">https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/sample</a>).
+Alternatively, the players’ choices could be passed in as input
+arguments.</p>
+<p>Note that there are many ways that the conditional logic can be
+implemented, so your solution may be different. The general rule is that
+we try to keep our conditional logic as succinct as possible, while
+still making it easy for someone reading your code to understand.</p>
+<pre class="r"><code>
+rock_paper_scissors &lt;- function()
+{
+  # Vector of the three possible moves
+  moves &lt;- c(&quot;rock&quot;, &quot;paper&quot;, &quot;scissors&quot;)
+  
+  # Randomly select a move for Bob
+  bob_move &lt;- sample(moves,1)
+  
+  # Randomly select a move for Fred
+  fred_move &lt;- sample(moves,1)
+  
+  
+  # Work through the game win conditions
+  if (bob_move == fred_move){
+    winner = &quot;draw&quot;
+  }
+  
+  if( bob_move == &quot;rock&quot;){
+    if (fred_move == &quot;paper&quot;){
+      winner = &quot;fred&quot;
+    }
+    if (fred_move == &quot;scissors&quot;){
+      winner = &quot;bob&quot;
+    }
+      
+  }
+  
+  if (bob_move == &quot;paper&quot;){
+    if (fred_move == &quot;rock&quot;){
+      winner = &quot;bob&quot;
+    }
+    if (fred_move == &quot;scissors&quot;){
+      winner = &quot;fred&quot;
+    }
+  }
+  
+  if (bob_move == &quot;scissors&quot;) {
+    if (fred_move == &quot;rock&quot;){
+      winner = &quot;fred&quot;
+    }
+    if (fred_move == &quot;paper&quot;){
+      winner = &quot;bob&quot;
+    }
+  }
+  
+  # Return the winner
+  return(winner)
+} # end rock_paper_scissors</code></pre>
+</div>
 </div>
 
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiWm9vbSBOb3RlcyAwODogRnVuY3Rpb25zIGFuZCBDaG9pY2VzIgpkYXRlOiAiU2VtZXN0ZXIgMSwgMjAyMyIKb3V0cHV0OgogIGh0bWxfZG9jdW1lbnQ6CiAgICB0b2M6IHRydWUKICAgIHRvY19mbG9hdDogdHJ1ZQogICAgdG9jX2RlcHRoOiAzCiAgICBjb2RlX2Rvd25sb2FkOiB0cnVlCiAgICBjb2RlX2ZvbGRpbmc6IHNob3cKLS0tCgpgYGB7ciBzZXR1cCwgaW5jbHVkZT1GQUxTRX0KbGlicmFyeShrbml0cikKCmtuaXRyOjpvcHRzX2NodW5rJHNldCgKICBjb21tZW50ID0gIiM+IiwKICBmaWcucGF0aCA9ICJmaWd1cmVzLzA4LyIsICMgdXNlIG9ubHkgZm9yIHNpbmdsZSBSbWQgZmlsZXMKICBjb2xsYXBzZSA9IFRSVUUsCiAgZWNobyA9IFRSVUUKKQpgYGAKCj4gIyMjIyBBc3NvY2lhdGVkIE1hdGVyaWFsCj4KPiBab29tIG5vdGVzOiBbTW9kdWxlIDA4IC0gRnVuY3Rpb25zIGFuZCBDaG9pY2VzXSgwOC1mdW5jdGlvbnMuaHRtbCkKPiAKPiBSZWFkaW5nczoKPgo+IC0gW1IgZm9yIERhdGEgU2NpZW5jZSAtIENoYXB0ZXIgMTldKGh0dHBzOi8vcjRkcy5oYWQuY28ubnovZnVuY3Rpb25zLmh0bWwpCgpcCgojIFRvcGljcwoKIyMgVXNlci1EZWZpbmVkIEZ1bmN0aW9ucwoKLSAgRGVjbGFyYXRpb24KLSAgSW5wdXQgYXJndW1lbnRzCi0gIFJldHVybmluZyBhIHJlc3VsdAoKIyMgU2NvcGUKCiMjIEZsb3cgb2YgQ29udHJvbAoKLSAgVHlwZXMKLSAgQ29uZGl0aW9uYWwgZXhlY3V0aW9uIChicmFuY2hpbmcpCi0gIGlmLCBlbHNlLCBhbmQgZWxzZSBpZgotICBDb21wYXJpc29uIG9wZXJhdG9ycwotICBCb29sZWFuIGxvZ2ljIG9wZXJhdG9ycwotICBDb21wbGV4IGNvbmRpdGlvbmFscwoKIyMgRXhlcmNpc2UKCkV2ZW4gc2VlbWluZ2x5IHNpbXBsZSBwcm9ncmFtcyBjYW4gaW52b2x2ZSBlbGFib3JhdGUgZmxvdyBvZiBjb250cm9sLiBUaGUgc2ltcGxlIGdhbWUgUm9jaywgUGFwZXIsIFNjaXNzb3JzIChodHRwczovL3d3dy53aWtpaG93LmNvbS9QbGF5LVJvY2ssLVBhcGVyLC1TY2lzc29ycykgY2FuIGJlIGltcGxlbWVudGVkIHdpdGggYSBjb21wbGV4IGNvbmRpdGlvbmFsIHN0cnVjdHVyZS4gV3JpdGUgYSBmdW5jdGlvbiB0byBwbGF5IHRoZSBnYW1lLiAKCkluIHRoZSBleGFtcGxlIHNvbHV0aW9uIGJlbG93LCB3ZSB1c2UgdGhlIFIgZnVuY3Rpb24gYHNhbXBsZWAgdG8gcmFuZG9tbHkgc2VsZWN0IGEgbW92ZSBmb3IgZWFjaCBvZiB0d28gcGxheWVycyAoaHR0cHM6Ly93d3cucmRvY3VtZW50YXRpb24ub3JnL3BhY2thZ2VzL2Jhc2UvdmVyc2lvbnMvMy42LjIvdG9waWNzL3NhbXBsZSkuIEFsdGVybmF0aXZlbHksIHRoZSBwbGF5ZXJzJyBjaG9pY2VzIGNvdWxkIGJlIHBhc3NlZCBpbiBhcyBpbnB1dCBhcmd1bWVudHMuIAoKTm90ZSB0aGF0IHRoZXJlIGFyZSBtYW55IHdheXMgdGhhdCB0aGUgY29uZGl0aW9uYWwgbG9naWMgY2FuIGJlIGltcGxlbWVudGVkLCBzbyB5b3VyIHNvbHV0aW9uIG1heSBiZSBkaWZmZXJlbnQuIFRoZSBnZW5lcmFsIHJ1bGUgaXMgdGhhdCB3ZSB0cnkgdG8ga2VlcCBvdXIgY29uZGl0aW9uYWwgbG9naWMgYXMgc3VjY2luY3QgYXMgcG9zc2libGUsIHdoaWxlIHN0aWxsIG1ha2luZyBpdCBlYXN5IGZvciBzb21lb25lIHJlYWRpbmcgeW91ciBjb2RlIHRvIHVuZGVyc3RhbmQuCgoKYGBge3Igcm9ja19wYXBlcl9zY2lzc29yc30KCnJvY2tfcGFwZXJfc2Npc3NvcnMgPC0gZnVuY3Rpb24oKQp7CiAgIyBWZWN0b3Igb2YgdGhlIHRocmVlIHBvc3NpYmxlIG1vdmVzCiAgbW92ZXMgPC0gYygicm9jayIsICJwYXBlciIsICJzY2lzc29ycyIpCiAgCiAgIyBSYW5kb21seSBzZWxlY3QgYSBtb3ZlIGZvciBCb2IKICBib2JfbW92ZSA8LSBzYW1wbGUobW92ZXMsMSkKICAKICAjIFJhbmRvbWx5IHNlbGVjdCBhIG1vdmUgZm9yIEZyZWQKICBmcmVkX21vdmUgPC0gc2FtcGxlKG1vdmVzLDEpCiAgCiAgCiAgIyBXb3JrIHRocm91Z2ggdGhlIGdhbWUgd2luIGNvbmRpdGlvbnMKICBpZiAoYm9iX21vdmUgPT0gZnJlZF9tb3ZlKXsKICAgIHdpbm5lciA9ICJkcmF3IgogIH0KICAKICBpZiggYm9iX21vdmUgPT0gInJvY2siKXsKICAgIGlmIChmcmVkX21vdmUgPT0gInBhcGVyIil7CiAgICAgIHdpbm5lciA9ICJmcmVkIgogICAgfQogICAgaWYgKGZyZWRfbW92ZSA9PSAic2Npc3NvcnMiKXsKICAgICAgd2lubmVyID0gImJvYiIKICAgIH0KICAgICAgCiAgfQogIAogIGlmIChib2JfbW92ZSA9PSAicGFwZXIiKXsKICAgIGlmIChmcmVkX21vdmUgPT0gInJvY2siKXsKICAgICAgd2lubmVyID0gImJvYiIKICAgIH0KICAgIGlmIChmcmVkX21vdmUgPT0gInNjaXNzb3JzIil7CiAgICAgIHdpbm5lciA9ICJmcmVkIgogICAgfQogIH0KICAKICBpZiAoYm9iX21vdmUgPT0gInNjaXNzb3JzIikgewogICAgaWYgKGZyZWRfbW92ZSA9PSAicm9jayIpewogICAgICB3aW5uZXIgPSAiZnJlZCIKICAgIH0KICAgIGlmIChmcmVkX21vdmUgPT0gInBhcGVyIil7CiAgICAgIHdpbm5lciA9ICJib2IiCiAgICB9CiAgfQogIAogICMgUmV0dXJuIHRoZSB3aW5uZXIKICByZXR1cm4od2lubmVyKQp9ICMgZW5kIHJvY2tfcGFwZXJfc2Npc3NvcnMKYGBgCgo=</div>
 
 
+</div>
+</div>
 
 </div>
 
@@ -538,7 +592,42 @@ $(document).ready(function () {
 </script>
 
 <!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("zoom_notes_08_functions.Rmd");
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
 
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

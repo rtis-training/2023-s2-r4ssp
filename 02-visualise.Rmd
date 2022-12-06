@@ -1,6 +1,6 @@
 ---
 title: "Visualising"
-date: "Semester 2, 2022"
+date: "Semester 1, 2023"
 output:
   html_document:
     toc: true
@@ -25,7 +25,7 @@ knitr::opts_chunk$set(
 
 > #### Data Focus
 >
-> Modules and Handouts 2--6 cover topics that are part of the data analysis journey and are all interrelated. Each module will introduce new content and expand on the material covered in previous modules. For example, in Module 2 we introduce the basics of the R plotting systems. Subsequent handouts include more advanced plotting options and techniques.
+> Modules and Handouts 2--7 cover topics that are part of the data analysis journey and are all interrelated. Each module will introduce new content and expand on the material covered in previous modules. For example, in Module 2 we introduce the basics of the R plotting systems. Subsequent handouts include more advanced plotting options and techniques.
 
 \
 
@@ -33,7 +33,7 @@ knitr::opts_chunk$set(
 
 > #### Associated Material
 >
-> Zoom Notes: [Zoom notes 02 - Visualising Data](zoom_notes_02.html)
+> Zoom Notes: [Zoom notes 02 - Visualising Data](zoom_notes_02_visualise.html)
 > 
 > Readings:
 >

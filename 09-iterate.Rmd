@@ -1,6 +1,6 @@
 ---
 title: "Repeating Code"
-date: "Semester 2, 2022"
+date: "Semester 1, 2023"
 output:
   html_document:
     toc: true
@@ -15,7 +15,7 @@ library(knitr)
 
 knitr::opts_chunk$set(
   comment = "#>",
-  fig.path = "figures/08/", # use only for single Rmd files
+  fig.path = "figures/09/", # use only for single Rmd files
   collapse = TRUE,
   echo = TRUE
 )
@@ -27,7 +27,7 @@ set.seed(42)
 
 > #### Associated Material
 >
-> Zoom Notes: [Zoom Notes 08 - Repeating Code](zoom_notes_08.html)
+> Zoom Notes: [Zoom Notes 09 - Repeating Code](zoom_notes_09_iterate.html)
 >
 > Readings:
 >

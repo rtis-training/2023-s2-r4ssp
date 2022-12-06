@@ -11,9 +11,9 @@
 
 
 
-<title>Zoom Notes 07: Functions and Choices</title>
+<title>Zoom Notes 07: Combining Data</title>
 
-<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.18/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
@@ -152,11 +152,15 @@ $(document).ready(function () {
     href = "index.html";
   var menuAnchor = $('a[href="' + href + '"]');
 
-  // mark it active
-  menuAnchor.tab('show');
-
-  // if it's got a parent navbar menu mark it active as well
-  menuAnchor.closest('li.dropdown').addClass('active');
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
 
   // Navbar adjustments
   var navHeight = $(".navbar").first().height() + 15;
@@ -185,8 +189,8 @@ $(document).ready(function () {
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -194,16 +198,9 @@ $(document).ready(function () {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "&#xe258;";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
+  content: "\e258";
   font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
+  border: none;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -355,25 +352,31 @@ div.tocify {
       <a href="03-subset.html">Part 2: Subsetting</a>
     </li>
     <li>
-      <a href="04-summarise.html">Part 3: Summarising</a>
+      <a href="04-communicate.html">Part 3: Communicating</a>
     </li>
     <li>
-      <a href="05-transform.html">Part 4: Transforming</a>
+      <a href="05-summarise.html">Part 4: Summarising</a>
     </li>
     <li>
-      <a href="06-communicate.html">Part 5: Communicating</a>
+      <a href="06-transform.html">Part 5: Transforming</a>
+    </li>
+    <li>
+      <a href="07-combine.html">Part 6: Combining</a>
     </li>
     <li class="divider"></li>
     <li class="dropdown-header">Programming focus</li>
     <li>
-      <a href="07-functions.html">Functions and Choices</a>
+      <a href="08-functions.html">Functions and Choices</a>
     </li>
     <li>
-      <a href="08-iterate.html">Repeating Code</a>
+      <a href="09-iterate.html">Repeating Code</a>
     </li>
     <li>
-      <a href="09-workflows.html">Workflows</a>
+      <a href="10-workflows.html">Workflows</a>
     </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Extra</li>
+    <li class="dropdown-header">Version control</li>
   </ul>
 </li>
 <li class="dropdown">
@@ -384,31 +387,34 @@ div.tocify {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="zoom_notes_01.html">01 - Introducing R and RStudio</a>
+      <a href="zoom_notes_01_intro.html">01 - Introducing R and RStudio</a>
     </li>
     <li>
-      <a href="zoom_notes_02.html">02 - Visualising data</a>
+      <a href="zoom_notes_02_visualise.html">02 - Visualising data</a>
     </li>
     <li>
-      <a href="zoom_notes_03.html">03 - Subsetting data</a>
+      <a href="zoom_notes_03_subset.html">03 - Subsetting data</a>
     </li>
     <li>
-      <a href="zoom_notes_04.html">04 - Summarising data</a>
+      <a href="zoom_notes_04_communicate.html">04- Communicating data</a>
     </li>
     <li>
-      <a href="zoom_notes_05.html">05 - Transforming data</a>
+      <a href="zoom_notes_05_subset.html">05 - Summarising data</a>
     </li>
     <li>
-      <a href="zoom_notes_06.html">06 - Communicating data</a>
+      <a href="zoom_notes_06_transform.html">06 - Transforming data</a>
     </li>
     <li>
-      <a href="zoom_notes_07.html">07 - Functions and Choices</a>
+      <a href="zoom_notes_07_combine.html">07 - Combining data</a>
     </li>
     <li>
-      <a href="zoom_notes_08.html">08 - Repeating Code</a>
+      <a href="zoom_notes_08_functions.html">08 - Functions and Choices</a>
     </li>
     <li>
-      <a href="zoom_notes_09.html">09 - Workflows</a>
+      <a href="zoom_notes_09_iterate.html">09 - Repeating Code</a>
+    </li>
+    <li>
+      <a href="zoom_notes_10_workflows.html">10 - Workflows</a>
     </li>
   </ul>
 </li>
@@ -437,120 +443,131 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Zoom Notes 07: Functions and Choices</h1>
-<h4 class="date">Semester 2, 2022</h4>
+<h1 class="title toc-ignore">Zoom Notes 07: Combining Data</h1>
+<h4 class="date">Semester 1, 2023</h4>
 
 </div>
 
 
 <blockquote>
 <h4 id="associated-material">Associated Material</h4>
-<p>Zoom notes: <a href="07-functions.html">Module 07 - Functions and
-Choices</a></p>
-<p>Readings:</p>
+<p>Module: <a href="07-combine.html">Module 07 - Transforming
+data</a></p>
+<p>Readings</p>
 <ul>
-<li><a href="https://r4ds.had.co.nz/functions.html">R for Data Science -
-Chapter 19</a></li>
+<li><a href="https://r4ds.had.co.nz/relational-data.html">R for Data
+Science Chapter 13</a></li>
 </ul>
 </blockquote>
+<div id="combining-data" class="section level2">
+<h2>Combining Data</h2>
+<p>How to combine datasets together</p>
+<ul>
+<li>rows</li>
+<li>columns</li>
+<li>using data relationships</li>
+</ul>
+<div id="binding" class="section level3">
+<h3>Binding</h3>
+<ul>
+<li>Combining rows of datasets with same column names together with
+<code>rbind</code></li>
+<li>Combining columns of datasets together with <code>cbind</code>
+<ul>
+<li>caution on using <code>cbind</code> and maintaining data
+integrity</li>
+<li>use joins if possible</li>
+</ul></li>
+</ul>
+</div>
+<div id="joining" class="section level3">
+<h3>Joining</h3>
+<p>Adding additional columns onto data sets by using a common identifier
+(key) between datasets to maintain data relationships</p>
+<div id="inner-join" class="section level4">
+<h4>Inner join</h4>
+<ul>
+<li><code>inner_join</code> from <code>dplyr</code> will join datasets
+on a key and at the same time filter so that only rows where there is a
+matching key will be kept</li>
+</ul>
+</div>
+<div id="leftright-joins" class="section level4">
+<h4>Left/Right joins</h4>
+<ul>
+<li><code>left_join</code> and <code>right_join</code> from
+<code>dplyr</code> will join datasets on a key and keep all rows from
+the specified ‘side’ of the join, and filling in the non-matching
+entries with <code>NA</code></li>
+</ul>
+</div>
+<div id="full-joins" class="section level4">
+<h4>Full joins</h4>
+<ul>
+<li><code>full_join</code> from <code>dplyr</code> will join datasets on
+a key and keep all rows from both datasets filling in columns of
+non-matching entries with <code>NA</code></li>
+</ul>
 <p><br />
 </p>
-<div id="topics" class="section level1">
-<h1>Topics</h1>
-<div id="user-defined-functions" class="section level2">
-<h2>User-Defined Functions</h2>
-<ul>
-<li>Declaration</li>
-<li>Input arguments</li>
-<li>Returning a result</li>
-</ul>
 </div>
-<div id="scope" class="section level2">
-<h2>Scope</h2>
 </div>
-<div id="flow-of-control" class="section level2">
-<h2>Flow of Control</h2>
-<ul>
-<li>Types</li>
-<li>Conditional execution (branching)</li>
-<li>if, else, and else if</li>
-<li>Comparison operators</li>
-<li>Boolean logic operators</li>
-<li>Complex conditionals</li>
-</ul>
 </div>
-<div id="exercise" class="section level2">
-<h2>Exercise</h2>
-<p>Even seemingly simple programs can involve elaborate flow of control.
-The simple game Rock, Paper, Scissors (<a
-href="https://www.wikihow.com/Play-Rock,-Paper,-Scissors"
-class="uri">https://www.wikihow.com/Play-Rock,-Paper,-Scissors</a>) can
-be implemented with a complex conditional structure. Write a function to
-play the game.</p>
-<p>In the example solution below, we use the R function
-<code>sample</code> to randomly select a move for each of two players
-(<a
-href="https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/sample"
-class="uri">https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/sample</a>).
-Alternatively, the players’ choices could be passed in as input
-arguments.</p>
-<p>Note that there are many ways that the conditional logic can be
-implemented, so your solution may be different. The general rule is that
-we try to keep our conditional logic as succinct as possible, while
-still making it easy for someone reading your code to understand.</p>
-<pre class="r"><code>
-rock_paper_scissors &lt;- function()
-{
-  # Vector of the three possible moves
-  moves &lt;- c(&quot;rock&quot;, &quot;paper&quot;, &quot;scissors&quot;)
-  
-  # Randomly select a move for Bob
-  bob_move &lt;- sample(moves,1)
-  
-  # Randomly select a move for Fred
-  fred_move &lt;- sample(moves,1)
-  
-  
-  # Work through the game win conditions
-  if (bob_move == fred_move){
-    winner = &quot;draw&quot;
-  }
-  
-  if( bob_move == &quot;rock&quot;){
-    if (fred_move == &quot;paper&quot;){
-      winner = &quot;fred&quot;
-    }
-    if (fred_move == &quot;scissors&quot;){
-      winner = &quot;bob&quot;
-    }
-      
-  }
-  
-  if (bob_move == &quot;paper&quot;){
-    if (fred_move == &quot;rock&quot;){
-      winner = &quot;bob&quot;
-    }
-    if (fred_move == &quot;scissors&quot;){
-      winner = &quot;fred&quot;
-    }
-  }
-  
-  if (bob_move == &quot;scissors&quot;) {
-    if (fred_move == &quot;rock&quot;){
-      winner = &quot;fred&quot;
-    }
-    if (fred_move == &quot;paper&quot;){
-      winner = &quot;bob&quot;
-    }
-  }
-  
-  # Return the winner
-  return(winner)
-} # end rock_paper_scissors</code></pre>
+<div id="excercises" class="section level2">
+<h2>Excercises</h2>
+<ol start="2" style="list-style-type: decimal">
+<li>Using <code>flights</code> and <code>planes</code> from the
+<code>nycflights13</code> package, how many flights were flown in April
+2013 by aircraft with each engine type? e.g. Turbo-fan, Turbo-jet,
+etc.</li>
+</ol>
+<p><br />
+</p>
+<ol start="3" style="list-style-type: decimal">
+<li>Using the gapminder_yearly_population_total.csv data create “long” a
+format dataset for
+<ol style="list-style-type: lower-alpha">
+<li>New Zealand’s population from 1900 to 2000</li>
+<li>a country of your choice for the same time range</li>
+</ol></li>
+</ol>
+<p><br />
+</p>
+<ol start="4" style="list-style-type: decimal">
+<li>Using the datasets you created in 3, create:
+<ol style="list-style-type: lower-alpha">
+<li>a line plot for each</li>
+<li>combine the datasets and create a facet plot using country with 1
+column and 2 rows (hint look up <code>facet_grid</code>)</li>
+</ol></li>
+</ol>
+<div id="example-solutions" class="section level3">
+<h3>Example solutions</h3>
+<ol start="2" style="list-style-type: decimal">
+<li></li>
+</ol>
+<pre class="r fold-hide"><code>library(tidyverse)
+library(nycflights13)
+
+flights %&gt;% 
+  filter(month == 3 &amp; year == 2013 &amp; !is.na(arr_time)) %&gt;%
+  inner_join(planes, by = &quot;tailnum&quot;) %&gt;% 
+  group_by(engine) %&gt;% 
+  summarise(n_flights = n())
+#&gt; # A tibble: 6 × 2
+#&gt;   engine        n_flights
+#&gt;   &lt;chr&gt;             &lt;int&gt;
+#&gt; 1 4 Cycle               3
+#&gt; 2 Reciprocating       165
+#&gt; 3 Turbo-fan         20114
+#&gt; 4 Turbo-jet          3391
+#&gt; 5 Turbo-prop            9
+#&gt; 6 Turbo-shaft          48</code></pre>
+<hr />
 </div>
 </div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiWm9vbSBOb3RlcyAwNzogRnVuY3Rpb25zIGFuZCBDaG9pY2VzIgpkYXRlOiAiU2VtZXN0ZXIgMiwgMjAyMiIKb3V0cHV0OgogIGh0bWxfZG9jdW1lbnQ6CiAgICB0b2M6IHRydWUKICAgIHRvY19mbG9hdDogdHJ1ZQogICAgdG9jX2RlcHRoOiAzCiAgICBjb2RlX2Rvd25sb2FkOiB0cnVlCiAgICBjb2RlX2ZvbGRpbmc6IHNob3cKLS0tCgpgYGB7ciBzZXR1cCwgaW5jbHVkZT1GQUxTRX0KbGlicmFyeShrbml0cikKCmtuaXRyOjpvcHRzX2NodW5rJHNldCgKICBjb21tZW50ID0gIiM+IiwKICBmaWcucGF0aCA9ICJmaWd1cmVzLzA3LyIsICMgdXNlIG9ubHkgZm9yIHNpbmdsZSBSbWQgZmlsZXMKICBjb2xsYXBzZSA9IFRSVUUsCiAgZWNobyA9IFRSVUUKKQpgYGAKCj4gIyMjIyBBc3NvY2lhdGVkIE1hdGVyaWFsCj4KPiBab29tIG5vdGVzOiBbTW9kdWxlIDA3IC0gRnVuY3Rpb25zIGFuZCBDaG9pY2VzXSgwNy1mdW5jdGlvbnMuaHRtbCkKPiAKPiBSZWFkaW5nczoKPgo+IC0gW1IgZm9yIERhdGEgU2NpZW5jZSAtIENoYXB0ZXIgMTldKGh0dHBzOi8vcjRkcy5oYWQuY28ubnovZnVuY3Rpb25zLmh0bWwpCgpcCgojIFRvcGljcwoKIyMgVXNlci1EZWZpbmVkIEZ1bmN0aW9ucwoKLSAgRGVjbGFyYXRpb24KLSAgSW5wdXQgYXJndW1lbnRzCi0gIFJldHVybmluZyBhIHJlc3VsdAoKIyMgU2NvcGUKCiMjIEZsb3cgb2YgQ29udHJvbAoKLSAgVHlwZXMKLSAgQ29uZGl0aW9uYWwgZXhlY3V0aW9uIChicmFuY2hpbmcpCi0gIGlmLCBlbHNlLCBhbmQgZWxzZSBpZgotICBDb21wYXJpc29uIG9wZXJhdG9ycwotICBCb29sZWFuIGxvZ2ljIG9wZXJhdG9ycwotICBDb21wbGV4IGNvbmRpdGlvbmFscwoKIyMgRXhlcmNpc2UKCkV2ZW4gc2VlbWluZ2x5IHNpbXBsZSBwcm9ncmFtcyBjYW4gaW52b2x2ZSBlbGFib3JhdGUgZmxvdyBvZiBjb250cm9sLiBUaGUgc2ltcGxlIGdhbWUgUm9jaywgUGFwZXIsIFNjaXNzb3JzIChodHRwczovL3d3dy53aWtpaG93LmNvbS9QbGF5LVJvY2ssLVBhcGVyLC1TY2lzc29ycykgY2FuIGJlIGltcGxlbWVudGVkIHdpdGggYSBjb21wbGV4IGNvbmRpdGlvbmFsIHN0cnVjdHVyZS4gV3JpdGUgYSBmdW5jdGlvbiB0byBwbGF5IHRoZSBnYW1lLiAKCkluIHRoZSBleGFtcGxlIHNvbHV0aW9uIGJlbG93LCB3ZSB1c2UgdGhlIFIgZnVuY3Rpb24gYHNhbXBsZWAgdG8gcmFuZG9tbHkgc2VsZWN0IGEgbW92ZSBmb3IgZWFjaCBvZiB0d28gcGxheWVycyAoaHR0cHM6Ly93d3cucmRvY3VtZW50YXRpb24ub3JnL3BhY2thZ2VzL2Jhc2UvdmVyc2lvbnMvMy42LjIvdG9waWNzL3NhbXBsZSkuIEFsdGVybmF0aXZlbHksIHRoZSBwbGF5ZXJzJyBjaG9pY2VzIGNvdWxkIGJlIHBhc3NlZCBpbiBhcyBpbnB1dCBhcmd1bWVudHMuIAoKTm90ZSB0aGF0IHRoZXJlIGFyZSBtYW55IHdheXMgdGhhdCB0aGUgY29uZGl0aW9uYWwgbG9naWMgY2FuIGJlIGltcGxlbWVudGVkLCBzbyB5b3VyIHNvbHV0aW9uIG1heSBiZSBkaWZmZXJlbnQuIFRoZSBnZW5lcmFsIHJ1bGUgaXMgdGhhdCB3ZSB0cnkgdG8ga2VlcCBvdXIgY29uZGl0aW9uYWwgbG9naWMgYXMgc3VjY2luY3QgYXMgcG9zc2libGUsIHdoaWxlIHN0aWxsIG1ha2luZyBpdCBlYXN5IGZvciBzb21lb25lIHJlYWRpbmcgeW91ciBjb2RlIHRvIHVuZGVyc3RhbmQuCgoKYGBge3Igcm9ja19wYXBlcl9zY2lzc29yc30KCnJvY2tfcGFwZXJfc2Npc3NvcnMgPC0gZnVuY3Rpb24oKQp7CiAgIyBWZWN0b3Igb2YgdGhlIHRocmVlIHBvc3NpYmxlIG1vdmVzCiAgbW92ZXMgPC0gYygicm9jayIsICJwYXBlciIsICJzY2lzc29ycyIpCiAgCiAgIyBSYW5kb21seSBzZWxlY3QgYSBtb3ZlIGZvciBCb2IKICBib2JfbW92ZSA8LSBzYW1wbGUobW92ZXMsMSkKICAKICAjIFJhbmRvbWx5IHNlbGVjdCBhIG1vdmUgZm9yIEZyZWQKICBmcmVkX21vdmUgPC0gc2FtcGxlKG1vdmVzLDEpCiAgCiAgCiAgIyBXb3JrIHRocm91Z2ggdGhlIGdhbWUgd2luIGNvbmRpdGlvbnMKICBpZiAoYm9iX21vdmUgPT0gZnJlZF9tb3ZlKXsKICAgIHdpbm5lciA9ICJkcmF3IgogIH0KICAKICBpZiggYm9iX21vdmUgPT0gInJvY2siKXsKICAgIGlmIChmcmVkX21vdmUgPT0gInBhcGVyIil7CiAgICAgIHdpbm5lciA9ICJmcmVkIgogICAgfQogICAgaWYgKGZyZWRfbW92ZSA9PSAic2Npc3NvcnMiKXsKICAgICAgd2lubmVyID0gImJvYiIKICAgIH0KICAgICAgCiAgfQogIAogIGlmIChib2JfbW92ZSA9PSAicGFwZXIiKXsKICAgIGlmIChmcmVkX21vdmUgPT0gInJvY2siKXsKICAgICAgd2lubmVyID0gImJvYiIKICAgIH0KICAgIGlmIChmcmVkX21vdmUgPT0gInNjaXNzb3JzIil7CiAgICAgIHdpbm5lciA9ICJmcmVkIgogICAgfQogIH0KICAKICBpZiAoYm9iX21vdmUgPT0gInNjaXNzb3JzIikgewogICAgaWYgKGZyZWRfbW92ZSA9PSAicm9jayIpewogICAgICB3aW5uZXIgPSAiZnJlZCIKICAgIH0KICAgIGlmIChmcmVkX21vdmUgPT0gInBhcGVyIil7CiAgICAgIHdpbm5lciA9ICJib2IiCiAgICB9CiAgfQogIAogICMgUmV0dXJuIHRoZSB3aW5uZXIKICByZXR1cm4od2lubmVyKQp9ICMgZW5kIHJvY2tfcGFwZXJfc2Npc3NvcnMKYGBgCgo=</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiWm9vbSBOb3RlcyAwNzogQ29tYmluaW5nIERhdGEiCmRhdGU6ICJTZW1lc3RlciAxLCAyMDIzIgpvdXRwdXQ6CiAgaHRtbF9kb2N1bWVudDoKICAgIHRvYzogdHJ1ZQogICAgdG9jX2Zsb2F0OiB0cnVlCiAgICB0b2NfZGVwdGg6IDMKICAgIGNvZGVfZG93bmxvYWQ6IHRydWUKICAgIGNvZGVfZm9sZGluZzogc2hvdwotLS0KCj4gIyMjIyBBc3NvY2lhdGVkIE1hdGVyaWFsCj4KPiBNb2R1bGU6IFtNb2R1bGUgMDcgLSBUcmFuc2Zvcm1pbmcgZGF0YV0oMDctY29tYmluZS5odG1sKQo+Cj4gUmVhZGluZ3MKPgo+IC0gW1IgZm9yIERhdGEgU2NpZW5jZSBDaGFwdGVyIDEzXShodHRwczovL3I0ZHMuaGFkLmNvLm56L3JlbGF0aW9uYWwtZGF0YS5odG1sKQoKCmBgYHtyIHNldHVwLCBpbmNsdWRlPUZBTFNFfQpsaWJyYXJ5KGtuaXRyKQpsaWJyYXJ5KHRpZHl2ZXJzZSkKCmtuaXRyOjpvcHRzX2NodW5rJHNldCgKICBjb21tZW50ID0gIiM+IiwKICBmaWcucGF0aCA9ICJmaWd1cmVzLzA3LyIsICMgdXNlIG9ubHkgZm9yIHNpbmdsZSBSbWQgZmlsZXMKICBjb2xsYXBzZSA9IFRSVUUsCiAgZWNobyA9IFRSVUUKKQoKCmBgYAoKCiMjIENvbWJpbmluZyBEYXRhCgpIb3cgdG8gY29tYmluZSBkYXRhc2V0cyB0b2dldGhlcgoKLSByb3dzCi0gY29sdW1ucwotIHVzaW5nIGRhdGEgcmVsYXRpb25zaGlwcwoKIyMjIEJpbmRpbmcKCi0gQ29tYmluaW5nIHJvd3Mgb2YgZGF0YXNldHMgd2l0aCBzYW1lIGNvbHVtbiBuYW1lcyB0b2dldGhlciB3aXRoIGByYmluZGAKLSBDb21iaW5pbmcgY29sdW1ucyBvZiBkYXRhc2V0cyB0b2dldGhlciB3aXRoIGBjYmluZGAKICAtIGNhdXRpb24gb24gdXNpbmcgYGNiaW5kYCBhbmQgbWFpbnRhaW5pbmcgZGF0YSBpbnRlZ3JpdHkKICAtIHVzZSBqb2lucyBpZiBwb3NzaWJsZQoKIyMjIEpvaW5pbmcKCkFkZGluZyBhZGRpdGlvbmFsIGNvbHVtbnMgb250byBkYXRhIHNldHMgYnkgdXNpbmcgYSBjb21tb24gaWRlbnRpZmllciAoa2V5KSBiZXR3ZWVuIGRhdGFzZXRzIHRvIG1haW50YWluIGRhdGEgcmVsYXRpb25zaGlwcwoKIyMjIyBJbm5lciBqb2luCgotIGBpbm5lcl9qb2luYCBmcm9tIGBkcGx5cmAgd2lsbCBqb2luIGRhdGFzZXRzIG9uIGEga2V5IGFuZCBhdCB0aGUgc2FtZSB0aW1lIGZpbHRlciBzbyB0aGF0IG9ubHkgcm93cyB3aGVyZSB0aGVyZSBpcyBhIG1hdGNoaW5nIGtleSB3aWxsIGJlIGtlcHQKCiMjIyMgTGVmdC9SaWdodCBqb2lucwoKLSBgbGVmdF9qb2luYCBhbmQgYHJpZ2h0X2pvaW5gIGZyb20gYGRwbHlyYCB3aWxsIGpvaW4gZGF0YXNldHMgb24gYSBrZXkgYW5kIGtlZXAgYWxsIHJvd3MgZnJvbSB0aGUgc3BlY2lmaWVkICdzaWRlJyBvZiB0aGUgam9pbiwgYW5kIGZpbGxpbmcgaW4gdGhlIG5vbi1tYXRjaGluZyBlbnRyaWVzIHdpdGggYE5BYAoKIyMjIyBGdWxsIGpvaW5zCgotIGBmdWxsX2pvaW5gIGZyb20gYGRwbHlyYCB3aWxsIGpvaW4gZGF0YXNldHMgb24gYSBrZXkgYW5kIGtlZXAgYWxsIHJvd3MgZnJvbSBib3RoIGRhdGFzZXRzIGZpbGxpbmcgaW4gY29sdW1ucyBvZiBub24tbWF0Y2hpbmcgZW50cmllcyB3aXRoIGBOQWAKClwKCiMjIEV4Y2VyY2lzZXMKCgoKMi4gVXNpbmcgYGZsaWdodHNgIGFuZCBgcGxhbmVzYCBmcm9tIHRoZSBgbnljZmxpZ2h0czEzYCBwYWNrYWdlLCBob3cgbWFueSBmbGlnaHRzIHdlcmUgZmxvd24gaW4gQXByaWwgMjAxMyBieSBhaXJjcmFmdCB3aXRoIGVhY2ggZW5naW5lIHR5cGU/IGUuZy4gVHVyYm8tZmFuLCBUdXJiby1qZXQsIGV0Yy4KClwKCjMuIFVzaW5nIHRoZSBnYXBtaW5kZXJfeWVhcmx5X3BvcHVsYXRpb25fdG90YWwuY3N2IGRhdGEgY3JlYXRlICJsb25nIiBhIGZvcm1hdCBkYXRhc2V0IGZvciAKICAgIGEuIE5ldyBaZWFsYW5kJ3MgcG9wdWxhdGlvbiBmcm9tIDE5MDAgdG8gMjAwMAogICAgYi4gYSBjb3VudHJ5IG9mIHlvdXIgY2hvaWNlIGZvciB0aGUgc2FtZSB0aW1lIHJhbmdlCgpcCgo0LiBVc2luZyB0aGUgZGF0YXNldHMgeW91IGNyZWF0ZWQgaW4gMywgY3JlYXRlOgogICAgYS4gYSBsaW5lIHBsb3QgZm9yIGVhY2gKICAgIGIuIGNvbWJpbmUgdGhlIGRhdGFzZXRzIGFuZCBjcmVhdGUgYSBmYWNldCBwbG90IHVzaW5nIGNvdW50cnkgd2l0aCAxIGNvbHVtbiBhbmQgMiByb3dzIChoaW50IGxvb2sgdXAgYGZhY2V0X2dyaWRgKQogICAgCgojIyMgRXhhbXBsZSBzb2x1dGlvbnMKICAgIAoyLgoKYGBge3Igem4wNy1zb2xuMiwgY2xhc3Muc291cmNlID0gImZvbGQtaGlkZSJ9CmxpYnJhcnkodGlkeXZlcnNlKQpsaWJyYXJ5KG55Y2ZsaWdodHMxMykKCmZsaWdodHMgJT4lIAogIGZpbHRlcihtb250aCA9PSAzICYgeWVhciA9PSAyMDEzICYgIWlzLm5hKGFycl90aW1lKSkgJT4lCiAgaW5uZXJfam9pbihwbGFuZXMsIGJ5ID0gInRhaWxudW0iKSAlPiUgCiAgZ3JvdXBfYnkoZW5naW5lKSAlPiUgCiAgc3VtbWFyaXNlKG5fZmxpZ2h0cyA9IG4oKSkKYGBgCgotLS0gICAg</div>
 
 
 </div>
@@ -588,7 +605,7 @@ $(document).ready(function () {
 <!-- code folding -->
 <script>
 $(document).ready(function () {
-  window.initializeSourceEmbed("zoom_notes_07.Rmd");
+  window.initializeSourceEmbed("zoom_notes_07_combine.Rmd");
   window.initializeCodeFolding("show" === "show");
 });
 </script>

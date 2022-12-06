@@ -1,6 +1,6 @@
 ---
 title: "Summarising"
-date: "Semester 2, 2022"
+date: "Semester 1, 2023"
 output:
   html_document:
     toc: true
@@ -15,7 +15,7 @@ library(knitr)
 
 knitr::opts_chunk$set(
   comment = "#>",
-  fig.path = "figures/04/", # use only for single Rmd files
+  fig.path = "figures/05/", # use only for single Rmd files
   collapse = TRUE,
   echo = TRUE
 )
@@ -25,7 +25,7 @@ knitr::opts_chunk$set(
 
 > #### Associated Material
 >
-> Zoom notes: [Zoom Notes 04 - Summarising data](zoom_notes_04.html)
+> Zoom notes: [Zoom Notes 05 - Summarising data](zoom_notes_05_summarise.html)
 >
 > Readings
 >
@@ -61,7 +61,7 @@ For this module, we will use two data sets -- the Palmers Penguins data we have 
 
 # Loading the data
 
-```{r load the data, warning=FALSE, message=FALSE}
+```{r load_the_data, warning=FALSE, message=FALSE}
 #===============================================
 # The Penguin Data:
 #===============================================
@@ -104,7 +104,7 @@ The `penguins` data set contains values for 344 different penguins. We can begin
 
 ## Histogram with base R
 
-```{r 04-histograms, warning=FALSE, message=FALSE}
+```{r 05-histograms, warning=FALSE, message=FALSE}
 # The 'breaks' argument controls the number of bars drawn
 hist(penguins$body_mass_g, 
      breaks = 100,
@@ -113,7 +113,7 @@ hist(penguins$body_mass_g,
 
 ## Histogram with ggplot
 
-```{r ggplot histo, , warning=FALSE, message=FALSE}
+```{r ggplot_histo, , warning=FALSE, message=FALSE}
 # Load the library before your first call to ggplot
 library(ggplot2)
 
@@ -134,7 +134,7 @@ By default, geom_histogram produces a stacked plot -- that is, the different gro
 
 ### For continuous data
 
-```{r 04-lake_hists, warning=FALSE, message=FALSE}
+```{r 05-lake_hists, warning=FALSE, message=FALSE}
 # Stacked grouped histogram
 ggplot(data = lakes, mapping = aes(x = ChlA)) +
   geom_histogram(aes(fill=LakeName), colour = 'black')
@@ -149,7 +149,7 @@ ggplot(data = lakes, mapping = aes(x = ChlA)) +
 
 The functions `hist` and `geom_histogram` are appropriate for **continuous** (numerical) data. For **categorical** variables (e.g. Species and Island in the penguin data set) one often uses the more general `geom_bar` function (geom_histogram is a special case of geom_bar). The example code below shows how to generate a bar graph in ggplot, modifying the default ggplot colour palette to something more accessible to viewers with atypical colour vision:
 
-```{r 04-categorical_distribution}
+```{r 05-categorical_distribution}
 # "Colour-blind friendly" palette from #https://personal.sron.nl/~pault/
 # These are hexadecimal colour codes. The # is required.
 customPalette <- c("#DDAA33", "#BB5566", "#004488")
@@ -162,7 +162,7 @@ ggplot(data = penguins, mapping = aes(x = island, fill=species)) +
 
 As with geom_histogram above, we set the position argument of geom_bar to change from stacked to side-by-side format.
 
-```{r 04-categorical_distribution_dodge, echo=FALSE, warning=FALSE, message=FALSE}
+```{r 05-categorical_distribution_dodge, echo=FALSE, warning=FALSE, message=FALSE}
 
 # "Colour-blind friendly" palette from #https://personal.sron.nl/~pault/
 # These are hexadecimal colour codes. The # is required.
@@ -239,14 +239,14 @@ In the histograms for ChlA from each of three New Zealand lakes, the three group
 
 ### Using `aggregate`
 
-```{r lake means 01}
+```{r lake_means_01}
 # Using aggregate. compute the group means
 aggregate(lakes$ChlA, by = list(Lake = lakes$LakeName), FUN=mean)
 ```
 
 ### Using `group_by` and `summarise`
 
-```{r lake means 02}
+```{r lake_means_02}
 # Using `group_by` and `summarise`
 library(dplyr)
 
@@ -273,7 +273,7 @@ We can capture variability more precisely with measures of the **range** of the 
 
 In earlier modules we have seen two techniques for selecting out just the rows from one lake (using [] or using `filter`). To run function `summary` on each lake separately, we could select the subset for each lake in turn, and pass each subset to `summary`. However, we can achieve the same result more parsimoniously by using function `aggregate`. Above we used aggregate with `FUN = mean` to get the mean ChlA for each lake. We can use `FUN = summary` to call function `summary` separately for the records of each lake. 
 
-```{r aggregate summary}
+```{r aggregate_summary}
 # Apply function summary by group
 aggregate(lakes$ChlA, by = list(Lake = lakes$LakeName), FUN=summary)
 
@@ -290,7 +290,7 @@ aggregate(lakes$ChlA, by = list(Lake = lakes$LakeName), FUN=sd)
 
 ### Using `group_by` and `summarise`
 
-```{r sd dplyr}
+```{r sd_dplyr}
 lakes %>% 
   group_by(LakeName) %>%
   summarise(StdDev = sd(ChlA))
@@ -325,7 +325,7 @@ In the code example below we make a scatterplot with ggplot (cf. Module 02), and
 
 ## Scatterplot with linear trend line
 
-```{r 04-scatterplot, warning=FALSE, message=FALSE}
+```{r 05-scatterplot, warning=FALSE, message=FALSE}
 # geom_point plots the points of the scatterplot 
 
 # geom_smooth plots the linear trend line computed with function lm
@@ -355,7 +355,7 @@ Function `cor` returns a value between -1 and 1. Correlations that trend downwar
 
 For example, consider these two scatterplots:
 
-```{r 04-comparing, echo=FALSE, warning=FALSE, message=FALSE}
+```{r 05-comparing, echo=FALSE, warning=FALSE, message=FALSE}
 library(gridExtra)
 plot1 <- ggplot(data = penguins, mapping = aes(x = body_mass_g, y = bill_length_mm)) +
   geom_point() +
@@ -366,7 +366,7 @@ plot2 <- ggplot(data = penguins, mapping = aes(x = body_mass_g, y = flipper_leng
 grid.arrange(plot1, plot2, ncol=2)
 ```
 
-```{r cor exercise solution, echo=FALSE, include=FALSE}
+```{r cor_exercise_solution, echo=FALSE, include=FALSE}
 cor(penguins$body_mass_g, penguins$bill_length_mm, use="complete.obs")
 
 cor(penguins$body_mass_g, penguins$flipper_length_mm, use="complete.obs")

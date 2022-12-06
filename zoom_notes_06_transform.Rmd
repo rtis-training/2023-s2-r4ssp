@@ -27,7 +27,7 @@ library(tidyverse)
 
 knitr::opts_chunk$set(
   comment = "#>",
-  fig.path = "figures/", # use only for single Rmd files
+  fig.path = "figures/06/", # use only for single Rmd files
   collapse = TRUE,
   echo = TRUE
 )
@@ -84,7 +84,7 @@ Tidy data principles:
 
 1.
 
-```{r zn05-soln1, class.source = "fold-hide"}
+```{r zn06-soln1, class.source = "fold-hide"}
 library(tidyverse)
 rodents <- read_csv("data/rodents_untidy.csv")
 # a)
@@ -119,7 +119,7 @@ rodents_clean
 
 3.
 
-```{r zn05-soln3, class.source = "fold-hide", eval = FALSE}
+```{r zn06-soln3, class.source = "fold-hide", eval = FALSE}
 library(tidyverse)
 gapminder_yearly_pop <- read_csv("data/gapminder_yearly_population_millions_total.csv") %>% mutate(across(-country, ))
 
@@ -140,7 +140,7 @@ jamaica_1900_2000 <- gapminder_yearly_pop_long %>%
 
 4.
 
-```{r zn05-soln4, class.source = "fold-hide", eval = FALSE}
+```{r zn06-soln4, class.source = "fold-hide", eval = FALSE}
 # a)
 nz_1900_2000 %>% ggplot(aes(x = year, y = population_millions)) + geom_line() + labs(title = "NZ population 1900-2000")
 

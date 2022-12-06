@@ -1,6 +1,6 @@
 ---
 title: "Workflows"
-date: "Semester 2, 2022"
+date: "Semester 1, 2023"
 output:
   html_document:
     toc: true
@@ -15,7 +15,7 @@ library(knitr)
 
 knitr::opts_chunk$set(
   comment = "#>",
-  fig.path = "figures/09/", # use only for single Rmd files
+  fig.path = "figures/10/", # use only for single Rmd files
   collapse = TRUE,
   echo = TRUE
 )
@@ -23,7 +23,7 @@ knitr::opts_chunk$set(
 
 > #### Associated Material
 >
-> Zoom Notes: [Zoom Notes 09 - Workflows](zoom_notes_09.html)
+> Zoom Notes: [Zoom Notes 10 - Workflows](zoom_notes_10_workflows.html)
 
 
 
@@ -171,7 +171,7 @@ It's always a good idea to get this set up before you get under way doing actual
 Once you have RStudio set up with `git`, when you add (initialise) version control onto your project you'll get an new tab appear and a hidden directory called `.git` will be created inside your project directory. A directory under version control is called a 'repository' or 'repo'.
 
 ```{r, echo=FALSE, fig.align='center'}
-include_graphics("images/09-git_panel.png")
+include_graphics("images/10-git_panel.png")
 ```
 
 
@@ -203,7 +203,7 @@ Remember, each time we find and fix an error, we must retest. This can get quite
 
 
 ```{r, echo = FALSE, out.height = '50%', out.width='50%', fig.cap = "https://xkcd.com/1739/", fig.align='center'}
-knitr::include_graphics("images/09-fixing_problems.png")
+knitr::include_graphics("images/10-fixing_problems.png")
 ```
 
 \
@@ -227,7 +227,7 @@ Some techniques for solving errors and confirming our assumptions can include:
 
 
 ```{r, echo = FALSE, out.width = '50%', out.height = '50%', fig.align='center'}
-knitr::include_graphics("images/09-rubberduck.jpg")
+knitr::include_graphics("images/10-rubberduck.jpg")
 ```
 
 'Rubber duck debugging' is a technique which involves talking your way through what you are trying to achieve with your code and explaining what your code is actually doing at each step to a rubber duck (or other toy). Often by being systematic and saying out loud what is happening this will trigger an "a-ha" moment as to what is causing the issue. You can also use this technique with another person e.g. co-worker instead of a toy if you prefer.
@@ -382,7 +382,7 @@ Version control software is slightly different from what you might have experien
 In the case of `git`, once you have everything set up and configured there is a (simplified) mini-workflow which can be done after clicking the 'commit' button in the git tab:
 
 ```{r, echo = FALSE, fig.align='center'}
-include_graphics("images/09-commit.png")
+include_graphics("images/10-commit.png")
 ```
 
 

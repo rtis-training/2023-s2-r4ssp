@@ -1,6 +1,6 @@
 ---
 title: "Subsetting"
-date: "Semester 2, 2022"
+date: "Semester 1, 2023"
 output:
   html_document:
     toc: true
@@ -25,7 +25,7 @@ knitr::opts_chunk$set(
 
 > #### Associated Material
 >
-> Zoom notes: [Zoom Notes 03 - Selecting and Filtering Data](zoom_notes_03.html)
+> Zoom notes: [Zoom Notes 03 - Selecting and Filtering Data](zoom_notes_03_visualise.html)
 >
 > Reading:
 >
@@ -470,7 +470,7 @@ With `dplyr` we take group summaries (e.g. getting the average arrival for all f
 
 The only new part is the syntax used to declare a list for argument **by**. We will first look at an example of how to take group means in both `dplyr` and base R, and then discuss the list in more detail.
 
-```{r group means 01, warning=FALSE}
+```{r group_means_01, warning=FALSE}
 # Compute the average arrival delay, collapsed across months
 
 # Using dplyr
@@ -507,7 +507,7 @@ pet_data
 
 When using `aggregate` you create a list of columns that you want to group by. The names of the columns will be the column headers for the output table of summarised results. To group by multiple columns, add more elements to the list. For example, if we wanted the average delay by month *for each origin airport separately* we would say:
 
-```{r group means 02, warning=FALSE}
+```{r group_means_02, warning=FALSE}
 # Compute the average arrival delay, collapsed across months, separately for
 # each origin airport. There are 3 airports and 12 months, so we expect to 
 # get 36 means.

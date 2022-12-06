@@ -11,9 +11,9 @@
 
 
 
-<title>Zoom Notes 06: Communicating Data</title>
+<title>Zoom Notes 10: Workflows</title>
 
-<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.18/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
@@ -152,11 +152,15 @@ $(document).ready(function () {
     href = "index.html";
   var menuAnchor = $('a[href="' + href + '"]');
 
-  // mark it active
-  menuAnchor.tab('show');
-
-  // if it's got a parent navbar menu mark it active as well
-  menuAnchor.closest('li.dropdown').addClass('active');
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
 
   // Navbar adjustments
   var navHeight = $(".navbar").first().height() + 15;
@@ -185,8 +189,8 @@ $(document).ready(function () {
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -194,16 +198,9 @@ $(document).ready(function () {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "&#xe258;";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
+  content: "\e258";
   font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
+  border: none;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -355,25 +352,31 @@ div.tocify {
       <a href="03-subset.html">Part 2: Subsetting</a>
     </li>
     <li>
-      <a href="04-summarise.html">Part 3: Summarising</a>
+      <a href="04-communicate.html">Part 3: Communicating</a>
     </li>
     <li>
-      <a href="05-transform.html">Part 4: Transforming</a>
+      <a href="05-summarise.html">Part 4: Summarising</a>
     </li>
     <li>
-      <a href="06-communicate.html">Part 5: Communicating</a>
+      <a href="06-transform.html">Part 5: Transforming</a>
+    </li>
+    <li>
+      <a href="07-combine.html">Part 6: Combining</a>
     </li>
     <li class="divider"></li>
     <li class="dropdown-header">Programming focus</li>
     <li>
-      <a href="07-functions.html">Functions and Choices</a>
+      <a href="08-functions.html">Functions and Choices</a>
     </li>
     <li>
-      <a href="08-iterate.html">Repeating Code</a>
+      <a href="09-iterate.html">Repeating Code</a>
     </li>
     <li>
-      <a href="09-workflows.html">Workflows</a>
+      <a href="10-workflows.html">Workflows</a>
     </li>
+    <li class="divider"></li>
+    <li class="dropdown-header">Extra</li>
+    <li class="dropdown-header">Version control</li>
   </ul>
 </li>
 <li class="dropdown">
@@ -384,31 +387,34 @@ div.tocify {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="zoom_notes_01.html">01 - Introducing R and RStudio</a>
+      <a href="zoom_notes_01_intro.html">01 - Introducing R and RStudio</a>
     </li>
     <li>
-      <a href="zoom_notes_02.html">02 - Visualising data</a>
+      <a href="zoom_notes_02_visualise.html">02 - Visualising data</a>
     </li>
     <li>
-      <a href="zoom_notes_03.html">03 - Subsetting data</a>
+      <a href="zoom_notes_03_subset.html">03 - Subsetting data</a>
     </li>
     <li>
-      <a href="zoom_notes_04.html">04 - Summarising data</a>
+      <a href="zoom_notes_04_communicate.html">04- Communicating data</a>
     </li>
     <li>
-      <a href="zoom_notes_05.html">05 - Transforming data</a>
+      <a href="zoom_notes_05_subset.html">05 - Summarising data</a>
     </li>
     <li>
-      <a href="zoom_notes_06.html">06 - Communicating data</a>
+      <a href="zoom_notes_06_transform.html">06 - Transforming data</a>
     </li>
     <li>
-      <a href="zoom_notes_07.html">07 - Functions and Choices</a>
+      <a href="zoom_notes_07_combine.html">07 - Combining data</a>
     </li>
     <li>
-      <a href="zoom_notes_08.html">08 - Repeating Code</a>
+      <a href="zoom_notes_08_functions.html">08 - Functions and Choices</a>
     </li>
     <li>
-      <a href="zoom_notes_09.html">09 - Workflows</a>
+      <a href="zoom_notes_09_iterate.html">09 - Repeating Code</a>
+    </li>
+    <li>
+      <a href="zoom_notes_10_workflows.html">10 - Workflows</a>
     </li>
   </ul>
 </li>
@@ -437,106 +443,84 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Zoom Notes 06: Communicating Data</h1>
-<h4 class="date">Semester 2, 2022</h4>
+<h1 class="title toc-ignore">Zoom Notes 10: Workflows</h1>
+<h4 class="date">Semester 1, 2023</h4>
 
 </div>
 
 
 <blockquote>
 <h4 id="associated-material">Associated Material</h4>
-<p>Module: <a href="06-communicate.html">Module 06 - Communicate</a></p>
-<p>Readings:</p>
-<ul>
-<li><a href="https://r4ds.had.co.nz/r-markdown.html">R for Data Science
-- Chapter 27</a></li>
-<li><a href="https://r4ds.had.co.nz/r-markdown-formats.html">R for Data
-Science - Chapter 29</a></li>
-<li><a href="https://bookdown.org/yihui/rmarkdown/">Reference: RMarkdown
-- the definitive guide</a></li>
-<li><a
-href="https://www.rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf">RMarkdown
-Reference Guide</a></li>
-</ul>
+<p>Module: <a href="10-workflows.html">Module 10 - Workflows</a></p>
 </blockquote>
-<div id="what-is-rmarkdown" class="section level2">
-<h2>What is RMarkdown</h2>
-<p>There are three main components to an RMarkdown document</p>
+<div id="getting-organised" class="section level2">
+<h2>Getting organised</h2>
+<ul>
+<li>Create a structure</li>
+<li>Create a README</li>
+<li>Choose a license</li>
+</ul>
+<p>The <code>usethis</code> package can help you, and provides many
+helper function for creating and setting up projects and packages</p>
+<pre class="r"><code># Create and open a new package
+usethis::create_project(path = &quot;path/to/new/project&quot;)
+
+# Create a markdown README
+usethis::use_readme_md()
+
+# Create an RMarkdown README
+usethis::use_readme_rmd()
+
+# Create a new R script in your project in directory R/
+usethis::use_r(name = &quot;myfile.R&quot;)
+</code></pre>
+<div id="configuration" class="section level3">
+<h3>Configuration</h3>
+<p>It’s worth taking some time to configure options in your environment
+to make life easier for yourself.</p>
+<p>The <code>.Rprofile</code> file is used to store these
+configurations. You can open it with
+<code>usethis::edit_r_profile()</code>.</p>
+<ul>
+<li>Don’t load ‘analysis’ dependant packages in your Rprofile</li>
+</ul>
+<p>Learn some of the keyboard shortcuts in RStudio to improve your
+productivity. <kbd>Alt</kbd> + <kbd>Shift</kbd> + <kbd>K</kbd> is the
+keyboard shortcut to show you the keyboard shortcuts.</p>
+</div>
+<div id="version-control" class="section level3">
+<h3>Version control</h3>
+<p>Using an automated version control system such as <code>git</code> is
+highly recommended. It can help you manage different versions of your
+code and show differences or let you jump between versions.</p>
+</div>
+</div>
+<div id="debugging" class="section level2">
+<h2>Debugging</h2>
+<p>General process:</p>
 <ol style="list-style-type: decimal">
-<li>The <strong>YAML</strong> header which is surrounded by
-<code>---</code>s and provides information for the compiling
-process</li>
-<li>R code <strong>chunks</strong> which are surrounded by
-<code>```</code>s</li>
-<li>Text which can be formatted using the Markdown language.</li>
+<li>Do I recognise the message?</li>
+<li>Re-look at the command I ran looking for
+<ul>
+<li>typos</li>
+<li>missing syntax (e.g. brackets, semicolons, etc.)</li>
+<li>correct naming of things</li>
+</ul></li>
+<li>Is the input for my command what I expect it is?</li>
+<li>Did the previous command run properly?
+<ul>
+<li>if not jump to 1. for the previous command</li>
+</ul></li>
 </ol>
-<p>A reference guide of RMarkdown syntax can be found through
-<code>Help</code> -&gt; <code>Cheat Sheets</code> -&gt;
-<code>R Markdown Reference Guide</code> in the RStudio menu.</p>
-<div id="example-rmd" class="section level3">
-<h3>Example Rmd</h3>
-<p>Create your own RMarkdown document now from the template. To do this
-go <code>File</code> -&gt; <code>New File</code> -&gt;
-<code>R Markdown</code>.</p>
 </div>
-<div id="knitting" class="section level3">
-<h3>Knitting</h3>
-<p>“Knit” or compile the document using the <code>knit</code> button or
-<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>K</kbd>.</p>
-<p><br />
-</p>
-</div>
-</div>
-<div id="markdown-syntax" class="section level2">
-<h2>Markdown syntax</h2>
-<p>Refer to the <a
-href="https://www.rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf">RMarkdown
-Reference Guide</a></p>
-<p><br />
-</p>
-</div>
-<div id="code-chunks" class="section level2">
-<h2>Code Chunks</h2>
-<p>Code chunks look like:</p>
-<pre><code>```{r}
-1 + 2
-```</code></pre>
-<ul>
-<li><p>Code chunks are executed as part of the document “knitting” and
-the code and output embedded in the document</p></li>
-<li><p>Be aware of the working directory (don’t use
-<code>setwd()</code>). Ideally use the <code>here</code> package to
-manage paths.</p></li>
-</ul>
-<p><br />
-</p>
-</div>
-<div id="images-figures-and-tables" class="section level2">
-<h2>Images, Figures, and Tables</h2>
-<ul>
-<li><p>Images can be included though markdown, or by using the
-<code>include_graphics()</code> from <code>knitr</code> in a code chunk
-- the latter provides more options for customising for
-size/position.</p></li>
-<li><p>Figures are created from code chunks and chunk options are used
-to control size/position</p></li>
-<li><p>Tables can be manually created using the markdown syntax or
-created automatically from your data using the <code>kable()</code> from
-<code>knitr</code>.</p></li>
-</ul>
-<p>Further customising of <code>kable</code> tables can be done with the
-<code>kableExtra</code> package.</p>
-<p><br />
-</p>
-</div>
-<div id="citations" class="section level2">
-<h2>Citations</h2>
-<p>Citations can be inserted into an RMarkdown document. <a
-href="https://rstudio.github.io/visual-markdown-editing/citations.html">This
-document from RStudio</a> goes through how to do it</p>
+<div id="testing" class="section level2">
+<h2>Testing</h2>
+<p>Test your code as you go. It can be useful to adopt an automated
+testing solution - such as the <code>testthat</code> package to create
+tests that can be automatically run.</p>
 </div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiWm9vbSBOb3RlcyAwNjogQ29tbXVuaWNhdGluZyBEYXRhIgpkYXRlOiAiU2VtZXN0ZXIgMiwgMjAyMiIKb3V0cHV0OgogIGh0bWxfZG9jdW1lbnQ6CiAgICB0b2M6IHRydWUKICAgIHRvY19mbG9hdDogdHJ1ZQogICAgdG9jX2RlcHRoOiAzCiAgICBjb2RlX2Rvd25sb2FkOiB0cnVlCiAgICBjb2RlX2ZvbGRpbmc6IHNob3cKLS0tCgpgYGB7ciBzZXR1cCwgaW5jbHVkZT1GQUxTRX0KbGlicmFyeShrbml0cikKCmtuaXRyOjpvcHRzX2NodW5rJHNldCgKICBjb21tZW50ID0gIiM+IiwKICBmaWcucGF0aCA9ICJmaWd1cmVzLzA2LyIsICMgdXNlIG9ubHkgZm9yIHNpbmdsZSBSbWQgZmlsZXMKICBjb2xsYXBzZSA9IFRSVUUsCiAgZWNobyA9IFRSVUUKKQoKCmBgYAoKPiAjIyMjIEFzc29jaWF0ZWQgTWF0ZXJpYWwKPgo+IE1vZHVsZTogW01vZHVsZSAwNiAtIENvbW11bmljYXRlXSgwNi1jb21tdW5pY2F0ZS5odG1sKQo+Cj4gUmVhZGluZ3M6Cj4KPiAtICAgW1IgZm9yIERhdGEgU2NpZW5jZSAtIENoYXB0ZXIgMjddKGh0dHBzOi8vcjRkcy5oYWQuY28ubnovci1tYXJrZG93bi5odG1sKQo+IC0gICBbUiBmb3IgRGF0YSBTY2llbmNlIC0gQ2hhcHRlciAyOV0oaHR0cHM6Ly9yNGRzLmhhZC5jby5uei9yLW1hcmtkb3duLWZvcm1hdHMuaHRtbCkKPiAtICAgW1JlZmVyZW5jZTogUk1hcmtkb3duIC0gdGhlIGRlZmluaXRpdmUgZ3VpZGVdKGh0dHBzOi8vYm9va2Rvd24ub3JnL3lpaHVpL3JtYXJrZG93bi8pCj4gLSAgIFtSTWFya2Rvd24gUmVmZXJlbmNlIEd1aWRlXShodHRwczovL3d3dy5yc3R1ZGlvLmNvbS93cC1jb250ZW50L3VwbG9hZHMvMjAxNS8wMy9ybWFya2Rvd24tcmVmZXJlbmNlLnBkZikKCiMjIFdoYXQgaXMgUk1hcmtkb3duCgpUaGVyZSBhcmUgdGhyZWUgbWFpbiBjb21wb25lbnRzIHRvIGFuIFJNYXJrZG93biBkb2N1bWVudAoKMS4gIFRoZSAqKllBTUwqKiBoZWFkZXIgd2hpY2ggaXMgc3Vycm91bmRlZCBieSBgLS0tYHMgYW5kIHByb3ZpZGVzIGluZm9ybWF0aW9uIGZvciB0aGUgY29tcGlsaW5nIHByb2Nlc3MKMi4gIFIgY29kZSAqKmNodW5rcyoqIHdoaWNoIGFyZSBzdXJyb3VuZGVkIGJ5IGBgYGAgYGBgIGBgYGBzCjMuICBUZXh0IHdoaWNoIGNhbiBiZSBmb3JtYXR0ZWQgdXNpbmcgdGhlIE1hcmtkb3duIGxhbmd1YWdlLgoKCkEgcmVmZXJlbmNlIGd1aWRlIG9mIFJNYXJrZG93biBzeW50YXggY2FuIGJlIGZvdW5kIHRocm91Z2ggYEhlbHBgIC0+IGBDaGVhdCBTaGVldHNgIC0+IGBSIE1hcmtkb3duIFJlZmVyZW5jZSBHdWlkZWAgaW4gdGhlIFJTdHVkaW8gbWVudS4KCiMjIyBFeGFtcGxlIFJtZAoKQ3JlYXRlIHlvdXIgb3duIFJNYXJrZG93biBkb2N1bWVudCBub3cgZnJvbSB0aGUgdGVtcGxhdGUuIFRvIGRvIHRoaXMgZ28gYEZpbGVgIC1cPiBgTmV3IEZpbGVgIC1cPiBgUiBNYXJrZG93bmAuCgojIyMgS25pdHRpbmcKCiJLbml0IiBvciBjb21waWxlIHRoZSBkb2N1bWVudCB1c2luZyB0aGUgYGtuaXRgIGJ1dHRvbiBvciA8a2JkPkN0cmw8L2tiZD4gKyA8a2JkPlNoaWZ0PC9rYmQ+ICsgPGtiZD5LPC9rYmQ+LgoKXAoKIyMgTWFya2Rvd24gc3ludGF4CgpSZWZlciB0byB0aGUgW1JNYXJrZG93biBSZWZlcmVuY2UgR3VpZGVdKGh0dHBzOi8vd3d3LnJzdHVkaW8uY29tL3dwLWNvbnRlbnQvdXBsb2Fkcy8yMDE1LzAzL3JtYXJrZG93bi1yZWZlcmVuY2UucGRmKQoKXAoKIyMgQ29kZSBDaHVua3MKCkNvZGUgY2h1bmtzIGxvb2sgbGlrZToKCmBgYHtyIGVjaG8gPSBGQUxTRSwgY29tbWVudCA9ICIifQpjYXQoaHRtbHRvb2xzOjppbmNsdWRlVGV4dCgic2NyaXB0cy9jb2RlX2NodW5rLlJtZCIpKQpgYGAKCi0gQ29kZSBjaHVua3MgYXJlIGV4ZWN1dGVkIGFzIHBhcnQgb2YgdGhlIGRvY3VtZW50ICJrbml0dGluZyIgYW5kIHRoZSBjb2RlIGFuZCBvdXRwdXQgZW1iZWRkZWQgaW4gdGhlIGRvY3VtZW50CgotIEJlIGF3YXJlIG9mIHRoZSB3b3JraW5nIGRpcmVjdG9yeSAoZG9uJ3QgdXNlIGBzZXR3ZCgpYCkuIElkZWFsbHkgdXNlIHRoZSBgaGVyZWAgcGFja2FnZSB0byBtYW5hZ2UgcGF0aHMuCgpcCgojIyBJbWFnZXMsIEZpZ3VyZXMsIGFuZCBUYWJsZXMKCi0gSW1hZ2VzIGNhbiBiZSBpbmNsdWRlZCB0aG91Z2ggbWFya2Rvd24sIG9yIGJ5IHVzaW5nIHRoZSBgaW5jbHVkZV9ncmFwaGljcygpYCBmcm9tIGBrbml0cmAgaW4gYSBjb2RlIGNodW5rIC0gdGhlIGxhdHRlciBwcm92aWRlcyBtb3JlIG9wdGlvbnMgZm9yIGN1c3RvbWlzaW5nIGZvciBzaXplL3Bvc2l0aW9uLgoKLSBGaWd1cmVzIGFyZSBjcmVhdGVkIGZyb20gY29kZSBjaHVua3MgYW5kIGNodW5rIG9wdGlvbnMgYXJlIHVzZWQgdG8gY29udHJvbCBzaXplL3Bvc2l0aW9uCgotIFRhYmxlcyBjYW4gYmUgbWFudWFsbHkgY3JlYXRlZCB1c2luZyB0aGUgbWFya2Rvd24gc3ludGF4IG9yIGNyZWF0ZWQgYXV0b21hdGljYWxseSBmcm9tIHlvdXIgZGF0YSB1c2luZyB0aGUgYGthYmxlKClgIGZyb20gYGtuaXRyYC4KCkZ1cnRoZXIgY3VzdG9taXNpbmcgb2YgYGthYmxlYCB0YWJsZXMgY2FuIGJlIGRvbmUgd2l0aCB0aGUgYGthYmxlRXh0cmFgIHBhY2thZ2UuCgpcCgojIyBDaXRhdGlvbnMKCkNpdGF0aW9ucyBjYW4gYmUgaW5zZXJ0ZWQgaW50byBhbiBSTWFya2Rvd24gZG9jdW1lbnQuIFtUaGlzIGRvY3VtZW50IGZyb20gUlN0dWRpb10oaHR0cHM6Ly9yc3R1ZGlvLmdpdGh1Yi5pby92aXN1YWwtbWFya2Rvd24tZWRpdGluZy9jaXRhdGlvbnMuaHRtbCkgZ29lcyB0aHJvdWdoIGhvdyB0byBkbyBpdAo=</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiWm9vbSBOb3RlcyAxMDogV29ya2Zsb3dzIgpkYXRlOiAiU2VtZXN0ZXIgMSwgMjAyMyIKb3V0cHV0OgogIGh0bWxfZG9jdW1lbnQ6CiAgICB0b2M6IHRydWUKICAgIHRvY19mbG9hdDogdHJ1ZQogICAgdG9jX2RlcHRoOiAzCiAgICBjb2RlX2Rvd25sb2FkOiB0cnVlCiAgICBjb2RlX2ZvbGRpbmc6IHNob3cKLS0tCgpgYGB7ciBzZXR1cCwgaW5jbHVkZT1GQUxTRX0KbGlicmFyeShrbml0cikKCmtuaXRyOjpvcHRzX2NodW5rJHNldCgKICBjb21tZW50ID0gIiM+IiwKICBmaWcucGF0aCA9ICJmaWd1cmVzLzA5LyIsICMgdXNlIG9ubHkgZm9yIHNpbmdsZSBSbWQgZmlsZXMKICBjb2xsYXBzZSA9IFRSVUUsCiAgZWNobyA9IFRSVUUKKQpgYGAKCj4gIyMjIyBBc3NvY2lhdGVkIE1hdGVyaWFsCj4KPiBNb2R1bGU6IFtNb2R1bGUgMTAgLSBXb3JrZmxvd3NdKDEwLXdvcmtmbG93cy5odG1sKQoKIyMgR2V0dGluZyBvcmdhbmlzZWQKCi0gQ3JlYXRlIGEgc3RydWN0dXJlCi0gQ3JlYXRlIGEgUkVBRE1FCi0gQ2hvb3NlIGEgbGljZW5zZQoKVGhlIGB1c2V0aGlzYCBwYWNrYWdlIGNhbiBoZWxwIHlvdSwgYW5kIHByb3ZpZGVzIG1hbnkgaGVscGVyIGZ1bmN0aW9uIGZvciBjcmVhdGluZyBhbmQgc2V0dGluZyB1cCBwcm9qZWN0cyBhbmQgcGFja2FnZXMKCmBgYHtyLCBldmFsID0gRkFMU0V9CiMgQ3JlYXRlIGFuZCBvcGVuIGEgbmV3IHBhY2thZ2UKdXNldGhpczo6Y3JlYXRlX3Byb2plY3QocGF0aCA9ICJwYXRoL3RvL25ldy9wcm9qZWN0IikKCiMgQ3JlYXRlIGEgbWFya2Rvd24gUkVBRE1FCnVzZXRoaXM6OnVzZV9yZWFkbWVfbWQoKQoKIyBDcmVhdGUgYW4gUk1hcmtkb3duIFJFQURNRQp1c2V0aGlzOjp1c2VfcmVhZG1lX3JtZCgpCgojIENyZWF0ZSBhIG5ldyBSIHNjcmlwdCBpbiB5b3VyIHByb2plY3QgaW4gZGlyZWN0b3J5IFIvCnVzZXRoaXM6OnVzZV9yKG5hbWUgPSAibXlmaWxlLlIiKQoKYGBgCgojIyMgQ29uZmlndXJhdGlvbgoKSXQncyB3b3J0aCB0YWtpbmcgc29tZSB0aW1lIHRvIGNvbmZpZ3VyZSBvcHRpb25zIGluIHlvdXIgZW52aXJvbm1lbnQgdG8gbWFrZSBsaWZlIGVhc2llciBmb3IgeW91cnNlbGYuCgpUaGUgYC5ScHJvZmlsZWAgZmlsZSBpcyB1c2VkIHRvIHN0b3JlIHRoZXNlIGNvbmZpZ3VyYXRpb25zLiBZb3UgY2FuIG9wZW4gaXQgd2l0aCBgdXNldGhpczo6ZWRpdF9yX3Byb2ZpbGUoKWAuCgotIERvbid0IGxvYWQgJ2FuYWx5c2lzJyBkZXBlbmRhbnQgcGFja2FnZXMgaW4geW91ciBScHJvZmlsZQoKTGVhcm4gc29tZSBvZiB0aGUga2V5Ym9hcmQgc2hvcnRjdXRzIGluIFJTdHVkaW8gdG8gaW1wcm92ZSB5b3VyIHByb2R1Y3Rpdml0eS4gPGtiZD5BbHQ8L2tiZD4gKyA8a2JkPlNoaWZ0PC9rYmQ+ICsgPGtiZD5LPC9rYmQ+IGlzIHRoZSBrZXlib2FyZCBzaG9ydGN1dCB0byBzaG93IHlvdSB0aGUga2V5Ym9hcmQgc2hvcnRjdXRzLgoKIyMjIFZlcnNpb24gY29udHJvbAoKVXNpbmcgYW4gYXV0b21hdGVkIHZlcnNpb24gY29udHJvbCBzeXN0ZW0gc3VjaCBhcyBgZ2l0YCBpcyBoaWdobHkgcmVjb21tZW5kZWQuIEl0IGNhbiBoZWxwIHlvdSBtYW5hZ2UgZGlmZmVyZW50IHZlcnNpb25zIG9mIHlvdXIgY29kZSBhbmQgc2hvdyBkaWZmZXJlbmNlcyBvciBsZXQgeW91IGp1bXAgYmV0d2VlbiB2ZXJzaW9ucy4KCiMjIERlYnVnZ2luZwoKR2VuZXJhbCBwcm9jZXNzOgoKMS4gRG8gSSByZWNvZ25pc2UgdGhlIG1lc3NhZ2U/CjIuIFJlLWxvb2sgYXQgdGhlIGNvbW1hbmQgSSByYW4gbG9va2luZyBmb3IKICAgIC0gdHlwb3MKICAgIC0gbWlzc2luZyBzeW50YXggKGUuZy4gYnJhY2tldHMsIHNlbWljb2xvbnMsIGV0Yy4pCiAgICAtIGNvcnJlY3QgbmFtaW5nIG9mIHRoaW5ncwozLiBJcyB0aGUgaW5wdXQgZm9yIG15IGNvbW1hbmQgd2hhdCBJIGV4cGVjdCBpdCBpcz8KNC4gRGlkIHRoZSBwcmV2aW91cyBjb21tYW5kIHJ1biBwcm9wZXJseT8KICAgIC0gaWYgbm90IGp1bXAgdG8gMS4gZm9yIHRoZSBwcmV2aW91cyBjb21tYW5kCgoKIyMgVGVzdGluZwoKVGVzdCB5b3VyIGNvZGUgYXMgeW91IGdvLiBJdCBjYW4gYmUgdXNlZnVsIHRvIGFkb3B0IGFuIGF1dG9tYXRlZCB0ZXN0aW5nIHNvbHV0aW9uIC0gc3VjaCBhcyB0aGUgYHRlc3R0aGF0YCBwYWNrYWdlIHRvIGNyZWF0ZSB0ZXN0cyB0aGF0IGNhbiBiZSBhdXRvbWF0aWNhbGx5IHJ1bi4K</div>
 
 
 </div>
@@ -574,7 +558,7 @@ $(document).ready(function () {
 <!-- code folding -->
 <script>
 $(document).ready(function () {
-  window.initializeSourceEmbed("zoom_notes_06.Rmd");
+  window.initializeSourceEmbed("zoom_notes_10_workflows.Rmd");
   window.initializeCodeFolding("show" === "show");
 });
 </script>
