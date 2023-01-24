@@ -17,7 +17,7 @@ This course is primarily targeted to students with no or little programming expe
 
 ## Sign-up
 
-Semester 1 2023 R for Successful Student Projects (R4SSP) will be online via Zoom, time and day to be decided. 
+Semester 1 2023 R for Successful Student Projects (R4SSP) will be online via Zoom, 11am Tuesday. An in-person help/study group session will run 3:30-4:30pm on Thursdays.
 <!--Please register [using this form](https://docs.google.com/forms/d/e/1FAIpQLScOCwMa1_pSZPZEJyOZ4Wp8OORPqbd_S_84QPwaHR7urDu2mA/viewform?usp=sf_link) to receive details.-->
 
 
@@ -49,7 +49,7 @@ Week starting 27 March | 4 | Data focus | 3 | Communicating Data | M
 Week starting 3 April  | 5 | Data focus | 4 | Summarising Data | P
 Week starting 10 April | - | MID-SEMESTER | | |
 Week starting 17 April | 6 | Data focus | 5 | Tidying Data | M
-Week starting 24 April | 7 |Data focus | 6 | Combing/Joining |P
+Week starting 24 April | 7 |Data focus | 6 | Combining/Joining |P
 Week starting 1st May | 8 | Programming focus | 1 | Functions and Choices | M
 Week starting 8th May | 9 | Programming focus | 2 | Repeating code | P
 Week starting 15th May | 10 | Programming focus | 3 | Workflows and debugging | M
