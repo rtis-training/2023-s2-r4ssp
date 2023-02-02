@@ -48,7 +48,7 @@ navbar:
         - text: "04- Communicating data"
           href: zoom_notes_04_communicate.html
         - text: "05 - Summarising data"
-          href: zoom_notes_05_subset.html
+          href: zoom_notes_05_summarise.html
         - text: "06 - Transforming data"
           href: zoom_notes_06_transform.html
         - text: "07 - Combining data"
