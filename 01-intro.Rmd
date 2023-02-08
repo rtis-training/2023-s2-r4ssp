@@ -7,14 +7,12 @@ output:
     toc_float: true
     toc_depth: 3
     code_download: true
-    code_folding: show
 ---
 
 ```{r setup, include=FALSE}
 library(knitr)
 
 knitr::opts_chunk$set(
-  comment = "#>",
   fig.path = "figures/01/", # use only for single Rmd files
   collapse = TRUE,
   echo = TRUE
@@ -35,14 +33,9 @@ knitr::opts_chunk$set(
 
 #### Before we start
 
-This course is designed with two components - the module and the zoom notes. The module content provides more explanation and background so that you can work through it on your own if you wish. The zoom notes content provides the structure for the content that will be delivered in the online sessions. Both sets of content are complementary to each other.
+This web site provides two kinds of materials -- module notes and zoom notes. The module pages cover the content of each online session in detail. They often provide additional in-depth discussion and examples. You can use the module notes to revise and extend lesson content on your own at any time. The zoom notes contain an outline of the material covered in each module and coding exercises that you can work through after the lesson to solidify your understanding and build your skills. We can  work through these exercises together in each week's face to face practical session. 
 
-At the top right hand corner of both the module and zoom notes pages is a "code" button. This can be used to toggle seeing/hiding the code or to download the code that that created the page as an Rmarkdown file (we cover Rmarkdown more in-depth in [module](04-communicate.html)/[zoom notes](zoom_notes_04_communicate.html) 4).
-
-
-
-
-
+At the top right hand corner of each notes page is a "Code" button. This toggles showing/hiding the code used to create the page as an Rmarkdown file (we cover Rmarkdown more in-depth in [module](04-communicate.html)/[zoom notes](zoom_notes_04_communicate.html) 4). When working through the zoom notes, you can use this button to hide the exercise solutions if you prefer to tackle them first on your own.
 
 \
 
@@ -54,7 +47,7 @@ In this mini-course, we will help you learn to use one of the most interesting (
 
 In this module, we show you how to get started with R. We will not assume that you have any prior computer programming experience. In fact, if you have programmed before in a language like Java or C, be aware that R is, in many respects, very different from those languages -- so keep an open mind.
 
-We will begin by explaining the different software tools you need, and how to get them onto your own computers, if you wish to do so. Then we will discuss the basic mechanics of these tools. Throughout this handout (and all materials for this mini-course) there are code examples and R exercises that you should work through carefully on the computer. This will prepare you to use R for your in-course research projects later in the semester.
+We will begin by explaining the different software tools you need, and how to get them onto your own computers. Then we will discuss the basic mechanics of these tools. Throughout this handout (and all materials for this mini-course) there are code examples and R exercises that you should work through carefully on the computer. This will prepare you to use R for your in-course research projects later in the semester.
 
 This handout is designed to be read in conjunction with Chapter 1: Introduction of [R for Data Science](https://r4ds.had.co.nz).
 
@@ -72,7 +65,7 @@ include_graphics("images/01-computer.png" )
 
 All of the amazing things that computers do happen through extremely complicated manipulation of all those 0s and 1s.This involves a lot of maths and a lot of electronics, and is very, very confusing. So that computer users don't have to think about all these 0s and 1s, computer scientists have developed **programming languages**, which are symbolic systems that we can use to express what we want to happen inside the machine. Programming languages are designed to be similar to human languages, so they are easy for us to work with. Over the last 60 years many such languages have been developed: FORTRAN, BASIC, C, Java, Python, etc., and the one we are using in this mini-course, R. Each programming language has a vocabulary and a grammar (just like human languages) which must be followed **exactly** (they are, in fact, much stricter about this than human languages).
 
-To communicate with your computer using a program language, you need a special computer program (previously written in a programming language, of course) that knows how to translate from the human-friendly programming language into actions on the computer. These are called **Development Environments**, because this is where people develop software.
+To communicate with your computer using a program language, you need a special computer program (which is itself written in a programming language, of course) that knows how to translate from the human-friendly programming language into actions on the computer. These are called **Development Environments**, because this is where people develop software.
 
 ```{r, fig.cap = "All The Parts", echo=FALSE, fig.align='center', out.width="100%"}
 include_graphics("images/01-language_ide_machine.png")
@@ -84,9 +77,11 @@ Both R and RStudio are installed on the computers in the Otago University comput
 
 You can also install the R language and the RStudio program on your own personal computers. These are completely open-source, free, and safe.
 
-First, install R from <https://cran.r-project.org/bin/windows/base/> (for Windows machines) or <https://cran.r-project.org/bin/macosx/> (for Mac OS machines). Then install RStudio from <https://rstudio.com/products/rstudio/download/>. Modern scientists need to be comfortable installing software on their own computers. This is a good opportunity for you to practice this important skill, and we encourage you to try it. If you need any help, ask us.
+First, install R from <https://cran.r-project.org/bin/windows/base/> (for Windows machines) or <https://cran.r-project.org/bin/macosx/> (for Mac OS machines). As of writing, the current version of R is 4.2.2. If you already have an earlier version of R installed, consider upgrading to the latest version by running the latest installer.
 
 \
+
+Then install RStudio from <https://posit.co/products/open-source/rstudio/>. Install the Free version; it does everything that you need. Modern scientists must be comfortable installing software on their own computers. This is a good opportunity for you to practice this important skill, and we encourage you to try it. If you need any help, ask us.
 
 \
 
@@ -116,19 +111,11 @@ In the first instance, just to make sure R and RStudio are working correctly, we
 
 ## Parts of RStudio
 
-The RStudio interface is divided into separate **panes**. As you become more comfortable with RStudio, you may wish to reorganise the locations of the different panes. In its default configuration when it first opens, RStudio will have three panes, each of which has multiple tabs. On the left is the Console pane. This is where we will enter our first R commands. At the upper right is the Environment pane. This is where we will see information about the state of our program. At the lower right is the Files pane. Here we can navigate among files on our computer. But more usefully, the Files pane contains a tab labelled Plots. We will switch to this tab to see graphs that we draw with R.
+The RStudio interface is divided into separate **panes**. In its default configuration when it first opens, RStudio will have three panes, each of which has multiple tabs. On the left is the Console pane. This is where we will enter our first R commands. At the upper right is the Environment pane. This is where we will see information about the state of our program. At the lower right is the Files pane. Here we can navigate among files on our computer. But more usefully, the Files pane contains a tab labelled Plots. We will switch to this tab to see graphs that we draw with R.
 
-```{r, fig.align='center', fig.cap = "RStudio", echo = FALSE, fig.pos = "H", out.width="100%"}
+```{r, fig.align='center', fig.cap = "RStudio", echo = FALSE, fig.pos = "H", out.width="100%", out.extra = 'style="border:1px solid black"'}
 include_graphics("images/01-RStudio.png")
 ```
-
-### Using Projects in RStudio
-
-RStudio projects are a great way of compartmentalising analyses. In [R for Data Science - Workflow: Projects (https://r4ds.had.co.nz/workflow-projects.html)](https://r4ds.had.co.nz/workflow-projects.html) chapter it discusses some good practices and configurations to help you work with RStudio effectively.
-
-It is highly recommended to read this chapter and implement the suggested configuration changes.
-
-\
 
 \
 
@@ -150,11 +137,9 @@ R understands numbers (things like 8 and 3.14159) and mathematical operators (ac
 
 2.  The Console pane on the left will contain some explanatory text. At the bottom of the text is a right angle bracket **\>**. That is where you will begin typing. There will be a small, flashing, vertical line beside the angle bracket. (If you don't have the flashing vertical line, click your mouse beside and slightly to the right of the angle bracket.)
 
-3.  Type the following characters into the Console pane, followed by the <kbd>Enter</kbd> key.
+3.  Type the characters shown below into the Console pane, followed by the <kbd>Enter</kbd> key.
 
-[^1]: 
-
-**4 + 5**
+    **4 + 5**
 
 If everything is working as it should, your screen should look like this (the contents of the Files pane may be different):
 
@@ -184,7 +169,7 @@ For the remainder of this document, we will not show you pictures of the whole s
 
 ## More actions: Function calls in R
 
-R syntax (grammar) mimics mathematical equation syntax in some respects. As we denote a function f(x) using round brackets in an equation, so do we denote the application of a function in R. R knows many useful functions. For example `sqrt()` , which computes the square root of a number, and `abs()` which computes the absolute value of a number. To apply one of these functions, we type the name, and place the value we wish to operate on **(the argument)** inside the round brackets.
+R syntax (grammar) mimics mathematical equation syntax in some respects. As we denote a function f(x) using round brackets in an equation, so do we denote the application of a function in R. R knows many useful functions. For example `sqrt()` , which computes the square root of a number, and `abs()` which computes the absolute value of a number. To apply one of these functions, we type the name, and place the value we wish to operate on (the **argument**) inside the round brackets.
 
 ### Code-along Exercise
 
@@ -199,10 +184,17 @@ sqrt(200)
 
 ## Getting Help
 
-Often you'll need help for a specific function, such as `mean()`, you can search the help documentation using `?` in front of the function name to do this (e.g. `?mean`) and this will bring up the manual page. It provides information about what does, what the arguments are, and even provides some examples that can be copy-pasted and run to give an example of what it does.
+To get information about a function type `?` followed by the name of the function (e.g. `?mean`) into the console. This will display the function's manual page in the lower-right pane (the Help tab). 
 
-The `?` is not the only way to find out how to run a function -- for more examples of how to find help refer to <https://datacarpentry.org/R-ecology-lesson/00-before-we-start.html#Seeking_help>
+```{r, fig.align='center', fig.cap = "Manual page. Type ?mean into the console.", echo = FALSE, fig.pos = "H", out.width="80%", out.extra = 'style="border:1px solid black"'}
+include_graphics("images/01-help_page.png")
+```
 
+\
+
+The manual page explains what the function does, what the function inputs are and what the function returns. Most manual pages also provide some code examples.
+
+For more ways to find documentation see <https://datacarpentry.org/R-ecology-lesson/00-before-we-start.html#Seeking_help>
 
 \
 
@@ -212,7 +204,7 @@ Lots of computing involves words rather than numbers. For example, searching tex
 
 In programming, a thing composed of letters doesn't have to be a real word (it could be, for example, a product code or user id), so we actually call them **strings**. To denote a **string** we surround it with quote marks, like this:
 
-```{r strings01}
+```{r strings01, eval = FALSE}
 "plato"
 ```
 
@@ -259,7 +251,7 @@ Imagine that you have two large numbers and, for some sound scientific reason, y
 sqrt(3.08062)
 ```
 
-This operation is risky. R has given you the ratio to five accurate decimal places. But you must then be *very careful* to copy it exactly into the `sqrt` function, or your answer will be wrong. Extrapolate this to thousands of data operations on a large data set and it is certain that errors will be made.
+This operation is risky. R has given you the ratio to five accurate decimal places. But you must then be *very careful* to copy that value exactly into the `sqrt` function, or your answer will be wrong. Extrapolate this to thousands of data operations on a large data set and it is certain that errors will be made.
 
 It would be more convenient, and safer, to take the result R gave you from the first statement, *store it somewhere, and then pass the stored entity to function sqrt*. This is, in fact, a fundamental action in programming: **We can store values as named entities (called variables) and use them whenever and wherever we need them.**
 
@@ -416,13 +408,13 @@ Not all R functions have such obvious names. Use Google or your favourite R text
 
 \
 
-# Even More Complex Things
+## Even More Complex Things
 
 We have seen that R understands single numbers or strings, and collections of numbers or strings (vectors). R also understands complete tables of data (in rows and columns, like spreadsheets are arranged). In fact, most real data analysis in R operates on tables of data. Some R functions require you to first extract a row or column from your data table; other functions will take an entire table and operate on it at once (for example, many of the functions that perform inferential statistical analyses operate on whole tables). In later modules, we will use some of these functions. But before we do that, there is one more **very important** mechanical feature of RStudio...
 
 \
 
-## Saving Your Code
+# Saving Your Code
 
 We have typed a lot of R commands into the console. When we close RStudio, **all that code will be gone forever**. If we want to do any of this again, we have to start over from the beginning and type everything in again. This is unacceptable. So, RStudio lets us type our code into a file, save the file, and retrieve the code whenever we want, so that we can modify it or simply run it again.
 
@@ -432,13 +424,13 @@ We have typed a lot of R commands into the console. When we close RStudio, **all
 
 1\. From the menu at the top of the RStudio screen select File-\>New File then click on R Script. (Alternatively, you can type shift+ctrl+N (Windows) or shift+cmd+N (Mac).)
 
-```{r, fig.align='center', out.width="50%", fig.cap = "Making an R File", echo = FALSE}
+```{r, fig.align='center', out.width="50%", out.extra = 'style="border:1px solid black"', fig.cap = "Making an R Script File", echo = FALSE}
 include_graphics("images/01-make_script.png")
 ```
 
 2\. This opens a new untitled file in an editing pane in the upper left of the RStudio screen. The console pane will be pushed down to the bottom half of the screen. You can click and drag the dividers between the four panes to change their sizes as you prefer.
 
-```{r, fig.align='center', out.width = "100%", fig.cap = "New Script", fig.pos = 'H', echo = FALSE}
+```{r, fig.align='center', out.width = "100%", out.extra = 'style="border:1px solid black"', fig.cap = "New Script Tab", fig.pos = 'H', echo = FALSE}
 include_graphics("images/01-new_script.png")
 ```
 
@@ -454,17 +446,82 @@ include_graphics("images/01-new_script.png")
 
 8\. After entering some code into your file, save it (the programmer's motto is Save Early, Save Often). You can then safely exit the RStudio program.
 
-9\. Go to wherever you saved your named code file (it will have suffix .R) and double-click on it to open it. The computer may ask you what program to use -- select RStudio.
+9\. Go to wherever you saved your named code file (it will have suffix .R) Double-click on it and it should open in RStudio. If it opens in something else (e.g. Word or Notepad), this just means that your machine is not configured to associate .R files with RStudio. In this case, **right-click** on the file, select Open With, and then RStudio. (We see a more convenient workflow in a moment.)
 
-10\. The file will open in RStudio and you can run all your code again (see items 5 and 6 above) without having to retype anything.
+10\. When the file is open in RStudio you can run all your code again (see items 5 and 6 above) without having to retype anything.
 
 \
 
+## Using Projects in RStudio
+
+An RStudio **project** is a folder, created from inside RStudio, that contains related script files, data files, and RStudio **metadata** files which ensure R code runs correctly and efficiently. Most experienced R developers *always* organise their work into projects. This is logically similar to organising your regular computer files into folders -- it keeps related material bundled together, making it easier to work with.
+
+Typically, creating a project is the *first* step in R development. When a project is initially created, it contains only the RStudio metadata files. Then data files are added by simply moving them into folder like any other file. Script files and output files are added to the project from inside RStudio as the work progresses. At all times, all the related content for the project is tidily contained in the project folder for easy location and use.
+
+### Creating a Project in RStudio
+
+1\. From the main menu select File -> New Project
+
+```{r, fig.align='center', out.width="50%", out.extra = 'style="border:1px solid black"', echo = FALSE}
+include_graphics("images/01-new_project_01.png")
+```
+
+
+2\. In the resulting pop-up window, select New Directory, then New Project, to navigate to the Create New Project dialogue box.
+
+
+```{r, fig.align='center', out.width="50%", out.extra = 'style="border:1px solid black"', echo = FALSE}
+include_graphics("images/01-new_project_02.png")
+```
+
+```{r, fig.align='center', out.width="50%", out.extra = 'style="border:1px solid black"', echo = FALSE}
+include_graphics("images/01-new_project_03.png")
+```
+
+```{r, fig.align='center', out.width="50%", out.extra = 'style="border:1px solid black"', echo = FALSE}
+include_graphics("images/01-new_project_04.png")
+```
+
+3\. **THIS IS THE TRICKY PART.** The Create New Project dialogue has a text box, followed by a Browse button. Counterintuitively, you have to do the Browse button *first*. Click Browse and navigate **to where you want your project folder to be created**. Only then, click in the Directory Name text box and type a name for your project folder. Be sure to make this name descriptive -- it is awkward to change the name of a project after it is created. Click the Create Project button to finish. RStudio will refresh as it navigates to your new empty project.
+
+```{r, fig.align='center', out.width="50%", out.extra = 'style="border:1px solid black"', echo = FALSE}
+include_graphics("images/01-new_project_05.png")
+```
+
+4\. Quit out of RStudio, and navigate to the directory where you created your project. You will find a new folder labelled with the project name you chose.
+
+```{r, fig.align='center', out.width="50%", out.extra = 'style="border:1px solid black"', echo = FALSE}
+include_graphics("images/01-new_project_06.png")
+```
+
+5\. Open the project folder. It will contain a folder called .Rproj.user and a file called .Rhistory. These are RStudio metadata files -- leave them alone. (You may need to turn on hidden files in Windows Explorer or the Mac Finder to see these files.) It also contains a file with the project name and suffix .Rproj.
+
+```{r, fig.align='center', out.width="50%", out.extra = 'style="border:1px solid black"', echo = FALSE}
+include_graphics("images/01-new_project_07.png")
+```
+
+6\. When you open the project in RStudio (we see how in a moment) the project folder will be its **working directory**. That is, RStudio will be "looking at" this folder. It will be able to access any files in this folder; when you generate output files, they will be written to this folder. To illustrate this, I have placed an Excel file into my new project folder, and we will see how it appears to RStudio. You can place files in your project folder by copy/paste, moving in the Finder, or creating new files, exactly as you work with files in the ordinary way for your operating system.
+
+```{r, fig.align='center', out.width="50%", out.extra = 'style="border:1px solid black"', echo = FALSE}
+include_graphics("images/01-new_project_08.png")
+```
+
+7\. Double click on the .Rproj file in your project folder. This automatically opens your project in RStudio and sets the working directory (what RStudio can "see") correctly. Note that the Files tab in the lower right pane shows the contents of the project folder, including the added spreadsheet file.
+
+```{r, fig.align='center', out.width="50%", out.extra = 'style="border:1px solid black"', echo = FALSE}
+include_graphics("images/01-new_project_09.png")
+```
+
+8\. When working with R we recommend that you create a new project for every module of work. The exact level of detail that defines a "module of work" will become part of your professional style. We further recommend that you **ALWAYS** begin working on any RStudio project by double-clicking on the .Rproj file. Do not open RStudio directly and then wander around looking for your project. 
+
+For a detailed discussion of advanced RStudio project organisation and use, see [R for Data Science - Workflow: Projects (https://r4ds.had.co.nz/workflow-projects.html)](https://r4ds.had.co.nz/workflow-projects.html) 
+
+
 ## An Even Better Script File
 
-We will cover RMarkdown in more depth in Module 6.
+A basic script file (of type .R) will store and preserve your code. RStudio also provides **R Markdown** files (of type .Rmd) that can do much more. R Markdown is an extended script format that allows you to embed R commands in formatted text. RStudio processes R Markdown files, producing HTML, Word, or pdf output files. During processing (which is called *knitting*) RStudio runs any embedded R commands and **inserts the results into the output document**. You don't need to process your data in RStudio and then copy/paste the results into a separate Word document. You can insert the code directly into your text in an R Markdown file, and it will be executed when RStudio knits. 
 
-A basic script file (of type .R) will store and preserve your code. RStudio also provides **R Markdown** files (of type .Rmd) that can do much more. R Markdown is an extended script format that allows you to embed R commands in formatted text. RStudio processes R Markdown files, producing HTML, Word or pdf formats. During processing (which is called *knitting*) RStudio runs any embedded R commands and **inserts the results into the output document**. You don't need to process your data in RStudio and then copy/paste the results into a separate Word document. You can insert the code directly into your text in an R Markdown file, and it will be executed when RStudio knits. Let's give it a try:
+We will cover RMarkdown (and its next-generation version Quarto) in depth in [Module 4](04-communicate.html), but we introduce the process briefly here:
 
 1\. In RStudio, click on the File menu, select New File and, from the submenu that opens, click on R Markdown.
 
@@ -472,7 +529,7 @@ A basic script file (of type .R) will store and preserve your code. RStudio also
 include_graphics("images/01-make_rmd.png")
 ```
 
-2\. A dialogue box will open, where you have a chance to enter a title for your document and the name of the author. These will appear at the top of the knit document. You can select the output format. Leave it as HTML for this exercise.
+2\. A dialogue box will open, where you enter a title for your document, the name of the author and the document date (set to the current date by default). These will appear at the top of the knit document. You can select the output format. Leave it as HTML for this exercise.
 
 ```{r, fig.align='center', out.width = "75%", fig.pos = "H", fig.cap = "R Markdown Dialogue", echo = FALSE}
 include_graphics("images/01-markdown_dialogue.png")
@@ -484,7 +541,7 @@ include_graphics("images/01-markdown_dialogue.png")
 include_graphics("images/01-markdown_template.png")
 ```
 
-The file already contains some text. This is some sample contents to give you an idea of what an R Markdown file looks like. You will note that the file has areas with a white background and areas with a shaded background. The white areas are plain text, the shaded areas are R commands. When the file is knit, that code will be run, and its output inserted into the text. To see this in action, click the **Knit** icon at the top the RStudio tab.
+The file already contains some text. This is sample contents to illustrate how R Markdown works. You will note that the file has areas with a white background and areas with a shaded background. The white areas are plain text, the shaded areas are R code When the file is knit, that code will be run, and its output inserted into the text. To see this in action, click the **Knit** icon at the top the RStudio tab.
 
 ```{r, fig.align='center', fig.cap = "The Knit Button", out.width = "50%", echo = FALSE, fig.pos = "H"}
 include_graphics("images/01-markdown_knit_button.png")
@@ -496,6 +553,7 @@ R Markdown is a powerful tool for generating research reports when analysing dat
 
 \
 
+
 \
 
 # Conclusion
@@ -504,9 +562,11 @@ In this module you have considered the inner workings of the computer, written R
 
 ## What's Next
 
-Fill in the module feedback form <https://tinyurl.com/r4ssp-module-fb>.
+Please fill in the module feedback form <https://tinyurl.com/r4ssp-module-fb>. Your input helps us make R4SSP better.
 
-In our next module, we will learn how to read real data files into R and make plots and figures that you can use in a research report. We will start with simple plots you can create using only base R. Then we will learn to use a powerful graphics library called **ggplot** (part of the **tidyverse** family of R extensions). With ggplot you can make publication-quality graphs with only a few lines of R code.
+In this week's hands-on session we will continue to build our R skills, working together through the exercises in the Zoom notes for this module. (If you prefer, go ahead and try them on your own.) You can also use the hands-on sessions to get help with any coursework, projects, or other R questions you may have.
+
+In our next module, we will learn how to read data files into R and make plots and figures that you can use in a research report. We will start with simple plots you can create using only base R. Then we will learn to use a powerful graphics library called **ggplot** (part of the **tidyverse** family of R extensions). With ggplot you can make publication-quality graphs with only a few lines of R code.
 
 
 

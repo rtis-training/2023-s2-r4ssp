@@ -14,7 +14,6 @@ output:
 library(knitr)
 
 knitr::opts_chunk$set(
-  comment = "#>",
   fig.path = "figures/01/", # use only for single Rmd files
   collapse = TRUE,
   echo = TRUE
@@ -36,23 +35,17 @@ knitr::opts_chunk$set(
 
 #### Before we start
 
-This course is designed with two components - the module and the zoom notes. The module content provides more explanation and background so that you can work through it on your own if you wish. The zoom notes content provides the structure for the content that will be delivered in the online sessions. Both sets of content are complementary to each other.
+This web site provides two kinds of materials -- module notes and zoom notes. The module pages cover the content of each online session in detail. They often provide additional in-depth discussion and examples. You can use the module notes to revise and extend lesson content on your own at any time. The zoom notes contain an outline of the material covered in each module and coding exercises that you can work through after the lesson to solidify your understanding and build your skills. We can  work through these exercises together in each week's face to face practical session. 
 
-At the top right hand corner of both the module and zoom notes pages is a "code" button. This can be used to toggle seeing/hiding the code or to download the code that that created the page as an Rmarkdown file (we cover Rmarkdown more in-depth in [module](04-communicate.html)/[zoom notes](zoom_notes_04_communicate.html) 4).
-
-
+At the top right hand corner of each notes page is a "Code" button. This toggles showing/hiding the code used to create the page as an Rmarkdown file (we cover Rmarkdown more in-depth in [module](04-communicate.html)/[zoom notes](zoom_notes_04_communicate.html) 4). When working through the zoom notes, you can use this button to hide the exercise solutions if you prefer to tackle them first on your own.
 
 \
 
 # R and RStudio
 
-R is the language, RStudio is an interface for interacting with R.
+R is a programming language. RStudio is an integrated development environment (IDE) which provides a graphical interface (among other things) for interacting with R. 
 
-\
-
-## The RStudio environment
-
-RStudio is what is known as an integrated development environment (IDE) which provides a graphical interface (among other things) for interacting with R. The main environment of RStudio is comprised of panels.
+The RStudio screen is comprised of panels.
 
 Panels of RStudio
 
@@ -63,43 +56,237 @@ Panels of RStudio
 
 \
 
-### Global settings for reproducibility
+# Scripts
 
-Before we get under way we want to set up our environment to help enforce some behaviours that encourage reproducibility.
+Scripts are text files that contain R code. Scripts provide a persistent record of the steps we perform in our data analysis, and can be used to recreate what we have done without having to retype. 
 
-We want to disable a few default settings
+Scripts can be either:
 
-- Restore .RData on startup
-- Save workspace to .Rdata
+R Script - plain text document that contains R commands
 
-To do this select the `Tools` menu -> `Global options`, then on the "General" tab under the "Workspace" heading:
-
-1. Untick "Restore .RData on startup"
-2. Set "Save workspace to .RData on exit" to "Never"
-3. Click "Apply"
+RMarkdown - a plain text document that has text areas and code areas. RMarkdown files are processed/compiled to an output format such as html or pdf which contains formatted text, code, and the results of the code embedded in the document. We'll cover this in more depth Module/Handout 4.
 
 \
 
-### Projects
+# R Syntax
 
-Projects within RStudio provide mechanism to encapsulate a project - be it particular data analysis you're working on, an R package you're making (Modules/Handouts 7 and 8), or even a book (Module/Handout 6).
+General syntax info:
 
-A project is a directory on your computer that you want to put all your code, documentation, data, and associated outputs so that everything needed to recreate an analysis is "bundled together".
+- R is case sensitive (e.g. `weight` and `Weight` are different entities)
+- Spaces are ignored in assignments and expressions. For example `8+3` and `8 + 3` are functionally equivalent. However, generous use of white space is encouraged to improve accessibility.
+- Variable and function names in R conventionally use **snake case**. All letters are lower case, and words are separated by underscore (e.g. `annual_mean_rainfall`).
 
-We'll create a project for the course and create a common project structure:
+\
+
+## Mathematical operators
+
+Addition: `+`
+
+Subtraction: `-`
+
+Multiplication: `*`
+
+Division: `/`
+
+Exponentiation: `^`
+
+Modulo (remainder): `%%`
+
+```{r}
+# Addition
+1 + 2
+
+# Subtraction
+3 - 6
+
+# Multiplication
+4 * 2
+
+# Division
+12 / 3
+
+# Exponentiation
+2 ** 5
+
+# Modulo
+5 %% 2
+
+```
+
+## Data types
+
+R has three primary types of data:
+
+- numeric
+- characters
+- boolean
+
+Numeric data can be integer (whole numbers) or "double" (having a decimal part).
+
+Character data items are comprised of one or more letters, numbers, or (permitted) symbols. In the vernacular, these are called "strings". Strings are defined in R by enclosing them in quotation marks (e.g. `"Emperor Penguin"`).
+
+Booleans are logical data. They can take on only the values `TRUE` or `FALSE`, and are used for logical operations.
+
+R functions (see discussion below) accept input data of specific type(s). Applying a function or operation to the "wrong" type of data will cause an error.
+
+\
+
+## Variables
+
+Variables are named objects in which we store data. The stored values can be referenced/used later in our code.
+
+Variable names must:
+
+- Start with a letter
+- Contain no non-alphanumeric symbols except . (full stop) and _ (underscore)
+
+Variable names should always be descriptive of their contents. This will help you remember what data they hold when they are used in the code.
+
+\
+
+## Assignment operators
+
+In R `<-` and `=` are both used for assignment.  `<-` is used to assign a value to a variable. `=` is used inside a function call to assign a value to a function input.
+
+The right-hand side of an assignment statement is evaluated first. The result is then assigned to the variable on the left-hand side. Thus the statement `x <- x * 2` means "First multiply the current value of x by 2. Take the result of that operation and assign it as the new value of x."
+
+Note that variables **only contain the last thing that was assigned to them**. Assigning a value to a variable overwrites any existing value.
+\
+
+## Functions
+
+Functions are encapsulated, named chunks of code. We **call** a function by typing its name, followed by (). We provide any required data inputs (called *function arguments* in this context) by placing them between the round brackets. When a function is called, R executes the code which it encapsulates and returns the result.
+
+For example, if we want to find the square root of a number, we can use the `sqrt` function and provide the number as input:
+
+```{r}
+sqrt(64)
+```
+
+Many functions require multiple pieces of input data. Multiple arguments are placed between the round brackets, separated by commas. 
+
+Each function argument has a name. Arguments can be identified by name, or by ordinal position within the round brackets.
+
+```{r}
+# by position
+round(3.142, 1)
+
+# by name
+round(x = 3.142, digits = 1)
+```
+
+To see what arguments a function requires, call the `args` function, passing in the function name:
+
+```{r}
+args(round)
+```
+
+R contains many, many, powerful pre-defined functions. In one of our later modules, we will learn how to write our own custom functions.
+
+\
+
+## Comparison Operators
+
+Comparison operators evaluate to either `TRUE` or `FALSE`.
+
+Comparators:
+
+- equality: `==`
+- not equal to:`!=`
+- greater than: `>`
+- greater than or equal to: `>=`
+- less than: `<`
+- less than or equal to: `<=`
+
+Logical operators
+
+- not: `!`
+- or: `|`
+- and: `&`
+
+We'll cover these in more depth in the [Selecting and Filtering Module](03-subset.html).
+
+\
+
+## Comments
+
+The `#` symbol denotes a comment. R will ignore all text following the `#` on the same line. Comments should explain the logic of the code. This helps other people understand your code; it also helps you remember your thinking when you revisit your own code in the future. Thorough commenting is so essential to software development that most professionals *write their comments first*, then fill in the code following the structure defined by the comments.
+
+\
+
+# Complex Data
+
+## Vectors
+
+A vector is a complex data structure that holds multiple data elements. Vectors are **homogeneous** -- all their elements must be of the same data type. 
+
+To create a vector use function `c()`, the _combine_ function. Items are separated by commas.
+
+```{r}
+some_letters <- c("a", "b", "c")
+some_letters
+
+some_numbers <- c(2, 4, 6)
+some_numbers
+```
+
+We can see the data type of a vector using `typeof`
+
+```{r}
+typeof(some_letters)
+
+typeof(some_numbers)
+```
+
+\
+
+## Subsetting by index
+
+To access individual items in a vector use `[]`, the **index operator**, as shown below. Place the item's ordinal position between the square brackets. Select multiple items by placing a vector of positions between the square brackets.
+
+
+```{r}
+some_numbers
+
+# pull out the second item
+some_numbers[2]
+
+some_letters
+
+# pull out items 1 and 3
+some_letters[c(1,3)]
+```
+
+We will see examples of more complex data structures and their use in later modules.
+
+
+\
+
+# Getting Help
+
+To access the R documentation for a function, call `help()` passing in the function name, or type `?` followed by the name of the function (no intervening space).
+
+- `help(lm)` 
+- `?lm`
+
+Language documentation tends to be terse, and targeted to the advanced user. Frequently you will want more detailed explanation than is available from the built-in help. We recommend Google (my most common search is "how to ... in R") or one of the many useful text books available through the University library (see for example, https://otago.primo.exlibrisgroup.com/permalink/64OTAGO_INST/qef3lj/alma9926179377401891)
+
+\
+
+
+# Projects
+
+Projects within RStudio provide a mechanism to organise your work. A Project is a directory on your computer where you gather related code, documentation, data, and outputs so that everything needed to recreate an analysis is "bundled together".
+
+To create a new Project: 
 
 - File -> New Project -> New Directory -> New Project
 - Choose where you want it to live and give it a name
-- "Create Project"
+- Click "Create Project"
 
-Now we have our new project we'll create some directories to store various aspects of our project. We'll create the following directories:
+It is useful to add some subfolders to your Project folder. A common organisation is to have separate subfolders for your scripts, input files, output files, and documentation.
 
-- scripts
-- docs
-- data
-- outputs
-
-You can do this either using the "New Folder" button in the Files panel or using the code below.
+You can create subfolders by using the "New Folder" button in the Files panel or using the `dir.create()` function, as shown below.
 
 ```{r}
 dir.create("scripts")
@@ -110,245 +297,28 @@ dir.create("outputs")
 
 \
 
-### Scripts
+# Module 01 Exercises
 
-Scripts in R are a way in which we can document the steps we take through our analysis and can be used to recreate what we have done. There are two main forms that scripts come in:
 
-R Script - plain text document that contains R commands
-
-RMarkdown - a plain text document that has text areas and code areas which is processed/compiled thought to a output format such as html or pdf which contains formatted text, code plus the results of the code embedded in the document. We'll cover this in more depth Module/Handout 4.
-
-\
-
-## R syntax
-
-General syntax info:
-
-- R is case sensitive
-- spaces are ignored by R
-- there is no difference between single `'` and double `"` quotes but you have to use the same type to close as you open with
-
-\
-
-### Mathematical operators
-
-addition: `+`
-
-subtraction: `-`
-
-multiplication: `*`
-
-division: `/`
-
-exponent: `**`
-
-modulo/remainder: `%%`
-
-```{r}
-# addition
-1 + 2
-
-# subtraction
-3 - 6
-
-# multiplication
-4 * 2
-
-# division
-12 / 3
-
-# exponent
-2 ** 5
-
-# modulo
-5 %% 2
-
-```
-
-The `#` symbol is used to denote a 'comment' and R will ignore everything to the right of it. This lets us add comments to our code to describe the what and why of the code being run.
-
-\
-
-### Data types
-
-In R there are 3 main types of data you'll likely use in day-to-day life, these are:
-
-- numeric
-- characters
-- boolean
-
-The numeric type covers is your numbers both "double" (decimal), and integers (defined by a integer number followed by L e.g. `2L`). These can be typed straight in as we have been doing and can have mathematical operations performed on them.
-
-The character type is any combination of characters zero or more that is represented on the keyboard and includes letters, numbers and symbols. Characters are defined in R by enclosing them in quotation marks (either single or double, e.g. `"some words"`). Characters can't have mathematical operations performed on them.
-
-Booleans are the logical data type, they consist of `TRUE` and `FALSE` and are used for logical operations.
-
-Within R there are other types such as complex, and raw but they are less common
-
-\
-
-### Variables
-
-Variables are named objects that we can store data in that we can reference/use later in our code.
-
-The main rules for naming variables
-- Start with a letter
-- No symbols (except . or _)
-
-It's also highly recommended to use variable names that are descriptive of the contents. This will help you remember and keep track of things easier later on.
-
-\
-
-#### Assigment operators
-
-`<-` and `=` are both used for assignment within R. `<-` is the older/more commonly used for assigning to a variable, `=` is the only one that you use inside a function call to assign the parameters/arguments.
-
-In terms of priority of operators, assignment happens **last**, and takes the result of evaluating the right hand side and stores it into the object of named on the left hand side.
-
-Another key thing about variables is they **only contain the last thing that was assigned to them**.
-
-\
-
-
-### Functions
-
-Functions in R let us perform operations. Functions in R are really R code stored in a variable that does stuff. In order to "do the stuff" we need call the variable with parentheses `()` on the end. Inside the parentheses we can pass values for the parameters/arguments which let us change the behaviour of the function.
-
-For instance, if we want to find the square root of a number, we can use the `sqrt` function and provide the number we want the square root for as an argument:
-
-```{r}
-sqrt(64)
-```
-
-To supply multiple arguments or parameters to a function we separate them by a comma. Each argument also has a name. Arguments are filled either by name, or based on the position.
-
-```{r}
-# by position
-round(3.142, 1)
-
-# by name
-round(x = 3.142, digits = 1)
-```
-
-To find out what the names of the arguments a function takes we can run the `args` function on the function name:
-
-```{r}
-args(round)
-```
-
-\
-
-### Help
-
-Being able to find things out for yourself is extremely important and within R there are a couple way this can be done.
-
-- `help()` or `?`
-- `??`
-- google
-
-
-There is usually pretty good documentation that goes along side functions and this can be accessed through the inbuilt help system using `help()`, `?`, or `??`.
-
-`help()`and `?` are equivalent and will find the manual page for the exact function, e.g. to find the manual page for the `mean` function: `help("mean")` or `?mean`. The most useful sections of the manual pages are "Usage", "Arguments", and "Examples" which tell you how to run the function, what the arguments are supposed to be, and gives some 'copy-paste' examples to show you how it's run.
-
-`??` on the other hand will bring up a list of all the manual pages that mention the word.
-
-Google is also extremely useful and my most common search is "how to ... in R".
-
-\
-
-### Comparatives
-
-One final set of syntax operators to cover are the comparatives. These are used to create logical statements based on comparisons that will evaluate to be either `TRUE` or `FALSE`.
-
-Comparators:
-
-- equality: `==`
-- not equal to:`!=`
-- greater than / greater than or equal to: `>` / `>=`
-- less than / less than or equal to: `<` / `<=`
-
-Logical operators
-
-- not: `!`
-- or: `|`
-- and: `&`
-
-We'll cover these in more depth in the Selecting and Filtering [Module](03-subset.html)/[Handout](zoom_notes_03_subset.html).
-
-\
-
-## Starting with data
-
-### Vectors
-
-Until now we've been operating on single items at a time. R has way of storing multiple pieces of information - the _vector_.
-
-A vector is zero or more entries of the **same data type**.
-
-To create a vector of more than one piece of information we can use the _combine_ function, which because it is used so frequently in R, has been reduced to be `c()`. Each item is comma separated.
-
-```{r}
-some_letters <- c("a", "b", "c")
-some_letters
-
-some_numbers <- c(2, 4, 6)
-some_numbers
-```
-
-We can see what the data type is of a vector using `typeof`
-
-```{r}
-typeof(some_letters)
-
-typeof(some_numbers)
-```
-
-\
-
-#### Subsetting by index
-
-The final syntax we'll introduce this week is `[]` which enables us to extract items out of a vector.
-
-Each item has a positional index (starting from 1 - other languages differ). We can use this index as an argument to `[]` to pull out the specified item. If we want multiple items we supply a vector of numbers for the indexes we want
-
-```{r}
-some_numbers
-
-# pull out the second item
-some_numbers[2]
-
-some_letters
-# pull out items 1 and 3
-some_letters[c(1,3)]
-```
-
-In the Selecting and Filtering Data module we will cover this more and expand to 2 dimensions.
-
-\
-
-# Exercises
-
-
-1. Create and assign a vector of 5 numbers.
+1. Create a vector of 5 numbers and assign it to a variable.
 
 2. Find out the `length` of the vector.
 
-3. Divide the entire vector by 2 and store the result into a variable called *div_2* - what is the result of the division?
+3. Divide the entire vector by 2 and store the result into a variable called *div_2*. Explain what happens when you perform a mathematical operation on a vector.
 
-4. Calculate the minimum, maximum, mean, and standard deviation for the *div_2* vector. Can you round the results to 2 decimal places?
+4. Calculate the minimum, maximum, mean, and standard deviation for the *div_2* vector. Round each result to 2 decimal places.
 
 5. Create and assign a vector of at least 4 animal names into _animals_.
 
-6. Can you find a way to tell you the number of characters per item?
+6. Compute the number of characters in each item. Use only one line of code.
 
-7. Into a new variable, extract the first and fourth animal.
+7. Extract the first and fourth animal into a new variable.
 
-8. Remove the third animal from your original animals vector (what does using a negative index do?).
+8. Remove the third animal from your original animals vector. There are multiple syntactically legal ways to achieve this in R, but some are more elegant than others. (Hint: what does using a negative index do?)
 
-9. Create a vector that has three copies of this updated animals vector.
+9. Create a vector that has three copies of this updated animals vector. Use only one line of code.
 
-10. Combine your animal and number vectors together into a new variable called "_coerced_". Run `typeof` on this vector - how does it compare to the types of the original vector?
+10. Combine your animal and number vectors together into a new variable called _coerced_. Run `typeof` on this vector. Explain why the types of some elements have been changed.
 
 
 ### Example solutions
@@ -374,6 +344,11 @@ length(my_numbers)
 ```{r zn01_soln3, class.source = "fold-hide"}
 div_2 <- my_numbers / 2
 div_2
+
+# When a mathematical operator is applied to a vector, the operation is
+# performed on each individual vector element, and the whole set of new values
+# is returned.
+
 ```
 
 ----
@@ -381,14 +356,22 @@ div_2
 4.
 
 ```{r zn01_soln4, class.source = "fold-hide"}
+# Note the range of syntactic options. Strive for a balance between clarity and
+# parsimony.
+
 # minimum
-round(min(div_2), digits = 2)
+min_number <- min(div_2)
+round(min_number, digits = 2)
+
 # maximum
-round(max(div_2), digits = 2)
+max_number <- max(div_2)
+round(max_number, 2)
+
 # mean
 round(mean(div_2), digits = 2)
+
 # standard deviation
-round(sd(div_2), digits = 2)
+round(sd(div_2), 2)
 ```
 
 -----
@@ -448,7 +431,8 @@ typeof(animals)
 combined <- c(my_numbers, animals)
 typeof(combined)
 combined
-# the numbers have now been coerced to be a character type so that
-# all elements of the vector are the same data type
+
+# The numeric elements have been coerced to type character so that
+# the vector remains homogeneous.
 ```
 

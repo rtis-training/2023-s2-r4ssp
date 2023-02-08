@@ -13,7 +13,7 @@
 
 <title>Zoom Notes 01: Introducing R and RStudio</title>
 
-<script src="site_libs/header-attrs-2.18/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.19/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
@@ -464,33 +464,31 @@ Science - Chapter 4</a></li>
 </blockquote>
 <div id="before-we-start" class="section level4">
 <h4>Before we start</h4>
-<p>This course is designed with two components - the module and the zoom
-notes. The module content provides more explanation and background so
-that you can work through it on your own if you wish. The zoom notes
-content provides the structure for the content that will be delivered in
-the online sessions. Both sets of content are complementary to each
-other.</p>
-<p>At the top right hand corner of both the module and zoom notes pages
-is a “code” button. This can be used to toggle seeing/hiding the code or
-to download the code that that created the page as an Rmarkdown file (we
-cover Rmarkdown more in-depth in <a
+<p>This web site provides two kinds of materials – module notes and zoom
+notes. The module pages cover the content of each online session in
+detail. They often provide additional in-depth discussion and examples.
+You can use the module notes to revise and extend lesson content on your
+own at any time. The zoom notes contain an outline of the material
+covered in each module and coding exercises that you can work through
+after the lesson to solidify your understanding and build your skills.
+We can work through these exercises together in each week’s face to face
+practical session.</p>
+<p>At the top right hand corner of each notes page is a “Code” button.
+This toggles showing/hiding the code used to create the page as an
+Rmarkdown file (we cover Rmarkdown more in-depth in <a
 href="04-communicate.html">module</a>/<a
-href="zoom_notes_04_communicate.html">zoom notes</a> 4).</p>
+href="zoom_notes_04_communicate.html">zoom notes</a> 4). When working
+through the zoom notes, you can use this button to hide the exercise
+solutions if you prefer to tackle them first on your own.</p>
 <p><br />
 </p>
 </div>
 <div id="r-and-rstudio" class="section level1">
 <h1>R and RStudio</h1>
-<p>R is the language, RStudio is an interface for interacting with
-R.</p>
-<p><br />
-</p>
-<div id="the-rstudio-environment" class="section level2">
-<h2>The RStudio environment</h2>
-<p>RStudio is what is known as an integrated development environment
-(IDE) which provides a graphical interface (among other things) for
-interacting with R. The main environment of RStudio is comprised of
-panels.</p>
+<p>R is a programming language. RStudio is an integrated development
+environment (IDE) which provides a graphical interface (among other
+things) for interacting with R.</p>
+<p>The RStudio screen is comprised of panels.</p>
 <p>Panels of RStudio</p>
 <ul>
 <li>console</li>
@@ -500,248 +498,171 @@ panels.</p>
 </ul>
 <p><br />
 </p>
-<div id="global-settings-for-reproducibility" class="section level3">
-<h3>Global settings for reproducibility</h3>
-<p>Before we get under way we want to set up our environment to help
-enforce some behaviours that encourage reproducibility.</p>
-<p>We want to disable a few default settings</p>
-<ul>
-<li>Restore .RData on startup</li>
-<li>Save workspace to .Rdata</li>
-</ul>
-<p>To do this select the <code>Tools</code> menu -&gt;
-<code>Global options</code>, then on the “General” tab under the
-“Workspace” heading:</p>
-<ol style="list-style-type: decimal">
-<li>Untick “Restore .RData on startup”</li>
-<li>Set “Save workspace to .RData on exit” to “Never”</li>
-<li>Click “Apply”</li>
-</ol>
-<p><br />
-</p>
 </div>
-<div id="projects" class="section level3">
-<h3>Projects</h3>
-<p>Projects within RStudio provide mechanism to encapsulate a project -
-be it particular data analysis you’re working on, an R package you’re
-making (Modules/Handouts 7 and 8), or even a book (Module/Handout
-6).</p>
-<p>A project is a directory on your computer that you want to put all
-your code, documentation, data, and associated outputs so that
-everything needed to recreate an analysis is “bundled together”.</p>
-<p>We’ll create a project for the course and create a common project
-structure:</p>
-<ul>
-<li>File -&gt; New Project -&gt; New Directory -&gt; New Project</li>
-<li>Choose where you want it to live and give it a name</li>
-<li>“Create Project”</li>
-</ul>
-<p>Now we have our new project we’ll create some directories to store
-various aspects of our project. We’ll create the following
-directories:</p>
-<ul>
-<li>scripts</li>
-<li>docs</li>
-<li>data</li>
-<li>outputs</li>
-</ul>
-<p>You can do this either using the “New Folder” button in the Files
-panel or using the code below.</p>
-<pre class="r"><code>dir.create(&quot;scripts&quot;)
-#&gt; Warning in dir.create(&quot;scripts&quot;): &#39;scripts&#39; already exists
-dir.create(&quot;data&quot;)
-#&gt; Warning in dir.create(&quot;data&quot;): &#39;data&#39; already exists
-dir.create(&quot;data&quot;)
-#&gt; Warning in dir.create(&quot;data&quot;): &#39;data&#39; already exists
-dir.create(&quot;outputs&quot;)
-#&gt; Warning in dir.create(&quot;outputs&quot;): &#39;outputs&#39; already exists</code></pre>
-<p><br />
-</p>
-</div>
-<div id="scripts" class="section level3">
-<h3>Scripts</h3>
-<p>Scripts in R are a way in which we can document the steps we take
-through our analysis and can be used to recreate what we have done.
-There are two main forms that scripts come in:</p>
+<div id="scripts" class="section level1">
+<h1>Scripts</h1>
+<p>Scripts are text files that contain R code. Scripts provide a
+persistent record of the steps we perform in our data analysis, and can
+be used to recreate what we have done without having to retype.</p>
+<p>Scripts can be either:</p>
 <p>R Script - plain text document that contains R commands</p>
-<p>RMarkdown - a plain text document that has text areas and code areas
-which is processed/compiled thought to a output format such as html or
-pdf which contains formatted text, code plus the results of the code
+<p>RMarkdown - a plain text document that has text areas and code areas.
+RMarkdown files are processed/compiled to an output format such as html
+or pdf which contains formatted text, code, and the results of the code
 embedded in the document. We’ll cover this in more depth Module/Handout
 4.</p>
 <p><br />
 </p>
 </div>
-</div>
-<div id="r-syntax" class="section level2">
-<h2>R syntax</h2>
+<div id="r-syntax" class="section level1">
+<h1>R Syntax</h1>
 <p>General syntax info:</p>
 <ul>
-<li>R is case sensitive</li>
-<li>spaces are ignored by R</li>
-<li>there is no difference between single <code>'</code> and double
-<code>"</code> quotes but you have to use the same type to close as you
-open with</li>
+<li>R is case sensitive (e.g. <code>weight</code> and
+<code>Weight</code> are different entities)</li>
+<li>Spaces are ignored in assignments and expressions. For example
+<code>8+3</code> and <code>8 + 3</code> are functionally equivalent.
+However, generous use of white space is encouraged to improve
+accessibility.</li>
+<li>Variable and function names in R conventionally use <strong>snake
+case</strong>. All letters are lower case, and words are separated by
+underscore (e.g. <code>annual_mean_rainfall</code>).</li>
 </ul>
 <p><br />
 </p>
-<div id="mathematical-operators" class="section level3">
-<h3>Mathematical operators</h3>
-<p>addition: <code>+</code></p>
-<p>subtraction: <code>-</code></p>
-<p>multiplication: <code>*</code></p>
-<p>division: <code>/</code></p>
-<p>exponent: <code>**</code></p>
-<p>modulo/remainder: <code>%%</code></p>
-<pre class="r"><code># addition
+<div id="mathematical-operators" class="section level2">
+<h2>Mathematical operators</h2>
+<p>Addition: <code>+</code></p>
+<p>Subtraction: <code>-</code></p>
+<p>Multiplication: <code>*</code></p>
+<p>Division: <code>/</code></p>
+<p>Exponentiation: <code>^</code></p>
+<p>Modulo (remainder): <code>%%</code></p>
+<pre class="r"><code># Addition
 1 + 2
-#&gt; [1] 3
+## [1] 3
 
-# subtraction
+# Subtraction
 3 - 6
-#&gt; [1] -3
+## [1] -3
 
-# multiplication
+# Multiplication
 4 * 2
-#&gt; [1] 8
+## [1] 8
 
-# division
+# Division
 12 / 3
-#&gt; [1] 4
+## [1] 4
 
-# exponent
+# Exponentiation
 2 ** 5
-#&gt; [1] 32
+## [1] 32
 
-# modulo
+# Modulo
 5 %% 2
-#&gt; [1] 1</code></pre>
-<p>The <code>#</code> symbol is used to denote a ‘comment’ and R will
-ignore everything to the right of it. This lets us add comments to our
-code to describe the what and why of the code being run.</p>
-<p><br />
-</p>
+## [1] 1</code></pre>
 </div>
-<div id="data-types" class="section level3">
-<h3>Data types</h3>
-<p>In R there are 3 main types of data you’ll likely use in day-to-day
-life, these are:</p>
+<div id="data-types" class="section level2">
+<h2>Data types</h2>
+<p>R has three primary types of data:</p>
 <ul>
 <li>numeric</li>
 <li>characters</li>
 <li>boolean</li>
 </ul>
-<p>The numeric type covers is your numbers both “double” (decimal), and
-integers (defined by a integer number followed by L
-e.g. <code>2L</code>). These can be typed straight in as we have been
-doing and can have mathematical operations performed on them.</p>
-<p>The character type is any combination of characters zero or more that
-is represented on the keyboard and includes letters, numbers and
-symbols. Characters are defined in R by enclosing them in quotation
-marks (either single or double, e.g. <code>"some words"</code>).
-Characters can’t have mathematical operations performed on them.</p>
-<p>Booleans are the logical data type, they consist of <code>TRUE</code>
-and <code>FALSE</code> and are used for logical operations.</p>
-<p>Within R there are other types such as complex, and raw but they are
-less common</p>
+<p>Numeric data can be integer (whole numbers) or “double” (having a
+decimal part).</p>
+<p>Character data items are comprised of one or more letters, numbers,
+or (permitted) symbols. In the vernacular, these are called “strings”.
+Strings are defined in R by enclosing them in quotation marks
+(e.g. <code>"Emperor Penguin"</code>).</p>
+<p>Booleans are logical data. They can take on only the values
+<code>TRUE</code> or <code>FALSE</code>, and are used for logical
+operations.</p>
+<p>R functions (see discussion below) accept input data of specific
+type(s). Applying a function or operation to the “wrong” type of data
+will cause an error.</p>
 <p><br />
 </p>
 </div>
-<div id="variables" class="section level3">
-<h3>Variables</h3>
-<p>Variables are named objects that we can store data in that we can
-reference/use later in our code.</p>
-<p>The main rules for naming variables - Start with a letter - No
-symbols (except . or _)</p>
-<p>It’s also highly recommended to use variable names that are
-descriptive of the contents. This will help you remember and keep track
-of things easier later on.</p>
-<p><br />
-</p>
-<div id="assigment-operators" class="section level4">
-<h4>Assigment operators</h4>
-<p><code>&lt;-</code> and <code>=</code> are both used for assignment
-within R. <code>&lt;-</code> is the older/more commonly used for
-assigning to a variable, <code>=</code> is the only one that you use
-inside a function call to assign the parameters/arguments.</p>
-<p>In terms of priority of operators, assignment happens
-<strong>last</strong>, and takes the result of evaluating the right hand
-side and stores it into the object of named on the left hand side.</p>
-<p>Another key thing about variables is they <strong>only contain the
-last thing that was assigned to them</strong>.</p>
+<div id="variables" class="section level2">
+<h2>Variables</h2>
+<p>Variables are named objects in which we store data. The stored values
+can be referenced/used later in our code.</p>
+<p>Variable names must:</p>
+<ul>
+<li>Start with a letter</li>
+<li>Contain no non-alphanumeric symbols except . (full stop) and _
+(underscore)</li>
+</ul>
+<p>Variable names should always be descriptive of their contents. This
+will help you remember what data they hold when they are used in the
+code.</p>
 <p><br />
 </p>
 </div>
+<div id="assignment-operators" class="section level2">
+<h2>Assignment operators</h2>
+<p>In R <code>&lt;-</code> and <code>=</code> are both used for
+assignment. <code>&lt;-</code> is used to assign a value to a variable.
+<code>=</code> is used inside a function call to assign a value to a
+function input.</p>
+<p>The right-hand side of an assignment statement is evaluated first.
+The result is then assigned to the variable on the left-hand side. Thus
+the statement <code>x &lt;- x * 2</code> means “First multiply the
+current value of x by 2. Take the result of that operation and assign it
+as the new value of x.”</p>
+<p>Note that variables <strong>only contain the last thing that was
+assigned to them</strong>. Assigning a value to a variable overwrites
+any existing value.<br />
+</p>
 </div>
-<div id="functions" class="section level3">
-<h3>Functions</h3>
-<p>Functions in R let us perform operations. Functions in R are really R
-code stored in a variable that does stuff. In order to “do the stuff” we
-need call the variable with parentheses <code>()</code> on the end.
-Inside the parentheses we can pass values for the parameters/arguments
-which let us change the behaviour of the function.</p>
-<p>For instance, if we want to find the square root of a number, we can
-use the <code>sqrt</code> function and provide the number we want the
-square root for as an argument:</p>
+<div id="functions" class="section level2">
+<h2>Functions</h2>
+<p>Functions are encapsulated, named chunks of code. We
+<strong>call</strong> a function by typing its name, followed by (). We
+provide any required data inputs (called <em>function arguments</em> in
+this context) by placing them between the round brackets. When a
+function is called, R executes the code which it encapsulates and
+returns the result.</p>
+<p>For example, if we want to find the square root of a number, we can
+use the <code>sqrt</code> function and provide the number as input:</p>
 <pre class="r"><code>sqrt(64)
-#&gt; [1] 8</code></pre>
-<p>To supply multiple arguments or parameters to a function we separate
-them by a comma. Each argument also has a name. Arguments are filled
-either by name, or based on the position.</p>
+## [1] 8</code></pre>
+<p>Many functions require multiple pieces of input data. Multiple
+arguments are placed between the round brackets, separated by
+commas.</p>
+<p>Each function argument has a name. Arguments can be identified by
+name, or by ordinal position within the round brackets.</p>
 <pre class="r"><code># by position
 round(3.142, 1)
-#&gt; [1] 3.1
+## [1] 3.1
 
 # by name
 round(x = 3.142, digits = 1)
-#&gt; [1] 3.1</code></pre>
-<p>To find out what the names of the arguments a function takes we can
-run the <code>args</code> function on the function name:</p>
+## [1] 3.1</code></pre>
+<p>To see what arguments a function requires, call the <code>args</code>
+function, passing in the function name:</p>
 <pre class="r"><code>args(round)
-#&gt; function (x, digits = 0) 
-#&gt; NULL</code></pre>
+## function (x, digits = 0) 
+## NULL</code></pre>
+<p>R contains many, many, powerful pre-defined functions. In one of our
+later modules, we will learn how to write our own custom functions.</p>
 <p><br />
 </p>
 </div>
-<div id="help" class="section level3">
-<h3>Help</h3>
-<p>Being able to find things out for yourself is extremely important and
-within R there are a couple way this can be done.</p>
-<ul>
-<li><code>help()</code> or <code>?</code></li>
-<li><code>??</code></li>
-<li>google</li>
-</ul>
-<p>There is usually pretty good documentation that goes along side
-functions and this can be accessed through the inbuilt help system using
-<code>help()</code>, <code>?</code>, or <code>??</code>.</p>
-<p><code>help()</code>and <code>?</code> are equivalent and will find
-the manual page for the exact function, e.g. to find the manual page for
-the <code>mean</code> function: <code>help("mean")</code> or
-<code>?mean</code>. The most useful sections of the manual pages are
-“Usage”, “Arguments”, and “Examples” which tell you how to run the
-function, what the arguments are supposed to be, and gives some
-‘copy-paste’ examples to show you how it’s run.</p>
-<p><code>??</code> on the other hand will bring up a list of all the
-manual pages that mention the word.</p>
-<p>Google is also extremely useful and my most common search is “how to
-… in R”.</p>
-<p><br />
-</p>
-</div>
-<div id="comparatives" class="section level3">
-<h3>Comparatives</h3>
-<p>One final set of syntax operators to cover are the comparatives.
-These are used to create logical statements based on comparisons that
-will evaluate to be either <code>TRUE</code> or <code>FALSE</code>.</p>
+<div id="comparison-operators" class="section level2">
+<h2>Comparison Operators</h2>
+<p>Comparison operators evaluate to either <code>TRUE</code> or
+<code>FALSE</code>.</p>
 <p>Comparators:</p>
 <ul>
 <li>equality: <code>==</code></li>
 <li>not equal to:<code>!=</code></li>
-<li>greater than / greater than or equal to: <code>&gt;</code> /
-<code>&gt;=</code></li>
-<li>less than / less than or equal to: <code>&lt;</code> /
-<code>&lt;=</code></li>
+<li>greater than: <code>&gt;</code></li>
+<li>greater than or equal to: <code>&gt;=</code></li>
+<li>less than: <code>&lt;</code></li>
+<li>less than or equal to: <code>&lt;=</code></li>
 </ul>
 <p>Logical operators</p>
 <ul>
@@ -749,94 +670,148 @@ will evaluate to be either <code>TRUE</code> or <code>FALSE</code>.</p>
 <li>or: <code>|</code></li>
 <li>and: <code>&amp;</code></li>
 </ul>
-<p>We’ll cover these in more depth in the Selecting and Filtering <a
-href="03-subset.html">Module</a>/<a
-href="zoom_notes_03_subset.html">Handout</a>.</p>
+<p>We’ll cover these in more depth in the <a
+href="03-subset.html">Selecting and Filtering Module</a>.</p>
+<p><br />
+</p>
+</div>
+<div id="comments" class="section level2">
+<h2>Comments</h2>
+<p>The <code>#</code> symbol denotes a comment. R will ignore all text
+following the <code>#</code> on the same line. Comments should explain
+the logic of the code. This helps other people understand your code; it
+also helps you remember your thinking when you revisit your own code in
+the future. Thorough commenting is so essential to software development
+that most professionals <em>write their comments first</em>, then fill
+in the code following the structure defined by the comments.</p>
 <p><br />
 </p>
 </div>
 </div>
-<div id="starting-with-data" class="section level2">
-<h2>Starting with data</h2>
-<div id="vectors" class="section level3">
-<h3>Vectors</h3>
-<p>Until now we’ve been operating on single items at a time. R has way
-of storing multiple pieces of information - the <em>vector</em>.</p>
-<p>A vector is zero or more entries of the <strong>same data
-type</strong>.</p>
-<p>To create a vector of more than one piece of information we can use
-the <em>combine</em> function, which because it is used so frequently in
-R, has been reduced to be <code>c()</code>. Each item is comma
-separated.</p>
+<div id="complex-data" class="section level1">
+<h1>Complex Data</h1>
+<div id="vectors" class="section level2">
+<h2>Vectors</h2>
+<p>A vector is a complex data structure that holds multiple data
+elements. Vectors are <strong>homogeneous</strong> – all their elements
+must be of the same data type.</p>
+<p>To create a vector use function <code>c()</code>, the
+<em>combine</em> function. Items are separated by commas.</p>
 <pre class="r"><code>some_letters &lt;- c(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;)
 some_letters
-#&gt; [1] &quot;a&quot; &quot;b&quot; &quot;c&quot;
+## [1] &quot;a&quot; &quot;b&quot; &quot;c&quot;
 
 some_numbers &lt;- c(2, 4, 6)
 some_numbers
-#&gt; [1] 2 4 6</code></pre>
-<p>We can see what the data type is of a vector using
-<code>typeof</code></p>
+## [1] 2 4 6</code></pre>
+<p>We can see the data type of a vector using <code>typeof</code></p>
 <pre class="r"><code>typeof(some_letters)
-#&gt; [1] &quot;character&quot;
+## [1] &quot;character&quot;
 
 typeof(some_numbers)
-#&gt; [1] &quot;double&quot;</code></pre>
+## [1] &quot;double&quot;</code></pre>
 <p><br />
 </p>
-<div id="subsetting-by-index" class="section level4">
-<h4>Subsetting by index</h4>
-<p>The final syntax we’ll introduce this week is <code>[]</code> which
-enables us to extract items out of a vector.</p>
-<p>Each item has a positional index (starting from 1 - other languages
-differ). We can use this index as an argument to <code>[]</code> to pull
-out the specified item. If we want multiple items we supply a vector of
-numbers for the indexes we want</p>
+</div>
+<div id="subsetting-by-index" class="section level2">
+<h2>Subsetting by index</h2>
+<p>To access individual items in a vector use <code>[]</code>, the
+<strong>index operator</strong>, as shown below. Place the item’s
+ordinal position between the square brackets. Select multiple items by
+placing a vector of positions between the square brackets.</p>
 <pre class="r"><code>some_numbers
-#&gt; [1] 2 4 6
+## [1] 2 4 6
 
 # pull out the second item
 some_numbers[2]
-#&gt; [1] 4
+## [1] 4
 
 some_letters
-#&gt; [1] &quot;a&quot; &quot;b&quot; &quot;c&quot;
+## [1] &quot;a&quot; &quot;b&quot; &quot;c&quot;
+
 # pull out items 1 and 3
 some_letters[c(1,3)]
-#&gt; [1] &quot;a&quot; &quot;c&quot;</code></pre>
-<p>In the Selecting and Filtering Data module we will cover this more
-and expand to 2 dimensions.</p>
+## [1] &quot;a&quot; &quot;c&quot;</code></pre>
+<p>We will see examples of more complex data structures and their use in
+later modules.</p>
 <p><br />
 </p>
 </div>
 </div>
+<div id="getting-help" class="section level1">
+<h1>Getting Help</h1>
+<p>To access the R documentation for a function, call
+<code>help()</code> passing in the function name, or type <code>?</code>
+followed by the name of the function (no intervening space).</p>
+<ul>
+<li><code>help(lm)</code></li>
+<li><code>?lm</code></li>
+</ul>
+<p>Language documentation tends to be terse, and targeted to the
+advanced user. Frequently you will want more detailed explanation than
+is available from the built-in help. We recommend Google (my most common
+search is “how to … in R”) or one of the many useful text books
+available through the University library (see for example, <a
+href="https://otago.primo.exlibrisgroup.com/permalink/64OTAGO_INST/qef3lj/alma9926179377401891"
+class="uri">https://otago.primo.exlibrisgroup.com/permalink/64OTAGO_INST/qef3lj/alma9926179377401891</a>)</p>
+<p><br />
+</p>
 </div>
+<div id="projects" class="section level1">
+<h1>Projects</h1>
+<p>Projects within RStudio provide a mechanism to organise your work. A
+Project is a directory on your computer where you gather related code,
+documentation, data, and outputs so that everything needed to recreate
+an analysis is “bundled together”.</p>
+<p>To create a new Project:</p>
+<ul>
+<li>File -&gt; New Project -&gt; New Directory -&gt; New Project</li>
+<li>Choose where you want it to live and give it a name</li>
+<li>Click “Create Project”</li>
+</ul>
+<p>It is useful to add some subfolders to your Project folder. A common
+organisation is to have separate subfolders for your scripts, input
+files, output files, and documentation.</p>
+<p>You can create subfolders by using the “New Folder” button in the
+Files panel or using the <code>dir.create()</code> function, as shown
+below.</p>
+<pre class="r"><code>dir.create(&quot;scripts&quot;)
+## Warning in dir.create(&quot;scripts&quot;): &#39;scripts&#39; already exists
+dir.create(&quot;data&quot;)
+## Warning in dir.create(&quot;data&quot;): &#39;data&#39; already exists
+dir.create(&quot;data&quot;)
+## Warning in dir.create(&quot;data&quot;): &#39;data&#39; already exists
+dir.create(&quot;outputs&quot;)</code></pre>
+<p><br />
+</p>
 </div>
-<div id="exercises" class="section level1">
-<h1>Exercises</h1>
+<div id="module-01-exercises" class="section level1">
+<h1>Module 01 Exercises</h1>
 <ol style="list-style-type: decimal">
-<li><p>Create and assign a vector of 5 numbers.</p></li>
+<li><p>Create a vector of 5 numbers and assign it to a
+variable.</p></li>
 <li><p>Find out the <code>length</code> of the vector.</p></li>
 <li><p>Divide the entire vector by 2 and store the result into a
-variable called <em>div_2</em> - what is the result of the
-division?</p></li>
+variable called <em>div_2</em>. Explain what happens when you perform a
+mathematical operation on a vector.</p></li>
 <li><p>Calculate the minimum, maximum, mean, and standard deviation for
-the <em>div_2</em> vector. Can you round the results to 2 decimal
-places?</p></li>
+the <em>div_2</em> vector. Round each result to 2 decimal
+places.</p></li>
 <li><p>Create and assign a vector of at least 4 animal names into
 <em>animals</em>.</p></li>
-<li><p>Can you find a way to tell you the number of characters per
-item?</p></li>
-<li><p>Into a new variable, extract the first and fourth
-animal.</p></li>
-<li><p>Remove the third animal from your original animals vector (what
-does using a negative index do?).</p></li>
+<li><p>Compute the number of characters in each item. Use only one line
+of code.</p></li>
+<li><p>Extract the first and fourth animal into a new variable.</p></li>
+<li><p>Remove the third animal from your original animals vector. There
+are multiple syntactically legal ways to achieve this in R, but some are
+more elegant than others. (Hint: what does using a negative index
+do?)</p></li>
 <li><p>Create a vector that has three copies of this updated animals
-vector.</p></li>
+vector. Use only one line of code.</p></li>
 <li><p>Combine your animal and number vectors together into a new
-variable called “<em>coerced</em>”. Run <code>typeof</code> on this
-vector - how does it compare to the types of the original
-vector?</p></li>
+variable called <em>coerced</em>. Run <code>typeof</code> on this
+vector. Explain why the types of some elements have been
+changed.</p></li>
 </ol>
 <div id="example-solutions" class="section level3">
 <h3>Example solutions</h3>
@@ -849,90 +824,103 @@ vector?</p></li>
 <li></li>
 </ol>
 <pre class="r fold-hide"><code>length(my_numbers)
-#&gt; [1] 5</code></pre>
+## [1] 5</code></pre>
 <hr />
 <ol start="3" style="list-style-type: decimal">
 <li></li>
 </ol>
 <pre class="r fold-hide"><code>div_2 &lt;- my_numbers / 2
 div_2
-#&gt; [1]  6.0 31.5  1.5  3.5 42.0</code></pre>
+## [1]  6.0 31.5  1.5  3.5 42.0
+
+# When a mathematical operator is applied to a vector, the operation is
+# performed on each individual vector element, and the whole set of new values
+# is returned.</code></pre>
 <hr />
 <ol start="4" style="list-style-type: decimal">
 <li></li>
 </ol>
-<pre class="r fold-hide"><code># minimum
-round(min(div_2), digits = 2)
-#&gt; [1] 1.5
+<pre class="r fold-hide"><code># Note the range of syntactic options. Strive for a balance between clarity and
+# parsimony.
+
+# minimum
+min_number &lt;- min(div_2)
+round(min_number, digits = 2)
+## [1] 1.5
+
 # maximum
-round(max(div_2), digits = 2)
-#&gt; [1] 42
+max_number &lt;- max(div_2)
+round(max_number, 2)
+## [1] 42
+
 # mean
 round(mean(div_2), digits = 2)
-#&gt; [1] 16.9
+## [1] 16.9
+
 # standard deviation
-round(sd(div_2), digits = 2)
-#&gt; [1] 18.57</code></pre>
+round(sd(div_2), 2)
+## [1] 18.57</code></pre>
 <hr />
 <ol start="5" style="list-style-type: decimal">
 <li></li>
 </ol>
 <pre class="r fold-hide"><code>animals &lt;- c(&quot;lion&quot;, &quot;tiger&quot;, &quot;snake&quot;, &quot;beetle&quot;, &quot;turtle&quot;)
 animals
-#&gt; [1] &quot;lion&quot;   &quot;tiger&quot;  &quot;snake&quot;  &quot;beetle&quot; &quot;turtle&quot;</code></pre>
+## [1] &quot;lion&quot;   &quot;tiger&quot;  &quot;snake&quot;  &quot;beetle&quot; &quot;turtle&quot;</code></pre>
 <hr />
 <ol start="6" style="list-style-type: decimal">
 <li></li>
 </ol>
 <pre class="r fold-hide"><code>nchar(animals)
-#&gt; [1] 4 5 5 6 6</code></pre>
+## [1] 4 5 5 6 6</code></pre>
 <hr />
 <ol start="7" style="list-style-type: decimal">
 <li></li>
 </ol>
 <pre class="r fold-hide"><code>two_animals &lt;- animals[c(1,4)]
 two_animals
-#&gt; [1] &quot;lion&quot;   &quot;beetle&quot;</code></pre>
+## [1] &quot;lion&quot;   &quot;beetle&quot;</code></pre>
 <hr />
 <ol start="8" style="list-style-type: decimal">
 <li></li>
 </ol>
 <pre class="r fold-hide"><code>animals &lt;- animals[-3]
 animals
-#&gt; [1] &quot;lion&quot;   &quot;tiger&quot;  &quot;beetle&quot; &quot;turtle&quot;</code></pre>
+## [1] &quot;lion&quot;   &quot;tiger&quot;  &quot;beetle&quot; &quot;turtle&quot;</code></pre>
 <hr />
 <ol start="9" style="list-style-type: decimal">
 <li></li>
 </ol>
 <pre class="r fold-hide"><code>animals3 &lt;- c(animals, animals, animals)
 animals3
-#&gt;  [1] &quot;lion&quot;   &quot;tiger&quot;  &quot;beetle&quot; &quot;turtle&quot; &quot;lion&quot;   &quot;tiger&quot;  &quot;beetle&quot; &quot;turtle&quot;
-#&gt;  [9] &quot;lion&quot;   &quot;tiger&quot;  &quot;beetle&quot; &quot;turtle&quot;</code></pre>
+##  [1] &quot;lion&quot;   &quot;tiger&quot;  &quot;beetle&quot; &quot;turtle&quot; &quot;lion&quot;   &quot;tiger&quot;  &quot;beetle&quot; &quot;turtle&quot;
+##  [9] &quot;lion&quot;   &quot;tiger&quot;  &quot;beetle&quot; &quot;turtle&quot;</code></pre>
 <hr />
 <ol start="10" style="list-style-type: decimal">
 <li></li>
 </ol>
 <pre class="r fold-hide"><code>my_numbers
-#&gt; [1] 12 63  3  7 84
+## [1] 12 63  3  7 84
 typeof(my_numbers)
-#&gt; [1] &quot;double&quot;
+## [1] &quot;double&quot;
 animals
-#&gt; [1] &quot;lion&quot;   &quot;tiger&quot;  &quot;beetle&quot; &quot;turtle&quot;
+## [1] &quot;lion&quot;   &quot;tiger&quot;  &quot;beetle&quot; &quot;turtle&quot;
 typeof(animals)
-#&gt; [1] &quot;character&quot;
+## [1] &quot;character&quot;
 
 combined &lt;- c(my_numbers, animals)
 typeof(combined)
-#&gt; [1] &quot;character&quot;
+## [1] &quot;character&quot;
 combined
-#&gt; [1] &quot;12&quot;     &quot;63&quot;     &quot;3&quot;      &quot;7&quot;      &quot;84&quot;     &quot;lion&quot;   &quot;tiger&quot;  &quot;beetle&quot;
-#&gt; [9] &quot;turtle&quot;
-# the numbers have now been coerced to be a character type so that
-# all elements of the vector are the same data type</code></pre>
+## [1] &quot;12&quot;     &quot;63&quot;     &quot;3&quot;      &quot;7&quot;      &quot;84&quot;     &quot;lion&quot;   &quot;tiger&quot;  &quot;beetle&quot;
+## [9] &quot;turtle&quot;
+
+# The numeric elements have been coerced to type character so that
+# the vector remains homogeneous.</code></pre>
 </div>
 </div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiWm9vbSBOb3RlcyAwMTogSW50cm9kdWNpbmcgUiBhbmQgUlN0dWRpbyIKZGF0ZTogIlNlbWVzdGVyIDEsIDIwMjMiCm91dHB1dDoKICBodG1sX2RvY3VtZW50OgogICAgdG9jOiB0cnVlCiAgICB0b2NfZmxvYXQ6IHRydWUKICAgIHRvY19kZXB0aDogMwogICAgY29kZV9kb3dubG9hZDogdHJ1ZQogICAgY29kZV9mb2xkaW5nOiBzaG93Ci0tLQoKYGBge3Igc2V0dXAsIGluY2x1ZGU9RkFMU0V9CmxpYnJhcnkoa25pdHIpCgprbml0cjo6b3B0c19jaHVuayRzZXQoCiAgY29tbWVudCA9ICIjPiIsCiAgZmlnLnBhdGggPSAiZmlndXJlcy8wMS8iLCAjIHVzZSBvbmx5IGZvciBzaW5nbGUgUm1kIGZpbGVzCiAgY29sbGFwc2UgPSBUUlVFLAogIGVjaG8gPSBUUlVFCikKCgpgYGAKCgoKPiAjIyMjIEFzc29jaWF0ZWQgbWF0ZXJpYWwKPiBNb2R1bGU6IFtNb2R1bGUgMDEgLSBJbnRyb2R1Y2luZyBSIGFuZCBSc3R1ZGlvXSgwMS1pbnRyby5odG1sKQo+IAo+IFJlYWRpbmdzOgo+Cj4gLSBbUiBmb3IgRGF0YSBTY2llbmNlIC0gQ2hhcHRlciAxXShodHRwczovL3I0ZHMuaGFkLmNvLm56L2ludHJvZHVjdGlvbi5odG1sKQo+IC0gW1IgZm9yIERhdGEgU2NpZW5jZSAtIENoYXB0ZXIgNF0oaHR0cHM6Ly9yNGRzLmhhZC5jby5uei93b3JrZmxvdy1iYXNpY3MuaHRtKQoKCiMjIyMgQmVmb3JlIHdlIHN0YXJ0CgpUaGlzIGNvdXJzZSBpcyBkZXNpZ25lZCB3aXRoIHR3byBjb21wb25lbnRzIC0gdGhlIG1vZHVsZSBhbmQgdGhlIHpvb20gbm90ZXMuIFRoZSBtb2R1bGUgY29udGVudCBwcm92aWRlcyBtb3JlIGV4cGxhbmF0aW9uIGFuZCBiYWNrZ3JvdW5kIHNvIHRoYXQgeW91IGNhbiB3b3JrIHRocm91Z2ggaXQgb24geW91ciBvd24gaWYgeW91IHdpc2guIFRoZSB6b29tIG5vdGVzIGNvbnRlbnQgcHJvdmlkZXMgdGhlIHN0cnVjdHVyZSBmb3IgdGhlIGNvbnRlbnQgdGhhdCB3aWxsIGJlIGRlbGl2ZXJlZCBpbiB0aGUgb25saW5lIHNlc3Npb25zLiBCb3RoIHNldHMgb2YgY29udGVudCBhcmUgY29tcGxlbWVudGFyeSB0byBlYWNoIG90aGVyLgoKQXQgdGhlIHRvcCByaWdodCBoYW5kIGNvcm5lciBvZiBib3RoIHRoZSBtb2R1bGUgYW5kIHpvb20gbm90ZXMgcGFnZXMgaXMgYSAiY29kZSIgYnV0dG9uLiBUaGlzIGNhbiBiZSB1c2VkIHRvIHRvZ2dsZSBzZWVpbmcvaGlkaW5nIHRoZSBjb2RlIG9yIHRvIGRvd25sb2FkIHRoZSBjb2RlIHRoYXQgdGhhdCBjcmVhdGVkIHRoZSBwYWdlIGFzIGFuIFJtYXJrZG93biBmaWxlICh3ZSBjb3ZlciBSbWFya2Rvd24gbW9yZSBpbi1kZXB0aCBpbiBbbW9kdWxlXSgwNC1jb21tdW5pY2F0ZS5odG1sKS9bem9vbSBub3Rlc10oem9vbV9ub3Rlc18wNF9jb21tdW5pY2F0ZS5odG1sKSA0KS4KCgoKXAoKIyBSIGFuZCBSU3R1ZGlvCgpSIGlzIHRoZSBsYW5ndWFnZSwgUlN0dWRpbyBpcyBhbiBpbnRlcmZhY2UgZm9yIGludGVyYWN0aW5nIHdpdGggUi4KClwKCiMjIFRoZSBSU3R1ZGlvIGVudmlyb25tZW50CgpSU3R1ZGlvIGlzIHdoYXQgaXMga25vd24gYXMgYW4gaW50ZWdyYXRlZCBkZXZlbG9wbWVudCBlbnZpcm9ubWVudCAoSURFKSB3aGljaCBwcm92aWRlcyBhIGdyYXBoaWNhbCBpbnRlcmZhY2UgKGFtb25nIG90aGVyIHRoaW5ncykgZm9yIGludGVyYWN0aW5nIHdpdGggUi4gVGhlIG1haW4gZW52aXJvbm1lbnQgb2YgUlN0dWRpbyBpcyBjb21wcmlzZWQgb2YgcGFuZWxzLgoKUGFuZWxzIG9mIFJTdHVkaW8KCi0gY29uc29sZQotIHNvdXJjZQotIGVudmlyb25tZW50L2hpc3RvcnkKLSBmaWxlL3Bsb3QvaGVscC92aWV3ZXIKClwKCiMjIyBHbG9iYWwgc2V0dGluZ3MgZm9yIHJlcHJvZHVjaWJpbGl0eQoKQmVmb3JlIHdlIGdldCB1bmRlciB3YXkgd2Ugd2FudCB0byBzZXQgdXAgb3VyIGVudmlyb25tZW50IHRvIGhlbHAgZW5mb3JjZSBzb21lIGJlaGF2aW91cnMgdGhhdCBlbmNvdXJhZ2UgcmVwcm9kdWNpYmlsaXR5LgoKV2Ugd2FudCB0byBkaXNhYmxlIGEgZmV3IGRlZmF1bHQgc2V0dGluZ3MKCi0gUmVzdG9yZSAuUkRhdGEgb24gc3RhcnR1cAotIFNhdmUgd29ya3NwYWNlIHRvIC5SZGF0YQoKVG8gZG8gdGhpcyBzZWxlY3QgdGhlIGBUb29sc2AgbWVudSAtPiBgR2xvYmFsIG9wdGlvbnNgLCB0aGVuIG9uIHRoZSAiR2VuZXJhbCIgdGFiIHVuZGVyIHRoZSAiV29ya3NwYWNlIiBoZWFkaW5nOgoKMS4gVW50aWNrICJSZXN0b3JlIC5SRGF0YSBvbiBzdGFydHVwIgoyLiBTZXQgIlNhdmUgd29ya3NwYWNlIHRvIC5SRGF0YSBvbiBleGl0IiB0byAiTmV2ZXIiCjMuIENsaWNrICJBcHBseSIKClwKCiMjIyBQcm9qZWN0cwoKUHJvamVjdHMgd2l0aGluIFJTdHVkaW8gcHJvdmlkZSBtZWNoYW5pc20gdG8gZW5jYXBzdWxhdGUgYSBwcm9qZWN0IC0gYmUgaXQgcGFydGljdWxhciBkYXRhIGFuYWx5c2lzIHlvdSdyZSB3b3JraW5nIG9uLCBhbiBSIHBhY2thZ2UgeW91J3JlIG1ha2luZyAoTW9kdWxlcy9IYW5kb3V0cyA3IGFuZCA4KSwgb3IgZXZlbiBhIGJvb2sgKE1vZHVsZS9IYW5kb3V0IDYpLgoKQSBwcm9qZWN0IGlzIGEgZGlyZWN0b3J5IG9uIHlvdXIgY29tcHV0ZXIgdGhhdCB5b3Ugd2FudCB0byBwdXQgYWxsIHlvdXIgY29kZSwgZG9jdW1lbnRhdGlvbiwgZGF0YSwgYW5kIGFzc29jaWF0ZWQgb3V0cHV0cyBzbyB0aGF0IGV2ZXJ5dGhpbmcgbmVlZGVkIHRvIHJlY3JlYXRlIGFuIGFuYWx5c2lzIGlzICJidW5kbGVkIHRvZ2V0aGVyIi4KCldlJ2xsIGNyZWF0ZSBhIHByb2plY3QgZm9yIHRoZSBjb3Vyc2UgYW5kIGNyZWF0ZSBhIGNvbW1vbiBwcm9qZWN0IHN0cnVjdHVyZToKCi0gRmlsZSAtPiBOZXcgUHJvamVjdCAtPiBOZXcgRGlyZWN0b3J5IC0+IE5ldyBQcm9qZWN0Ci0gQ2hvb3NlIHdoZXJlIHlvdSB3YW50IGl0IHRvIGxpdmUgYW5kIGdpdmUgaXQgYSBuYW1lCi0gIkNyZWF0ZSBQcm9qZWN0IgoKTm93IHdlIGhhdmUgb3VyIG5ldyBwcm9qZWN0IHdlJ2xsIGNyZWF0ZSBzb21lIGRpcmVjdG9yaWVzIHRvIHN0b3JlIHZhcmlvdXMgYXNwZWN0cyBvZiBvdXIgcHJvamVjdC4gV2UnbGwgY3JlYXRlIHRoZSBmb2xsb3dpbmcgZGlyZWN0b3JpZXM6CgotIHNjcmlwdHMKLSBkb2NzCi0gZGF0YQotIG91dHB1dHMKCllvdSBjYW4gZG8gdGhpcyBlaXRoZXIgdXNpbmcgdGhlICJOZXcgRm9sZGVyIiBidXR0b24gaW4gdGhlIEZpbGVzIHBhbmVsIG9yIHVzaW5nIHRoZSBjb2RlIGJlbG93LgoKYGBge3J9CmRpci5jcmVhdGUoInNjcmlwdHMiKQpkaXIuY3JlYXRlKCJkYXRhIikKZGlyLmNyZWF0ZSgiZGF0YSIpCmRpci5jcmVhdGUoIm91dHB1dHMiKQpgYGAKClwKCiMjIyBTY3JpcHRzCgpTY3JpcHRzIGluIFIgYXJlIGEgd2F5IGluIHdoaWNoIHdlIGNhbiBkb2N1bWVudCB0aGUgc3RlcHMgd2UgdGFrZSB0aHJvdWdoIG91ciBhbmFseXNpcyBhbmQgY2FuIGJlIHVzZWQgdG8gcmVjcmVhdGUgd2hhdCB3ZSBoYXZlIGRvbmUuIFRoZXJlIGFyZSB0d28gbWFpbiBmb3JtcyB0aGF0IHNjcmlwdHMgY29tZSBpbjoKClIgU2NyaXB0IC0gcGxhaW4gdGV4dCBkb2N1bWVudCB0aGF0IGNvbnRhaW5zIFIgY29tbWFuZHMKClJNYXJrZG93biAtIGEgcGxhaW4gdGV4dCBkb2N1bWVudCB0aGF0IGhhcyB0ZXh0IGFyZWFzIGFuZCBjb2RlIGFyZWFzIHdoaWNoIGlzIHByb2Nlc3NlZC9jb21waWxlZCB0aG91Z2h0IHRvIGEgb3V0cHV0IGZvcm1hdCBzdWNoIGFzIGh0bWwgb3IgcGRmIHdoaWNoIGNvbnRhaW5zIGZvcm1hdHRlZCB0ZXh0LCBjb2RlIHBsdXMgdGhlIHJlc3VsdHMgb2YgdGhlIGNvZGUgZW1iZWRkZWQgaW4gdGhlIGRvY3VtZW50LiBXZSdsbCBjb3ZlciB0aGlzIGluIG1vcmUgZGVwdGggTW9kdWxlL0hhbmRvdXQgNC4KClwKCiMjIFIgc3ludGF4CgpHZW5lcmFsIHN5bnRheCBpbmZvOgoKLSBSIGlzIGNhc2Ugc2Vuc2l0aXZlCi0gc3BhY2VzIGFyZSBpZ25vcmVkIGJ5IFIKLSB0aGVyZSBpcyBubyBkaWZmZXJlbmNlIGJldHdlZW4gc2luZ2xlIGAnYCBhbmQgZG91YmxlIGAiYCBxdW90ZXMgYnV0IHlvdSBoYXZlIHRvIHVzZSB0aGUgc2FtZSB0eXBlIHRvIGNsb3NlIGFzIHlvdSBvcGVuIHdpdGgKClwKCiMjIyBNYXRoZW1hdGljYWwgb3BlcmF0b3JzCgphZGRpdGlvbjogYCtgCgpzdWJ0cmFjdGlvbjogYC1gCgptdWx0aXBsaWNhdGlvbjogYCpgCgpkaXZpc2lvbjogYC9gCgpleHBvbmVudDogYCoqYAoKbW9kdWxvL3JlbWFpbmRlcjogYCUlYAoKYGBge3J9CiMgYWRkaXRpb24KMSArIDIKCiMgc3VidHJhY3Rpb24KMyAtIDYKCiMgbXVsdGlwbGljYXRpb24KNCAqIDIKCiMgZGl2aXNpb24KMTIgLyAzCgojIGV4cG9uZW50CjIgKiogNQoKIyBtb2R1bG8KNSAlJSAyCgpgYGAKClRoZSBgI2Agc3ltYm9sIGlzIHVzZWQgdG8gZGVub3RlIGEgJ2NvbW1lbnQnIGFuZCBSIHdpbGwgaWdub3JlIGV2ZXJ5dGhpbmcgdG8gdGhlIHJpZ2h0IG9mIGl0LiBUaGlzIGxldHMgdXMgYWRkIGNvbW1lbnRzIHRvIG91ciBjb2RlIHRvIGRlc2NyaWJlIHRoZSB3aGF0IGFuZCB3aHkgb2YgdGhlIGNvZGUgYmVpbmcgcnVuLgoKXAoKIyMjIERhdGEgdHlwZXMKCkluIFIgdGhlcmUgYXJlIDMgbWFpbiB0eXBlcyBvZiBkYXRhIHlvdSdsbCBsaWtlbHkgdXNlIGluIGRheS10by1kYXkgbGlmZSwgdGhlc2UgYXJlOgoKLSBudW1lcmljCi0gY2hhcmFjdGVycwotIGJvb2xlYW4KClRoZSBudW1lcmljIHR5cGUgY292ZXJzIGlzIHlvdXIgbnVtYmVycyBib3RoICJkb3VibGUiIChkZWNpbWFsKSwgYW5kIGludGVnZXJzIChkZWZpbmVkIGJ5IGEgaW50ZWdlciBudW1iZXIgZm9sbG93ZWQgYnkgTCBlLmcuIGAyTGApLiBUaGVzZSBjYW4gYmUgdHlwZWQgc3RyYWlnaHQgaW4gYXMgd2UgaGF2ZSBiZWVuIGRvaW5nIGFuZCBjYW4gaGF2ZSBtYXRoZW1hdGljYWwgb3BlcmF0aW9ucyBwZXJmb3JtZWQgb24gdGhlbS4KClRoZSBjaGFyYWN0ZXIgdHlwZSBpcyBhbnkgY29tYmluYXRpb24gb2YgY2hhcmFjdGVycyB6ZXJvIG9yIG1vcmUgdGhhdCBpcyByZXByZXNlbnRlZCBvbiB0aGUga2V5Ym9hcmQgYW5kIGluY2x1ZGVzIGxldHRlcnMsIG51bWJlcnMgYW5kIHN5bWJvbHMuIENoYXJhY3RlcnMgYXJlIGRlZmluZWQgaW4gUiBieSBlbmNsb3NpbmcgdGhlbSBpbiBxdW90YXRpb24gbWFya3MgKGVpdGhlciBzaW5nbGUgb3IgZG91YmxlLCBlLmcuIGAic29tZSB3b3JkcyJgKS4gQ2hhcmFjdGVycyBjYW4ndCBoYXZlIG1hdGhlbWF0aWNhbCBvcGVyYXRpb25zIHBlcmZvcm1lZCBvbiB0aGVtLgoKQm9vbGVhbnMgYXJlIHRoZSBsb2dpY2FsIGRhdGEgdHlwZSwgdGhleSBjb25zaXN0IG9mIGBUUlVFYCBhbmQgYEZBTFNFYCBhbmQgYXJlIHVzZWQgZm9yIGxvZ2ljYWwgb3BlcmF0aW9ucy4KCldpdGhpbiBSIHRoZXJlIGFyZSBvdGhlciB0eXBlcyBzdWNoIGFzIGNvbXBsZXgsIGFuZCByYXcgYnV0IHRoZXkgYXJlIGxlc3MgY29tbW9uCgpcCgojIyMgVmFyaWFibGVzCgpWYXJpYWJsZXMgYXJlIG5hbWVkIG9iamVjdHMgdGhhdCB3ZSBjYW4gc3RvcmUgZGF0YSBpbiB0aGF0IHdlIGNhbiByZWZlcmVuY2UvdXNlIGxhdGVyIGluIG91ciBjb2RlLgoKVGhlIG1haW4gcnVsZXMgZm9yIG5hbWluZyB2YXJpYWJsZXMKLSBTdGFydCB3aXRoIGEgbGV0dGVyCi0gTm8gc3ltYm9scyAoZXhjZXB0IC4gb3IgXykKCkl0J3MgYWxzbyBoaWdobHkgcmVjb21tZW5kZWQgdG8gdXNlIHZhcmlhYmxlIG5hbWVzIHRoYXQgYXJlIGRlc2NyaXB0aXZlIG9mIHRoZSBjb250ZW50cy4gVGhpcyB3aWxsIGhlbHAgeW91IHJlbWVtYmVyIGFuZCBrZWVwIHRyYWNrIG9mIHRoaW5ncyBlYXNpZXIgbGF0ZXIgb24uCgpcCgojIyMjIEFzc2lnbWVudCBvcGVyYXRvcnMKCmA8LWAgYW5kIGA9YCBhcmUgYm90aCB1c2VkIGZvciBhc3NpZ25tZW50IHdpdGhpbiBSLiBgPC1gIGlzIHRoZSBvbGRlci9tb3JlIGNvbW1vbmx5IHVzZWQgZm9yIGFzc2lnbmluZyB0byBhIHZhcmlhYmxlLCBgPWAgaXMgdGhlIG9ubHkgb25lIHRoYXQgeW91IHVzZSBpbnNpZGUgYSBmdW5jdGlvbiBjYWxsIHRvIGFzc2lnbiB0aGUgcGFyYW1ldGVycy9hcmd1bWVudHMuCgpJbiB0ZXJtcyBvZiBwcmlvcml0eSBvZiBvcGVyYXRvcnMsIGFzc2lnbm1lbnQgaGFwcGVucyAqKmxhc3QqKiwgYW5kIHRha2VzIHRoZSByZXN1bHQgb2YgZXZhbHVhdGluZyB0aGUgcmlnaHQgaGFuZCBzaWRlIGFuZCBzdG9yZXMgaXQgaW50byB0aGUgb2JqZWN0IG9mIG5hbWVkIG9uIHRoZSBsZWZ0IGhhbmQgc2lkZS4KCkFub3RoZXIga2V5IHRoaW5nIGFib3V0IHZhcmlhYmxlcyBpcyB0aGV5ICoqb25seSBjb250YWluIHRoZSBsYXN0IHRoaW5nIHRoYXQgd2FzIGFzc2lnbmVkIHRvIHRoZW0qKi4KClwKCgojIyMgRnVuY3Rpb25zCgpGdW5jdGlvbnMgaW4gUiBsZXQgdXMgcGVyZm9ybSBvcGVyYXRpb25zLiBGdW5jdGlvbnMgaW4gUiBhcmUgcmVhbGx5IFIgY29kZSBzdG9yZWQgaW4gYSB2YXJpYWJsZSB0aGF0IGRvZXMgc3R1ZmYuIEluIG9yZGVyIHRvICJkbyB0aGUgc3R1ZmYiIHdlIG5lZWQgY2FsbCB0aGUgdmFyaWFibGUgd2l0aCBwYXJlbnRoZXNlcyBgKClgIG9uIHRoZSBlbmQuIEluc2lkZSB0aGUgcGFyZW50aGVzZXMgd2UgY2FuIHBhc3MgdmFsdWVzIGZvciB0aGUgcGFyYW1ldGVycy9hcmd1bWVudHMgd2hpY2ggbGV0IHVzIGNoYW5nZSB0aGUgYmVoYXZpb3VyIG9mIHRoZSBmdW5jdGlvbi4KCkZvciBpbnN0YW5jZSwgaWYgd2Ugd2FudCB0byBmaW5kIHRoZSBzcXVhcmUgcm9vdCBvZiBhIG51bWJlciwgd2UgY2FuIHVzZSB0aGUgYHNxcnRgIGZ1bmN0aW9uIGFuZCBwcm92aWRlIHRoZSBudW1iZXIgd2Ugd2FudCB0aGUgc3F1YXJlIHJvb3QgZm9yIGFzIGFuIGFyZ3VtZW50OgoKYGBge3J9CnNxcnQoNjQpCmBgYAoKVG8gc3VwcGx5IG11bHRpcGxlIGFyZ3VtZW50cyBvciBwYXJhbWV0ZXJzIHRvIGEgZnVuY3Rpb24gd2Ugc2VwYXJhdGUgdGhlbSBieSBhIGNvbW1hLiBFYWNoIGFyZ3VtZW50IGFsc28gaGFzIGEgbmFtZS4gQXJndW1lbnRzIGFyZSBmaWxsZWQgZWl0aGVyIGJ5IG5hbWUsIG9yIGJhc2VkIG9uIHRoZSBwb3NpdGlvbi4KCmBgYHtyfQojIGJ5IHBvc2l0aW9uCnJvdW5kKDMuMTQyLCAxKQoKIyBieSBuYW1lCnJvdW5kKHggPSAzLjE0MiwgZGlnaXRzID0gMSkKYGBgCgpUbyBmaW5kIG91dCB3aGF0IHRoZSBuYW1lcyBvZiB0aGUgYXJndW1lbnRzIGEgZnVuY3Rpb24gdGFrZXMgd2UgY2FuIHJ1biB0aGUgYGFyZ3NgIGZ1bmN0aW9uIG9uIHRoZSBmdW5jdGlvbiBuYW1lOgoKYGBge3J9CmFyZ3Mocm91bmQpCmBgYAoKXAoKIyMjIEhlbHAKCkJlaW5nIGFibGUgdG8gZmluZCB0aGluZ3Mgb3V0IGZvciB5b3Vyc2VsZiBpcyBleHRyZW1lbHkgaW1wb3J0YW50IGFuZCB3aXRoaW4gUiB0aGVyZSBhcmUgYSBjb3VwbGUgd2F5IHRoaXMgY2FuIGJlIGRvbmUuCgotIGBoZWxwKClgIG9yIGA/YAotIGA/P2AKLSBnb29nbGUKCgpUaGVyZSBpcyB1c3VhbGx5IHByZXR0eSBnb29kIGRvY3VtZW50YXRpb24gdGhhdCBnb2VzIGFsb25nIHNpZGUgZnVuY3Rpb25zIGFuZCB0aGlzIGNhbiBiZSBhY2Nlc3NlZCB0aHJvdWdoIHRoZSBpbmJ1aWx0IGhlbHAgc3lzdGVtIHVzaW5nIGBoZWxwKClgLCBgP2AsIG9yIGA/P2AuCgpgaGVscCgpYGFuZCBgP2AgYXJlIGVxdWl2YWxlbnQgYW5kIHdpbGwgZmluZCB0aGUgbWFudWFsIHBhZ2UgZm9yIHRoZSBleGFjdCBmdW5jdGlvbiwgZS5nLiB0byBmaW5kIHRoZSBtYW51YWwgcGFnZSBmb3IgdGhlIGBtZWFuYCBmdW5jdGlvbjogYGhlbHAoIm1lYW4iKWAgb3IgYD9tZWFuYC4gVGhlIG1vc3QgdXNlZnVsIHNlY3Rpb25zIG9mIHRoZSBtYW51YWwgcGFnZXMgYXJlICJVc2FnZSIsICJBcmd1bWVudHMiLCBhbmQgIkV4YW1wbGVzIiB3aGljaCB0ZWxsIHlvdSBob3cgdG8gcnVuIHRoZSBmdW5jdGlvbiwgd2hhdCB0aGUgYXJndW1lbnRzIGFyZSBzdXBwb3NlZCB0byBiZSwgYW5kIGdpdmVzIHNvbWUgJ2NvcHktcGFzdGUnIGV4YW1wbGVzIHRvIHNob3cgeW91IGhvdyBpdCdzIHJ1bi4KCmA/P2Agb24gdGhlIG90aGVyIGhhbmQgd2lsbCBicmluZyB1cCBhIGxpc3Qgb2YgYWxsIHRoZSBtYW51YWwgcGFnZXMgdGhhdCBtZW50aW9uIHRoZSB3b3JkLgoKR29vZ2xlIGlzIGFsc28gZXh0cmVtZWx5IHVzZWZ1bCBhbmQgbXkgbW9zdCBjb21tb24gc2VhcmNoIGlzICJob3cgdG8gLi4uIGluIFIiLgoKXAoKIyMjIENvbXBhcmF0aXZlcwoKT25lIGZpbmFsIHNldCBvZiBzeW50YXggb3BlcmF0b3JzIHRvIGNvdmVyIGFyZSB0aGUgY29tcGFyYXRpdmVzLiBUaGVzZSBhcmUgdXNlZCB0byBjcmVhdGUgbG9naWNhbCBzdGF0ZW1lbnRzIGJhc2VkIG9uIGNvbXBhcmlzb25zIHRoYXQgd2lsbCBldmFsdWF0ZSB0byBiZSBlaXRoZXIgYFRSVUVgIG9yIGBGQUxTRWAuCgpDb21wYXJhdG9yczoKCi0gZXF1YWxpdHk6IGA9PWAKLSBub3QgZXF1YWwgdG86YCE9YAotIGdyZWF0ZXIgdGhhbiAvIGdyZWF0ZXIgdGhhbiBvciBlcXVhbCB0bzogYD5gIC8gYD49YAotIGxlc3MgdGhhbiAvIGxlc3MgdGhhbiBvciBlcXVhbCB0bzogYDxgIC8gYDw9YAoKTG9naWNhbCBvcGVyYXRvcnMKCi0gbm90OiBgIWAKLSBvcjogYHxgCi0gYW5kOiBgJmAKCldlJ2xsIGNvdmVyIHRoZXNlIGluIG1vcmUgZGVwdGggaW4gdGhlIFNlbGVjdGluZyBhbmQgRmlsdGVyaW5nIFtNb2R1bGVdKDAzLXN1YnNldC5odG1sKS9bSGFuZG91dF0oem9vbV9ub3Rlc18wM19zdWJzZXQuaHRtbCkuCgpcCgojIyBTdGFydGluZyB3aXRoIGRhdGEKCiMjIyBWZWN0b3JzCgpVbnRpbCBub3cgd2UndmUgYmVlbiBvcGVyYXRpbmcgb24gc2luZ2xlIGl0ZW1zIGF0IGEgdGltZS4gUiBoYXMgd2F5IG9mIHN0b3JpbmcgbXVsdGlwbGUgcGllY2VzIG9mIGluZm9ybWF0aW9uIC0gdGhlIF92ZWN0b3JfLgoKQSB2ZWN0b3IgaXMgemVybyBvciBtb3JlIGVudHJpZXMgb2YgdGhlICoqc2FtZSBkYXRhIHR5cGUqKi4KClRvIGNyZWF0ZSBhIHZlY3RvciBvZiBtb3JlIHRoYW4gb25lIHBpZWNlIG9mIGluZm9ybWF0aW9uIHdlIGNhbiB1c2UgdGhlIF9jb21iaW5lXyBmdW5jdGlvbiwgd2hpY2ggYmVjYXVzZSBpdCBpcyB1c2VkIHNvIGZyZXF1ZW50bHkgaW4gUiwgaGFzIGJlZW4gcmVkdWNlZCB0byBiZSBgYygpYC4gRWFjaCBpdGVtIGlzIGNvbW1hIHNlcGFyYXRlZC4KCmBgYHtyfQpzb21lX2xldHRlcnMgPC0gYygiYSIsICJiIiwgImMiKQpzb21lX2xldHRlcnMKCnNvbWVfbnVtYmVycyA8LSBjKDIsIDQsIDYpCnNvbWVfbnVtYmVycwpgYGAKCldlIGNhbiBzZWUgd2hhdCB0aGUgZGF0YSB0eXBlIGlzIG9mIGEgdmVjdG9yIHVzaW5nIGB0eXBlb2ZgCgpgYGB7cn0KdHlwZW9mKHNvbWVfbGV0dGVycykKCnR5cGVvZihzb21lX251bWJlcnMpCmBgYAoKXAoKIyMjIyBTdWJzZXR0aW5nIGJ5IGluZGV4CgpUaGUgZmluYWwgc3ludGF4IHdlJ2xsIGludHJvZHVjZSB0aGlzIHdlZWsgaXMgYFtdYCB3aGljaCBlbmFibGVzIHVzIHRvIGV4dHJhY3QgaXRlbXMgb3V0IG9mIGEgdmVjdG9yLgoKRWFjaCBpdGVtIGhhcyBhIHBvc2l0aW9uYWwgaW5kZXggKHN0YXJ0aW5nIGZyb20gMSAtIG90aGVyIGxhbmd1YWdlcyBkaWZmZXIpLiBXZSBjYW4gdXNlIHRoaXMgaW5kZXggYXMgYW4gYXJndW1lbnQgdG8gYFtdYCB0byBwdWxsIG91dCB0aGUgc3BlY2lmaWVkIGl0ZW0uIElmIHdlIHdhbnQgbXVsdGlwbGUgaXRlbXMgd2Ugc3VwcGx5IGEgdmVjdG9yIG9mIG51bWJlcnMgZm9yIHRoZSBpbmRleGVzIHdlIHdhbnQKCmBgYHtyfQpzb21lX251bWJlcnMKCiMgcHVsbCBvdXQgdGhlIHNlY29uZCBpdGVtCnNvbWVfbnVtYmVyc1syXQoKc29tZV9sZXR0ZXJzCiMgcHVsbCBvdXQgaXRlbXMgMSBhbmQgMwpzb21lX2xldHRlcnNbYygxLDMpXQpgYGAKCkluIHRoZSBTZWxlY3RpbmcgYW5kIEZpbHRlcmluZyBEYXRhIG1vZHVsZSB3ZSB3aWxsIGNvdmVyIHRoaXMgbW9yZSBhbmQgZXhwYW5kIHRvIDIgZGltZW5zaW9ucy4KClwKCiMgRXhlcmNpc2VzCgoKMS4gQ3JlYXRlIGFuZCBhc3NpZ24gYSB2ZWN0b3Igb2YgNSBudW1iZXJzLgoKMi4gRmluZCBvdXQgdGhlIGBsZW5ndGhgIG9mIHRoZSB2ZWN0b3IuCgozLiBEaXZpZGUgdGhlIGVudGlyZSB2ZWN0b3IgYnkgMiBhbmQgc3RvcmUgdGhlIHJlc3VsdCBpbnRvIGEgdmFyaWFibGUgY2FsbGVkICpkaXZfMiogLSB3aGF0IGlzIHRoZSByZXN1bHQgb2YgdGhlIGRpdmlzaW9uPwoKNC4gQ2FsY3VsYXRlIHRoZSBtaW5pbXVtLCBtYXhpbXVtLCBtZWFuLCBhbmQgc3RhbmRhcmQgZGV2aWF0aW9uIGZvciB0aGUgKmRpdl8yKiB2ZWN0b3IuIENhbiB5b3Ugcm91bmQgdGhlIHJlc3VsdHMgdG8gMiBkZWNpbWFsIHBsYWNlcz8KCjUuIENyZWF0ZSBhbmQgYXNzaWduIGEgdmVjdG9yIG9mIGF0IGxlYXN0IDQgYW5pbWFsIG5hbWVzIGludG8gX2FuaW1hbHNfLgoKNi4gQ2FuIHlvdSBmaW5kIGEgd2F5IHRvIHRlbGwgeW91IHRoZSBudW1iZXIgb2YgY2hhcmFjdGVycyBwZXIgaXRlbT8KCjcuIEludG8gYSBuZXcgdmFyaWFibGUsIGV4dHJhY3QgdGhlIGZpcnN0IGFuZCBmb3VydGggYW5pbWFsLgoKOC4gUmVtb3ZlIHRoZSB0aGlyZCBhbmltYWwgZnJvbSB5b3VyIG9yaWdpbmFsIGFuaW1hbHMgdmVjdG9yICh3aGF0IGRvZXMgdXNpbmcgYSBuZWdhdGl2ZSBpbmRleCBkbz8pLgoKOS4gQ3JlYXRlIGEgdmVjdG9yIHRoYXQgaGFzIHRocmVlIGNvcGllcyBvZiB0aGlzIHVwZGF0ZWQgYW5pbWFscyB2ZWN0b3IuCgoxMC4gQ29tYmluZSB5b3VyIGFuaW1hbCBhbmQgbnVtYmVyIHZlY3RvcnMgdG9nZXRoZXIgaW50byBhIG5ldyB2YXJpYWJsZSBjYWxsZWQgIl9jb2VyY2VkXyIuIFJ1biBgdHlwZW9mYCBvbiB0aGlzIHZlY3RvciAtIGhvdyBkb2VzIGl0IGNvbXBhcmUgdG8gdGhlIHR5cGVzIG9mIHRoZSBvcmlnaW5hbCB2ZWN0b3I/CgoKIyMjIEV4YW1wbGUgc29sdXRpb25zCgoxLgoKYGBge3IsIHpuMDFfc29sbjEsIGNsYXNzLnNvdXJjZSA9ICJmb2xkLWhpZGUifQpteV9udW1iZXJzIDwtIGMoMTIsIDYzLCAzLCA3LCA4NCkKYGBgCgotLS0tCgoyLgoKYGBge3IsIHpuMDJfc29sbjIsIGNsYXNzLnNvdXJjZSA9ICJmb2xkLWhpZGUifQpsZW5ndGgobXlfbnVtYmVycykKYGBgCgotLS0tCgozLiAKCmBgYHtyIHpuMDFfc29sbjMsIGNsYXNzLnNvdXJjZSA9ICJmb2xkLWhpZGUifQpkaXZfMiA8LSBteV9udW1iZXJzIC8gMgpkaXZfMgpgYGAKCi0tLS0KCjQuCgpgYGB7ciB6bjAxX3NvbG40LCBjbGFzcy5zb3VyY2UgPSAiZm9sZC1oaWRlIn0KIyBtaW5pbXVtCnJvdW5kKG1pbihkaXZfMiksIGRpZ2l0cyA9IDIpCiMgbWF4aW11bQpyb3VuZChtYXgoZGl2XzIpLCBkaWdpdHMgPSAyKQojIG1lYW4Kcm91bmQobWVhbihkaXZfMiksIGRpZ2l0cyA9IDIpCiMgc3RhbmRhcmQgZGV2aWF0aW9uCnJvdW5kKHNkKGRpdl8yKSwgZGlnaXRzID0gMikKYGBgCgotLS0tLQoKNS4KCmBgYHtyIHpuMDFfc29sbjUsIGNsYXNzLnNvdXJjZSA9ICJmb2xkLWhpZGUifQphbmltYWxzIDwtIGMoImxpb24iLCAidGlnZXIiLCAic25ha2UiLCAiYmVldGxlIiwgInR1cnRsZSIpCmFuaW1hbHMKYGBgCgotLS0KCjYuCgpgYGB7ciwgem4wMV9zb2xuNiwgY2xhc3Muc291cmNlID0gImZvbGQtaGlkZSJ9Cm5jaGFyKGFuaW1hbHMpCmBgYAoKLS0tLQoKNy4KCmBgYHtyLCB6bjAxX3NvbG43LCBjbGFzcy5zb3VyY2UgPSAiZm9sZC1oaWRlIn0KdHdvX2FuaW1hbHMgPC0gYW5pbWFsc1tjKDEsNCldCnR3b19hbmltYWxzCmBgYAoKLS0tLS0KCjguCgpgYGB7ciB6bjAxX3NvbG44LCBjbGFzcy5zb3VyY2UgPSAiZm9sZC1oaWRlIn0KYW5pbWFscyA8LSBhbmltYWxzWy0zXQphbmltYWxzCmBgYAoKLS0tCgo5LgoKYGBge3IsIHpuMDFfc29sbjksIGNsYXNzLnNvdXJjZSA9ICJmb2xkLWhpZGUifQphbmltYWxzMyA8LSBjKGFuaW1hbHMsIGFuaW1hbHMsIGFuaW1hbHMpCmFuaW1hbHMzCmBgYAoKLS0tCgoxMC4KCmBgYHtyIHpuMTBfc29sbjEwLCBjbGFzcy5zb3VyY2UgPSAiZm9sZC1oaWRlIn0KbXlfbnVtYmVycwp0eXBlb2YobXlfbnVtYmVycykKYW5pbWFscwp0eXBlb2YoYW5pbWFscykKCmNvbWJpbmVkIDwtIGMobXlfbnVtYmVycywgYW5pbWFscykKdHlwZW9mKGNvbWJpbmVkKQpjb21iaW5lZAojIHRoZSBudW1iZXJzIGhhdmUgbm93IGJlZW4gY29lcmNlZCB0byBiZSBhIGNoYXJhY3RlciB0eXBlIHNvIHRoYXQKIyBhbGwgZWxlbWVudHMgb2YgdGhlIHZlY3RvciBhcmUgdGhlIHNhbWUgZGF0YSB0eXBlCmBgYAoK</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIlpvb20gTm90ZXMgMDE6IEludHJvZHVjaW5nIFIgYW5kIFJTdHVkaW8iDQpkYXRlOiAiU2VtZXN0ZXIgMSwgMjAyMyINCm91dHB1dDoNCiAgaHRtbF9kb2N1bWVudDoNCiAgICB0b2M6IHRydWUNCiAgICB0b2NfZmxvYXQ6IHRydWUNCiAgICB0b2NfZGVwdGg6IDMNCiAgICBjb2RlX2Rvd25sb2FkOiB0cnVlDQogICAgY29kZV9mb2xkaW5nOiBzaG93DQotLS0NCg0KYGBge3Igc2V0dXAsIGluY2x1ZGU9RkFMU0V9DQpsaWJyYXJ5KGtuaXRyKQ0KDQprbml0cjo6b3B0c19jaHVuayRzZXQoDQogIGZpZy5wYXRoID0gImZpZ3VyZXMvMDEvIiwgIyB1c2Ugb25seSBmb3Igc2luZ2xlIFJtZCBmaWxlcw0KICBjb2xsYXBzZSA9IFRSVUUsDQogIGVjaG8gPSBUUlVFDQopDQoNCg0KYGBgDQoNCg0KDQo+ICMjIyMgQXNzb2NpYXRlZCBtYXRlcmlhbA0KPiBNb2R1bGU6IFtNb2R1bGUgMDEgLSBJbnRyb2R1Y2luZyBSIGFuZCBSc3R1ZGlvXSgwMS1pbnRyby5odG1sKQ0KPiANCj4gUmVhZGluZ3M6DQo+DQo+IC0gW1IgZm9yIERhdGEgU2NpZW5jZSAtIENoYXB0ZXIgMV0oaHR0cHM6Ly9yNGRzLmhhZC5jby5uei9pbnRyb2R1Y3Rpb24uaHRtbCkNCj4gLSBbUiBmb3IgRGF0YSBTY2llbmNlIC0gQ2hhcHRlciA0XShodHRwczovL3I0ZHMuaGFkLmNvLm56L3dvcmtmbG93LWJhc2ljcy5odG0pDQoNCg0KIyMjIyBCZWZvcmUgd2Ugc3RhcnQNCg0KVGhpcyB3ZWIgc2l0ZSBwcm92aWRlcyB0d28ga2luZHMgb2YgbWF0ZXJpYWxzIC0tIG1vZHVsZSBub3RlcyBhbmQgem9vbSBub3Rlcy4gVGhlIG1vZHVsZSBwYWdlcyBjb3ZlciB0aGUgY29udGVudCBvZiBlYWNoIG9ubGluZSBzZXNzaW9uIGluIGRldGFpbC4gVGhleSBvZnRlbiBwcm92aWRlIGFkZGl0aW9uYWwgaW4tZGVwdGggZGlzY3Vzc2lvbiBhbmQgZXhhbXBsZXMuIFlvdSBjYW4gdXNlIHRoZSBtb2R1bGUgbm90ZXMgdG8gcmV2aXNlIGFuZCBleHRlbmQgbGVzc29uIGNvbnRlbnQgb24geW91ciBvd24gYXQgYW55IHRpbWUuIFRoZSB6b29tIG5vdGVzIGNvbnRhaW4gYW4gb3V0bGluZSBvZiB0aGUgbWF0ZXJpYWwgY292ZXJlZCBpbiBlYWNoIG1vZHVsZSBhbmQgY29kaW5nIGV4ZXJjaXNlcyB0aGF0IHlvdSBjYW4gd29yayB0aHJvdWdoIGFmdGVyIHRoZSBsZXNzb24gdG8gc29saWRpZnkgeW91ciB1bmRlcnN0YW5kaW5nIGFuZCBidWlsZCB5b3VyIHNraWxscy4gV2UgY2FuICB3b3JrIHRocm91Z2ggdGhlc2UgZXhlcmNpc2VzIHRvZ2V0aGVyIGluIGVhY2ggd2VlaydzIGZhY2UgdG8gZmFjZSBwcmFjdGljYWwgc2Vzc2lvbi4gDQoNCkF0IHRoZSB0b3AgcmlnaHQgaGFuZCBjb3JuZXIgb2YgZWFjaCBub3RlcyBwYWdlIGlzIGEgIkNvZGUiIGJ1dHRvbi4gVGhpcyB0b2dnbGVzIHNob3dpbmcvaGlkaW5nIHRoZSBjb2RlIHVzZWQgdG8gY3JlYXRlIHRoZSBwYWdlIGFzIGFuIFJtYXJrZG93biBmaWxlICh3ZSBjb3ZlciBSbWFya2Rvd24gbW9yZSBpbi1kZXB0aCBpbiBbbW9kdWxlXSgwNC1jb21tdW5pY2F0ZS5odG1sKS9bem9vbSBub3Rlc10oem9vbV9ub3Rlc18wNF9jb21tdW5pY2F0ZS5odG1sKSA0KS4gV2hlbiB3b3JraW5nIHRocm91Z2ggdGhlIHpvb20gbm90ZXMsIHlvdSBjYW4gdXNlIHRoaXMgYnV0dG9uIHRvIGhpZGUgdGhlIGV4ZXJjaXNlIHNvbHV0aW9ucyBpZiB5b3UgcHJlZmVyIHRvIHRhY2tsZSB0aGVtIGZpcnN0IG9uIHlvdXIgb3duLg0KDQpcDQoNCiMgUiBhbmQgUlN0dWRpbw0KDQpSIGlzIGEgcHJvZ3JhbW1pbmcgbGFuZ3VhZ2UuIFJTdHVkaW8gaXMgYW4gaW50ZWdyYXRlZCBkZXZlbG9wbWVudCBlbnZpcm9ubWVudCAoSURFKSB3aGljaCBwcm92aWRlcyBhIGdyYXBoaWNhbCBpbnRlcmZhY2UgKGFtb25nIG90aGVyIHRoaW5ncykgZm9yIGludGVyYWN0aW5nIHdpdGggUi4gDQoNClRoZSBSU3R1ZGlvIHNjcmVlbiBpcyBjb21wcmlzZWQgb2YgcGFuZWxzLg0KDQpQYW5lbHMgb2YgUlN0dWRpbw0KDQotIGNvbnNvbGUNCi0gc291cmNlDQotIGVudmlyb25tZW50L2hpc3RvcnkNCi0gZmlsZS9wbG90L2hlbHAvdmlld2VyDQoNClwNCg0KIyBTY3JpcHRzDQoNClNjcmlwdHMgYXJlIHRleHQgZmlsZXMgdGhhdCBjb250YWluIFIgY29kZS4gU2NyaXB0cyBwcm92aWRlIGEgcGVyc2lzdGVudCByZWNvcmQgb2YgdGhlIHN0ZXBzIHdlIHBlcmZvcm0gaW4gb3VyIGRhdGEgYW5hbHlzaXMsIGFuZCBjYW4gYmUgdXNlZCB0byByZWNyZWF0ZSB3aGF0IHdlIGhhdmUgZG9uZSB3aXRob3V0IGhhdmluZyB0byByZXR5cGUuIA0KDQpTY3JpcHRzIGNhbiBiZSBlaXRoZXI6DQoNClIgU2NyaXB0IC0gcGxhaW4gdGV4dCBkb2N1bWVudCB0aGF0IGNvbnRhaW5zIFIgY29tbWFuZHMNCg0KUk1hcmtkb3duIC0gYSBwbGFpbiB0ZXh0IGRvY3VtZW50IHRoYXQgaGFzIHRleHQgYXJlYXMgYW5kIGNvZGUgYXJlYXMuIFJNYXJrZG93biBmaWxlcyBhcmUgcHJvY2Vzc2VkL2NvbXBpbGVkIHRvIGFuIG91dHB1dCBmb3JtYXQgc3VjaCBhcyBodG1sIG9yIHBkZiB3aGljaCBjb250YWlucyBmb3JtYXR0ZWQgdGV4dCwgY29kZSwgYW5kIHRoZSByZXN1bHRzIG9mIHRoZSBjb2RlIGVtYmVkZGVkIGluIHRoZSBkb2N1bWVudC4gV2UnbGwgY292ZXIgdGhpcyBpbiBtb3JlIGRlcHRoIE1vZHVsZS9IYW5kb3V0IDQuDQoNClwNCg0KIyBSIFN5bnRheA0KDQpHZW5lcmFsIHN5bnRheCBpbmZvOg0KDQotIFIgaXMgY2FzZSBzZW5zaXRpdmUgKGUuZy4gYHdlaWdodGAgYW5kIGBXZWlnaHRgIGFyZSBkaWZmZXJlbnQgZW50aXRpZXMpDQotIFNwYWNlcyBhcmUgaWdub3JlZCBpbiBhc3NpZ25tZW50cyBhbmQgZXhwcmVzc2lvbnMuIEZvciBleGFtcGxlIGA4KzNgIGFuZCBgOCArIDNgIGFyZSBmdW5jdGlvbmFsbHkgZXF1aXZhbGVudC4gSG93ZXZlciwgZ2VuZXJvdXMgdXNlIG9mIHdoaXRlIHNwYWNlIGlzIGVuY291cmFnZWQgdG8gaW1wcm92ZSBhY2Nlc3NpYmlsaXR5Lg0KLSBWYXJpYWJsZSBhbmQgZnVuY3Rpb24gbmFtZXMgaW4gUiBjb252ZW50aW9uYWxseSB1c2UgKipzbmFrZSBjYXNlKiouIEFsbCBsZXR0ZXJzIGFyZSBsb3dlciBjYXNlLCBhbmQgd29yZHMgYXJlIHNlcGFyYXRlZCBieSB1bmRlcnNjb3JlIChlLmcuIGBhbm51YWxfbWVhbl9yYWluZmFsbGApLg0KDQpcDQoNCiMjIE1hdGhlbWF0aWNhbCBvcGVyYXRvcnMNCg0KQWRkaXRpb246IGArYA0KDQpTdWJ0cmFjdGlvbjogYC1gDQoNCk11bHRpcGxpY2F0aW9uOiBgKmANCg0KRGl2aXNpb246IGAvYA0KDQpFeHBvbmVudGlhdGlvbjogYF5gDQoNCk1vZHVsbyAocmVtYWluZGVyKTogYCUlYA0KDQpgYGB7cn0NCiMgQWRkaXRpb24NCjEgKyAyDQoNCiMgU3VidHJhY3Rpb24NCjMgLSA2DQoNCiMgTXVsdGlwbGljYXRpb24NCjQgKiAyDQoNCiMgRGl2aXNpb24NCjEyIC8gMw0KDQojIEV4cG9uZW50aWF0aW9uDQoyICoqIDUNCg0KIyBNb2R1bG8NCjUgJSUgMg0KDQpgYGANCg0KIyMgRGF0YSB0eXBlcw0KDQpSIGhhcyB0aHJlZSBwcmltYXJ5IHR5cGVzIG9mIGRhdGE6DQoNCi0gbnVtZXJpYw0KLSBjaGFyYWN0ZXJzDQotIGJvb2xlYW4NCg0KTnVtZXJpYyBkYXRhIGNhbiBiZSBpbnRlZ2VyICh3aG9sZSBudW1iZXJzKSBvciAiZG91YmxlIiAoaGF2aW5nIGEgZGVjaW1hbCBwYXJ0KS4NCg0KQ2hhcmFjdGVyIGRhdGEgaXRlbXMgYXJlIGNvbXByaXNlZCBvZiBvbmUgb3IgbW9yZSBsZXR0ZXJzLCBudW1iZXJzLCBvciAocGVybWl0dGVkKSBzeW1ib2xzLiBJbiB0aGUgdmVybmFjdWxhciwgdGhlc2UgYXJlIGNhbGxlZCAic3RyaW5ncyIuIFN0cmluZ3MgYXJlIGRlZmluZWQgaW4gUiBieSBlbmNsb3NpbmcgdGhlbSBpbiBxdW90YXRpb24gbWFya3MgKGUuZy4gYCJFbXBlcm9yIFBlbmd1aW4iYCkuDQoNCkJvb2xlYW5zIGFyZSBsb2dpY2FsIGRhdGEuIFRoZXkgY2FuIHRha2Ugb24gb25seSB0aGUgdmFsdWVzIGBUUlVFYCBvciBgRkFMU0VgLCBhbmQgYXJlIHVzZWQgZm9yIGxvZ2ljYWwgb3BlcmF0aW9ucy4NCg0KUiBmdW5jdGlvbnMgKHNlZSBkaXNjdXNzaW9uIGJlbG93KSBhY2NlcHQgaW5wdXQgZGF0YSBvZiBzcGVjaWZpYyB0eXBlKHMpLiBBcHBseWluZyBhIGZ1bmN0aW9uIG9yIG9wZXJhdGlvbiB0byB0aGUgIndyb25nIiB0eXBlIG9mIGRhdGEgd2lsbCBjYXVzZSBhbiBlcnJvci4NCg0KXA0KDQojIyBWYXJpYWJsZXMNCg0KVmFyaWFibGVzIGFyZSBuYW1lZCBvYmplY3RzIGluIHdoaWNoIHdlIHN0b3JlIGRhdGEuIFRoZSBzdG9yZWQgdmFsdWVzIGNhbiBiZSByZWZlcmVuY2VkL3VzZWQgbGF0ZXIgaW4gb3VyIGNvZGUuDQoNClZhcmlhYmxlIG5hbWVzIG11c3Q6DQoNCi0gU3RhcnQgd2l0aCBhIGxldHRlcg0KLSBDb250YWluIG5vIG5vbi1hbHBoYW51bWVyaWMgc3ltYm9scyBleGNlcHQgLiAoZnVsbCBzdG9wKSBhbmQgXyAodW5kZXJzY29yZSkNCg0KVmFyaWFibGUgbmFtZXMgc2hvdWxkIGFsd2F5cyBiZSBkZXNjcmlwdGl2ZSBvZiB0aGVpciBjb250ZW50cy4gVGhpcyB3aWxsIGhlbHAgeW91IHJlbWVtYmVyIHdoYXQgZGF0YSB0aGV5IGhvbGQgd2hlbiB0aGV5IGFyZSB1c2VkIGluIHRoZSBjb2RlLg0KDQpcDQoNCiMjIEFzc2lnbm1lbnQgb3BlcmF0b3JzDQoNCkluIFIgYDwtYCBhbmQgYD1gIGFyZSBib3RoIHVzZWQgZm9yIGFzc2lnbm1lbnQuICBgPC1gIGlzIHVzZWQgdG8gYXNzaWduIGEgdmFsdWUgdG8gYSB2YXJpYWJsZS4gYD1gIGlzIHVzZWQgaW5zaWRlIGEgZnVuY3Rpb24gY2FsbCB0byBhc3NpZ24gYSB2YWx1ZSB0byBhIGZ1bmN0aW9uIGlucHV0Lg0KDQpUaGUgcmlnaHQtaGFuZCBzaWRlIG9mIGFuIGFzc2lnbm1lbnQgc3RhdGVtZW50IGlzIGV2YWx1YXRlZCBmaXJzdC4gVGhlIHJlc3VsdCBpcyB0aGVuIGFzc2lnbmVkIHRvIHRoZSB2YXJpYWJsZSBvbiB0aGUgbGVmdC1oYW5kIHNpZGUuIFRodXMgdGhlIHN0YXRlbWVudCBgeCA8LSB4ICogMmAgbWVhbnMgIkZpcnN0IG11bHRpcGx5IHRoZSBjdXJyZW50IHZhbHVlIG9mIHggYnkgMi4gVGFrZSB0aGUgcmVzdWx0IG9mIHRoYXQgb3BlcmF0aW9uIGFuZCBhc3NpZ24gaXQgYXMgdGhlIG5ldyB2YWx1ZSBvZiB4LiINCg0KTm90ZSB0aGF0IHZhcmlhYmxlcyAqKm9ubHkgY29udGFpbiB0aGUgbGFzdCB0aGluZyB0aGF0IHdhcyBhc3NpZ25lZCB0byB0aGVtKiouIEFzc2lnbmluZyBhIHZhbHVlIHRvIGEgdmFyaWFibGUgb3ZlcndyaXRlcyBhbnkgZXhpc3RpbmcgdmFsdWUuDQpcDQoNCiMjIEZ1bmN0aW9ucw0KDQpGdW5jdGlvbnMgYXJlIGVuY2Fwc3VsYXRlZCwgbmFtZWQgY2h1bmtzIG9mIGNvZGUuIFdlICoqY2FsbCoqIGEgZnVuY3Rpb24gYnkgdHlwaW5nIGl0cyBuYW1lLCBmb2xsb3dlZCBieSAoKS4gV2UgcHJvdmlkZSBhbnkgcmVxdWlyZWQgZGF0YSBpbnB1dHMgKGNhbGxlZCAqZnVuY3Rpb24gYXJndW1lbnRzKiBpbiB0aGlzIGNvbnRleHQpIGJ5IHBsYWNpbmcgdGhlbSBiZXR3ZWVuIHRoZSByb3VuZCBicmFja2V0cy4gV2hlbiBhIGZ1bmN0aW9uIGlzIGNhbGxlZCwgUiBleGVjdXRlcyB0aGUgY29kZSB3aGljaCBpdCBlbmNhcHN1bGF0ZXMgYW5kIHJldHVybnMgdGhlIHJlc3VsdC4NCg0KRm9yIGV4YW1wbGUsIGlmIHdlIHdhbnQgdG8gZmluZCB0aGUgc3F1YXJlIHJvb3Qgb2YgYSBudW1iZXIsIHdlIGNhbiB1c2UgdGhlIGBzcXJ0YCBmdW5jdGlvbiBhbmQgcHJvdmlkZSB0aGUgbnVtYmVyIGFzIGlucHV0Og0KDQpgYGB7cn0NCnNxcnQoNjQpDQpgYGANCg0KTWFueSBmdW5jdGlvbnMgcmVxdWlyZSBtdWx0aXBsZSBwaWVjZXMgb2YgaW5wdXQgZGF0YS4gTXVsdGlwbGUgYXJndW1lbnRzIGFyZSBwbGFjZWQgYmV0d2VlbiB0aGUgcm91bmQgYnJhY2tldHMsIHNlcGFyYXRlZCBieSBjb21tYXMuIA0KDQpFYWNoIGZ1bmN0aW9uIGFyZ3VtZW50IGhhcyBhIG5hbWUuIEFyZ3VtZW50cyBjYW4gYmUgaWRlbnRpZmllZCBieSBuYW1lLCBvciBieSBvcmRpbmFsIHBvc2l0aW9uIHdpdGhpbiB0aGUgcm91bmQgYnJhY2tldHMuDQoNCmBgYHtyfQ0KIyBieSBwb3NpdGlvbg0Kcm91bmQoMy4xNDIsIDEpDQoNCiMgYnkgbmFtZQ0Kcm91bmQoeCA9IDMuMTQyLCBkaWdpdHMgPSAxKQ0KYGBgDQoNClRvIHNlZSB3aGF0IGFyZ3VtZW50cyBhIGZ1bmN0aW9uIHJlcXVpcmVzLCBjYWxsIHRoZSBgYXJnc2AgZnVuY3Rpb24sIHBhc3NpbmcgaW4gdGhlIGZ1bmN0aW9uIG5hbWU6DQoNCmBgYHtyfQ0KYXJncyhyb3VuZCkNCmBgYA0KDQpSIGNvbnRhaW5zIG1hbnksIG1hbnksIHBvd2VyZnVsIHByZS1kZWZpbmVkIGZ1bmN0aW9ucy4gSW4gb25lIG9mIG91ciBsYXRlciBtb2R1bGVzLCB3ZSB3aWxsIGxlYXJuIGhvdyB0byB3cml0ZSBvdXIgb3duIGN1c3RvbSBmdW5jdGlvbnMuDQoNClwNCg0KIyMgQ29tcGFyaXNvbiBPcGVyYXRvcnMNCg0KQ29tcGFyaXNvbiBvcGVyYXRvcnMgZXZhbHVhdGUgdG8gZWl0aGVyIGBUUlVFYCBvciBgRkFMU0VgLg0KDQpDb21wYXJhdG9yczoNCg0KLSBlcXVhbGl0eTogYD09YA0KLSBub3QgZXF1YWwgdG86YCE9YA0KLSBncmVhdGVyIHRoYW46IGA+YA0KLSBncmVhdGVyIHRoYW4gb3IgZXF1YWwgdG86IGA+PWANCi0gbGVzcyB0aGFuOiBgPGANCi0gbGVzcyB0aGFuIG9yIGVxdWFsIHRvOiBgPD1gDQoNCkxvZ2ljYWwgb3BlcmF0b3JzDQoNCi0gbm90OiBgIWANCi0gb3I6IGB8YA0KLSBhbmQ6IGAmYA0KDQpXZSdsbCBjb3ZlciB0aGVzZSBpbiBtb3JlIGRlcHRoIGluIHRoZSBbU2VsZWN0aW5nIGFuZCBGaWx0ZXJpbmcgTW9kdWxlXSgwMy1zdWJzZXQuaHRtbCkuDQoNClwNCg0KIyMgQ29tbWVudHMNCg0KVGhlIGAjYCBzeW1ib2wgZGVub3RlcyBhIGNvbW1lbnQuIFIgd2lsbCBpZ25vcmUgYWxsIHRleHQgZm9sbG93aW5nIHRoZSBgI2Agb24gdGhlIHNhbWUgbGluZS4gQ29tbWVudHMgc2hvdWxkIGV4cGxhaW4gdGhlIGxvZ2ljIG9mIHRoZSBjb2RlLiBUaGlzIGhlbHBzIG90aGVyIHBlb3BsZSB1bmRlcnN0YW5kIHlvdXIgY29kZTsgaXQgYWxzbyBoZWxwcyB5b3UgcmVtZW1iZXIgeW91ciB0aGlua2luZyB3aGVuIHlvdSByZXZpc2l0IHlvdXIgb3duIGNvZGUgaW4gdGhlIGZ1dHVyZS4gVGhvcm91Z2ggY29tbWVudGluZyBpcyBzbyBlc3NlbnRpYWwgdG8gc29mdHdhcmUgZGV2ZWxvcG1lbnQgdGhhdCBtb3N0IHByb2Zlc3Npb25hbHMgKndyaXRlIHRoZWlyIGNvbW1lbnRzIGZpcnN0KiwgdGhlbiBmaWxsIGluIHRoZSBjb2RlIGZvbGxvd2luZyB0aGUgc3RydWN0dXJlIGRlZmluZWQgYnkgdGhlIGNvbW1lbnRzLg0KDQpcDQoNCiMgQ29tcGxleCBEYXRhDQoNCiMjIFZlY3RvcnMNCg0KQSB2ZWN0b3IgaXMgYSBjb21wbGV4IGRhdGEgc3RydWN0dXJlIHRoYXQgaG9sZHMgbXVsdGlwbGUgZGF0YSBlbGVtZW50cy4gVmVjdG9ycyBhcmUgKipob21vZ2VuZW91cyoqIC0tIGFsbCB0aGVpciBlbGVtZW50cyBtdXN0IGJlIG9mIHRoZSBzYW1lIGRhdGEgdHlwZS4gDQoNClRvIGNyZWF0ZSBhIHZlY3RvciB1c2UgZnVuY3Rpb24gYGMoKWAsIHRoZSBfY29tYmluZV8gZnVuY3Rpb24uIEl0ZW1zIGFyZSBzZXBhcmF0ZWQgYnkgY29tbWFzLg0KDQpgYGB7cn0NCnNvbWVfbGV0dGVycyA8LSBjKCJhIiwgImIiLCAiYyIpDQpzb21lX2xldHRlcnMNCg0Kc29tZV9udW1iZXJzIDwtIGMoMiwgNCwgNikNCnNvbWVfbnVtYmVycw0KYGBgDQoNCldlIGNhbiBzZWUgdGhlIGRhdGEgdHlwZSBvZiBhIHZlY3RvciB1c2luZyBgdHlwZW9mYA0KDQpgYGB7cn0NCnR5cGVvZihzb21lX2xldHRlcnMpDQoNCnR5cGVvZihzb21lX251bWJlcnMpDQpgYGANCg0KXA0KDQojIyBTdWJzZXR0aW5nIGJ5IGluZGV4DQoNClRvIGFjY2VzcyBpbmRpdmlkdWFsIGl0ZW1zIGluIGEgdmVjdG9yIHVzZSBgW11gLCB0aGUgKippbmRleCBvcGVyYXRvcioqLCBhcyBzaG93biBiZWxvdy4gUGxhY2UgdGhlIGl0ZW0ncyBvcmRpbmFsIHBvc2l0aW9uIGJldHdlZW4gdGhlIHNxdWFyZSBicmFja2V0cy4gU2VsZWN0IG11bHRpcGxlIGl0ZW1zIGJ5IHBsYWNpbmcgYSB2ZWN0b3Igb2YgcG9zaXRpb25zIGJldHdlZW4gdGhlIHNxdWFyZSBicmFja2V0cy4NCg0KDQpgYGB7cn0NCnNvbWVfbnVtYmVycw0KDQojIHB1bGwgb3V0IHRoZSBzZWNvbmQgaXRlbQ0Kc29tZV9udW1iZXJzWzJdDQoNCnNvbWVfbGV0dGVycw0KDQojIHB1bGwgb3V0IGl0ZW1zIDEgYW5kIDMNCnNvbWVfbGV0dGVyc1tjKDEsMyldDQpgYGANCg0KV2Ugd2lsbCBzZWUgZXhhbXBsZXMgb2YgbW9yZSBjb21wbGV4IGRhdGEgc3RydWN0dXJlcyBhbmQgdGhlaXIgdXNlIGluIGxhdGVyIG1vZHVsZXMuDQoNCg0KXA0KDQojIEdldHRpbmcgSGVscA0KDQpUbyBhY2Nlc3MgdGhlIFIgZG9jdW1lbnRhdGlvbiBmb3IgYSBmdW5jdGlvbiwgY2FsbCBgaGVscCgpYCBwYXNzaW5nIGluIHRoZSBmdW5jdGlvbiBuYW1lLCBvciB0eXBlIGA/YCBmb2xsb3dlZCBieSB0aGUgbmFtZSBvZiB0aGUgZnVuY3Rpb24gKG5vIGludGVydmVuaW5nIHNwYWNlKS4NCg0KLSBgaGVscChsbSlgIA0KLSBgP2xtYA0KDQpMYW5ndWFnZSBkb2N1bWVudGF0aW9uIHRlbmRzIHRvIGJlIHRlcnNlLCBhbmQgdGFyZ2V0ZWQgdG8gdGhlIGFkdmFuY2VkIHVzZXIuIEZyZXF1ZW50bHkgeW91IHdpbGwgd2FudCBtb3JlIGRldGFpbGVkIGV4cGxhbmF0aW9uIHRoYW4gaXMgYXZhaWxhYmxlIGZyb20gdGhlIGJ1aWx0LWluIGhlbHAuIFdlIHJlY29tbWVuZCBHb29nbGUgKG15IG1vc3QgY29tbW9uIHNlYXJjaCBpcyAiaG93IHRvIC4uLiBpbiBSIikgb3Igb25lIG9mIHRoZSBtYW55IHVzZWZ1bCB0ZXh0IGJvb2tzIGF2YWlsYWJsZSB0aHJvdWdoIHRoZSBVbml2ZXJzaXR5IGxpYnJhcnkgKHNlZSBmb3IgZXhhbXBsZSwgaHR0cHM6Ly9vdGFnby5wcmltby5leGxpYnJpc2dyb3VwLmNvbS9wZXJtYWxpbmsvNjRPVEFHT19JTlNUL3FlZjNsai9hbG1hOTkyNjE3OTM3NzQwMTg5MSkNCg0KXA0KDQoNCiMgUHJvamVjdHMNCg0KUHJvamVjdHMgd2l0aGluIFJTdHVkaW8gcHJvdmlkZSBhIG1lY2hhbmlzbSB0byBvcmdhbmlzZSB5b3VyIHdvcmsuIEEgUHJvamVjdCBpcyBhIGRpcmVjdG9yeSBvbiB5b3VyIGNvbXB1dGVyIHdoZXJlIHlvdSBnYXRoZXIgcmVsYXRlZCBjb2RlLCBkb2N1bWVudGF0aW9uLCBkYXRhLCBhbmQgb3V0cHV0cyBzbyB0aGF0IGV2ZXJ5dGhpbmcgbmVlZGVkIHRvIHJlY3JlYXRlIGFuIGFuYWx5c2lzIGlzICJidW5kbGVkIHRvZ2V0aGVyIi4NCg0KVG8gY3JlYXRlIGEgbmV3IFByb2plY3Q6IA0KDQotIEZpbGUgLT4gTmV3IFByb2plY3QgLT4gTmV3IERpcmVjdG9yeSAtPiBOZXcgUHJvamVjdA0KLSBDaG9vc2Ugd2hlcmUgeW91IHdhbnQgaXQgdG8gbGl2ZSBhbmQgZ2l2ZSBpdCBhIG5hbWUNCi0gQ2xpY2sgIkNyZWF0ZSBQcm9qZWN0Ig0KDQpJdCBpcyB1c2VmdWwgdG8gYWRkIHNvbWUgc3ViZm9sZGVycyB0byB5b3VyIFByb2plY3QgZm9sZGVyLiBBIGNvbW1vbiBvcmdhbmlzYXRpb24gaXMgdG8gaGF2ZSBzZXBhcmF0ZSBzdWJmb2xkZXJzIGZvciB5b3VyIHNjcmlwdHMsIGlucHV0IGZpbGVzLCBvdXRwdXQgZmlsZXMsIGFuZCBkb2N1bWVudGF0aW9uLg0KDQpZb3UgY2FuIGNyZWF0ZSBzdWJmb2xkZXJzIGJ5IHVzaW5nIHRoZSAiTmV3IEZvbGRlciIgYnV0dG9uIGluIHRoZSBGaWxlcyBwYW5lbCBvciB1c2luZyB0aGUgYGRpci5jcmVhdGUoKWAgZnVuY3Rpb24sIGFzIHNob3duIGJlbG93Lg0KDQpgYGB7cn0NCmRpci5jcmVhdGUoInNjcmlwdHMiKQ0KZGlyLmNyZWF0ZSgiZGF0YSIpDQpkaXIuY3JlYXRlKCJkYXRhIikNCmRpci5jcmVhdGUoIm91dHB1dHMiKQ0KYGBgDQoNClwNCg0KIyBNb2R1bGUgMDEgRXhlcmNpc2VzDQoNCg0KMS4gQ3JlYXRlIGEgdmVjdG9yIG9mIDUgbnVtYmVycyBhbmQgYXNzaWduIGl0IHRvIGEgdmFyaWFibGUuDQoNCjIuIEZpbmQgb3V0IHRoZSBgbGVuZ3RoYCBvZiB0aGUgdmVjdG9yLg0KDQozLiBEaXZpZGUgdGhlIGVudGlyZSB2ZWN0b3IgYnkgMiBhbmQgc3RvcmUgdGhlIHJlc3VsdCBpbnRvIGEgdmFyaWFibGUgY2FsbGVkICpkaXZfMiouIEV4cGxhaW4gd2hhdCBoYXBwZW5zIHdoZW4geW91IHBlcmZvcm0gYSBtYXRoZW1hdGljYWwgb3BlcmF0aW9uIG9uIGEgdmVjdG9yLg0KDQo0LiBDYWxjdWxhdGUgdGhlIG1pbmltdW0sIG1heGltdW0sIG1lYW4sIGFuZCBzdGFuZGFyZCBkZXZpYXRpb24gZm9yIHRoZSAqZGl2XzIqIHZlY3Rvci4gUm91bmQgZWFjaCByZXN1bHQgdG8gMiBkZWNpbWFsIHBsYWNlcy4NCg0KNS4gQ3JlYXRlIGFuZCBhc3NpZ24gYSB2ZWN0b3Igb2YgYXQgbGVhc3QgNCBhbmltYWwgbmFtZXMgaW50byBfYW5pbWFsc18uDQoNCjYuIENvbXB1dGUgdGhlIG51bWJlciBvZiBjaGFyYWN0ZXJzIGluIGVhY2ggaXRlbS4gVXNlIG9ubHkgb25lIGxpbmUgb2YgY29kZS4NCg0KNy4gRXh0cmFjdCB0aGUgZmlyc3QgYW5kIGZvdXJ0aCBhbmltYWwgaW50byBhIG5ldyB2YXJpYWJsZS4NCg0KOC4gUmVtb3ZlIHRoZSB0aGlyZCBhbmltYWwgZnJvbSB5b3VyIG9yaWdpbmFsIGFuaW1hbHMgdmVjdG9yLiBUaGVyZSBhcmUgbXVsdGlwbGUgc3ludGFjdGljYWxseSBsZWdhbCB3YXlzIHRvIGFjaGlldmUgdGhpcyBpbiBSLCBidXQgc29tZSBhcmUgbW9yZSBlbGVnYW50IHRoYW4gb3RoZXJzLiAoSGludDogd2hhdCBkb2VzIHVzaW5nIGEgbmVnYXRpdmUgaW5kZXggZG8/KQ0KDQo5LiBDcmVhdGUgYSB2ZWN0b3IgdGhhdCBoYXMgdGhyZWUgY29waWVzIG9mIHRoaXMgdXBkYXRlZCBhbmltYWxzIHZlY3Rvci4gVXNlIG9ubHkgb25lIGxpbmUgb2YgY29kZS4NCg0KMTAuIENvbWJpbmUgeW91ciBhbmltYWwgYW5kIG51bWJlciB2ZWN0b3JzIHRvZ2V0aGVyIGludG8gYSBuZXcgdmFyaWFibGUgY2FsbGVkIF9jb2VyY2VkXy4gUnVuIGB0eXBlb2ZgIG9uIHRoaXMgdmVjdG9yLiBFeHBsYWluIHdoeSB0aGUgdHlwZXMgb2Ygc29tZSBlbGVtZW50cyBoYXZlIGJlZW4gY2hhbmdlZC4NCg0KDQojIyMgRXhhbXBsZSBzb2x1dGlvbnMNCg0KMS4NCg0KYGBge3IsIHpuMDFfc29sbjEsIGNsYXNzLnNvdXJjZSA9ICJmb2xkLWhpZGUifQ0KbXlfbnVtYmVycyA8LSBjKDEyLCA2MywgMywgNywgODQpDQpgYGANCg0KLS0tLQ0KDQoyLg0KDQpgYGB7ciwgem4wMl9zb2xuMiwgY2xhc3Muc291cmNlID0gImZvbGQtaGlkZSJ9DQpsZW5ndGgobXlfbnVtYmVycykNCmBgYA0KDQotLS0tDQoNCjMuIA0KDQpgYGB7ciB6bjAxX3NvbG4zLCBjbGFzcy5zb3VyY2UgPSAiZm9sZC1oaWRlIn0NCmRpdl8yIDwtIG15X251bWJlcnMgLyAyDQpkaXZfMg0KDQojIFdoZW4gYSBtYXRoZW1hdGljYWwgb3BlcmF0b3IgaXMgYXBwbGllZCB0byBhIHZlY3RvciwgdGhlIG9wZXJhdGlvbiBpcw0KIyBwZXJmb3JtZWQgb24gZWFjaCBpbmRpdmlkdWFsIHZlY3RvciBlbGVtZW50LCBhbmQgdGhlIHdob2xlIHNldCBvZiBuZXcgdmFsdWVzDQojIGlzIHJldHVybmVkLg0KDQpgYGANCg0KLS0tLQ0KDQo0Lg0KDQpgYGB7ciB6bjAxX3NvbG40LCBjbGFzcy5zb3VyY2UgPSAiZm9sZC1oaWRlIn0NCiMgTm90ZSB0aGUgcmFuZ2Ugb2Ygc3ludGFjdGljIG9wdGlvbnMuIFN0cml2ZSBmb3IgYSBiYWxhbmNlIGJldHdlZW4gY2xhcml0eSBhbmQNCiMgcGFyc2ltb255Lg0KDQojIG1pbmltdW0NCm1pbl9udW1iZXIgPC0gbWluKGRpdl8yKQ0Kcm91bmQobWluX251bWJlciwgZGlnaXRzID0gMikNCg0KIyBtYXhpbXVtDQptYXhfbnVtYmVyIDwtIG1heChkaXZfMikNCnJvdW5kKG1heF9udW1iZXIsIDIpDQoNCiMgbWVhbg0Kcm91bmQobWVhbihkaXZfMiksIGRpZ2l0cyA9IDIpDQoNCiMgc3RhbmRhcmQgZGV2aWF0aW9uDQpyb3VuZChzZChkaXZfMiksIDIpDQpgYGANCg0KLS0tLS0NCg0KNS4NCg0KYGBge3Igem4wMV9zb2xuNSwgY2xhc3Muc291cmNlID0gImZvbGQtaGlkZSJ9DQphbmltYWxzIDwtIGMoImxpb24iLCAidGlnZXIiLCAic25ha2UiLCAiYmVldGxlIiwgInR1cnRsZSIpDQphbmltYWxzDQpgYGANCg0KLS0tDQoNCjYuDQoNCmBgYHtyLCB6bjAxX3NvbG42LCBjbGFzcy5zb3VyY2UgPSAiZm9sZC1oaWRlIn0NCm5jaGFyKGFuaW1hbHMpDQpgYGANCg0KLS0tLQ0KDQo3Lg0KDQpgYGB7ciwgem4wMV9zb2xuNywgY2xhc3Muc291cmNlID0gImZvbGQtaGlkZSJ9DQp0d29fYW5pbWFscyA8LSBhbmltYWxzW2MoMSw0KV0NCnR3b19hbmltYWxzDQpgYGANCg0KLS0tLS0NCg0KOC4NCg0KYGBge3Igem4wMV9zb2xuOCwgY2xhc3Muc291cmNlID0gImZvbGQtaGlkZSJ9DQphbmltYWxzIDwtIGFuaW1hbHNbLTNdDQphbmltYWxzDQpgYGANCg0KLS0tDQoNCjkuDQoNCmBgYHtyLCB6bjAxX3NvbG45LCBjbGFzcy5zb3VyY2UgPSAiZm9sZC1oaWRlIn0NCmFuaW1hbHMzIDwtIGMoYW5pbWFscywgYW5pbWFscywgYW5pbWFscykNCmFuaW1hbHMzDQpgYGANCg0KLS0tDQoNCjEwLg0KDQpgYGB7ciB6bjEwX3NvbG4xMCwgY2xhc3Muc291cmNlID0gImZvbGQtaGlkZSJ9DQpteV9udW1iZXJzDQp0eXBlb2YobXlfbnVtYmVycykNCmFuaW1hbHMNCnR5cGVvZihhbmltYWxzKQ0KDQpjb21iaW5lZCA8LSBjKG15X251bWJlcnMsIGFuaW1hbHMpDQp0eXBlb2YoY29tYmluZWQpDQpjb21iaW5lZA0KDQojIFRoZSBudW1lcmljIGVsZW1lbnRzIGhhdmUgYmVlbiBjb2VyY2VkIHRvIHR5cGUgY2hhcmFjdGVyIHNvIHRoYXQNCiMgdGhlIHZlY3RvciByZW1haW5zIGhvbW9nZW5lb3VzLg0KYGBgDQoNCg==</div>
 
 
 </div>
