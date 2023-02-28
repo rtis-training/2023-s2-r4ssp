@@ -90,3 +90,21 @@ Further customising of `kable` tables can be done with the `kableExtra` package.
 ## Citations
 
 Citations can be inserted into an RMarkdown document. [This document from RStudio](https://rstudio.github.io/visual-markdown-editing/citations.html) goes through how to do it
+
+
+## Exercises
+
+1. Create a new RMarkdown file called with the output being HTML.
+    a. fill in your name and the title `My Report`
+2. Save the file as `my_report.Rmd` and knit it.
+3. Modify the `setup` code chunk to load the `tidyverse` package
+4. Remove the template content starting on the line with `## R Markdown` and below.
+5. Create a code chunk to read in the gapminder data used in [Module 2 - Visualising](02-visualise.html)
+    a. _Watch out for your file paths relative to your Rmd file _
+6. Choose two countries and filter the data to only include them
+7. Make a plot of life expectancy versus gdp per capita
+8. In the text areas of the RMarkdown note some observations about your plot. Include:
+    a. a level 2 heading
+    b. something in italics
+    c. something in bold
+9. Underneath your plot include a table of the data for your countries

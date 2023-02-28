@@ -21,6 +21,7 @@ Semester 1 2023 R for Successful Student Projects (R4SSP) will be online via Zoo
 
 **Please register [using this form](https://docs.google.com/forms/d/e/1FAIpQLScVcCLMmgIYgZ2wBXgnaPL4ivhlZnhAM4jS0mHwQb6vcsJmkQ/viewform?usp=sf_link)** to receive details.
 
+<!-- https://docs.google.com/forms/d/e/1FAIpQLScVcCLMmgIYgZ2wBXgnaPL4ivhlZnhAM4jS0mHwQb6vcsJmkQ/viewform?usp=sf_link -->
 
 For more information please email rtis.training@otago.ac.nz
 

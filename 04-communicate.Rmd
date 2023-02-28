@@ -33,6 +33,7 @@ knitr::opts_chunk$set(
 > -   [R for Data Science - Chapter 29](https://r4ds.had.co.nz/r-markdown-formats.html)
 > -   [Reference: RMarkdown - the definitive guide](https://bookdown.org/yihui/rmarkdown/)
 > -   [RMarkdown Reference Guide](https://www.rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf)
+> -   [R for Data Science - Quarto](https://r4ds.hadley.nz/quarto.html)
 
 ```{=html}
 <!--
@@ -461,6 +462,46 @@ kableExtra::kbl(penguins_small,
 Citations can be inserted into an RMarkdown document. [This document from RStudio](https://rstudio.github.io/visual-markdown-editing/citations.html) goes through how to do it using ether Markdown or with the visual editor which can be linked with a citation manager such as Zotero, or by searching DOIs and more.
 
 \
+
+## Quarto
+
+> Pre-requisite: In order to use Quarto you will need to install the Quarto program which RStudio can then use to compile the Quarto. See https://quarto.org/docs/get-started/
+
+RMarkdown is an extremely useful format for creating reproducible reports, _however_, there are some key features that are missing (without additional packages and tweaking) which you will find you need if you want to use it for making documents like theses or manuscripts, the easiest to point to is cross-referencing to figures and tables in your text (the packages _bookdown_ and _thesisdown_ do add this functionality to RMarkdown).
+
+Quarto is the next iteration of RMarkdown, and has taken much of the functionality that the extra packages created to expand on RMarkdown had, and includes them right from the get-go. Not only that, but Quarto has been designed from the start to have multi-language support, so if you find yourself working in another language such as python, then this same document publishing system is still available to you.
+
+By and large, Quarto and RMarkdown are extremely similar - they both share the three main components:
+
+1. YAML header
+2. Markdown blocks
+3. Code chunks
+
+Where they differ is there are some slight syntax changes, largely in the YAML header and how options are given to code chunks.
+
+The first difference is that instead of being saved with a `.Rmd` file extension, a quarto document has the extension `.qmd`. And instead of the `Knit` button, it's called `Render`.
+
+### YAML Header
+
+The YAML header is the first place where there is a main difference. Instead of `output: html_document` we use `format: html`. e.g.
+
+~~~~
+---
+title: "My Quarto Document"
+format: html
+author: "Murray Cadzow"
+---
+~~~~
+
+### Code chunks
+
+The code part of the code chunks are exactly the same with quarto as in RMarkdown. Where they differ is how the chunk options are provided. Instead of them being placed within the curly braces, they can be listed inside the block at the top following a `#|`, using the `key: value` syntax like in the YAML header, instead of using `=`.
+
+
+```{r echo = FALSE, comment = ""}
+cat(htmltools::includeText("scripts/code_chunk_quarto.Rmd"))
+```
+
 
 ## Conclusion
 
