@@ -142,19 +142,5 @@ jamaica_1900_2000 <- gapminder_yearly_pop_long %>%
 
 ---
 
-4.
 
-```{r zn06-soln4, class.source = "fold-hide", eval = FALSE}
-# a)
-nz_1900_2000 %>% ggplot(aes(x = year, y = population_millions)) + geom_line() + labs(title = "NZ population 1900-2000")
-
-jamaica_1900_2000 %>% ggplot(aes(x = year, y = population_millions)) + geom_line() + labs(title = "Jamaica population 1900-2000")
-
-# b)
-rbind(nz_1900_2000, jamaica_1900_2000) %>% 
-  ggplot(aes(x = year, y = population_millions)) + 
-  geom_line() + 
-  facet_grid(rows = "country") + 
-  labs(title = " NZ vs Jamaica population 1900-2000")
-```
 
