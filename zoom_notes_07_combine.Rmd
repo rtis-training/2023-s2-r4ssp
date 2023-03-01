@@ -71,26 +71,28 @@ Adding additional columns onto data sets by using a common identifier (key) betw
 
 
 
-2. Using `flights` and `planes` from the `nycflights13` package, how many flights were flown in April 2013 by aircraft with each engine type? e.g. Turbo-fan, Turbo-jet, etc.
+1. Using `flights` and `planes` from the `nycflights13` package, how many flights were flown in April 2013 by aircraft with each engine type? e.g. Turbo-fan, Turbo-jet, etc.
 
 \
 
-3. Using the gapminder_yearly_population_total.csv data create "long" a format dataset for 
-    a. New Zealand's population from 1900 to 2000
-    b. a country of your choice for the same time range
+2. How many `flights` for the carrier `AA` with a destination (`dest`) of `IAH`, and carrier `DL` with a destination of `ATL` were late? and how many early?
+    a. First create a dataframe with two columns: `carrier` and `dest`, and fill in the specific data.
+    b. Use inner-join with your dataframe and `flights`, specifying `by = c("carrier", "dest")` to result in a dataframe with rows matching the conditions, assign into `flights_of_interest`.
+    c. Now take `flights_of_interest` and create two new datasets, one for the late arrivals (`late`) and the second for early arrivals (`early`). How many rows in each? 
 
 \
 
-4. Using the datasets you created in 3, create:
-    a. a line plot for each
-    b. combine the datasets and create a facet plot using country with 1 column and 2 rows (hint look up `facet_grid`)
+3. Using the datasets (`early` and `late`) you created in 2, create:
+    a. a box plot for each of `early` and `late` using `arr_delay` by `carrier`
+    b. add a extra column `status` onto each dataset with the values "early" for `early` and "late" for `late`
+    c. combine the datasets and create a box plot of status versus air_time, but also make it a facet plot using `month`, with 6 columns and 2 rows (hint look up `facet_wrap`). Are there any trends you notice?
     
 
 ### Example solutions
     
-2.
+1.
 
-```{r zn07-soln2, class.source = "fold-hide"}
+```{r zn07-soln1, class.source = "fold-hide"}
 library(tidyverse)
 library(nycflights13)
 
@@ -101,4 +103,37 @@ flights %>%
   summarise(n_flights = n())
 ```
 
----    
+--- 
+
+2. 
+
+```{r zn07-soln2, class.source = "fold-hide"}
+carrier_dest <- data.frame(carrier = c("AA", "DL"), dest = c("IAH", "ATL"))
+
+flights_of_interest <- inner_join(flights, carrier_dest, by = c("carrier","dest"))
+
+late <- flights_of_interest %>% filter(arr_delay > 0)
+early <- flights_of_interest %>% filter(arr_delay < 0)
+
+nrow(late)
+nrow(early)
+```
+
+---
+
+
+3.
+
+```{r zn07-soln3, class.source = "fold-hide"}
+ggplot(early, aes(x = carrier, y = arr_delay)) + geom_boxplot()
+ggplot(late, aes(x = carrier, y = arr_delay)) + geom_boxplot()
+
+early <- early %>% mutate(status = "early")
+late <- late %>% mutate(status = "late")
+
+rbind(early,late) %>% 
+  ggplot(aes(x = status, y = air_time)) + 
+  geom_boxplot() +
+  facet_wrap(vars(month), nrow = 2, ncol = 6,)
+
+```

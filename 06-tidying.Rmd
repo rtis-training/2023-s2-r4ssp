@@ -1,5 +1,5 @@
 ---
-title: "Transforming"
+title: "Tidying"
 date: "Semester 1, 2023"
 output:
   html_document:
@@ -24,7 +24,7 @@ knitr::opts_chunk$set(
 
 > #### Associated Material
 >
-> Zoom notes: [Zoom Notes 06 - Transforming D](docs/zoom_notes_06_transform.html)
+> Zoom notes: [Zoom Notes 06 - Tidying Data](zoom_notes_06_tidying.html)
 >
 > Readings:
 >

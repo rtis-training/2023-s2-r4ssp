@@ -21,8 +21,8 @@ navbar:
           href: 04-communicate.html
         - text: "Part 4: Summarising"
           href: 05-summarise.html
-        - text: "Part 5: Transforming"
-          href: 06-transform.html
+        - text: "Part 5: Tidying"
+          href: 06-tidying.html
         - text: "Part 6: Combining"
           href: 07-combine.html
         
@@ -49,8 +49,8 @@ navbar:
           href: zoom_notes_04_communicate.html
         - text: "05 - Summarising data"
           href: zoom_notes_05_summarise.html
-        - text: "06 - Transforming data"
-          href: zoom_notes_06_transform.html
+        - text: "06 - Tidying data"
+          href: zoom_notes_06_tidying.html
         - text: "07 - Combining data"
           href: zoom_notes_07_combine.html
         - text: "08 - Functions and Choices"

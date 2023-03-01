@@ -1,5 +1,5 @@
 ---
-title: "Zoom Notes 06: Transforming Data"
+title: "Zoom Notes 06: Tidying Data"
 date: "Semester 1, 2023"
 output:
   html_document:
@@ -12,7 +12,7 @@ output:
 
 > #### Associated Material
 >
-> Module: [Module 06 - Transforming data](06-transform.html)
+> Module: [Module 06 - Tidying data](06-tidying.html)
 >
 > Readings
 >
@@ -80,6 +80,10 @@ Tidy data principles:
     
 \
 
+2. Using the gapminder_yearly_population_total.csv data create "long" a format dataset for 
+    a. New Zealand's population from 1900 to 2000
+    b. a country of your choice for the same time range
+
 ### Example solutions
 
 1.
@@ -117,9 +121,9 @@ rodents_clean
 
 
 
-3.
+2.
 
-```{r zn06-soln3, class.source = "fold-hide", eval = FALSE}
+```{r zn06-soln2, class.source = "fold-hide", eval = FALSE}
 library(tidyverse)
 gapminder_yearly_pop <- read_csv("data/gapminder_yearly_population_millions_total.csv") %>% mutate(across(-country, ))
 
