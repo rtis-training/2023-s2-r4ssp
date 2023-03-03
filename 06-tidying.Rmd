@@ -31,13 +31,12 @@ knitr::opts_chunk$set(
 > - [R for Data Science Chapter 10](https://r4ds.had.co.nz/tibbles.html)
 > - [R for Data Science Chapter 11](https://r4ds.had.co.nz/data-import.html)
 > - [R for Data Science Chapter 12](https://r4ds.had.co.nz/tidy-data.html)
-> - [R for Data Science Chapter 13](https://r4ds.had.co.nz/relational-data.html)
 > - [R for Data Science Chapter 14](https://r4ds.had.co.nz/strings.html)
 
 \
 
 
-The pre-processing of data as a proportion of a data analysis workflow can be quite substantial, but this step is extremely vital - poor data in = poor results out. The main purpose of this module is transforming our data into something worthy of analysis and will cover data cleaning, tidying and 'reshaping'. This will be followed by how to increase the utility of our data by combining it with other datasets.
+The pre-processing of data as a proportion of a data analysis workflow can be quite substantial, but this step is extremely vital - poor data in = poor results out. The main purpose of this module is transforming our data into something worthy of analysis and will cover data cleaning, tidying and 'reshaping'. This will be followed by how to increase the utility of our data by combining it with other datasets in [Module 7 - Combining Data](07-combining.html).
 
 Let us first delve into the data cleaning and tidying.
 
@@ -278,4 +277,4 @@ flights_long %>% pivot_wider(origin, names_from = "dest", values_from = "distanc
 ```
 
 
-
+## Conclusion

@@ -12,7 +12,7 @@ output:
 
 ```{r setup, include=FALSE}
 library(knitr)
-
+library(tidyverse)
 knitr::opts_chunk$set(
   comment = "#>",
   fig.path = "figures/07/", # use only for single Rmd files
@@ -29,24 +29,10 @@ knitr::opts_chunk$set(
 >
 > - [R for Data Science Chapter 13](https://r4ds.had.co.nz/relational-data.html)
 
-All are loaded as part of loading the `tidyverse` package. You can see under the "Attaching packages" heading exactly which packages are being loaded.
-
-```{r}
-library(tidyverse)
-```
-
-```{r}
-# install.packages(nycflights13)
-library(nycflights13)
-
-glimpse(flights)
-```
-
-
 
 ## Combining Data
 
-Often we'll find ourselves in the situation where we have some data but we want to increase its usefulness by adding on additional data. This section will cover the various ways we can take two dataframes and combine them together into a single dataframe.
+Often we'll find ourselves in the situation where we have some data but we want to increase its usefulness by adding on additional data. This module will cover the various ways we can take two dataframes and combine them together into a single dataframe. The first approach we'll look at is the situation where you want to either add more rows or more columns to an existing dataset. The second situation we'll look at is where there is a defined relationship between multiple datasets and we want to join them together.
 
 ### Binds
 
@@ -123,11 +109,15 @@ It's for this reason that when we're wanting to add columns that we are better o
   
 ### Joins
 
-Joins are used when we have relationships between our data.
+Joins are used when we have relationships between our data and might have been stored in a relational database. The functions we'll be using come out of the `dplyr` package which is loaded and part of `tidyverse` and mirror their namesakes from a language commonly used with databases - SQL (Structured Query Language).
 
 As part of the `nycflights13` package we also have some other dataframes available, `airports`, `planes`, and `airlines`. We can use these datasets to add on extra information to our tables: 
 
 ```{r}
+# install.packages("nycflights13")
+library(nycflights13)
+library(tidyverse)
+
 glimpse(airports)
 
 glimpse(planes)
@@ -136,6 +126,10 @@ glimpse(airlines)
 
 glimpse(weather)
 ```
+
+Here is a diagram from [R for Data Science - Relational Data](https://r4ds.had.co.nz/relational-data.html) chapter showing the relationships between the `nycflights13` dataframes.
+
+![R for Data Science - nycflights13 data relationships](https://d33wubrfki0l68.cloudfront.net/245292d1ea724f6c3fd8a92063dcd7bfb9758d02/5751b/diagrams/relational-nycflights.png)
 
 Ultimately we want to use the relationships between the data to find out the name of the airline that flew the total furthest distance using single engine planes.
 
@@ -182,10 +176,6 @@ full_join(df_a, df_b, by = "names")
 #### Joining nycflights
 
 Now that we have an idea about how joins work, lets set about answering our question of which airline flew the total furthest distance using single engine planes.
-
-Here is a diagram from [R for Data Science - Relational Data](https://r4ds.had.co.nz/relational-data.html) chapter showing the relationships between the `nycflights13` dataframes.
-
-![R for Data Science - nycflights13 data relationships](https://d33wubrfki0l68.cloudfront.net/245292d1ea724f6c3fd8a92063dcd7bfb9758d02/5751b/diagrams/relational-nycflights.png)
 
 \
 
