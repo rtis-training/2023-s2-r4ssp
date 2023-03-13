@@ -118,7 +118,7 @@ Type the following line into your script file. Execute the command as you did in
 gapminder_data <- read.csv("data/gapminder_data_2007.csv")
 ```
 
-> N.B. if your R version is before v4.0 this command will read in categorical data as _factors_. R will now (v4.0+) automatically treat character data as categorical for the purposes of visualisation. Many statistical methods, however, still require conversion to factors. See the appendix below for more information on creating factors.
+> N.B. `stringsAsFactors=`: A common argument for `read.csv` was `stringsAsFactors=`, which could be `TRUE` or `FALSE`. The default for R (v4.0+) is `stringsAsFactors=FALSE` as R will automatically treat character data as categorical for the purposes of visualisation. Many statistical methods or older versions of R, however, still require conversion to factors. See the appendix below for more information on creating factors.
 
 When imported into R, the data from the csv file are translated into an R object called a **data frame**. Data frames are simply tables, organised into rows and columns. The columns have names taken from the first row of the csv file, and each subsequent row of the csv file becomes a row in the data frame. 
 
