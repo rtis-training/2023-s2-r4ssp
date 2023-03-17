@@ -105,7 +105,7 @@ include_graphics("images/02-gapminder_data_2007.png")
 
 We will import this file into R for some preliminary data analysis.
 
-To import a csv file into R we can use the function `read.csv`. Like the R functions we used in Module 1, `read.csv` accepts an argument between its round brackets. The argument is the name of the input file. Because the name of the file is a string, we surround it with double quotes. For this data set we want the columns that contain words (country and continent) to be imported as categorical variables. To achieve this, we will set the `stringsAsFactors` argument to TRUE when we call `read.csv`. The complete command is shown below.
+To import a csv file into R we can use the function `read.csv`. Like the R functions we used in Module 1, `read.csv` accepts an argument between its round brackets. The argument is the name of the input file. Because the name of the file is a string, we surround it with double quotes. The complete command is shown below.
 
 \
 
@@ -115,8 +115,10 @@ Type the following line into your script file. Execute the command as you did in
 
 ```{r read.csv}
 # Save an imported data frame into a named variable
-gapminder_data <- read.csv("data/gapminder_data_2007.csv", stringsAsFactors = TRUE)
+gapminder_data <- read.csv("data/gapminder_data_2007.csv")
 ```
+
+> N.B. `stringsAsFactors=`: A common argument for `read.csv` was `stringsAsFactors=`, which could be `TRUE` or `FALSE`. The default for R (v4.0+) is `stringsAsFactors=FALSE` as R will automatically treat character data as categorical for the purposes of visualisation. Many statistical methods or older versions of R, however, still require conversion to factors. See the appendix below for more information on creating factors.
 
 When imported into R, the data from the csv file are translated into an R object called a **data frame**. Data frames are simply tables, organised into rows and columns. The columns have names taken from the first row of the csv file, and each subsequent row of the csv file becomes a row in the data frame. 
 
@@ -130,7 +132,6 @@ Use the following commands to inspect your imported data:
 # Write the first few lines of a data frame to the console with function head
 head(gapminder_data)
 
-
 # Write the last few lines of a data frame to the console with function tail
 tail(gapminder_data)
 ```
@@ -141,7 +142,7 @@ tail(gapminder_data)
 str(gapminder_data)
 ```
 
-Each column in a data frame is either a Factor (i.e. a categorical variable) or is associated with a data type **chr**, **int**, or **num**. These indicate what kind of data R identified in the input file. Columns that are **chr** contain strings (characters), columns that are **int** contain integers (whole numbers) and columns that are num contain numbers with a decimal part. Always check that these properties of the imported columns are correct for your data set. If they are not, you must locate and correct any errors in your csv file.
+Each column in a data frame is associated with a data type **chr**, **int**, or **num**. These indicate what kind of data R identified in the input file. Columns that are **chr** contain strings (characters), columns that are **int** contain integers (whole numbers) and columns that are num contain numbers with a decimal part. Always check that these properties of the imported columns are correct for your data set. If they are not, you must locate and correct any errors in your csv file.
 
 You can see the same information about the structure of a data frame in the Environment panel of RStudio (upper-right of screen; Environment tab). When you successfully import a csv file into a variable with `read.csv`, the resulting data frame appears in the Environment pane. Click the blue arrow beside the object to display the details of its structure.
 
@@ -164,10 +165,6 @@ head(gapminder_data$year)
 
 # Store column continent in a new variable
 continents <- gapminder_data$continent
-
-# Pass the variable to function levels which returns the values
-# of a categorical variable
-levels(continents)
 ```
 
 \
@@ -416,5 +413,17 @@ library(tidyverse)
 ```
 
 
+## Appendix - Factors
 
+If you are dealing with categorical data, R calls these _Factors_. Prior to R version 4.0 the default behaviour of `read.csv` was to have the parameter `stringsAsFactors=TRUE` as the default which would read all character data in automatically as a _factor_. From version 4.0 onwards the default is `stringsAsFactors=FALSE`.
 
+To convert a column to a factor you can use `as.factor`. You can use `levels` on a _factor_ to see the categories. It is best to wait until after any data tidying is performed before converting to factors. For instance if we repeated the code for pulling out the continents column from the gapminder dataset:
+
+```{r}
+# Store column continent in a new variable after converting to a factor
+continents_factor <- as.factor(gapminder_data$continent)
+
+# Pass the variable to function levels which returns the values
+# of a categorical variable
+levels(continents_factor)
+```
