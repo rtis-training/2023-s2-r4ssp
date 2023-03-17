@@ -35,11 +35,13 @@ knitr::opts_chunk$set(
 
 ## Introduction
 
-If you are working through the suggested materials in order, you have just completed [**Chapter 5 - Data Transformation (https://r4ds.had.co.nz/transform.html)**](https://r4ds.had.co.nz/transform.html) from the online text *R for Data Science*. This material demonstrated how to use the library **dplyr**, one of the libraries in the **tidyverse** family. You will have learned how to use the five core transformation functions -- `filter`, `arrange`, `select`, `mutate` and `summarise` (with its helper function `group_by`). These functions allow you to modify and perform summaries on data frames, and to pull out specific portions of data frames for detailed analysis. Library `dplyr` is widely used, and you will see many examples of it in R code you find in the wild.
+When working with a complex data set, researchers rarely summarise or analyse all the values as a single unit. More commonly, we select out specific subsets of interest, and analyse those. We saw this pattern in the Visualisation Module, where we wanted to isolate the data for a single country (Denmark) from a data frame that had records for 142 different countries.
 
-The functions in `dplyr` (and in all the other libraries in the tidyverse) are technically **wrappers** around base R code. That is, they themselves are written using base R commands. Thus it is possible to perform all the same transformations *without* `dplyr`, by using only base R. Many programmers and researchers (including some of your lecturers) prefer to use base R for these operations, and you will also see it often in R code in the wild. Therefore, in this supplementary handout, we will illustrate the equivalent base R syntax for the `dplyr` functions you just learned.
+R has a rich and powerful syntax for selecting subsets from a large data frame, based on specific conditions (for example, select only those records where the value in column `country` is "Denmark"). Because this kind of operation is so essential, researchers have also developed additional R packages that supplement and extend the base R facilities. Our favourite among these is a library called **dplyr**.  Library `dplyr` is widely used, and you will see many examples of it in R code you find in the wild.
 
-People make the choice between `dplyr` and base R for several reasons. Many people find `dplyr` syntax easier to use, because it is more **uniform**. That is, all the big five `dplyr` transformation functions use approximately the same syntax. In base R, there is more variation. Scientists who work with very large data sets are often concerned about how fast their code can be executed. In some cases, `dplyr` executes more slowly than base R (because of the extra code required for the wrapping), leading these researchers to prefer the base R approach. Because `dplyr` is a relatively new addition to R, some people prefer base R because they learned it first, and are happy to continue using it.
+The functions in `dplyr` (and in all the other R libraries you install) are technically **wrappers** around base R code. That is, they are themselves written using base R commands. Thus it is possible to perform all the same transformations by using `dplyr`, or by using only base R. Many programmers and researchers (including some of your lecturers) prefer to use base R for these operations. Therefore, in this module, we will look at both approaches.
+
+People make the choice between `dplyr` and base R for several reasons. Many people find `dplyr` syntax easier to use, because it is more **uniform**. That is, all the `dplyr` transformation functions use approximately the same syntax. In base R, there is more variation. Scientists who work with very large data sets are often concerned about how fast their code can be executed. In some cases, `dplyr` executes more slowly than base R (because of the extra code required for the wrapping), leading these researchers to prefer the base R approach. Because `dplyr` is a relatively new addition to R, some people prefer base R because they learned it first, and are happy to continue using it.
 
 Unless you are required to use a particular approach (check with your lecturer if you are unsure), you can choose whichever set of commands you like using. You can even mix and match them -- they give the same results, and R doesn't care. However, it is very important that you can *understand* both styles. One of the great benefits of the R ecosystem is the wide sharing of code, and you can't fully participate in this unless you are comfortable with all the major dialects.
 
@@ -47,57 +49,108 @@ Unless you are required to use a particular approach (check with your lecturer i
 
 ## Subsetting
 
-Often when we're dealing with data we want to be able to pull out and operate on subsets of it. There are many different methods that can be used to subset data, and we'll cover a couple of different methods. One of the most common methods is to use the "extract" function `[]`. 
+The most direct way to select out a subset of a vector or data frame is using the **extraction operator** [], which is part of base R. With this operator we specify which elements we want in one of three ways:
 
-There are two main ways approaches to sub-setting: based on an identifier such as position or name, or based on a condition. And for rectangular two-dimensional objects like data frames we also think about if we're operating on rows or columns.
+- By position (e.g. the 8th and 9th elements in a vector)
+- By name (e.g. all of column Country)
+- By some condition (e.g. all values less than 1)
 
-### Subsetting by position (index)
+The square bracket syntax works on both one and two dimensional data (i.e. vectors or data frames) and we will look at both cases, starting with vectors.
 
-Vectors are made up of items, and each item has a positional index (starting from 1 - other languages differ). We can use this index as an argument to `[]` to pull out and return a new vector of the specified item. A negative of the index will return a copy of the original but with the item at the given position removed.
+### Subsetting by position
 
+Each item in a vector has a position, starting from 1.^[NB: Most programming languages start from 0. If you are an experienced Java, C, etc., programmer, be alert for this.] Colloquially, this is called its **index**. We pass the index as an argument to `[]` to select the specific item. 
 ```{r}
-# a numeric vector
+# A numeric vector
 some_numbers <- c(2, 45, -9, 6)
 
-# pull out the second item
+# Pull out the second item
 some_numbers[2]
-
-# remove the first item
-some_numbers[-1]
 ```
 
-If we want multiple items we supply a vector of numbers for the indexes we want. The order of the supplied indexes is the order in which the resultant vector will be created - it can also be used to duplicate items.
+To select multiple items, pass a vector of indices into []. The result is itself a vector of the items at the specified positions. 
 
 
 ```{r}
-some_letters <- c("l", "o", "h", "e")
+# A vector of strings
+some_words <- c("Ant", "Bear", "Cat", "Dino")
 
-# pull out items 1 and 3
-some_letters[c(1,3)]
-
-# reorder and duplicate
-some_letters[c(3,4,1,1,2)]
+# Pull out items 1 and 3
+some_words[c(1,3)]
 ```
-
-Indices are positional, but we could also supply a boolean vector with the `TRUE` in the positions for items we would like to keep and `FALSE` for items we would like to drop. The boolean vector can either match in length or be a factor of the vector length (in which case it gets 'recycled' until it matches the length)
+Items do not have to be selected in the same order in which they appear in the original vector.
 
 ```{r}
-some_numbers
+# Return items in different order
+some_words[c(4, 2, 1)]
+```
+Items can be duplicated in the result by using an index multiple times inside [].
 
-# matching length 
-some_numbers[c(TRUE, TRUE, FALSE, FALSE)]
 
-# take every second item
-some_numbers[c(FALSE, TRUE)]
+```{r}
+# Duplicate items
+some_words[c(3,1,4, 4, 4,2)]
 ```
 
-\
+Although vector indices start from 1, [] will accept negative values. A negative values **excludes** the item at that position.
+
+``` {r}
+# Remove the first item
+some_words[-1]
+```
+
+### Exercise:
+
+The expression shown above does not remove element Ant from vector `some_words`. 
+
+1. Confirm this by executing an appropriate R command.
+2. Modify the expression so that Ant is deleted from vector `some_words`
+3. Consider the possible downside of the command you just wrote.
 
 ### Subsetting by condition
 
-Often though, we don't want to have to identify and keep track of the indices for items in our data, but instead we want to subset our data to items that match certain conditions.
+Commonly, we wish to select elements from a vector (or as we will see later, rows from a data frame) based on some condition. For example, we might want to select all items greater than some minimum value, or all items not equal to some value we wish to exclude. The [] operator offers a syntactic option that we use in these cases. Rather than passing in specific item indices, we can pass in a vector of booleans (i.e. TRUE or FALSE) having the same length as the vector from which we are selecting. The operation returns all elements for which the corresponding value of the boolean vector is TRUE. 
 
-Similar to how we can operate on an entire vector through the arithmetic operators, there are also operators for performing comparisons.
+Here is a toy example to illustrate the pattern:
+
+```{r}
+# A vector of string
+some_words <- c("Antelope", "Bear", "Cat", "Dino", "Eagle", "Ferret")
+
+# Passing a boolean vector to []
+some_words[c(TRUE, FALSE, FALSE, FALSE, TRUE, TRUE)]
+```
+In practice, we don't really type out all the TRUE and FALSE values. We let R generate the boolean vector for us, by defining a condition. For example, imagine that I am interested specifically in words having more than 4 characters. I can test this condition on my vector of string as follows:
+
+``` {r}
+# Generating a booolean vector
+nchar(some_words) > 4
+```
+
+We have seen before that R is a **vectorised** language, so applying any operation or expression to a vector returns the result of applying the operation to each element in turn. The syntax in the preceding command is consistent with our earlier examples of vectorised operations -- it computes the result of evaluating "nchar > 4" for each element of `some_words`, bundles them all up into a vector, and returns it.
+
+Note that the boolean vector produced is exactly the same one passed to [] in the "Passing a boolean vector" code example earlier. Therefore, we can simply replace the manually typed out boolean vector with the conditional expression to achieve the same result:
+
+``` {r}
+# Using a conditional expression inside []
+some_words[nchar(some_words) > 4]
+
+```
+This syntactic structure, where you apply the [] operator to `some_words` and also use `some_words` in the argument you pass to [] is very idiomatic R. Many programming languages do not allow such things; if you have programmed a lot in more traditional languages, it will take you a while to get used to this. Just remember that R always evaluates the input argument first (in this case, generating a boolean vector) and then passes the result of that evaluation to []. Many people find it helps to think through those two steps separately, when trying to figure out what a command like this produces.
+
+
+### Exercise:
+
+1. Write an R command that selects from `some_words` all the four-character words, but no others.
+2. Check to see if executing this command has changed the value of `some_words`. Explain why or why not.
+3. Modify the command so that it **does** change `some_words`, with that vector now holding only words with exactly four characters.
+4. Explain what the command you just wrote illustrates about the order in which assignment statements are evaluated.
+
+
+\
+
+### Conditional Operators in R
+
 
 | Operation                | R Symbol |
 |:--------------------------|:----------:|
@@ -107,90 +160,68 @@ Similar to how we can operate on an entire vector through the arithmetic operato
 | Greater than or equal to | \>=      |
 | Not equal to             | !=       |
 
-When we apply comparisons to a vector we get in return a vector with boolean values (`TRUE`/`FALSE`) corresponding an item-wise comparison.
+
+### Conditional Selection with `%in%`
+
+We have used `==` to test if one value is exactly equal to another value. Often, we wish to test if a value is equal to one of a set of values (i.e. is value A equal to either value B or value C or value D). In R, this specific complex conditional logic can be performed with the `%in%` operator:
 
 ```{r}
-some_numbers < 15
+# %in% with a scalar
+
+# Given a vector...
+clean_vehicles <- c("bicycle", "scooter", "skateboard")
+
+# Test if a scalar is contained in the vector
+"scooter" %in% clean_vehicles
+
+"jet ski" %in% clean_vehicles
+```
+If we use `%in` with a vector as the left operand, R performs in a vectorised way, as expected, testing each element in turn:
+
+```{r}
+# Using %in% with a vector
+my_vehicles <- c("skateboard", "tractor", "car", "scooter")
+
+my_vehicles %in% clean_vehicles
+
 ```
 
-And these boolean vectors are used for sub-setting. So we can in fact supply our conditional statement as the argument to `[]` so keep all the items that meet our condition
+And the resulting boolean vector can, of course, be passed to []:
 
-```{r}
-# keep numbers less than 15
-some_numbers[some_numbers < 15]
+``` {r}
+# Select out my clean vehicles
+my_vehicles[my_vehicles %in% clean_vehicles]
+
 ```
+\
 
-One final comparison function is `%in%`, which lets us compare two vectors for matching items. `%in%` will return a boolean vector corresponding to the items on the left hand side that were also found "in" the right hand side. This operator is extremely helpful to use instead of combining multiple 'or' (`|`) conditions.
+## Missing data
+
+One extremely common subsetting task is dealing with missing data. Missing data arises frequently during real research. For example, an ecologist studying penguin populations may be measuring the weight of each penguin in a local colony. If a particular penguin runs away before it can be weighed, that penguin's weight is missing. It would be a mistake to code the penguin's weight as 0 -- this would corrupt any numerical analysis of weight. Therefore R provides a special data entity for 'missing' or 'undefined'. Missing data in R is represented by `NA`. 
+
+The conditional operators we used above cannot be applied to NA. Any operation for which one or more operands is NA will return NA (even `NA == NA` will return `NA`). To test for NA, therefore, R provides function `is.na` which returns `TRUE` its input is `NA` and `FALSE` in all other instances.
 
 ```{r}
-my_pets <- c("dog", "cat", "turtle")
+# Penguin #3 got away....
+penguin_weights_g <- c(3475, 2975, NA, 3420)
 
-# using 'or'
-my_pets[ my_pets == "frog" | my_pets == "dog" | my_pets == "rabbit" | my_pets == "horse"]
+# Use is.na to generate a boolean vector
+is.na(penguin_weights_g)
 
+# Use the boolean vector to select everyone 
+# who is not NA. Note the use of !
+penguin_weights_g[!is.na(penguin_weights_g)]
 
-# use of %in%
-my_pets %in% c("frog", "dog", "rabbit", "horse")
-
-my_pets[my_pets %in% c("frog", "dog", "rabbit")]
 ```
 
 \
 
-#### Missing data
+## Subsetting in two dimensions
 
-One extremely common subsetting operation is dealing with missing data. Missing data in R is represented by `NA`. `NA` in R is a special data type and the set of comparator operations that we have covered will always return `NA` (even `NA == NA` will return `NA`) so instead there is a special function that is used to tell us when we have missing data so we can handle it appropriately and that function is `is.na` which will return `TRUE` is something is `NA` and `FALSE` in all other instances.
-
-```{r}
-NA < 6
-
-NA == "a"
-
-NA != TRUE
-
-NA == NA
-
-is.na(NA)
-```
-
-
-Some functions can deal with missing data as part of the function by setting the parameter `na.rm = TRUE`, but not all functions have this.
+The [] operator is also used for selecting subsets from data frames. In this usage, one supplies two arguments to [], separated by commas. The first argument specifies which row(s) to select and the second specifies which column(s). The general syntax is: *name_of_data_frame[row_information, column_information]*. There are, however, many complex options for the format of the row and column information. We will cover the most useful here.
 
 ```{r}
-missing_example <- c(NA, 1, 4, 6, NA, 8)
-
-mean(missing_example)
-
-mean(missing_example, na.rm = TRUE)
-```
-
-To remove missing data so it can be used with functions with an `na.rm` parameter we can use `is.na` to identify the `NA` values and then conditionally subset:
-
-```{r}
-missing_example
-
-is.na(missing_example)
-
-missing_example[!is.na(missing_example)]
-```
-
-Remember `is.na` will be `TRUE` when there is `NA`, so we can use the `!` (not) operator to invert the logic.
-
-\
-
-\
-
-## Subsetting in 2-dimensions
-
-We can take the same principles we covered using `[]` on vectors and apply them on rectangular 2-dimensional structures like the data.frame. Adding a second dimension means we now need to supply 2 arguments to `[]`, the first argument is for rows, and the second is for columns.
-
-The general syntax is:
-
-*name_of_data_frame[row_information, column_information]*
-
-There are a variety of ways to express row and column information. To see how they work, let's first make a very simple data frame by hand, and then perform some sub-setting operations on it. Enter the following code into RStudio to create **geography_df**.
-
-```{r manual data 1}
+# Create a data frame to practice two-dimensional selection
 countries <- c("Austria", "Brazil", "Canada", "Denmark")
 capitals <- c("Vienna", "Brasilia", "Ottawa", "Copenhagen")
 population_in_millions <- c(9, 211, 38, 6)
@@ -200,21 +231,21 @@ geography_df <- data.frame(Country = countries,
                            PopulationMillions = population_in_millions)
 
 geography_df
+
 ```
 
-In the simplest form of subsetting, we want just one single value from a data frame, so we provide the row number and column number of the cell of interest. For example, imagine we want the population of Vienna. We know that Vienna is in row 1 and the population is in column 3. To select that cell we provide 1 for the row information and 3 for the column information in the square brackets:
+
+In the simplest case, we wish to select a single value from a data frame, so we provide the row index and column index of the cell of interest. For example, imagine we want the population of Vienna. We know that Vienna is in row 1 and the population is in column 3. To select that cell we provide 1 for the row information and 3 for the column information in the square brackets:
 
 ```{r single selection}
 geography_df[1,3]
 ```
 
-Don't worry about how you would know the specific row and column of the cell you are interested in. This particular selection operation is typically used in situations where your code is computing those values based on complex criteria. This example is merely illustrative. [^1]
-
-[^1]: If you have programmed before in Java or one of the C-family of languages, you may expect the first row to be **row 0**, not **row 1**, and the first column to be **column 0**, not **column 1**. Just let go of that. In R, row and column numbering starts at 1. Different languages, different rules.
+Don't worry about how you would know the specific row and column of the cell you are interested in. This particular selection operation is typically used in situations where your code is computing those values based on complex criteria. This example is merely illustrative.
 
 There are two very useful extensions to this pattern:
 
-1.  Either the row or column index (or both) may specify a **range** using the : operator. For example, 1:3 or 6:12 (these are "1 to 3" and "6 to 12" respectively).
+1.  Either the row or column index (or both) may specify a **range** using the `:` operator. For example, `1:3` or `6:12` (these are "1 to 3" and "6 to 12" respectively).
 
 ```{r range}
 # For rows 2 to 4 (Brazil, Canada, Denmark), select the population (column 3)
@@ -228,7 +259,6 @@ geography_df[3, 2:3]
 2.  Either the row or column index **may be omitted**. That is, we can say `geography_df[3 , ]` or `geography_df[ , 2]`. The missing element is interpreted as **all**. Omit the row number and you want **all rows** in the supplied column(s). Omit the column number and you want **all columns** in the supplied row(s).
 
 ```{r omitted index}
-
 # For Denmark (row 4), select all the columns
 geography_df[4, ]
 
@@ -247,7 +277,12 @@ geography_df[1:3 , ]
 
 ```
 
-As an exercise, what do you think `geography_df[ , ]` (i.e. where both row and column information are omitted) will do? Try it. Were you right?
+### Exercise
+
+1. What do you think `geography_df[ , ]` (i.e. where both row and column information are omitted) will do? 
+2. Try it. Were you right?
+
+\
 
 Instead of using column numbers, you can provide column names as the column information (and row names as the row information if your data frame has named rows). Use the combine function `c()` to provide multiple column names, and be sure to surround each column name with quotes, because R considers them to be strings in this situation.
 
@@ -257,69 +292,113 @@ geography_df[2:4, "Capital"]
 geography_df[3:4, c("Country", "Capital")]
 ```
 
+\
 
+## Function `subset`
 
-Another method available in base R is the `subset` function. It takes the format
+An alternative for selecting rows and columns is function `subset`, with structure:
 
-subset(x = dataframe, subset = conditional_statement_to_apply_to_rows, select = columns_to_keep)
+`subset(x = dataframe, subset = conditional_statement_to_apply_to_rows, select = columns_to_keep)`
 
 
 ```{r}
-countries_over_30million <- subset(geography_df, subset = PopulationMillions > 30, select = c("Country", "PopulationMillions") )
+countries_over_30million <- subset(geography_df, 
+                                   subset = PopulationMillions > 30, 
+                                   select = c("Country", "PopulationMillions") )
 countries_over_30million
 ```
-Again, not supplying the `subset` argument or `select` argument will keep all rows (subset) or columns (select).
 
-
-Sub-setting isn't usually done performed in isolation. Usually there is a workflow that we're working through as part of our data analysis. We're now going to take look at some functions from the Tidyverse - specifically `dplyr` that are part of that data analysis workflow, and we'll also provide the equivalent base R approach.
+Omitting values for the `subset` argument or `select` argument will extract all rows or columns, respectively.
 
 \
 
-### Selecting columns
+## Selecting columns
 
-So far we've covered methods that will let us subset both rows and columns at the same time. 
+Data frames are commonly organised with a column for each data variable and a row for each instance. To analyse a particular data variable, we wish to select all rows in a column. This particular subsetting operation is so common that there are additional, efficient ways to perform it in R.
 
-If we're after a single column in a data frame this can be pulled out using the `$` using the format `dataframe$columnname`, which will return the column as a vector. For instance if we wanted to know all the countries in the `geography_df` data we can use
+To select a single column from a data frame, use the `$` operator, followed by the column name (double quotes are not used in this context).
 
 ```{r}
 geography_df$Country
 ```
 
-This `$` syntax can be useful if you want to perform an operation on only one column such as calculating a summary statistic like the mean or standard deviation. It can also be used to modify or create a new column on a data frame.
+This operation is commonly used when performing summary operations on entire columns:
 
 ```{r}
-# mean of a the PopulationMillions column
+# Mean of a the PopulationMillions column
 mean(geography_df$PopulationMillions)
-
-# new column PopulationThousands
-geography_df$PopulationThousands <- geography_df$PopulationMillions * 1000
-geography_df$PopulationThousands
 ```
 
 
-To see how selection with the `select` function from `dplyr` compares to selection with the extract operator `[ ]` in base R, lets load the **flights** data frame and repeat some of the exercises from *R for Data Science*.
+The `$` operator can also be used *to create new columns*. Simply give a name to the new column on the left hand of an assignment statement, and the contents of the new column on the right hand side. (NB: This type of operation is not allowed in more traditional languages, but is very common in R.)
 
-```{r load flights, warning=FALSE}
+```{r}
+# Create a new column en passant
+geography_df$PopulationThousands <- geography_df$PopulationMillions * 1000
 
-# Load the library that contains the flights data frame
-library(nycflights13)
+# Check that the column has been created
+str(geography_df)
 
+# Print the contents of the new column
+geography_df$PopulationThousands
+```
+
+\
+
+## Subsetting with `dplyr`
+
+We will now switch to a larger data set, and see how the types of selection operations described above are performed with the `dplyr` library. There are five main functions in `dplyr`: filter, select, mutate (not covered in this session), group_by, and summarise. We will see how they can be used to perform fundamental processing of selected portions of data sets.
+
+To use `dplyr`, you must first install it on your machine with `install.packages`. Alternatively, if you have installed package `tidyverse`, `dplyr` will have been installed as part of that operation. To load `dplyr` for use during an RStudio session, use the `library` command, as we have done previously.
+
+For this section, we will use data about forest fires in Portugal in 2022. Portugal has a high incidence of forest fire, and these data can reveal patterns about occurrence and severity.
+
+You can download the data file *forest_fires_portugal.csv* from this link:
+
+https://drive.google.com/drive/folders/1UBp-P4wFAaQL3egIQ7dGa2RQe6RQKqgy
+
+The file contains one row for each recorded forest fire in Portugal in 2022. Each record has a number of measures (columns) including region (x and y values on a grid), month, day, ground condition measures, meteorological measures, and the extent of the fire in heactares. Note that any fire that consumed less than one hectare has a value of 0 in this last column.
+
+In the code that follows, we will assume that you are working in a project, that the project folder has a sub-folder called **data** and that the .csv file has been placed in that folder.
+
+```{r load data, warning=FALSE, message = FALSE}
 # Load dplyr
 library(dplyr)
 
 
+# Import the csv file into a data frame
+fires_df <- fires_df <- read.csv("data/forest_fires_portugal.csv")
 
-# Select the year, month, and day columns from the flights data frame
+# Inspect the data
+str(fires_df)
 
-# With dplyr
-year_month_day_cols_dplyr <- select(flights, year, month, day)
-year_month_day_cols_dplyr
-
-# With base R
-year_month_day_cols_base <- flights[ , c("year", "month", "day")]
-year_month_day_cols_base
 ```
 
+### Selecting columns
+
+To extract individual columns, use function `select`, passing in the dataframe, and the names of the columns you want. There is no need to format the column names into a vector, or to use double quotes.
+
+```{r, results='hide'}
+# Select the FireAreaHa column, which shows area damaged by the fire in hectares
+select(fires_df, FireAreaHa)
+```
+
+```{r}
+# Select the month and fire area columns, and store them in a new vector
+month_area_df <- select(fires_df, Month, FireAreaHa)
+
+# Inspect
+month_area_df[350:355,] # You can combine base R [] with dplyr
+
+# For efficiency, you can define a vector of column names to use whenever
+# needed. Use double quotes as per usual
+selected_cols <- c("Humidity", "FireAreaHa")
+humidity_area_df <- select(fires_df, all_of(selected_cols))
+
+# Example analysis using two columns
+cor(humidity_area_df)
+
+```
 
 <!--
 - using helper functions
@@ -332,308 +411,244 @@ year_month_day_cols_base
 
 \
 
-### Filtering rows
+### Selecting rows
 
-The `dplyr` function `filter` is analogous to the base R function `subset`. The two functions have identical syntax. We can see how some of the `dplyr` filter operations from the previous section would be written using base R. If you wish, run this code in RStudio, and inspect the results of each statement.
-
-```{r filter and subset}
-
-# In all cases, these pairs of commands produce the same output
-# In each pair, the first version is dplyr and the second
-# is base R
-
-# All flights with arrival delay >= 120 minutes
-late_dplyr <- filter(flights, arr_delay > 120)
-late_base <- subset(flights, arr_delay > 120)
-
-# Flew to IAH or HOU
-houston_dplyr <- filter(flights, dest == "IAH" | dest == "HOU")
-houston_base <- subset(flights, dest == "IAH" | dest == "HOU")
-
-# Alternatively, using %in%, which requires less typing
-houston_dplyr <- filter(flights, dest %in% c("IAH", "HOU"))
-houston_base <- subset(flights, dest %in% c("IAH", "HOU"))
-
-# Select rows with missing values using is.na() 
-missing_dep_time_dplyr <- filter(flights, is.na(dep_time))
-missing_dep_time_base <- subset(flights, is.na(dep_time))
-```
-
-Base R does not have the helper function `between`, but the same result can be achieved in a number of ways:
-
-```{r between}
-# Between
-
-# These four commands all produce the same result
-
-# dplyr
-summer_dplyr <- filter(flights, between(month, 7, 9))
-
-# base R
-summer_base_01 <- subset(flights, month %in% c(7,8,9))
-summer_base_02 <- subset(flights, month %in% 7:9)
-summer_base_03 <- subset(flights, month >=7 & month <= 9)
-```
-
-When you have multiple options for performing a computation, the general goal is to strike a balance between **parsimony** (not too much typing) and **readability** (your code is easy *for other people* to understand). When working on group projects, or in a professional software development context, readability is considered the more critical of the two features.\
-
-\
-
-## Arranging (sorting)
-
-The `dplyr` function `arrange` is analogous to base R selection using [ ] combined with function `order`. We use `order` as the row information to [ ]. The arguments to `order` are a comma separated sequence of the columns on which we wish to sort. We identify the columns using the \$ operator, in the usual way.
-
-For example, the `dplyr` statement and the base R statement below both sort the entire flight data frame on the year, month, and day columns:
-
-```{r order}
-
-# Sort using arrange or order
-
-# dplyr
-year_month_day_dplyr <- arrange(flights, year, month, day)
-
-# base R – we omit the column index to get all columns in the result
-year_month_day_base <- flights[order(flights$year, flights$month, flights$day), ] 
-
-# Compare the results
-year_month_day_dplyr
-year_month_day_base
-
-```
-
-
-By default, `order` sorts in ascending order (i.e. from smallest to largest). To sort in descending order, place - (the negative sign; the hyphen) in front of an argument to `order`. We can again compare this operation in `dplyr` and base R:
-
-```{r descending}
-# Descending sort
-
-# dplyr
-desc_dep_delay_dplyr <- arrange(flights, desc(dep_delay))
-
-# base R
-desc_dep_delay_base <- flights[order(-flights$dep_delay),]
-
-# Check dplyr – the data frame is sorted in descending order of dep_delay
-desc_dep_delay_dplyr
-
-# Check base – the data frame is sorted in descending order of dep_delay
-desc_dep_delay_base
-
-```
-
-\
-
-## Creating new columns
-
-In `dplyr` we use function `mutate` to create new columns. In base R, we simply assign the new column directly to the data frame, using \$. Each new column must be created in a separate statement. In the code below, we will compare the two techniques. In both approaches we will begin by making a copy of data frame flights, before we start to modify it. This is common practice so that you always have a clean copy of your original data.
-
-```{r mutate, warning=FALSE}
-
-# dplyr
-
-# Make a copy
-flights_dplyr <- flights
-
-# Add new columns with mutate
-flights_dplyr <- mutate(flights_dplyr, gain=dep_delay - arr_delay, speed = distance / air_time * 60)
-
-
-# base R
-
-# Make a copy
-flights_base <- flights
-
-# Add the new columns
-attach(flights_base)
-flights_base$gain <- dep_delay - arr_delay
-flights_base$speed <- distance / air_time * 60
-
-# Compare using base R selection
-# Ask for columns gain and speed for rows 1 to 15
-# They are the same
-flights_dplyr[1:5, c("gain", "speed")]
-flights_base[1:5, c("gain", "speed")]
-```
-
-\
-
-## Grouping and Summarising
-
-With `dplyr` we take group summaries (e.g. getting the average arrival for all flights in each month) by using `group_by` to group the data frame (gather the rows together by month) and `summarise` to apply the summary function (take the average for each month). In base R both of these steps are handled by the single function `aggregate`. This function takes four arguments:
-
-| Arg name | Meaning                                          |
-|----------|--------------------------------------------------|
-| x        | The name of the data frame                       |
-| by       | A list of columns to group by                    |
-| FUN      | The name of the summary function to apply        |
-| na.rm    | Set to TRUE is you want to ignore missing values |
-
-The only new part is the syntax used to declare a list for argument **by**. We will first look at an example of how to take group means in both `dplyr` and base R, and then discuss the list in more detail.
-
-```{r group_means_01, warning=FALSE}
-# Compute the average arrival delay, collapsed across months
-
-# Using dplyr
-
-# Group by month
-by_month <- group_by(flights, month)
-
-# Take the means
-mean_delay_by_month_dplyr <- summarise(by_month, MeanDelay = mean(arr_delay, na.rm = TRUE))
-
-# Check the output
-mean_delay_by_month_dplyr
-
-
-
-# Using base R function aggregate
-mean_delay_by_month_base <- aggregate(x = flights$arr_delay, 
-                                      by = list(Month = flights$month),
-                                      FUN = mean,
-                                      na.rm = TRUE)
-
-
-# Check the output
-mean_delay_by_month_base
-```
-
-Use function `list` to create the value for argument `by` . This function is like the combine function for vectors, except it creates a collection of *named elements*. We often see the function in situations like this:
-
-```{r list}
-# A list is a collection of named elements
-pet_data <- list(PetName = "Snoopy", PetOwner = "Charlie Brown", PetBreed = "Beagle")
-pet_data
-```
-
-When using `aggregate` you create a list of columns that you want to group by. The names of the columns will be the column headers for the output table of summarised results. To group by multiple columns, add more elements to the list. For example, if we wanted the average delay by month *for each origin airport separately* we would say:
-
-```{r group_means_02, warning=FALSE}
-# Compute the average arrival delay, collapsed across months, separately for
-# each origin airport. There are 3 airports and 12 months, so we expect to 
-# get 36 means.
-
-# Using dplyr
-
-# Group by month and origin
-by_month_origin <- group_by(flights, month, origin)
-
-# Take the means
-mean_month_origin_dplyr <- summarise(by_month_origin, MeanDelay = mean(arr_delay, na.rm = TRUE))
-
-# Check the output
-mean_month_origin_dplyr
-
-
-
-# Using base R function aggregate
-mean_month_origin_base <- aggregate(x = flights$arr_delay, 
-                                      by = list(Month = flights$month, Origin = flights$origin),
-                                      FUN = mean,
-                                      na.rm = TRUE)
-
-
-# Check the output. Note that dplyr and base R sort the output in different orders
-mean_month_origin_base
-```
-
-\
-
-## Workflows and data pipelines
-
-Traditionally data analysis workflows in R have consisted of either many nested operations, or the use of assigning intermediate steps to variables. One of the key differences in approach between the Tidyverse and base R (until very recently with R v4.1+) is the idea of 'pipes' which allow us to 'chain' operations together, with the key benefit being readability of code. When reading code, it can be useful to read the pipe as the word "then".
-
-\
-
-### Pipes
-
-
-The pipe function from `magrittr` which is part of the Tidyverse, enables the creation of 'pipelines' or chaining together of functions as opposed to nesting. The pipe function (`%>%` shortcut <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>M</kbd> - on a Mac use <kbd>Cmd</kbd> instead of <kbd>Ctrl</kbd>) takes the output of the function and uses it as the first argument for the next function. When you read `%>%` in code you can think of it as the word "then".
-
-For instance, if we call the name of our data set by itself, it will put the results onto the screen, however if we 'pipe' it to another function it gets used as the input for that function instead. 
-```{r}
-flights
-
-
-flights %>% head()
-```
-
-This works for functions that expect the first argument to be the data. We can also be explicit about which argument we would like the input from the pipe to occupy. We can use `.` to represent this
+In computing, the process of selecting rows from a data table based on particular criteria is called **filtering**. With `dplyr` we use function `filter`, passing the name of the data frame and the filter condition. The result is a new data frame that contains all rows from the original for which the filter condition evaluated to TRUE.
 
 ```{r}
-flights %>% head(n = 10, x = .)
+# Extract all fires that occurred in October (i.e. where the Month column contains
+# 'oct')
+october_fires <- filter(fires_df, Month == 'oct')
+
+# Compute the mean drought level for all fires in october, using base R
+# column selection with $
+mean(october_fires$DroughtLevel)
+
 ```
+
+### Exercise
+
+1. How would you generate data frame october_fires using [] in base R?
+2. Referring to the Visualisation Module, how would you select the Denmark data using dplyr?
+
+
+### Filtering with complex conditionals
+
+Often we wish to filter on criteria that involve multiple comparisons. For example, if we wish to extract all the rows for fires during the winter season (December through February in Portugal) we want rows for which Month is 'dec' or 'jan' or 'feb'. Earlier we saw how to do this with`%in%`. More generally, we can combine conditional statements using the logical AND and OR operators, `|` and `&` respectively.
+
+```{r}
+# Select the winter fires
+winter_df <- filter(fires_df, Month == "dec" | Month == "jan" | Month == "feb")
+```
+
+
+### Exercise:
+
+The XRegion and YRegion fields are coordinates in a pre-defined 9 by 9 grid that covers all of Portugal. You want to find all fires that occurred on the east and west borders of the country -- that is, in XRegions 1, 2, 8, or 9. Filter for these records. Make your expression as succinct as you can. (You only need one `|`.)
+
+```{r}
+x_edge_fires <- filter(fires_df, XRegion <= 2 | XRegion >= 8)
+```
+
+
+
+### Exercise:
+
+Frequently, we want extract a subset of rows *and* a subset of columns from a large data set -- that is, we will want to perform both a select and a filter operation. Using an intermediate variable, write code to extract month, temperature, and fire area for only the summer months (June, July, and August). Note that later in today's session we will see an alternative "dplyr syntax" for this combined operation, but it good to master both approaches.
+
+```{r}
+# Exercise Solution (there are many possible solutions)
+
+# Filter to get the rows we want
+summer_fires_df <- filter(fires_df, Month %in% c('jun', 'jul','aug'))
+
+# Pass the result of the filtering operation to select
+summer_temperature_area_df <- select(summer_fires_df, Month, Temperature, FireAreaHa)
+```
+
+
+
 
 \
 
-We can use the `%>%` to chain multiple functions together. Here we'll look at the workflow of calculating the mean airtime of flights leaving JFK or LGA for each month with the resulting mean airtime sorted from longest to shortest flight time. 
+## Sorting
+
+Sorting is an extremely common operation on large data sets, as it makes it easier to inspect our data efficiently. To sort with `dplyr`, use function `arrange`. Pass in the name of the data frame, and the columns on which you wish to sort, from slowest to fastest moving.
 
 ```{r}
-# base R with intermediates
+# Sort all records in order of area consumed (column FireAreaHa)
+sort_by_area_df <- arrange(fires_df, FireAreaHa)
 
-# Subset the data
-flights_jfk_lga <- subset(flights, origin == "JFK" | origin == "LGA", select = c("month", "origin","air_time"))
 
-# calculate the mean air time for each month/origin grouping
-flight_results <- aggregate(x = flights_jfk_lga$air_time, 
-          by = list(month = flights_jfk_lga$month, origin = flights_jfk_lga$origin),
-          FUN = mean,
-          na.rm = TRUE)
+# To sort in descending order, apply function desc to the column
+sort_by_area_df <- arrange(fires_df, desc(FireAreaHa))
 
-# rename the result column
-names(flight_results)[which(names(flight_results) == "x")] <- "mean_air_time"
 
-# sort the results
-flight_results_base <- flight_results[order(flight_results$mean_air_time, decreasing = TRUE),]
-
-# show top 6 results
-head(flight_results_base)
+# Sorting on multiple columns
+sort_by_month_area_df <- arrange(fires_df, Month, desc(FireAreaHa))
 ```
+
+You will note that this last result is sorted by month *alphabetically*. This makes sense to R, but we probably would prefer to have it sorted *logically*. To ensure this, we can cast column Month from type "chr" (just strings) to type "Ordered Factor", an ordered categorical variable. The code for this operation is shown below. We will discuss the management of categorical vs. numerical variables in more depth in the Summarising Module, later in the semester.
+
+``` {r}
+# Define the logical order of our month codes
+months_in_order = c("jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep",
+                    "oct", "nov", "dec")
+
+# Modify the Month column so it uses that ordering 
+fires_df$Month <- ordered(fires_df$Month, levels = months_in_order)
+
+# Repeat the sort operation to confirm
+sort_by_month_area_df <- arrange(fires_df, Month, desc(FireAreaHa))
+
+# Check
+head(sort_by_month_area_df)
+```
+
+
+## Summarising by group
+
+We typically extract subsets from a data frame to serve as input to methods that summarise, perform statistical analyses, or produce graphs of those data. Library `dplyr` provides a pair of methods -- `group_by` and `summarise` -- which, when used together, make this workflow especially succinct for simple post-selection processing.
+
+Assume that you would like to know the mean fire area consumed for each month. You will first apply `group_by` to `fires_df` to define your grouping variable as column `Month`. This has no major visible impact on `fires_df`. However, any subsequent summaries you perform on that data frame with function `summarise` **are applied by group**. For example, if you use `summarise` to compute the mean of FireAreaHa (syntax shown below), it computes that mean for each month separately. If you use `summarise` to compute the standard deviation of Temperature, it computes that standard deviation for each month separately. And so on.
+
+```{r}
+# To compare area consumed by month
+
+# Apply group_by. In View the data frame looks unchanged
+fires_gp_month_df <- group_by(fires_df, Month)
+
+# When printed to console, the data frame also looks the same except for Groups
+# header
+fires_gp_month_df
+```
+
+
+The magic happens when we take a grouped data frame and pass it to `summarise`. Function `summarise` returns a new data frame with a row for each level of the grouping variable, and a column for each summary function we specify.
+
+```{r}
+# T second arg to summarise is "col header = expression". Expression is applied by group
+
+summarise(fires_gp_month_df, MeanAreaLn = mean(FireAreaHa, na.rm = TRUE))
+```
+
+Note that you can provide multiple expressions to `summarise`. It produces a column for each. 
+
+You can also provide multiple column names to `group_by`. Function `summarise` is then applied to the groups defined by each combination of values on the grouping variables. 
+
+```{r}
+# Grouping on two variables
+fires_month_day <- group_by(fires_df, Month, Day)
+summarise(fires_month_day, MeanAreaForMonthAndDayOfWeek = mean(FireAreaHa, na.rm = TRUE))
+
+```
+
+
+### Exercise
+
+1. Use 'group_by' and 'summarise' to find the largest fire (i.e. maximum area burnt) in each month.
+2. A useful worker function in library `dplyr` is `n()`. This function, when used in `summarise`, counts the number of records in each group (it takes no column header; it just counts the number of rows in the group). Generate a table that shows the number of fires that occurred on each day of the week. How would you explain the pattern in these results?
 
 
 ```{r}
-# dplyr using pipes
-
-flight_results_dplyr <- flights %>% 
-  # subset the data
-  select(month, origin, air_time) %>% 
-  filter(origin == "JFK" | origin == "LGA") %>%
-  # calculate the mean air time for each month/origin grouping
-  group_by(month, origin) %>% 
-  summarise(mean_air_time = mean(air_time, na.rm = TRUE)) %>% 
-  # sort the results
-  arrange(desc(mean_air_time))
-
-# show top 6 results
-head(flight_results_dplyr)
+# Exercise Solution
+fires_gp_day_df <- group_by(fires_df, Day)
+summarise(fires_gp_day_df, NFires = n()) 
 ```
 
-One of the nice features of dealing with pipes, is that you can do your subsetting workflow and pipe directly into `ggplot`, although it's usually a good idea to assign your subsetted data and then use that to start your plotting pipeline. If you pipe your data into ggplot RStudio will also let you auto-complete your columns with <kbd>Tab</kbd>.
+3. Modify `fires_df` so that `summarise` outputs the days in their correct logical order (e.g. Wednesday before Thursday).
 
-```{r pipe_plot}
+\
+
+## Pipes
+
+When you install dplyr (either alone or as part of meta-package tidyverse), you also get library `magrittr`, which contains a special operator called *the pipe*. (NB: The character |, used for OR, is also called the pipe. Just one of those things.)
+
+With the pipe, we can perform a series of operations, for example filter and select, without intermediate variables. We think of starting with our complete data frame and pushing it through a series, or **pipeline** of operations. At each step, the output from one operation is passed along as the input of the next.
+
+When using the pipe, we no longer have to provide the name of data frame as the first argument to all the dplyr functions -- they always take the output of the previous step in the pipe.
+
+Previously, we combined filter and select by using an intermediate variable, like this:
+
+```{r}
+# Filter to get the rows we want
+summer_fires_df <- filter(fires_df, Month %in% c('jun', 'jul','aug'))
+
+# Pass the result of the filtering operation to select
+summer_temperature_area_df <- select(summer_fires_df, Month, Temperature, FireAreaHa)
+```
+
+Using pipe syntax, the same result would be obtained with:
+
+```{r}
+summer_temperature_area_df <- fires_df %>% filter(Month %in% c("jun", "jul", "aug")) %>% select(Month, Temperature, FireAreaHa)
+
+head(summer_temperature_area_df)
+```
+
+Like the + symbol in ggplot, `%>%` signals to RStudio that more code is coming, allowing you to make the code readable by placing each operation in the pipeline on a new line:
+
+```{r}
+summer_temperature_area_df <- fires_df %>% 
+  filter(Month %in% c("jun", "jul", "aug")) %>% 
+  select(Month, Temperature, FireAreaHa)
+
+head(summer_temperature_area_df)
+```
+
+### Exercise
+
+1. Using group_by, summarise, and pipe notation, compute the mean temperature for each month
+
+```{r}
+# Exercise solution
+fires_df %>% group_by(Month) %>% summarise(MeanTemperature = mean(Temperature, na.rm = TRUE))
+```
+
+\
+
+2. You can use ggplot at the end of a pipeline. Write a single command to make a boxplot that illustrates the distribution of drought level during each of the summer months in Portugal. Plan: First filter out the months you want, then make a boxplot with x = Month and y = DroughtLevel
+
+```{r}
 library(ggplot2)
 
-flights %>% 
-  # subset the data
-  select(month, origin, air_time) %>% 
-  filter(origin == "JFK" | origin == "LGA") %>%
-  # plot the data
-  ggplot(aes(x = origin, y = air_time)) + geom_boxplot()
+fires_df %>% filter(Month %in% c("jun", "jul", "aug")) %>%
+  ggplot(mapping = aes(x = Month, y = DroughtLevel)) + 
+  geom_boxplot()
 ```
 
 \
 
+3. Write a single command that produces a bar graph of the mean temperature for each month. (Plan: The pipeline starts with `group_by` and `summarise` to compute the means, then pours that output into ggplot. Make the graph using `geom_bar`. Set the x axis to Month and the y axis to the column name you assign for the mean temperature in `summarise`. Pass into geom_bar the argument `stat = "identity"` so it plots the data values as provided. Note the double quotes around the *identity*; they are required.)
+
+```{r}
+# Exercise solution
+
+library(ggplot2)
+
+fires_df %>% 
+  group_by(Month) %>% 
+  summarise(MeanTemperature = mean(Temperature, na.rm = TRUE)) %>%
+  ggplot(mapping = aes(x = Month, y = MeanTemperature)) + geom_bar(stat = "identity")
+```
+
+
+
+## A Word of Caution
+
+Dplyr pipeline syntax is popular because it eliminates the need for intermediate variables and, therefore, requires a lot less typing. It is common, when first encountering this option, to get slightly carried away, and chain together dozens of operations, reveling in how many keystrokes you are saving. This is risky, for several reasons:
+
+1. If a long pipeline fails, you will not know *in which operation the error occurred*. This can make it extremely difficult to debug. 
+2. Because you are not saving any of the intermediate outputs, you do not have them available for different processing in other contexts -- you will have to repeat the whole portion of the pipeline which generated them. 
+3. A long pipeline will be difficult for other people to "read" (i.e. to figure out what it's doing). When you have multiple options for performing a computation, the  goal is to strike a balance between **parsimony** (not too much typing) and **readability** (your code is easy *for other people* to understand). When working on group projects, or in a professional software development context, readability is considered the more critical of the two features. My personal style is never to build pipelines of more than three or four operations. The outputs of these short sequences can be saved into intermediate variables which can be checked and reused, which are then passed along into the next pipeline.
 \
 
-## Conclusion
+## Another Word of Caution
 
 R users are constantly adding new libraries to base R, meaning that you will probably have several options for doing any job in R. The various options sometimes have subtle technical differences that will generate a lot of argument between professional programmers, but are unlikely to matter much to research scientists. In general, you should explore the R ecosystem freely and use whatever you like. **However** on assignments, it is wise to check with the lecturer before using something that is really different from what is presented in class. Your lecturer may, for educational reasons, want you to use specific R tools.
 
 ## What's Next
 
-Fill in the module feedback form <https://tinyurl.com/r4ssp-module-fb>.
+Please fill in the module feedback form <https://tinyurl.com/r4ssp-module-fb>.
 
-You may recall that way back in the first module of this mini-course we said we were going to analyse data. We haven't really done much of that yet. So far we have been *getting ready* to analyse data. In the next module, we will start really digging into our data with exploratory analysis and descriptive statistics. Because this is not a statistics course *per se* we will only be using common general analyses in the handouts and readings. If, for a project or assignment, you need to do something more esoteric, just let us know -- someone has probably written an R library for it.
-
-
-
-
+You may recall that way back in the first module of R4SSP we said we were going to analyse data. We haven't really done much of that yet. So far we have been *getting ready* to analyse data. In the next module, we will start really digging into our data with exploratory analysis and descriptive statistics. Because this is not a statistics course *per se* we will only be using common general analyses in the handouts and readings. If, for a project or assignment, you need to do something more esoteric, just let us know -- someone has probably written an R library for it.
