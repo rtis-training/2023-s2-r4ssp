@@ -434,7 +434,7 @@ mean(october_fires$DroughtLevel)
 
 ### Filtering with complex conditionals
 
-Often we wish to filter on criteria that involve multiple comparisons. For example, if we wish to extract all the rows for fires during the winter season (December through February in Portugal) we want rows for which Month is 'dec' or 'jan' or 'feb'. Earlier we saw how to do this with`%in%`. More generally, we can combine conditional statements using the logical AND and OR operators, `|` and `&` respectively.
+Often we wish to filter on criteria that involve multiple comparisons. For example, if we wish to extract all the rows for fires during the winter season (December through February in Portugal) we want rows for which Month is 'dec' or 'jan' or 'feb'. Earlier we saw how to do this with`%in%`. More generally, we can combine conditional statements using the logical AND and OR operators, `&` and `|` respectively.
 
 ```{r}
 # Select the winter fires
