@@ -355,7 +355,14 @@ For this section, we will use data about forest fires in Portugal in 2022. Portu
 
 You can download the data file *forest_fires_portugal.csv* from this link:
 
-https://drive.google.com/drive/folders/1UBp-P4wFAaQL3egIQ7dGa2RQe6RQKqgy
+https://drive.google.com/drive/folders/1UBp-P4wFAaQL3egIQ7dGa2RQe6RQKqgy or using:
+
+>
+>```{r, eval=FALSE}
+> download.file(url = "https://raw.githubusercontent.com/rtis-training/2023-s1-r4ssp/main/data/forest_fires_portugal.csv", 
+>              destfile = "data/forest_fires_portugal.csv")
+>```
+> _Remember that R is case sensitive so if you don't have a directory exactly called `data/` modify the command to match your directory._
 
 The file contains one row for each recorded forest fire in Portugal in 2022. Each record has a number of measures (columns) including region (x and y values on a grid), month, day, ground condition measures, meteorological measures, and the extent of the fire in heactares. Note that any fire that consumed less than one hectare has a value of 0 in this last column.
 
