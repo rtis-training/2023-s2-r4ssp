@@ -562,7 +562,7 @@ In this module you have considered the inner workings of the computer, written R
 
 ## What's Next
 
-Please fill in the module feedback form <https://tinyurl.com/r4ssp-module-fb>. Your input helps us make R4SSP better.
+Please fill in the module feedback form [https://tinyurl.com/r4ssp-module-fb-s1-23](https://tinyurl.com/r4ssp-module-fb-s1-23). Your input helps us make R4SSP better.
 
 In this week's hands-on session we will continue to build our R skills, working together through the exercises in the Zoom notes for this module. (If you prefer, go ahead and try them on your own.) You can also use the hands-on sessions to get help with any coursework, projects, or other R questions you may have.
 
