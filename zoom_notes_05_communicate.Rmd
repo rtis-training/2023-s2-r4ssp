@@ -1,5 +1,5 @@
 ---
-title: "Zoom Notes 04: Communicating Data"
+title: "Zoom Notes 05: Communicating Data"
 date: "Semester 1, 2023"
 output:
   html_document:
@@ -15,7 +15,7 @@ library(knitr)
 
 knitr::opts_chunk$set(
   comment = "#>",
-  fig.path = "figures/04/", # use only for single Rmd files
+  fig.path = "figures/05/", # use only for single Rmd files
   collapse = TRUE,
   echo = TRUE
 )
@@ -25,7 +25,7 @@ knitr::opts_chunk$set(
 
 > #### Associated Material
 >
-> Module: [Module 04 - Communicate](04-communicate.html)
+> Module: [Module 05 - Communicate](05-communicate.html)
 >
 > Readings:
 >

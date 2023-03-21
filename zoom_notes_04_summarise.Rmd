@@ -1,5 +1,5 @@
 ---
-title: "Zoom Notes 05 - Summarising Data"
+title: "Zoom Notes 04 - Summarising Data"
 date: "Semester 1, 2023"
 output:
   html_document:
@@ -15,7 +15,7 @@ library(knitr)
 
 knitr::opts_chunk$set(
   comment = "#>",
-  fig.path = "figures/05/", # use only for single Rmd files
+  fig.path = "figures/04/", # use only for single Rmd files
   collapse = TRUE,
   echo = TRUE
 )
@@ -26,7 +26,7 @@ knitr::opts_chunk$set(
 
 > #### Associated Material
 >
-> Module: [Module 05 - Summarising](05-summarise.html)
+> Module: [Module 04 - Summarising](04-summarise.html)
 >
 > Readings
 >
@@ -85,13 +85,13 @@ The penguin body mass graph is not perfectly symmetrical. It shows a bit of skew
 Observe the distribution of ChlA for Lake Ellesmere (shown below with a smoothed density line for illustration). Although most of the readings are clustered below 100, there are some much larger values -- one reading is more than 500 -- creating a long "tail" to the right. The ChlA measure in Lake Ellesmere is skewed. 
 
 ```{r chla_dist, echo = FALSE, warning=FALSE, message=FALSE}
-lakes <- read.csv("data/NZ_lake_chla_data.csv", stringsAsFactors = TRUE)
-ellesmere <- (lakes[lakes$LakeName == "Lake Ellesmere", ])
+lakes_df <- read.csv("data/NZ_lake_chla_data.csv", stringsAsFactors = TRUE)
+ellesmere_df <- (lakes_df[lakes_df$LakeName == "Lake Ellesmere", ])
 
 
 library(ggplot2)
 
-ggplot(data = ellesmere, aes(x = ChlA)) +
+ggplot(data = ellesmere_df, aes(x = ChlA)) +
   geom_histogram(aes(y = stat(density)), colour = "white", fill="darkgrey", bins = 30) +
   geom_density() +
   labs(y = "Absolute Frequency",
@@ -113,13 +113,12 @@ With the method of your choice, compute the skewness value for each of the three
 library(e1071)
 
 # Using base R
-aggregate(lakes$ChlA, by = list(Lake = lakes$LakeName), FUN = skewness)
+aggregate(lakes_df$ChlA, by = list(Lake = lakes_df$LakeName), FUN = skewness)
 
 
 # Using dplyr
 library(dplyr)
-by_lake <- group_by(lakes, LakeName)
-summarise(by_lake, Skewness = skewness(ChlA))
+lakes_df %>% group_by(LakeName) %>% summarise(Skewness = skewness(ChlA))
 ```
 
 ## Exercise 2
@@ -135,7 +134,7 @@ In Module 03 you saw how to add a new computed column to a data frame using eith
 
 # Add a new column to the data frame that holds the log of the raw ChlA
 # This can also be done with dplyr::mutate
-lakes$log_ChlA <- log(lakes$ChlA)
+lakes_df$log_ChlA <- log(lakes_df$ChlA)
 
 ```
 
@@ -147,10 +146,10 @@ Using ggplot, make a histogram of all the log ChlA values in data frame lakes, w
 
 # Plot the histogram
 
-ggplot(data = lakes) +
+ggplot(data = lakes_df) +
   geom_histogram(aes(x = log_ChlA, color = LakeName, fill=LakeName), position="dodge")
 
 # Compute the skew of the log -- the value is much closer
 # to 0 than the raw data were.
-skewness(lakes$log_ChlA)
+skewness(lakes_df$log_ChlA)
 ```

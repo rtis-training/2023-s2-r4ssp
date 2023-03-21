@@ -15,7 +15,7 @@ library(knitr)
 
 knitr::opts_chunk$set(
   comment = "#>",
-  fig.path = "figures/05/", # use only for single Rmd files
+  fig.path = "figures/04/", # use only for single Rmd files
   collapse = TRUE,
   echo = TRUE
 )
@@ -25,7 +25,7 @@ knitr::opts_chunk$set(
 
 > #### Associated Material
 >
-> Zoom notes: [Zoom Notes 05 - Summarising data](zoom_notes_05_summarise.html)
+> Zoom notes: [Zoom Notes 04 - Summarising data](zoom_notes_04_summarise.html)
 >
 > Readings
 >
@@ -41,21 +41,21 @@ The formal topic of statistics is large and complex, and we do not attempt to te
 
 There are two general types of statistical analyses -- descriptive statistics, which allow us to summarise and describe our raw data, and inferential statistics, which allow us to generalise our results beyond our observed data. We will only cover descriptive statistics in R4SSP.
 
-For this module, we will use two data sets -- the Palmers Penguins data we have seen previously, and a data set containing Chlorophyll A (ChlA) readings from three New Zealand lakes (data provided by the local Regional Councils). ChlA levels are an indicator of phytoplankton biomass, and provide a general measure of lake health -- more ChlA indicates poorer health. The "toxic algal blooms" that occur occasionally in New Zealand lakes are accompanied by a dramatic spike in measured ChlA.
+For this module, we will use two data sets -- the "Palmers Penguins" data describing penguin populations in the Palmer Archipelago (Antarctica), and a data set containing Chlorophyll A (ChlA) readings from three New Zealand lakes (data provided by the local Regional Councils). ChlA levels are an indicator of phytoplankton biomass, and provide a general measure of lake health -- more ChlA indicates poorer health. The "toxic algal blooms" that occur occasionally in New Zealand lakes are accompanied by a dramatic spike in measured ChlA.
 
 \
 
 > Downloading the ChlA NZ Lakes data:
 > 
-> One option for downloading the data is to use `download.file()` in R. You can use this command to download the file into your `data/` directory: 
+> One option for downloading the data is to use `download.file()` in RStudio. 
 > 
 > ```{r, eval = FALSE}
 > download.file(url = "https://raw.githubusercontent.com/rtis-training/2023-s1-r4ssp/main/docs/data/NZ_lake_chla_data.csv", 
 >  destfile = "data/NZ_lake_chla_data.csv")
 > ```
-> _Remember that R is case sensitive so if you don't have a directory exactly called `data/` modify the command to match your directory._
+> _Remember to adjust the value of `destfile` to match your project directory structure._
 >
-> The second option is in a web browser go to https://raw.githubusercontent.com/rtis-training/2023-s1-r4ssp/main/docs/data/NZ_lake_chla_data.csv and then save the page using `Save As` and give it the name "NZ_lake_chla_data.csv". Save it to your data location.
+> The second option is to download the file from the R4SSP shared Google Drive folder at https://drive.google.com/drive/folders/1UBp-P4wFAaQL3egIQ7dGa2RQe6RQKqgy
 
 \
 
@@ -70,8 +70,7 @@ For this module, we will use two data sets -- the Palmers Penguins data we have 
 
 # install.packages("palmerspenguins")
 
-# After loading the library, a tibble
-# called 'penguins' will be initialised
+# After loading the library, a tibble called 'penguins' will be initialised
 library(palmerpenguins)
 
 # Check the structure
@@ -81,17 +80,22 @@ str(penguins)
 # The Lake Data:
 #===============================================
 
-# Read in the lakes data file, parsing the lake 
-# name column as a factor
-lakes <- read.csv("data/NZ_lake_chla_data.csv", stringsAsFactors = TRUE)
-
-# Since they are conceptually categorical in this data set, 
-# you may wish to cast Year and Month to factors as well, for completeness...
-lakes$Year <- as.factor(lakes$Year)
-lakes$Month <- as.factor(lakes$Month)  
+# Read in the lakes data file
+lakes_df <- read.csv("data/NZ_lake_chla_data.csv")
 
 # Check the structure
-str(lakes)
+str(lakes_df)
+```
+
+In the lakes data, the LakeName, Month, and Year columns are all categorical grouping variables. Many data analysis methods in R require that categorical variables be of type `factor` (as in "experimental factor"). Note however, that these columns have been imported into R as types `chr` (strings) and `int` (integers). We should cast these columns to type `factor` to insure that our subsequent analyses are correct. This cast does not affect the values in the columns, it simply signals to R that they are group identifiers, not raw string or number data values.
+ 
+``` {r cast_to_factor}
+lakes_df$LakeName <- as.factor(lakes_df$LakeName)
+lakes_df$Year <- as.factor(lakes_df$Year)
+lakes_df$Month <- as.factor(lakes_df$Month)  
+
+# Confirm that the column data types have been updated
+str(lakes_df)
 ```
 
 # Visualise the data (revision)
@@ -104,7 +108,7 @@ The `penguins` data set contains values for 344 different penguins. We can begin
 
 ## Histogram with base R
 
-```{r 05-histograms, warning=FALSE, message=FALSE}
+```{r 04-histograms, warning=FALSE, message=FALSE}
 # The 'breaks' argument controls the number of bars drawn
 hist(penguins$body_mass_g, 
      breaks = 100,
@@ -128,19 +132,19 @@ ggplot(data = penguins, mapping = aes(x = body_mass_g)) +
 
 ## Illustrating Groups
 
-Using ggplot, we can illustrate group effects in histograms by defining a mapping from a grouping (i.e. categorical) variable to the `fill` property of function `geom_histogram`. For example, the code below will make histograms of all the ChlA values in data frame `lakes`, with each lake in a different colour
+Using ggplot, we can illustrate group effects in histograms by defining a mapping from a grouping (i.e. categorical) variable to the `fill` property of function `geom_histogram`. For example, the code below will make histograms of all the ChlA values in data frame `lakes_df`, with each lake in a different colour
 
 By default, geom_histogram produces a stacked plot -- that is, the different groups are shown stacked up in a single bar, separated by their colour. To make the plot with side-by-side bars, set geom_histogram's `position` argument to `dodge`. Note that this is not a mapping, it is simply an argument to function geom_histogram. What does this simple graph tell you about the health of these three lakes?
 
 ### For continuous data
 
-```{r 05-lake_hists, warning=FALSE, message=FALSE}
+```{r 04-lake_hists, warning=FALSE, message=FALSE}
 # Stacked grouped histogram
-ggplot(data = lakes, mapping = aes(x = ChlA)) +
+ggplot(data = lakes_df, mapping = aes(x = ChlA)) +
   geom_histogram(aes(fill=LakeName), colour = 'black')
 
 # Side-by-side grouped histogram
-ggplot(data = lakes, mapping = aes(x = ChlA)) +
+ggplot(data = lakes_df, mapping = aes(x = ChlA)) +
   geom_histogram(aes(fill=LakeName), colour = 'black', position="dodge")
 
 ```
@@ -149,7 +153,7 @@ ggplot(data = lakes, mapping = aes(x = ChlA)) +
 
 The functions `hist` and `geom_histogram` are appropriate for **continuous** (numerical) data. For **categorical** variables (e.g. Species and Island in the penguin data set) one often uses the more general `geom_bar` function (geom_histogram is a special case of geom_bar). The example code below shows how to generate a bar graph in ggplot, modifying the default ggplot colour palette to something more accessible to viewers with atypical colour vision:
 
-```{r 05-categorical_distribution}
+```{r 04-categorical_distribution}
 # "Colour-blind friendly" palette from #https://personal.sron.nl/~pault/
 # These are hexadecimal colour codes. The # is required.
 customPalette <- c("#DDAA33", "#BB5566", "#004488")
@@ -162,7 +166,7 @@ ggplot(data = penguins, mapping = aes(x = island, fill=species)) +
 
 As with geom_histogram above, we set the position argument of geom_bar to change from stacked to side-by-side format.
 
-```{r 05-categorical_distribution_dodge, echo=FALSE, warning=FALSE, message=FALSE}
+```{r 04-categorical_distribution_dodge, echo=FALSE, warning=FALSE, message=FALSE}
 
 # "Colour-blind friendly" palette from #https://personal.sron.nl/~pault/
 # These are hexadecimal colour codes. The # is required.
@@ -206,7 +210,6 @@ median(penguins$body_mass_g, na.rm = TRUE)
 Base R has no built-in function for mode. After Module 08 you will be able to write your own Mode function. Or you can use one of several available in auxiliary libraries. The DescTools library is a good one.
 
 ```{r mode, warning=FALSE, message=FALSE}
-
 # Install the package once on each machine
 # install.packages("DescTools")
 
@@ -241,7 +244,7 @@ In the histograms for ChlA from each of three New Zealand lakes, the three group
 
 ```{r lake_means_01}
 # Using aggregate. compute the group means
-aggregate(lakes$ChlA, by = list(Lake = lakes$LakeName), FUN=mean)
+aggregate(lakes_df$ChlA, by = list(Lake = lakes_df$LakeName), FUN=mean)
 ```
 
 ### Using `group_by` and `summarise`
@@ -250,32 +253,32 @@ aggregate(lakes$ChlA, by = list(Lake = lakes$LakeName), FUN=mean)
 # Using `group_by` and `summarise`
 library(dplyr)
 
-lakes %>% 
+lakes_df %>% 
   group_by(LakeName) %>%
   summarise(MeanChlA = mean(ChlA))
 ```
 
-However, not only do the central points of the three lakes' distributions differ, so do the amounts of "spread". Lake Taupo's distribution is very "skinny"; all its readings are similar. Lake Ellesmere is squashed and spread out; its readings vary a lot. Lake Rotorua is intermediate. To illustrate this more clearly, we can use ggplot to make separate graphs for each lake, using function `facet_grid`. 
+However, not only do the central points of the three lakes' distributions differ, so do the amounts of "spread". Lake Taupo's distribution is very narrow; all its readings are similar. Lake Ellesmere is squashed and spread out; its readings vary a lot. Lake Rotorua is intermediate. To illustrate this more clearly, we can use ggplot to make separate graphs for each lake, using function `facet_grid`. 
 
 Note the `scales` argument to `facet_grid`. This allows each graph to adjust its y-axis to its data domain, which makes the comparison visually easier; this should be mentioned in the discussion of the figure in a manuscript.
 
 ## Using `facet_grid`
 
 ```{r facet_graphs, warning=FALSE, message=FALSE}
-ggplot(data = lakes) +
+ggplot(data = lakes_df) +
   geom_histogram(aes(x = ChlA, fill=LakeName), color="black") +
   facet_grid(rows = vars(LakeName), scales="free_y")
 ```
 
 Statistically, the "spread out" quality of a distribution reflects its **variability**.
 
-We can capture variability more precisely with measures of the **range** of the data set. These are typically the smallest and largest scores (minimum and maximum) and the scores at the 25th and 75th percentiles (also called **1st quartile** and **3rd quartile**). Earlier, we saw that function `summary` computes these measures of range. However, if we simply pass the entire `lakes` data frame to function `summary`, it will combine the data from all three lakes -- to compare the lakes we need the values from each lake separately.
+We can capture variability more precisely with measures of the **range** of the data set. These are typically the smallest and largest scores (minimum and maximum) and the scores at the 25th and 75th percentiles (also called **1st quartile** and **3rd quartile**). Earlier, we saw that function `summary` computes these measures of range. However, if we simply pass the entire `lakes_df` data frame to function `summary`, it will combine the data from all three lakes -- to compare the lakes we need the values from each lake separately.
 
 In earlier modules we have seen two techniques for selecting out just the rows from one lake (using [] or using `filter`). To run function `summary` on each lake separately, we could select the subset for each lake in turn, and pass each subset to `summary`. However, we can achieve the same result more parsimoniously by using function `aggregate`. Above we used aggregate with `FUN = mean` to get the mean ChlA for each lake. We can use `FUN = summary` to call function `summary` separately for the records of each lake. 
 
 ```{r aggregate_summary}
 # Apply function summary by group
-aggregate(lakes$ChlA, by = list(Lake = lakes$LakeName), FUN=summary)
+aggregate(lakes_df$ChlA, by = list(Lake = lakes_df$LakeName), FUN=summary)
 
 ```
 
@@ -285,13 +288,13 @@ We can also measure the variablity in a data set with the **standard deviation**
 
 ```{r sd}
 # Using aggregate. compute the group sds
-aggregate(lakes$ChlA, by = list(Lake = lakes$LakeName), FUN=sd)
+aggregate(lakes_df$ChlA, by = list(Lake = lakes_df$LakeName), FUN=sd)
 ```
 
 ### Using `group_by` and `summarise`
 
 ```{r sd_dplyr}
-lakes %>% 
+lakes_df %>% 
   group_by(LakeName) %>%
   summarise(StdDev = sd(ChlA))
 
@@ -312,7 +315,7 @@ The function `describeBy` in package `psych` will  compute all the descriptive s
 library(psych)
 
 # Pass in the data column and the grouping column
-describeBy(lakes$ChlA, lakes$LakeName)
+describeBy(lakes_df$ChlA, lakes_df$LakeName)
 ```
 
 Package `psych` contains many other interesting statistical tools, especially for multivariate data sets commonly found in psychological and ecological research. Ask Google or your lecturer for details.
@@ -325,7 +328,7 @@ In the code example below we make a scatterplot with ggplot (cf. Module 02), and
 
 ## Scatterplot with linear trend line
 
-```{r 05-scatterplot, warning=FALSE, message=FALSE}
+```{r 04-scatterplot, warning=FALSE, message=FALSE}
 # geom_point plots the points of the scatterplot 
 
 # geom_smooth plots the linear trend line computed with function lm
@@ -346,7 +349,6 @@ There are various statistical measures that capture the strength of a correlatio
 ## Correlation coefficient
 
 ```{r cor}
-
 # Pass the two data columns into function cor
 cor(penguins$bill_length_mm, penguins$body_mass_g, use="complete.obs")
 ```
@@ -355,7 +357,7 @@ Function `cor` returns a value between -1 and 1. Correlations that trend downwar
 
 For example, consider these two scatterplots:
 
-```{r 05-comparing, echo=FALSE, warning=FALSE, message=FALSE}
+```{r 04-comparing, echo=FALSE, warning=FALSE, message=FALSE}
 library(gridExtra)
 plot1 <- ggplot(data = penguins, mapping = aes(x = body_mass_g, y = bill_length_mm)) +
   geom_point() +
