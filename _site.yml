@@ -17,10 +17,10 @@ navbar:
           href: 02-visualise.html
         - text: "Part 2: Subsetting"
           href: 03-subset.html
-        - text: "Part 3: Communicating"
-          href: 04-communicate.html
-        - text: "Part 4: Summarising"
-          href: 05-summarise.html
+        - text: "Part 3: Summarising"
+          href: 04-summarise.html
+        - text: "Part 4: Communicating"
+          href: 05-communicate.html
         - text: "Part 5: Tidying"
           href: 06-tidying.html
         - text: "Part 6: Combining"
@@ -45,10 +45,10 @@ navbar:
           href: zoom_notes_02_visualise.html
         - text: "03 - Subsetting data"
           href: zoom_notes_03_subset.html
-        - text: "04- Communicating data"
-          href: zoom_notes_04_communicate.html
-        - text: "05 - Summarising data"
-          href: zoom_notes_05_summarise.html
+        - text: "04- Summarising data"
+          href: zoom_notes_04_summarise.html
+        - text: "05 - Communicating data"
+          href: zoom_notes_05_communicate.html
         - text: "06 - Tidying data"
           href: zoom_notes_06_tidying.html
         - text: "07 - Combining data"
