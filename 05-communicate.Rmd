@@ -25,7 +25,7 @@ knitr::opts_chunk$set(
 
 > #### Associated Material
 >
-> Zoom notes: [Zoom Notes 05 - Communicate](zoom_notes_05.html)
+> Zoom notes: [Zoom Notes 05 - Communicate](zoom_notes_05_communicate.html)
 >
 > Readings:
 >
