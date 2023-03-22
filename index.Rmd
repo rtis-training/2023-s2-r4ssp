@@ -48,8 +48,8 @@ Date | Week | Module | Part | Topic | Instructor
 Week starting 6 March | 1 | Setup | | Introduce the tools: R and Rstudio | P
 Week starting 13 March | 2 | Data focus | 1 | Visualising Data | M
 Week starting 20 March | 3 | Data focus | 2 | Selecting and Filtering Data | P
-Week starting 27 March | 4 | Data focus | 3 | Communicating Data | M
-Week starting 3 April  | 5 | Data focus | 4 | Summarising Data | P
+Week starting 27 March | 4 | Data focus | 3 | Summarising Data | M
+Week starting 3 April  | 5 | Data focus | 4 | Communicating Data | P
 Week starting 10 April | - | MID-SEMESTER | | |
 Week starting 17 April | 6 | Data focus | 5 | Tidying Data | M
 Week starting 24 April | 7 |Data focus | 6 | Combining/Joining |P
