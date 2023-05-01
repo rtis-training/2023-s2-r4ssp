@@ -1,0 +1,55 @@
+ObservationDate,ReplicateSite,PredatorType,CardType
+30/04/2022,B1,Hedgehog,Tunnel
+30/04/2022,B1,Mouse,Tunnel
+30/04/2022,B1,none detected,Chew
+30/04/2022,B2,Hedgehog,Tunnel
+30/04/2022,B2,Hedgehog,Chew
+30/04/2022,B2,Mouse,Tunnel
+30/04/2022,B2,Mouse,Chew
+30/04/2022,B3,Hedgehog,Chew
+30/04/2022,B3,Hedgehog,Tunnel
+30/04/2022,B3,Mouse,Tunnel
+30/04/2022,B4,Hedgehog,Tunnel
+30/04/2022,B4,Mouse,Tunnel
+30/04/2022,B4,none detected,Chew
+30/04/2022,B5,Mouse,Tunnel
+30/04/2022,B5,none detected,Chew
+30/04/2022,B6,Hedgehog,Tunnel
+30/04/2022,B6,Mouse,Tunnel
+30/04/2022,B6,none detected,Chew
+30/04/2022,G1,none detected,Tunnel
+30/04/2022,G1,none detected,Chew
+30/04/2022,G2,Mouse,Tunnel
+30/04/2022,G2,none detected,Chew
+30/04/2022,G3,none detected,Tunnel
+30/04/2022,G3,none detected,Chew
+30/04/2022,G4,Mouse,Tunnel
+30/04/2022,G4,none detected,Chew
+30/04/2022,G5,none detected,Chew
+30/04/2022,G6,Mouse,Tunnel
+30/04/2022,G6,none detected,Chew
+30/04/2022,L1,Mouse,Tunnel
+30/04/2022,L1,Mouse,Chew
+30/04/2022,L1,Rat,Chew
+30/04/2022,L2,none detected,Tunnel
+30/04/2022,L2,none detected,Chew
+30/04/2022,L3,Mouse,Tunnel
+30/04/2022,L3,Mouse,Chew
+30/04/2022,L3,Rat,Chew
+30/04/2022,L4,Mouse,Tunnel
+30/04/2022,L4,none detected,Chew
+30/04/2022,L5,Mouse,Tunnel
+30/04/2022,L5,Mouse,Chew
+30/04/2022,L6,Mouse,Tunnel
+30/04/2022,L6,none detected,Chew
+30/04/2022,R1,none detected,Chew
+30/04/2022,R1,Rat,Tunnel
+30/04/2022,R2,Hedgehog,Tunnel
+30/04/2022,R2,none detected,Chew
+30/04/2022,R3,Hedgehog,Tunnel
+30/04/2022,R3,none detected,Chew
+30/04/2022,R4,none detected,Chew
+30/04/2022,R5,none detected,Chew
+30/04/2022,R6,Hedgehog,Tunnel
+30/04/2022,R6,Mouse,Tunnel
+30/04/2022,R6,none detected,Chew
