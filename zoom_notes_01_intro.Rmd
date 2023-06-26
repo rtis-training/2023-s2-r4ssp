@@ -1,6 +1,6 @@
 ---
 title: "Zoom Notes 01: Introducing R and RStudio"
-date: "Semester 1, 2023"
+date: "Semester 2, 2023"
 output:
   html_document:
     toc: true

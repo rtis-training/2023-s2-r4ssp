@@ -13,7 +13,7 @@
 
 <title>Zoom Notes 10: Workflows</title>
 
-<script src="site_libs/header-attrs-2.18/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.22/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
@@ -29,7 +29,7 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
@@ -352,10 +352,10 @@ div.tocify {
       <a href="03-subset.html">Part 2: Subsetting</a>
     </li>
     <li>
-      <a href="04-communicate.html">Part 3: Communicating</a>
+      <a href="04-summarise.html">Part 3: Summarising</a>
     </li>
     <li>
-      <a href="05-summarise.html">Part 4: Summarising</a>
+      <a href="05-communicate.html">Part 4: Communicating</a>
     </li>
     <li>
       <a href="06-tidying.html">Part 5: Tidying</a>
@@ -396,10 +396,10 @@ div.tocify {
       <a href="zoom_notes_03_subset.html">03 - Subsetting data</a>
     </li>
     <li>
-      <a href="zoom_notes_04_communicate.html">04- Communicating data</a>
+      <a href="zoom_notes_04_summarise.html">04- Summarising data</a>
     </li>
     <li>
-      <a href="zoom_notes_05_summarise.html">05 - Summarising data</a>
+      <a href="zoom_notes_05_communicate.html">05 - Communicating data</a>
     </li>
     <li>
       <a href="zoom_notes_06_tidying.html">06 - Tidying data</a>
@@ -444,7 +444,7 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Zoom Notes 10: Workflows</h1>
-<h4 class="date">Semester 1, 2023</h4>
+<h4 class="date">Semester 2, 2023</h4>
 
 </div>
 
@@ -520,7 +520,7 @@ testing solution - such as the <code>testthat</code> package to create
 tests that can be automatically run.</p>
 </div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiWm9vbSBOb3RlcyAxMDogV29ya2Zsb3dzIgpkYXRlOiAiU2VtZXN0ZXIgMSwgMjAyMyIKb3V0cHV0OgogIGh0bWxfZG9jdW1lbnQ6CiAgICB0b2M6IHRydWUKICAgIHRvY19mbG9hdDogdHJ1ZQogICAgdG9jX2RlcHRoOiAzCiAgICBjb2RlX2Rvd25sb2FkOiB0cnVlCiAgICBjb2RlX2ZvbGRpbmc6IHNob3cKLS0tCgpgYGB7ciBzZXR1cCwgaW5jbHVkZT1GQUxTRX0KbGlicmFyeShrbml0cikKCmtuaXRyOjpvcHRzX2NodW5rJHNldCgKICBjb21tZW50ID0gIiM+IiwKICBmaWcucGF0aCA9ICJmaWd1cmVzLzA5LyIsICMgdXNlIG9ubHkgZm9yIHNpbmdsZSBSbWQgZmlsZXMKICBjb2xsYXBzZSA9IFRSVUUsCiAgZWNobyA9IFRSVUUKKQpgYGAKCj4gIyMjIyBBc3NvY2lhdGVkIE1hdGVyaWFsCj4KPiBNb2R1bGU6IFtNb2R1bGUgMTAgLSBXb3JrZmxvd3NdKDEwLXdvcmtmbG93cy5odG1sKQoKIyMgR2V0dGluZyBvcmdhbmlzZWQKCi0gQ3JlYXRlIGEgc3RydWN0dXJlCi0gQ3JlYXRlIGEgUkVBRE1FCi0gQ2hvb3NlIGEgbGljZW5zZQoKVGhlIGB1c2V0aGlzYCBwYWNrYWdlIGNhbiBoZWxwIHlvdSwgYW5kIHByb3ZpZGVzIG1hbnkgaGVscGVyIGZ1bmN0aW9uIGZvciBjcmVhdGluZyBhbmQgc2V0dGluZyB1cCBwcm9qZWN0cyBhbmQgcGFja2FnZXMKCmBgYHtyLCBldmFsID0gRkFMU0V9CiMgQ3JlYXRlIGFuZCBvcGVuIGEgbmV3IHBhY2thZ2UKdXNldGhpczo6Y3JlYXRlX3Byb2plY3QocGF0aCA9ICJwYXRoL3RvL25ldy9wcm9qZWN0IikKCiMgQ3JlYXRlIGEgbWFya2Rvd24gUkVBRE1FCnVzZXRoaXM6OnVzZV9yZWFkbWVfbWQoKQoKIyBDcmVhdGUgYW4gUk1hcmtkb3duIFJFQURNRQp1c2V0aGlzOjp1c2VfcmVhZG1lX3JtZCgpCgojIENyZWF0ZSBhIG5ldyBSIHNjcmlwdCBpbiB5b3VyIHByb2plY3QgaW4gZGlyZWN0b3J5IFIvCnVzZXRoaXM6OnVzZV9yKG5hbWUgPSAibXlmaWxlLlIiKQoKYGBgCgojIyMgQ29uZmlndXJhdGlvbgoKSXQncyB3b3J0aCB0YWtpbmcgc29tZSB0aW1lIHRvIGNvbmZpZ3VyZSBvcHRpb25zIGluIHlvdXIgZW52aXJvbm1lbnQgdG8gbWFrZSBsaWZlIGVhc2llciBmb3IgeW91cnNlbGYuCgpUaGUgYC5ScHJvZmlsZWAgZmlsZSBpcyB1c2VkIHRvIHN0b3JlIHRoZXNlIGNvbmZpZ3VyYXRpb25zLiBZb3UgY2FuIG9wZW4gaXQgd2l0aCBgdXNldGhpczo6ZWRpdF9yX3Byb2ZpbGUoKWAuCgotIERvbid0IGxvYWQgJ2FuYWx5c2lzJyBkZXBlbmRhbnQgcGFja2FnZXMgaW4geW91ciBScHJvZmlsZQoKTGVhcm4gc29tZSBvZiB0aGUga2V5Ym9hcmQgc2hvcnRjdXRzIGluIFJTdHVkaW8gdG8gaW1wcm92ZSB5b3VyIHByb2R1Y3Rpdml0eS4gPGtiZD5BbHQ8L2tiZD4gKyA8a2JkPlNoaWZ0PC9rYmQ+ICsgPGtiZD5LPC9rYmQ+IGlzIHRoZSBrZXlib2FyZCBzaG9ydGN1dCB0byBzaG93IHlvdSB0aGUga2V5Ym9hcmQgc2hvcnRjdXRzLgoKIyMjIFZlcnNpb24gY29udHJvbAoKVXNpbmcgYW4gYXV0b21hdGVkIHZlcnNpb24gY29udHJvbCBzeXN0ZW0gc3VjaCBhcyBgZ2l0YCBpcyBoaWdobHkgcmVjb21tZW5kZWQuIEl0IGNhbiBoZWxwIHlvdSBtYW5hZ2UgZGlmZmVyZW50IHZlcnNpb25zIG9mIHlvdXIgY29kZSBhbmQgc2hvdyBkaWZmZXJlbmNlcyBvciBsZXQgeW91IGp1bXAgYmV0d2VlbiB2ZXJzaW9ucy4KCiMjIERlYnVnZ2luZwoKR2VuZXJhbCBwcm9jZXNzOgoKMS4gRG8gSSByZWNvZ25pc2UgdGhlIG1lc3NhZ2U/CjIuIFJlLWxvb2sgYXQgdGhlIGNvbW1hbmQgSSByYW4gbG9va2luZyBmb3IKICAgIC0gdHlwb3MKICAgIC0gbWlzc2luZyBzeW50YXggKGUuZy4gYnJhY2tldHMsIHNlbWljb2xvbnMsIGV0Yy4pCiAgICAtIGNvcnJlY3QgbmFtaW5nIG9mIHRoaW5ncwozLiBJcyB0aGUgaW5wdXQgZm9yIG15IGNvbW1hbmQgd2hhdCBJIGV4cGVjdCBpdCBpcz8KNC4gRGlkIHRoZSBwcmV2aW91cyBjb21tYW5kIHJ1biBwcm9wZXJseT8KICAgIC0gaWYgbm90IGp1bXAgdG8gMS4gZm9yIHRoZSBwcmV2aW91cyBjb21tYW5kCgoKIyMgVGVzdGluZwoKVGVzdCB5b3VyIGNvZGUgYXMgeW91IGdvLiBJdCBjYW4gYmUgdXNlZnVsIHRvIGFkb3B0IGFuIGF1dG9tYXRlZCB0ZXN0aW5nIHNvbHV0aW9uIC0gc3VjaCBhcyB0aGUgYHRlc3R0aGF0YCBwYWNrYWdlIHRvIGNyZWF0ZSB0ZXN0cyB0aGF0IGNhbiBiZSBhdXRvbWF0aWNhbGx5IHJ1bi4K</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiWm9vbSBOb3RlcyAxMDogV29ya2Zsb3dzIgpkYXRlOiAiU2VtZXN0ZXIgMiwgMjAyMyIKb3V0cHV0OgogIGh0bWxfZG9jdW1lbnQ6CiAgICB0b2M6IHRydWUKICAgIHRvY19mbG9hdDogdHJ1ZQogICAgdG9jX2RlcHRoOiAzCiAgICBjb2RlX2Rvd25sb2FkOiB0cnVlCiAgICBjb2RlX2ZvbGRpbmc6IHNob3cKLS0tCgpgYGB7ciBzZXR1cCwgaW5jbHVkZT1GQUxTRX0KbGlicmFyeShrbml0cikKCmtuaXRyOjpvcHRzX2NodW5rJHNldCgKICBjb21tZW50ID0gIiM+IiwKICBmaWcucGF0aCA9ICJmaWd1cmVzLzA5LyIsICMgdXNlIG9ubHkgZm9yIHNpbmdsZSBSbWQgZmlsZXMKICBjb2xsYXBzZSA9IFRSVUUsCiAgZWNobyA9IFRSVUUKKQpgYGAKCj4gIyMjIyBBc3NvY2lhdGVkIE1hdGVyaWFsCj4KPiBNb2R1bGU6IFtNb2R1bGUgMTAgLSBXb3JrZmxvd3NdKDEwLXdvcmtmbG93cy5odG1sKQoKIyMgR2V0dGluZyBvcmdhbmlzZWQKCi0gQ3JlYXRlIGEgc3RydWN0dXJlCi0gQ3JlYXRlIGEgUkVBRE1FCi0gQ2hvb3NlIGEgbGljZW5zZQoKVGhlIGB1c2V0aGlzYCBwYWNrYWdlIGNhbiBoZWxwIHlvdSwgYW5kIHByb3ZpZGVzIG1hbnkgaGVscGVyIGZ1bmN0aW9uIGZvciBjcmVhdGluZyBhbmQgc2V0dGluZyB1cCBwcm9qZWN0cyBhbmQgcGFja2FnZXMKCmBgYHtyLCBldmFsID0gRkFMU0V9CiMgQ3JlYXRlIGFuZCBvcGVuIGEgbmV3IHBhY2thZ2UKdXNldGhpczo6Y3JlYXRlX3Byb2plY3QocGF0aCA9ICJwYXRoL3RvL25ldy9wcm9qZWN0IikKCiMgQ3JlYXRlIGEgbWFya2Rvd24gUkVBRE1FCnVzZXRoaXM6OnVzZV9yZWFkbWVfbWQoKQoKIyBDcmVhdGUgYW4gUk1hcmtkb3duIFJFQURNRQp1c2V0aGlzOjp1c2VfcmVhZG1lX3JtZCgpCgojIENyZWF0ZSBhIG5ldyBSIHNjcmlwdCBpbiB5b3VyIHByb2plY3QgaW4gZGlyZWN0b3J5IFIvCnVzZXRoaXM6OnVzZV9yKG5hbWUgPSAibXlmaWxlLlIiKQoKYGBgCgojIyMgQ29uZmlndXJhdGlvbgoKSXQncyB3b3J0aCB0YWtpbmcgc29tZSB0aW1lIHRvIGNvbmZpZ3VyZSBvcHRpb25zIGluIHlvdXIgZW52aXJvbm1lbnQgdG8gbWFrZSBsaWZlIGVhc2llciBmb3IgeW91cnNlbGYuCgpUaGUgYC5ScHJvZmlsZWAgZmlsZSBpcyB1c2VkIHRvIHN0b3JlIHRoZXNlIGNvbmZpZ3VyYXRpb25zLiBZb3UgY2FuIG9wZW4gaXQgd2l0aCBgdXNldGhpczo6ZWRpdF9yX3Byb2ZpbGUoKWAuCgotIERvbid0IGxvYWQgJ2FuYWx5c2lzJyBkZXBlbmRhbnQgcGFja2FnZXMgaW4geW91ciBScHJvZmlsZQoKTGVhcm4gc29tZSBvZiB0aGUga2V5Ym9hcmQgc2hvcnRjdXRzIGluIFJTdHVkaW8gdG8gaW1wcm92ZSB5b3VyIHByb2R1Y3Rpdml0eS4gPGtiZD5BbHQ8L2tiZD4gKyA8a2JkPlNoaWZ0PC9rYmQ+ICsgPGtiZD5LPC9rYmQ+IGlzIHRoZSBrZXlib2FyZCBzaG9ydGN1dCB0byBzaG93IHlvdSB0aGUga2V5Ym9hcmQgc2hvcnRjdXRzLgoKIyMjIFZlcnNpb24gY29udHJvbAoKVXNpbmcgYW4gYXV0b21hdGVkIHZlcnNpb24gY29udHJvbCBzeXN0ZW0gc3VjaCBhcyBgZ2l0YCBpcyBoaWdobHkgcmVjb21tZW5kZWQuIEl0IGNhbiBoZWxwIHlvdSBtYW5hZ2UgZGlmZmVyZW50IHZlcnNpb25zIG9mIHlvdXIgY29kZSBhbmQgc2hvdyBkaWZmZXJlbmNlcyBvciBsZXQgeW91IGp1bXAgYmV0d2VlbiB2ZXJzaW9ucy4KCiMjIERlYnVnZ2luZwoKR2VuZXJhbCBwcm9jZXNzOgoKMS4gRG8gSSByZWNvZ25pc2UgdGhlIG1lc3NhZ2U/CjIuIFJlLWxvb2sgYXQgdGhlIGNvbW1hbmQgSSByYW4gbG9va2luZyBmb3IKICAgIC0gdHlwb3MKICAgIC0gbWlzc2luZyBzeW50YXggKGUuZy4gYnJhY2tldHMsIHNlbWljb2xvbnMsIGV0Yy4pCiAgICAtIGNvcnJlY3QgbmFtaW5nIG9mIHRoaW5ncwozLiBJcyB0aGUgaW5wdXQgZm9yIG15IGNvbW1hbmQgd2hhdCBJIGV4cGVjdCBpdCBpcz8KNC4gRGlkIHRoZSBwcmV2aW91cyBjb21tYW5kIHJ1biBwcm9wZXJseT8KICAgIC0gaWYgbm90IGp1bXAgdG8gMS4gZm9yIHRoZSBwcmV2aW91cyBjb21tYW5kCgoKIyMgVGVzdGluZwoKVGVzdCB5b3VyIGNvZGUgYXMgeW91IGdvLiBJdCBjYW4gYmUgdXNlZnVsIHRvIGFkb3B0IGFuIGF1dG9tYXRlZCB0ZXN0aW5nIHNvbHV0aW9uIC0gc3VjaCBhcyB0aGUgYHRlc3R0aGF0YCBwYWNrYWdlIHRvIGNyZWF0ZSB0ZXN0cyB0aGF0IGNhbiBiZSBhdXRvbWF0aWNhbGx5IHJ1bi4K</div>
 
 
 </div>

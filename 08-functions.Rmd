@@ -1,6 +1,6 @@
 ---
 title: "Functions and Choices"
-date: "Semester 1, 2023"
+date: "Semester 2, 2023"
 output:
   html_document:
     toc: true
@@ -699,7 +699,6 @@ This document has presented an introduction to creating your own functions and i
 
 # What's Next
 
-Fill in the module feedback form [https://tinyurl.com/r4ssp-module-fb-s1-23](https://tinyurl.com/r4ssp-module-fb-s1-23).
 
 Next move onto [R for Data Science Chapter 21 - Iteration (https://r4ds.had.co.nz/iteration.html)](https://r4ds.had.co.nz/iteration.html) to learn about how we can reduce code duplication, by repeating code efficiently through iteration or 'loops'. As always, if you run into trouble, let us know.
 

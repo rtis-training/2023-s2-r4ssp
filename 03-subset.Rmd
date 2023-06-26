@@ -1,6 +1,6 @@
 ---
 title: "Subsetting"
-date: "Semester 1, 2023"
+date: "Semester 2, 2023"
 output:
   html_document:
     toc: true
@@ -359,7 +359,7 @@ https://drive.google.com/drive/folders/1UBp-P4wFAaQL3egIQ7dGa2RQe6RQKqgy or usin
 
 >
 >```{r, eval=FALSE}
-> download.file(url = "https://raw.githubusercontent.com/rtis-training/2023-s1-r4ssp/main/data/forest_fires_portugal.csv", 
+> download.file(url = "https://raw.githubusercontent.com/rtis-training/2023-s2-r4ssp/main/data/forest_fires_portugal.csv", 
 >              destfile = "data/forest_fires_portugal.csv")
 >```
 > _Remember that R is case sensitive so if you don't have a directory exactly called `data/` modify the command to match your directory._
@@ -655,7 +655,5 @@ Dplyr pipeline syntax is popular because it eliminates the need for intermediate
 R users are constantly adding new libraries to base R, meaning that you will probably have several options for doing any job in R. The various options sometimes have subtle technical differences that will generate a lot of argument between professional programmers, but are unlikely to matter much to research scientists. In general, you should explore the R ecosystem freely and use whatever you like. **However** on assignments, it is wise to check with the lecturer before using something that is really different from what is presented in class. Your lecturer may, for educational reasons, want you to use specific R tools.
 
 ## What's Next
-
-Please fill in the module feedback form <https://tinyurl.com/r4ssp-module-fb-s1-23>.
 
 You may recall that way back in the first module of R4SSP we said we were going to analyse data. We haven't really done much of that yet. So far we have been *getting ready* to analyse data. In the next module, we will start really digging into our data with exploratory analysis and descriptive statistics. Because this is not a statistics course *per se* we will only be using common general analyses in the handouts and readings. If, for a project or assignment, you need to do something more esoteric, just let us know -- someone has probably written an R library for it.

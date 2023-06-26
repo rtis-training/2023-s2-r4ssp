@@ -1,6 +1,6 @@
 ---
 title: "Summarising"
-date: "Semester 1, 2023"
+date: "Semester 2, 2023"
 output:
   html_document:
     toc: true
@@ -50,7 +50,7 @@ For this module, we will use two data sets -- the "Palmers Penguins" data descri
 > One option for downloading the data is to use `download.file()` in RStudio. 
 > 
 > ```{r, eval = FALSE}
-> download.file(url = "https://raw.githubusercontent.com/rtis-training/2023-s1-r4ssp/main/docs/data/NZ_lake_chla_data.csv", 
+> download.file(url = "https://raw.githubusercontent.com/rtis-training/2023-s2-r4ssp/main/docs/data/NZ_lake_chla_data.csv", 
 >  destfile = "data/NZ_lake_chla_data.csv")
 > ```
 > _Remember to adjust the value of `destfile` to match your project directory structure._
