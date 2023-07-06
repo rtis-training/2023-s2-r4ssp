@@ -49,14 +49,14 @@ Date | Week | Module | Part | Topic | Instructor
 Week starting 18 July | 1 | Setup | | Introduce the tools: R and Rstudio | P
 Week starting 25 July | 2 | Data focus | 1 | Visualising Data | M
 Week starting 1 August | 3 | Data focus | 2 | Selecting and Filtering Data | P
-Week starting 15 August | 4 | Data focus | 3 | Summarising Data | M
-Week starting 22 August  | 5 | Data focus | 4 | Communicating Data | P
+Week starting 8 August | 4 | Data focus | 3 | Summarising Data | M
+Week starting 15 August  | 5 | Data focus | 4 | Communicating Data | P
+Week starting 22 August | 6 | Data focus | 5 | Tidying Data | M
 Week starting 29 August | - | MID-SEMESTER | | |
-Week starting 5 September | 6 | Data focus | 5 | Tidying Data | M
-Week starting 12 September | 7 |Data focus | 6 | Combining/Joining |P
-Week starting 19 September | 8 | Programming focus | 1 | Functions and Choices | M
-Week starting 26 September | 9 | Programming focus | 2 | Repeating code | P
-Week starting 3 October | 10 | Programming focus | 3 | Workflows and debugging | M
-Week starting 10 October | --- | --- | --- | Ask us anything | P/M
+Week starting 5 September | 7 |Data focus | 6 | Combining/Joining |P
+Week starting 12 September | 8 | Programming focus | 1 | Functions and Choices | M
+Week starting 19 September | 9 | Programming focus | 2 | Repeating code | P
+Week starting 26 September | 10 | Programming focus | 3 | Workflows and debugging | M
+Week starting 3 October | --- | --- | --- | Ask us anything | P/M
 
 Optional unit - Using version control with R (TBD)
