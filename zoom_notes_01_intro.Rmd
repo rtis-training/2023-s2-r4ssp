@@ -288,7 +288,7 @@ It is useful to add some subfolders to your Project folder. A common organisatio
 
 You can create subfolders by using the "New Folder" button in the Files panel or using the `dir.create()` function, as shown below.
 
-```{r}
+```{r, eval=FALSE}
 dir.create("scripts")
 dir.create("data")
 dir.create("data")
