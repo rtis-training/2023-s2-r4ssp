@@ -20,10 +20,10 @@ This course is primarily targeted to students with no or little programming expe
 Semester 2 2023 R for Successful Student Projects (R4SSP) will be online via Zoom, 1-3pm Tuesdays.
 
 <!-- remember to update link on rtis training -->
-**Please register [using this form](https://forms.gle/B7y2vguKr1kmUHYQA)**
+<!--**Please register [using this form](https://forms.gle/B7y2vguKr1kmUHYQA)** -->
 
 
-<!-- Sign up has closed for semester 2. --> The course materials are free to use and work through. If you have questions or would like assistance with R, please email rtis.training@otago.ac.nz.
+Sign up has closed for semester 2. The course materials are free to use and work through. If you have questions or would like assistance with R, please email rtis.training@otago.ac.nz.
 
 <!-- For more information please email rtis.training@otago.ac.nz -->
 
